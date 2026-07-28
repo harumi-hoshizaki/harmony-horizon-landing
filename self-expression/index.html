@@ -3,7 +3,16 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<script>
+// Load React/ReactDOM from this site instead of unpkg.com (support.js honors
+// this map), and use absolute paths so the page also works when served at
+// /self-expression without a trailing-slash redirect.
+window.__resources = {
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "/self-expression/react.min.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "/self-expression/react-dom.min.js"
+};
+</script>
+<script src="/self-expression/support.js"></script>
 </head>
 <body>
 <x-dc>
@@ -17,7 +26,7 @@
     @keyframes ev-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
     @keyframes ev-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
   </style>
-  <script src="./image-slot.js"></script>
+  <script src="/self-expression/image-slot.js"></script>
   <template id="__bundler_thumbnail" data-bg-color="#FDF2E0">
     <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
       <rect width="1200" height="800" fill="#FDF2E0"></rect>
@@ -62,7 +71,7 @@
       <div style="font-size:12.5px;color:#7A6A56;margin-top:14px;">買い切り ・ 追加料金なし ・ 1日3分から</div>
     </div>
     <div style="flex:1 1 320px;min-width:250px;display:flex;justify-content:center;">
-      <img src="uploads/mockup_hero-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:min(100%,340px);height:auto;display:block;background:transparent;filter:drop-shadow(0 26px 40px rgba(26,20,16,0.18));">
+      <img src="/self-expression/uploads/mockup_hero-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:min(100%,340px);height:auto;display:block;background:transparent;filter:drop-shadow(0 26px 40px rgba(26,20,16,0.18));">
     </div>
   </div>
 
@@ -168,7 +177,7 @@
       </div>
     </div>
     <div style="flex:1 1 300px;min-width:250px;">
-      <img src="uploads/mockup_trio-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:100%;height:auto;display:block;background:transparent;filter:drop-shadow(0 22px 36px rgba(26,20,16,0.16));">
+      <img src="/self-expression/uploads/mockup_trio-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:100%;height:auto;display:block;background:transparent;filter:drop-shadow(0 22px 36px rgba(26,20,16,0.16));">
     </div>
   </div>
 
