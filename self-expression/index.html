@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; background: #FDF2E0; }
+    a { color: #C36F00; text-decoration: none; }
+    a:hover { color: #A85E00; }
+    @keyframes ev-pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.07); } }
+    @keyframes ev-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  </style>
+  <script src="./image-slot.js"></script>
+  <template id="__bundler_thumbnail" data-bg-color="#FDF2E0">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#FDF2E0"></rect>
+      <text x="600" y="380" text-anchor="middle" font-family="Georgia, serif" font-size="150" font-weight="600" fill="#1A1410">E2V</text>
+      <rect x="480" y="450" width="240" height="16" rx="8" fill="#E2820A"></rect>
+      <text x="600" y="560" text-anchor="middle" font-family="Helvetica, sans-serif" font-size="46" letter-spacing="10" fill="#A6740F">EAR TO VOICE</text>
+    </svg>
+  </template>
+</helmet>
+
+<div style="font-family:'Noto Sans JP',sans-serif;color:#1A1410;background:#FDF2E0;overflow-x:hidden;padding-bottom:84px;">
+
+  <!-- NAV -->
+  <div style="position:sticky;top:0;z-index:40;background:rgba(253,242,224,0.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(226,130,10,0.14);">
+    <div style="display:flex;align-items:center;justify-content:space-between;max-width:1120px;margin:0 auto;padding:13px clamp(18px,4vw,36px);">
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="font-family:'Lora',serif;font-weight:600;font-size:clamp(14px,1.6vw,16px);letter-spacing:0.04em;color:#1A1410;">EAR TO VOICE™</div>
+        <div style="font-size:10.5px;letter-spacing:0.16em;color:#A6740F;font-weight:700;">SELF EXPRESSION</div>
+      </div>
+      <a href="https://buy.stripe.com/dRm28rcLccvK73240ieEo01" target="_blank" rel="noopener" style="display:inline-block;font-weight:700;font-size:13px;background:#E2820A;color:#1A1410;padding:11px 20px;border-radius:999px;box-shadow:0 6px 18px -8px rgba(226,130,10,0.7);transition:transform 0.15s ease;" style-hover="transform:scale(1.04);" style-active="transform:scale(0.97);">¥980で始める</a>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <div style="max-width:1120px;margin:0 auto;padding:clamp(30px,5vw,64px) clamp(18px,4vw,36px) clamp(40px,6vw,72px);display:flex;gap:clamp(28px,5vw,64px);align-items:center;flex-wrap:wrap;">
+    <div style="flex:1 1 430px;min-width:290px;">
+      <div style="display:inline-block;font-weight:700;font-size:11.5px;letter-spacing:0.14em;color:#8A4E00;background:#FBE6BE;border-radius:999px;padding:7px 15px;margin-bottom:20px;">日本人のための Ear to Voice™ Method</div>
+      <h1 style="font-family:'Lora',serif;font-size:clamp(27px,4vw,44px);font-weight:600;line-height:1.5;margin:0 0 20px;color:#1A1410;text-wrap:pretty;">
+        英語を「読む」から、<br>英語を「聞いて、声にする」習慣へ。
+      </h1>
+      <div style="font-family:'Lora',serif;font-size:clamp(17px,2vw,21px);font-weight:600;color:#8A4E00;margin-bottom:18px;">英語を勉強しているのに、なぜ聞き取れない？</div>
+      <div style="font-size:clamp(15px,1.6vw,17px);line-height:2;color:#5C4E3F;margin-bottom:26px;">
+        単語や文法の知識だけでは、英語の音は自然には聞こえるようになりません。
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;">
+        <div style="background:#FFFCF5;border-radius:12px;padding:11px 16px;font-size:14px;font-weight:700;color:#3B2F22;box-shadow:0 2px 10px -6px rgba(26,20,16,0.18);">毎日3分</div>
+        <div style="background:#FFFCF5;border-radius:12px;padding:11px 16px;font-size:14px;font-weight:700;color:#3B2F22;box-shadow:0 2px 10px -6px rgba(26,20,16,0.18);">音を聞く</div>
+        <div style="background:#FFFCF5;border-radius:12px;padding:11px 16px;font-size:14px;font-weight:700;color:#3B2F22;box-shadow:0 2px 10px -6px rgba(26,20,16,0.18);">声に出す</div>
+        <div style="background:#FFFCF5;border-radius:12px;padding:11px 16px;font-size:14px;font-weight:700;color:#3B2F22;box-shadow:0 2px 10px -6px rgba(26,20,16,0.18);">自分の声で確かめる</div>
+      </div>
+      <a href="https://buy.stripe.com/dRm28rcLccvK73240ieEo01" target="_blank" rel="noopener" style="display:inline-block;font-weight:700;font-size:clamp(16px,1.8vw,18px);background:#E2820A;color:#1A1410;padding:18px 36px;border-radius:999px;box-shadow:0 12px 32px -10px rgba(226,130,10,0.6);transition:transform 0.18s ease, box-shadow 0.18s ease;" style-hover="transform:translateY(-3px) scale(1.02);box-shadow:0 18px 38px -10px rgba(226,130,10,0.7);" style-active="transform:scale(0.97);">初回モニター価格 ¥980で体験する →</a>
+      <div style="font-size:12.5px;color:#7A6A56;margin-top:14px;">買い切り ・ 追加料金なし ・ 1日3分から</div>
+    </div>
+    <div style="flex:1 1 320px;min-width:250px;display:flex;justify-content:center;">
+      <img src="uploads/mockup_hero-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:min(100%,340px);height:auto;display:block;background:transparent;filter:drop-shadow(0 26px 40px rgba(26,20,16,0.18));">
+    </div>
+  </div>
+
+  <!-- 1 PROBLEM -->
+  <div style="background:#F6E4C4;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);">
+    <div style="max-width:760px;margin:0 auto;">
+      <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#A6740F;margin-bottom:14px;">PROBLEM</div>
+      <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,34px);font-weight:600;line-height:1.5;margin-bottom:26px;color:#1A1410;">知っている英語なのに、聞こえない。</div>
+      <div style="font-size:clamp(15px,1.6vw,17px);line-height:2;color:#5C4E3F;margin-bottom:26px;">単語は知っている。英文を読むこともできる。でも、</div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:30px;">
+        <sc-for list="{{ problems }}" as="p" hint-placeholder-count="3">
+          <div style="display:flex;gap:14px;align-items:flex-start;background:#FFFCF5;border-radius:14px;padding:18px 22px;box-shadow:0 2px 12px -7px rgba(26,20,16,0.18);">
+            <div style="flex:0 0 auto;width:6px;height:6px;border-radius:50%;background:#E2820A;margin-top:9px;"></div>
+            <div style="font-size:clamp(14.5px,1.5vw,16px);line-height:1.8;color:#3B2F22;">{{ p }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="font-size:clamp(15px,1.6vw,17px);line-height:2;color:#5C4E3F;">
+        そんな経験はありませんか？<br><br>
+        英語を理解するためには、文字を見る力だけではなく、<br>
+        <strong style="color:#8A4E00;">「英語の音を認識する力」</strong>が必要です。
+      </div>
+    </div>
+  </div>
+
+  <!-- 2 METHOD -->
+  <div style="max-width:1000px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);">
+    <div style="max-width:760px;margin:0 auto 44px;">
+      <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#A6740F;margin-bottom:14px;">METHOD</div>
+      <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,34px);font-weight:600;line-height:1.5;color:#1A1410;">英語学習に、「音を聞く時間」を。</div>
+    </div>
+    <div style="display:flex;gap:clamp(18px,3vw,32px);flex-wrap:wrap;">
+      <div style="flex:1 1 300px;min-width:250px;background:#F6E4C4;border-radius:20px;padding:clamp(26px,3vw,34px);">
+        <div style="font-weight:700;font-size:12px;letter-spacing:0.08em;color:#7A6A56;margin-bottom:20px;">これまでの英語学習</div>
+        <div style="display:flex;flex-direction:column;gap:9px;align-items:flex-start;font-family:'Lora',serif;font-size:clamp(16px,1.7vw,19px);font-weight:600;color:#3B2F22;">
+          <div>見る</div><div style="color:#A6926F;font-weight:400;font-size:15px;">↓</div>
+          <div>読む</div><div style="color:#A6926F;font-weight:400;font-size:15px;">↓</div>
+          <div>意味を理解する</div>
+        </div>
+        <div style="margin-top:22px;font-size:14px;line-height:1.9;color:#7A6A56;">もちろん、この学習は大切です。</div>
+      </div>
+      <div style="flex:1 1 300px;min-width:250px;background:#FFFCF5;border:1.5px solid #E2820A;border-radius:20px;padding:clamp(26px,3vw,34px);box-shadow:0 14px 34px -18px rgba(226,130,10,0.5);">
+        <div style="font-weight:700;font-size:12px;letter-spacing:0.08em;color:#C36F00;margin-bottom:20px;">実際の英語で必要なこと</div>
+        <div style="display:flex;flex-direction:column;gap:9px;align-items:flex-start;font-family:'Lora',serif;font-size:clamp(16px,1.7vw,19px);font-weight:600;color:#1A1410;">
+          <div>聞く</div><div style="color:#E2820A;font-weight:400;font-size:15px;">↓</div>
+          <div>音を認識する</div><div style="color:#E2820A;font-weight:400;font-size:15px;">↓</div>
+          <div>声に出して再現する</div>
+        </div>
+        <div style="margin-top:22px;font-size:14px;line-height:1.9;color:#8A6A3C;">Ear to Voice™は、英語を目で覚えるだけではなく、耳から取り入れ、口につなげるための学習メソッドです。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3 HOW IT WORKS -->
+  <div style="background:#1A1410;color:#FDF2E0;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);">
+    <div style="max-width:900px;margin:0 auto;">
+      <div style="margin-bottom:44px;">
+        <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#EAA847;margin-bottom:14px;">HOW IT WORKS</div>
+        <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,34px);font-weight:600;line-height:1.5;">1日3分。<br>5つのステップで音を育てる。</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:clamp(18px,2.5vw,26px);">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+          <div style="display:flex;gap:clamp(16px,3vw,28px);align-items:flex-start;background:rgba(253,242,224,0.05);border:1px solid rgba(234,168,71,0.2);border-radius:18px;padding:clamp(22px,3vw,30px);">
+            <div style="flex:0 0 auto;font-family:'Lora',serif;font-weight:600;font-size:clamp(24px,3vw,32px);color:#EAA847;opacity:0.75;line-height:1;width:clamp(34px,4vw,50px);">{{ s.n }}</div>
+            <div style="flex:1 1 auto;min-width:0;">
+              <div style="font-family:'Lora',serif;font-weight:600;font-size:clamp(17px,2vw,21px);letter-spacing:0.02em;margin-bottom:6px;">{{ s.title }}</div>
+              <div style="font-size:clamp(14.5px,1.5vw,16px);font-weight:700;color:#F0DCBB;margin-bottom:12px;">{{ s.lead }}</div>
+              <div style="font-size:15px;line-height:1.95;color:#C9B79C;">{{ s.body }}</div>
+              <sc-if value="{{ s.hasList }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+                  <sc-for list="{{ s.list }}" as="item" hint-placeholder-count="3">
+                    <div style="background:rgba(234,168,71,0.14);border-radius:10px;padding:8px 13px;font-size:13px;color:#F0DCBB;">{{ item }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
+              <sc-if value="{{ s.hasNote }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:12.5px;color:#9B8A72;margin-top:12px;">{{ s.note }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4 PRODUCT -->
+  <div style="max-width:1040px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);display:flex;gap:clamp(28px,5vw,56px);align-items:center;flex-wrap:wrap;">
+    <div style="flex:1 1 380px;min-width:280px;">
+      <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#A6740F;margin-bottom:14px;">PRODUCT</div>
+      <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,32px);font-weight:600;line-height:1.5;margin-bottom:24px;color:#1A1410;">48個の自己表現フレーズで<br>英語の音をトレーニング</div>
+      <div style="font-size:clamp(15px,1.6vw,17px);line-height:2;color:#5C4E3F;margin-bottom:26px;">収録されているのは、日常で使える48個の自己表現フレーズ。基本表現から、自分の気持ちや状況に合わせた言葉として練習します。</div>
+      <div style="background:#F6E4C4;border-radius:20px;padding:clamp(22px,3vw,30px);display:flex;flex-direction:column;gap:14px;margin-bottom:26px;">
+        <div style="font-size:11.5px;font-weight:700;letter-spacing:0.1em;color:#8A6A3C;">基本表現</div>
+        <div style="font-family:'Lora',serif;font-size:clamp(16px,1.8vw,19px);font-weight:600;color:#1A1410;">"I'm happy today."</div>
+        <div style="font-size:18px;color:#C36F00;line-height:1;">↓</div>
+        <div style="font-size:11.5px;font-weight:700;letter-spacing:0.1em;color:#8A6A3C;">自分自身の言葉へ</div>
+        <div style="background:#FFFCF5;border-radius:14px;padding:15px 19px;font-family:'Lora',serif;font-size:clamp(15px,1.7vw,18px);font-weight:600;color:#1A1410;">"I'm tired today, but I'm grateful."</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-family:'Lora',serif;font-size:clamp(15px,1.6vw,17px);font-weight:600;color:#3B2F22;">
+        <div>聞く</div><div style="color:#E2820A;">→</div>
+        <div>声にする</div><div style="color:#E2820A;">→</div>
+        <div>自分の表現にする</div>
+      </div>
+    </div>
+    <div style="flex:1 1 300px;min-width:250px;">
+      <img src="uploads/mockup_trio-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:100%;height:auto;display:block;background:transparent;filter:drop-shadow(0 22px 36px rgba(26,20,16,0.16));">
+    </div>
+  </div>
+
+  <!-- CTA MID -->
+  <div style="background:#F6E4C4;padding:clamp(38px,5vw,58px) clamp(18px,4vw,36px);text-align:center;">
+    <div style="font-family:'Lora',serif;font-size:clamp(18px,2.2vw,24px);font-weight:600;color:#1A1410;margin-bottom:20px;">今日から、3分の音トレーニングを。</div>
+    <a href="https://buy.stripe.com/dRm28rcLccvK73240ieEo01" target="_blank" rel="noopener" style="display:inline-block;font-weight:700;font-size:clamp(16px,1.8vw,18px);background:#E2820A;color:#1A1410;padding:17px 34px;border-radius:999px;box-shadow:0 12px 30px -10px rgba(226,130,10,0.6);transition:transform 0.18s ease;" style-hover="transform:translateY(-3px) scale(1.02);" style-active="transform:scale(0.97);">初回モニター価格 ¥980で体験する →</a>
+  </div>
+
+  <!-- 5 WHO -->
+  <div style="max-width:700px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);">
+    <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#A6740F;margin-bottom:14px;">WHO IS THIS FOR</div>
+    <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,32px);font-weight:600;margin-bottom:32px;color:#1A1410;">こんな方におすすめです。</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <sc-for list="{{ audience }}" as="a" hint-placeholder-count="5">
+        <div style="display:flex;align-items:center;gap:15px;background:#FFFCF5;border-radius:14px;padding:17px 22px;box-shadow:0 2px 12px -7px rgba(26,20,16,0.16);">
+          <div style="flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:#E2820A;display:flex;align-items:center;justify-content:center;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#1A1410" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 18 20 6"></polyline></svg>
+          </div>
+          <div style="font-size:clamp(14.5px,1.5vw,16px);line-height:1.7;color:#3B2F22;">{{ a }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- 6 ABOUT -->
+  <div style="background:#F6E4C4;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);">
+    <div style="max-width:700px;margin:0 auto;">
+      <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#A6740F;margin-bottom:14px;">ABOUT HARU</div>
+      <div style="font-family:'Lora',serif;font-size:clamp(22px,3vw,31px);font-weight:600;line-height:1.5;margin-bottom:28px;color:#1A1410;">なぜEar to Voice™を作ったのか。</div>
+      <div style="font-size:clamp(15px,1.6vw,17px);line-height:2.1;color:#5C4E3F;">
+        私は長年、日本人に英語を教えてきました。<br><br>
+        そして、自分自身も外国語を学ぶ中で、「知っている英語」と「聞こえる英語」の間には、大きな違いがあることを経験しました。<br><br>
+        多くの学習者に必要だったのは、もっと多くの知識ではなく、英語の音を聞き、声に出して練習する時間でした。<br><br>
+        Ear to Voice™は、そのために作った毎日の音トレーニングです。
+      </div>
+      <div style="margin-top:28px;font-family:'Lora',serif;font-size:15px;font-weight:600;color:#8A4E00;">— Haru, Harmony Horizon</div>
+    </div>
+  </div>
+
+  <!-- 7 PRICE -->
+  <div style="max-width:580px;margin:0 auto;padding:clamp(48px,7vw,86px) clamp(18px,4vw,36px);">
+    <div style="text-align:center;margin-bottom:32px;">
+      <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#A6740F;margin-bottom:14px;">PRICE</div>
+      <div style="font-family:'Lora',serif;font-size:clamp(22px,3vw,30px);font-weight:600;line-height:1.5;color:#1A1410;">リリース記念<br>初回モニター価格</div>
+    </div>
+    <div style="background:#FFFCF5;border:1px solid rgba(226,130,10,0.28);border-radius:24px;padding:clamp(32px,5vw,48px) clamp(24px,4vw,42px);box-shadow:0 26px 56px -24px rgba(26,20,16,0.32);text-align:center;">
+      <div style="font-family:'Lora',serif;font-size:13.5px;font-weight:500;color:#7A6A56;letter-spacing:0.04em;margin-bottom:6px;">EAR TO VOICE™ SELF EXPRESSION</div>
+      <div style="font-family:'Lora',serif;font-weight:600;font-size:clamp(42px,6vw,58px);color:#1A1410;line-height:1.2;margin:14px 0 6px;">¥980</div>
+      <div style="font-size:13.5px;color:#7A6A56;margin-bottom:26px;">買い切り ・ 追加料金なし</div>
+      <div style="height:1px;background:rgba(226,130,10,0.18);margin-bottom:24px;"></div>
+      <div style="font-size:11.5px;font-weight:700;letter-spacing:0.1em;color:#8A6A3C;text-align:left;margin-bottom:16px;">含まれるもの</div>
+      <div style="display:flex;flex-direction:column;gap:12px;text-align:left;margin-bottom:30px;">
+        <sc-for list="{{ includes }}" as="f" hint-placeholder-count="7">
+          <div style="display:flex;gap:11px;align-items:baseline;font-size:15px;color:#3B2F22;"><span style="color:#C36F00;font-weight:700;">✓</span>{{ f }}</div>
+        </sc-for>
+      </div>
+      <a href="https://buy.stripe.com/dRm28rcLccvK73240ieEo01" target="_blank" rel="noopener" style="display:block;font-weight:700;font-size:17px;background:#E2820A;color:#1A1410;padding:17px;border-radius:999px;box-shadow:0 12px 28px -10px rgba(226,130,10,0.6);transition:transform 0.18s ease;" style-hover="transform:translateY(-2px) scale(1.02);" style-active="transform:scale(0.97);">EAR TO VOICE™を始める</a>
+    </div>
+  </div>
+
+  <!-- 8 FAQ -->
+  <div style="max-width:700px;margin:0 auto;padding:0 clamp(18px,4vw,36px) clamp(48px,7vw,86px);">
+    <div style="font-family:'Lora',serif;font-size:clamp(21px,2.8vw,28px);font-weight:600;margin-bottom:26px;color:#1A1410;">よくある質問</div>
+    <div style="display:flex;flex-direction:column;gap:11px;">
+      <sc-for list="{{ faqs }}" as="q" hint-placeholder-count="4">
+        <div onClick="{{ q.toggle }}" style="background:#FFFCF5;border-radius:16px;padding:20px 22px;cursor:pointer;box-shadow:0 2px 12px -7px rgba(26,20,16,0.16);">
+          <div style="display:flex;gap:14px;align-items:flex-start;justify-content:space-between;">
+            <div style="display:flex;gap:12px;align-items:baseline;">
+              <span style="font-family:'Lora',serif;font-weight:600;font-size:15px;color:#C36F00;">Q.</span>
+              <span style="font-size:clamp(14.5px,1.5vw,16px);font-weight:700;line-height:1.7;color:#1A1410;">{{ q.q }}</span>
+            </div>
+            <div style="flex:0 0 auto;font-size:18px;color:#C36F00;line-height:1.4;">{{ q.sign }}</div>
+          </div>
+          <sc-if value="{{ q.open }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:12px;align-items:baseline;margin-top:14px;padding-top:14px;border-top:1px solid rgba(226,130,10,0.16);">
+              <span style="font-family:'Lora',serif;font-weight:600;font-size:15px;color:#8A6A3C;">A.</span>
+              <span style="font-size:15px;line-height:1.95;color:#5C4E3F;">{{ q.a }}</span>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- FINAL CTA -->
+  <div style="background:#1A1410;color:#FDF2E0;padding:clamp(56px,8vw,100px) clamp(18px,4vw,36px);text-align:center;">
+    <div style="font-family:'Lora',serif;font-weight:600;font-style:italic;font-size:clamp(25px,4.2vw,42px);line-height:1.35;max-width:760px;margin:0 auto 26px;">Train your ears.<br>Find your voice.</div>
+    <div style="font-size:clamp(15px,1.6vw,17px);line-height:2;color:#C9B79C;margin-bottom:34px;">
+      英語を読むだけの学習から、聞いて、声にして、自分の表現へ。<br>今日から3分。新しい英語習慣を始めませんか？
+    </div>
+    <a href="https://buy.stripe.com/dRm28rcLccvK73240ieEo01" target="_blank" rel="noopener" style="display:inline-block;font-weight:700;font-size:clamp(16px,1.8vw,19px);background:#E2820A;color:#1A1410;padding:18px 40px;border-radius:999px;box-shadow:0 12px 32px -10px rgba(226,130,10,0.7);transition:transform 0.18s ease;" style-hover="transform:translateY(-3px) scale(1.03);" style-active="transform:scale(0.97);">初回モニター価格 ¥980で体験する →</a>
+    <div style="margin-top:52px;font-size:12.5px;color:#8A7862;">© 2026 Harmony Horizon ・ harmonyhorizon.space/self-expression</div>
+  </div>
+
+  <!-- STICKY MOBILE CTA -->
+  <div style="position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(253,242,224,0.96);backdrop-filter:blur(10px);border-top:1px solid rgba(226,130,10,0.2);padding:12px clamp(14px,4vw,24px);display:flex;align-items:center;gap:14px;justify-content:center;">
+    <div style="display:flex;flex-direction:column;gap:1px;">
+      <div style="font-family:'Lora',serif;font-weight:600;font-size:19px;color:#1A1410;line-height:1.1;">¥980</div>
+      <div style="font-size:10.5px;color:#7A6A56;">買い切り</div>
+    </div>
+    <a href="https://buy.stripe.com/dRm28rcLccvK73240ieEo01" target="_blank" rel="noopener" style="flex:1 1 auto;max-width:340px;text-align:center;font-weight:700;font-size:15px;background:#E2820A;color:#1A1410;padding:15px 20px;border-radius:999px;box-shadow:0 8px 22px -10px rgba(226,130,10,0.7);transition:transform 0.15s ease;" style-hover="transform:scale(1.02);" style-active="transform:scale(0.97);">今すぐ体験する</a>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200}}">
+class Component extends DCLogic {
+  state = { openFaq: 0 };
+
+  renderVals() {
+    const faqData = [
+      ['買い切りですか？', 'はい。一度購入すると追加料金なしで利用できます。'],
+      ['英語初心者でもできますか？', 'はい。基本的な自己表現フレーズから始めるため、自分のペースで練習できます。'],
+      ['どのくらいの時間が必要ですか？', '1日3分から始められる設計です。'],
+    ];
+    return {
+      problems: [
+        'ネイティブの英語になると聞き取れない',
+        '知っている単語なのに、音がつながると分からない',
+        '何度聞いても、どこが変化しているのか分からない',
+      ],
+      steps: [
+        { n: '01', title: 'LISTEN', lead: 'まず英語の音を聞く。', body: 'ネイティブ音声を聞き、英語のリズムや音の流れを感じます。', hasList: false, hasNote: false },
+        { n: '02', title: 'SOUND TIPS', lead: '学校では詳しく習わない音のポイントを確認。', body: '英語がどのように聞こえるのか理解します。', hasList: true, list: ['発音のポイント', '間違えやすい音', '音のつながり（Linking）'], hasNote: false },
+        { n: '03', title: 'SHADOWING', lead: '聞こえた英語を、自分の声で再現します。', body: '耳と口をつなげる練習です。', hasList: false, hasNote: false },
+        { n: '04', title: 'VOICE CHECK', lead: '自分の発音を確認します。', body: '音声認識機能を使い、あなたの英語がどのように聞き取られたか確認できます。', hasList: false, hasNote: false },
+        { n: '05', title: 'MAKE IT YOURS', lead: '学んだフレーズを、自分自身の日常表現として復習します。', body: '覚えた英語が、自分の言葉として使える状態になります。', hasList: false, hasNote: false },
+      ],
+      audience: [
+        '英語を勉強しているのにリスニングが苦手',
+        '知っている単語が聞こえないと感じる',
+        '発音や音のつながりを学びたい',
+        '文字中心の英語学習から変えたい',
+        '毎日少しずつ英語習慣を作りたい',
+      ],
+      includes: [
+        '48個の自己表現フレーズ',
+        'ネイティブ音声',
+        '発音ポイント解説',
+        '音のつながり解説',
+        'Shadowing練習',
+        'Voice Check',
+        '自分の表現へ変える復習',
+      ],
+      faqs: faqData.map(([q, a], i) => ({
+        q, a,
+        open: this.state.openFaq === i,
+        sign: this.state.openFaq === i ? '−' : '+',
+        toggle: () => this.setState(s => ({ openFaq: s.openFaq === i ? -1 : i })),
+      })),
+    };
+  }
+}
+
+</script>
+</body>
+</html>
