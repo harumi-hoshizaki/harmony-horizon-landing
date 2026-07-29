@@ -130,10 +130,10 @@ window.__resources = {
     <div style="max-width:900px;margin:0 auto;">
       <div style="margin-bottom:38px;">
         <div style="font-weight:700;font-size:11.5px;letter-spacing:0.16em;color:#FBE6BE;margin-bottom:14px;">HOW IT WORKS</div>
-        <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,34px);font-weight:600;line-height:1.5;">毎日やることは、シンプル。<br>1日3分、5つのステップ。</div>
+        <div style="font-family:'Lora',serif;font-size:clamp(23px,3.2vw,34px);font-weight:600;line-height:1.5;">毎日やることは、シンプル。<br>1日3分、4つのステップ。</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:12px;">
-        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="5">
+        <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
           <div style="display:flex;gap:clamp(14px,2.5vw,22px);align-items:baseline;background:rgba(253,242,224,0.12);border:1px solid rgba(253,242,224,0.28);border-radius:14px;padding:16px clamp(18px,2.5vw,24px);flex-wrap:wrap;">
             <div style="flex:0 0 auto;font-family:'Lora',serif;font-weight:600;font-size:clamp(18px,2vw,22px);color:#FFD9A0;line-height:1;">{{ s.n }}</div>
             <div style="flex:0 0 auto;font-family:'Lora',serif;font-weight:600;font-size:clamp(15px,1.7vw,18px);letter-spacing:0.02em;min-width:132px;">{{ s.title }}</div>
@@ -159,7 +159,7 @@ window.__resources = {
           </div>
         </sc-for>
       </div>
-      <div style="font-size:clamp(14px,1.5vw,15.5px);line-height:1.9;color:#7A6A56;">教材は、日常で使える48個の自己表現フレーズ。すべてネイティブ音声つきです。</div>
+      <div style="font-size:clamp(14px,1.5vw,15.5px);line-height:1.9;color:#7A6A56;">教材は、日常で使える48個の自己表現フレーズと、答えを引き出す14個の質問フレーズ。すべてネイティブの発音で学べます。</div>
     </div>
     <div style="flex:1 1 300px;min-width:250px;">
       <img src="/self-expression/uploads/mockup_trio-transparent-web.png" alt="Ear to Voice アプリ画面" style="width:100%;height:auto;display:block;background:transparent;filter:drop-shadow(0 22px 36px rgba(26,20,16,0.16));">
@@ -201,7 +201,7 @@ window.__resources = {
       <div style="height:1px;background:rgba(226,130,10,0.18);margin-bottom:24px;"></div>
       <div style="font-size:11.5px;font-weight:700;letter-spacing:0.1em;color:#8A6A3C;text-align:left;margin-bottom:16px;">含まれるもの</div>
       <div style="display:flex;flex-direction:column;gap:12px;text-align:left;margin-bottom:30px;">
-        <sc-for list="{{ includes }}" as="f" hint-placeholder-count="7">
+        <sc-for list="{{ includes }}" as="f" hint-placeholder-count="8">
           <div style="display:flex;gap:11px;align-items:baseline;font-size:15px;color:#3B2F22;"><span style="color:#C36F00;font-weight:700;">✓</span>{{ f }}</div>
         </sc-for>
       </div>
@@ -272,16 +272,15 @@ class Component extends DCLogic {
         '何度聞いても、どこが変化しているのか分からない',
       ],
       steps: [
-        { n: '01', title: 'LISTEN', lead: 'ネイティブ音声を聞く。' },
-        { n: '02', title: 'SOUND TIPS', lead: '音のつながり・発音のポイントを知る。' },
-        { n: '03', title: 'SHADOWING', lead: '聞こえた音を、自分の声で再現する。' },
-        { n: '04', title: 'VOICE CHECK', lead: '音声認識で、自分の発音を確かめる。' },
-        { n: '05', title: 'MAKE IT YOURS', lead: 'フレーズを、自分の言葉にして使う。' },
+        { n: '01', title: 'QUESTION', lead: '英語の質問を、文字を見ずに聞く。' },
+        { n: '02', title: 'ANSWER', lead: '答えを聞いて、自分の声で再現する。' },
+        { n: '03', title: 'TIPS', lead: '発音・音のつながり・文法のポイントを確認する。' },
+        { n: '04', title: 'PRACTICE', lead: '日本語だけを見て、質問と答えを英語で話す。' },
       ],
       outcomes: [
         '知っている英語が、聞き取れるようになる',
         '通じる発音とリズムが身につく',
-        '気持ちや状況を、自分の言葉で言えるようになる',
+        '英語の質問に、自分の言葉で答えられるようになる',
       ],
       audience: [
         '英語を勉強しているのにリスニングが苦手',
@@ -292,12 +291,13 @@ class Component extends DCLogic {
       ],
       includes: [
         '48個の自己表現フレーズ',
-        'ネイティブ音声',
+        '14個の質問フレーズ',
+        'ネイティブの発音で学べる音声',
         '発音ポイント解説',
         '音のつながり解説',
         'Shadowing練習',
         'Voice Check',
-        '自分の表現へ変える復習',
+        '質問と答えで練習する復習モード',
       ],
       faqs: faqData.map(([q, a], i) => ({
         q, a,
