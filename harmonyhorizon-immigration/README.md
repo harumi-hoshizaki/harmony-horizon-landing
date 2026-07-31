@@ -1,23 +1,19 @@
-# harmonyhorizon-app
+# harmonyhorizon-immigration
 
-Static apps served at **https://app.harmonyhorizon.space** — one Vercel project, one folder per app. The folder name becomes the URL path, so future apps can be added without touching DNS again.
+**Essential Immigration** — served at **https://app.harmonyhorizon.space/immigration**.
+
+A single static page that reduces anxiety about immigration inspection before any English practice begins. No build step, no framework. No audio, no exercises, no data storage — nothing is collected, stored, or transmitted.
 
 ```
-harmonyhorizon-app/          ← repository root = app.harmonyhorizon.space
-├── index.html               ← simple index listing the apps
+harmonyhorizon-immigration/
+├── index.html               ← page at app.harmonyhorizon.space (lists the apps)
 ├── immigration/             ← = app.harmonyhorizon.space/immigration
-│   └── index.html           ← Essential Immigration (single file, no build step)
+│   └── index.html           ← the app, single file
 ├── .gitignore
 └── README.md
 ```
 
-## Apps
-
-### `immigration/` — Essential Immigration v0.1
-
-A single static page that reduces anxiety about immigration inspection before any English practice begins. No audio, no exercises, no data storage — nothing is collected, stored, or transmitted.
-
-Roadmap:
+## Roadmap
 
 - **v0.1 (this version)** — Welcome, Before You Fly checklist, the 7 question categories
 - **v0.2** — Ear to Voice immigration training module: listening and speaking practice with pre-generated MP3 audio (Audio → Understanding → Speaking → Text)
@@ -33,6 +29,25 @@ Roadmap:
    - Target: the value Vercel shows
    - Proxy: **DNS only** (grey cloud, not orange)
 5. After propagation, the app is live at `app.harmonyhorizon.space/immigration`. The main `harmonyhorizon.space` site is untouched.
+
+## Adding future apps (one repository per app)
+
+Each app lives in its own repository and its own Vercel project. The domain `app.harmonyhorizon.space` can only point at **one** Vercel project — this one. So a future app is wired in with a rewrite here, and DNS is never touched again:
+
+1. Create the new repo (e.g. `harmonyhorizon-somename`) and import it into Vercel as its own project.
+2. In **this** repository, add the path to `vercel.json`:
+
+```json
+{
+  "rewrites": [
+    { "source": "/somename/:path*", "destination": "https://<that-project>.vercel.app/:path*" }
+  ]
+}
+```
+
+3. Add a link to it in `index.html`.
+
+Visitors see `app.harmonyhorizon.space/somename`; Vercel serves it from the other project behind the scenes.
 
 ## Rules
 
