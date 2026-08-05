@@ -4,76 +4,213 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
+<meta name="theme-color" content="#0D1B27">
 <title>ご購入ありがとうございます — Ear to Voice™ | Harmony Horizon</title>
-<meta name="description" content="Ear to Voice™ Self Expression のご購入ありがとうございます。">
+<meta name="description" content="Ear to Voice™ のご購入ありがとうございます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Noto Sans JP', sans-serif; color: #1A1410; background: #FDF2E0; min-height: 100vh; display: flex; flex-direction: column; }
-  a { color: #C36F00; text-decoration: none; }
-  a:hover { color: #A85E00; }
+  :root {
+    --navy-deep:  #0D1B27;
+    --navy:       #14273A;
+    --cream:      #FAF6EC;
+    --cream-soft: #F2EAD9;
+    --gold:       #C08F3E;
+    --gold-bright:#FFB600;
+    --gold-pale:  #E7C583;
+    --ink:        #241F1A;
+    --ink-soft:   #665F53;
+    --line:       rgba(20, 39, 58, 0.13);
+    --shadow-soft:0 20px 60px rgba(13, 27, 39, 0.08);
+    --shadow-card:0 30px 70px -24px rgba(13, 27, 39, 0.22);
+    --font-display: 'Lora', 'Noto Serif JP', serif;
+    --font-body:    'Noto Sans JP', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, .reveal { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  a { color: var(--navy); text-decoration: none; }
+  a:hover { color: var(--gold); }
+
+  .glow {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background: radial-gradient(ellipse 900px 460px at 50% -8%, rgba(192,143,62,0.16), transparent 65%);
+  }
+
+  /* ---------------- Brand ---------------- */
+  .brand { display: flex; align-items: center; gap: 14px; justify-content: center; }
+  .brand-mark { width: 44px; height: 44px; flex-shrink: 0; }
+  .brand-word { font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2.4vw, 23px); color: var(--navy-deep); line-height: 1.15; letter-spacing: 0.01em; }
+  .brand-tag { font-size: 11px; letter-spacing: 0.14em; color: var(--gold); font-weight: 600; margin-top: 3px; }
+
+  header.topbar { position: relative; z-index: 2; padding: clamp(36px, 6vw, 56px) clamp(20px, 5vw, 48px) 0; }
+
+  /* ---------------- Main ---------------- */
+  main {
+    position: relative; z-index: 2; max-width: 600px; margin: 0 auto;
+    padding: clamp(44px, 7vw, 76px) clamp(20px, 5vw, 48px) clamp(56px, 8vw, 88px);
+    text-align: center;
+  }
+
+  .check-wrap { margin: 0 auto 34px; width: 84px; height: 84px; }
+  .check-ring { fill: none; stroke: var(--gold); stroke-width: 3; }
+  .check-mark { fill: none; stroke: var(--navy-deep); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
+
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--gold); font-weight: 700; margin: 0 0 18px;
+  }
+
+  h1 {
+    font-family: var(--font-display); font-weight: 600; color: var(--navy-deep);
+    font-size: clamp(34px, 5.5vw, 50px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 14px;
+  }
+
+  .sub {
+    font-family: var(--font-display); font-weight: 600; color: var(--gold);
+    font-size: clamp(19px, 2.6vw, 24px); line-height: 1.5; margin: 0 0 22px;
+  }
+
+  .lede { font-size: clamp(15px, 1.6vw, 16.5px); line-height: 2; color: var(--ink-soft); margin: 0 0 44px; }
+  .lede strong { color: var(--ink); font-weight: 700; }
+
+  /* ---------------- Steps timeline ---------------- */
+  .steps {
+    list-style: none; margin: 0 0 44px; padding: clamp(28px, 4vw, 38px) clamp(28px, 4vw, 40px);
+    text-align: left; background: #FFFFFF; border: 1px solid var(--line); border-radius: 20px;
+    box-shadow: var(--shadow-card);
+  }
+  .steps-label { font-family: var(--font-body); font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; color: var(--gold); margin: 0 0 22px; text-transform: none; }
+  .steps li { display: flex; gap: 18px; position: relative; padding-bottom: 26px; }
+  .steps li:last-child { padding-bottom: 0; }
+  .steps li:not(:last-child)::before {
+    content: ''; position: absolute; left: 16px; top: 34px; bottom: -2px; width: 1px; background: var(--line);
+  }
+  .steps .n {
+    flex: 0 0 auto; width: 33px; height: 33px; border-radius: 50%; background: var(--navy-deep); color: var(--cream);
+    font-family: var(--font-display); font-weight: 600; font-size: 14px; display: flex; align-items: center;
+    justify-content: center; position: relative; z-index: 1;
+  }
+  .steps p { margin: 0; padding-top: 5px; font-size: 15px; line-height: 1.9; color: var(--ink); }
+
+  .support { font-size: 13.5px; line-height: 2; color: var(--ink-soft); }
+  .support a { font-weight: 700; color: var(--navy); }
+
+  /* ---------------- Footer ---------------- */
+  footer {
+    position: relative; z-index: 2; text-align: center;
+    padding: 0 clamp(20px, 5vw, 48px) clamp(40px, 6vw, 60px);
+  }
+  footer .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
+  footer .foot-copy { font-size: 12px; color: var(--ink-soft); opacity: 0.8; }
+  footer a { color: var(--navy); font-weight: 600; }
+
+  /* ---------------- Reveal-in ---------------- */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+  .reveal { opacity: 0; animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) both; }
+  .r1 { animation-delay: 0.05s; }
+  .r2 { animation-delay: 0.35s; }
+  .r3 { animation-delay: 0.5s; }
+  .r4 { animation-delay: 0.62s; }
+  .r5 { animation-delay: 0.74s; }
+  .r6 { animation-delay: 0.9s; }
+  .r7 { animation-delay: 1.05s; }
+  .r8 { animation-delay: 1.2s; }
+
+  :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<div style="background:rgba(253,242,224,0.94);border-bottom:1px solid rgba(226,130,10,0.14);">
-  <div style="display:flex;align-items:center;justify-content:space-between;max-width:1120px;margin:0 auto;padding:13px clamp(18px,4vw,36px);">
-    <div style="display:flex;flex-direction:column;gap:2px;">
-      <div style="font-family:'Lora',serif;font-weight:600;font-size:clamp(14px,1.6vw,16px);letter-spacing:0.04em;color:#1A1410;">EAR TO VOICE™</div>
-      <div style="font-size:10.5px;letter-spacing:0.16em;color:#A6740F;font-weight:700;">SELF EXPRESSION</div>
+<div class="glow" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="brand reveal r1">
+    <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Ear to Voice">
+      <circle cx="100" cy="100" r="90" fill="none" stroke="#14273A" stroke-width="14"/>
+      <circle cx="100" cy="100" r="72" fill="none" stroke="#C08F3E" stroke-width="14"/>
+      <circle cx="100" cy="100" r="54" fill="none" stroke="#14273A" stroke-width="14"/>
+      <circle cx="100" cy="100" r="36" fill="none" stroke="#C08F3E" stroke-width="14"/>
+      <circle cx="100" cy="100" r="20" fill="#C08F3E"/>
+    </svg>
+    <div style="text-align:left;">
+      <div class="brand-word">Ear to Voice</div>
+      <div class="brand-tag">耳から、声へ。</div>
     </div>
   </div>
-</div>
+</header>
 
-<!-- MAIN -->
-<div style="flex:1 1 auto;display:flex;align-items:center;justify-content:center;padding:clamp(40px,7vw,80px) clamp(18px,4vw,36px);">
-  <div style="max-width:640px;width:100%;text-align:center;">
+<main>
 
-    <div style="width:74px;height:74px;border-radius:50%;background:#E2820A;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;box-shadow:0 14px 34px -14px rgba(226,130,10,0.7);">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#FDF2E0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 12 9 18 20 6"></polyline></svg>
-    </div>
-
-    <div style="font-family:'Lora',serif;font-weight:600;font-size:clamp(26px,4vw,40px);line-height:1.4;margin-bottom:14px;">Thank you!</div>
-    <div style="font-family:'Lora',serif;font-weight:600;font-size:clamp(19px,2.4vw,26px);line-height:1.6;color:#8A4E00;margin-bottom:22px;">ご購入ありがとうございます。</div>
-    <div style="font-size:clamp(15px,1.6vw,16.5px);line-height:2;color:#5C4E3F;margin-bottom:38px;">
-      お支払いが完了しました。<br>
-      Ear to Voice™ Self Expression へようこそ。
-    </div>
-
-    <div style="background:#FFFCF5;border:1px solid rgba(226,130,10,0.28);border-radius:20px;padding:clamp(26px,4vw,38px);text-align:left;box-shadow:0 18px 44px -22px rgba(26,20,16,0.25);margin-bottom:34px;">
-      <div style="font-size:11.5px;font-weight:700;letter-spacing:0.14em;color:#A6740F;margin-bottom:20px;">NEXT STEPS ・ このあとの流れ</div>
-      <div style="display:flex;flex-direction:column;gap:18px;">
-        <div style="display:flex;gap:15px;align-items:flex-start;">
-          <div style="flex:0 0 auto;font-family:'Lora',serif;font-weight:600;font-size:19px;color:#E2820A;line-height:1.5;">1</div>
-          <div style="font-size:15px;line-height:1.9;color:#3B2F22;">ご登録のメールアドレスに、確認メール(領収書)が届きます。</div>
-        </div>
-        <div style="display:flex;gap:15px;align-items:flex-start;">
-          <div style="flex:0 0 auto;font-family:'Lora',serif;font-weight:600;font-size:19px;color:#E2820A;line-height:1.5;">2</div>
-          <div style="font-size:15px;line-height:1.9;color:#3B2F22;">教材のご案内をメールでお送りします。案内に沿って、Ear to Voice™ を始めてください。</div>
-        </div>
-        <div style="display:flex;gap:15px;align-items:flex-start;">
-          <div style="flex:0 0 auto;font-family:'Lora',serif;font-weight:600;font-size:19px;color:#E2820A;line-height:1.5;">3</div>
-          <div style="font-size:15px;line-height:1.9;color:#3B2F22;">今日から、1日3分。聞いて、声に出して、自分の表現に。</div>
-        </div>
-      </div>
-    </div>
-
-    <div style="font-size:13.5px;line-height:2;color:#7A6A56;">
-      メールが数分経っても届かない場合は、迷惑メールフォルダをご確認ください。<br>
-      それでも見つからないときは <a href="mailto:haru@harmonyhorizon.space" style="font-weight:700;">haru@harmonyhorizon.space</a> までご連絡ください。
-    </div>
-
+  <div class="check-wrap reveal r2">
+    <svg viewBox="0 0 84 84" width="84" height="84" role="img" aria-label="お支払い完了">
+      <circle class="check-ring" cx="42" cy="42" r="38"/>
+      <path class="check-mark" d="M25 43 L36.5 54.5 L59 30"/>
+    </svg>
   </div>
-</div>
 
-<!-- FOOTER -->
-<div style="background:#8A4E00;color:#FDF2E0;text-align:center;padding:22px clamp(18px,4vw,36px);">
-  <div style="font-family:'Lora',serif;font-weight:600;font-size:15px;margin-bottom:4px;">Train your ears. Find your voice.</div>
-  <div style="font-size:12px;color:#EBCFA4;">© 2026 Harmony Horizon ・ <a href="https://www.harmonyhorizon.space/self-expression" style="color:#FBE6BE;">harmonyhorizon.space/self-expression</a></div>
-</div>
+  <p class="eyebrow reveal r3">Payment Confirmed</p>
+  <h1 class="reveal r4">Thank you.</h1>
+  <p class="sub reveal r4">ご購入ありがとうございます。</p>
+  <p class="lede reveal r5">お支払いが完了しました。<br><strong>Ear to Voice™</strong> へようこそ。</p>
+
+  <section class="steps reveal r6" aria-labelledby="next-steps-h">
+    <h2 id="next-steps-h" class="steps-label">NEXT STEPS ・ このあとの流れ</h2>
+    <ol style="list-style:none; margin:0; padding:0;">
+      <li><span class="n" aria-hidden="true">1</span><p>ご登録のメールアドレスに、確認メール(領収書)が届きます。</p></li>
+      <li><span class="n" aria-hidden="true">2</span><p>リンクをメールでお送りします。案内に沿って、Ear to Voice™ を始めてください。</p></li>
+      <li><span class="n" aria-hidden="true">3</span><p>今日から、少しずつ。聞いて、声に出して、自分の表現に。</p></li>
+    </ol>
+  </section>
+
+  <p class="support reveal r7">
+    メールが数分経っても届かない場合は、迷惑メールフォルダをご確認ください。<br>
+    それでも見つからないときは <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> までご連絡ください。
+  </p>
+
+</main>
+
+<footer class="reveal r8">
+  <div class="foot-tag">Train your ears. Find your voice.</div>
+  <div class="foot-copy">© 2026 Harmony Horizon ・ <a href="https://www.harmonyhorizon.space">harmonyhorizon.space</a></div>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ring = document.querySelector('.check-ring');
+  var mark = document.querySelector('.check-mark');
+  [ring, mark].forEach(function (el, i) {
+    if (!el) return;
+    var len = el.getTotalLength();
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = reduceMotion ? 0 : len;
+    if (reduceMotion) return;
+    void el.getBoundingClientRect(); // force a style flush so the browser commits the "hidden" state before the transition below is triggered — a rAF-only handoff is not reliably flushed in every rendering pipeline
+    el.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1) ' + (0.55 + i * 0.55) + 's';
+    el.style.strokeDashoffset = 0;
+  });
+})();
+</script>
 
 </body>
 </html>
