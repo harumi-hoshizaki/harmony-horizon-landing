@@ -137,6 +137,27 @@
   .r8 { animation-delay: 1.2s; }
 
   :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+
+  /* ---------------- Desktop: trade mobile's generous scroll rhythm for
+     density, so the whole confirmation fits one viewport without scrolling ---------------- */
+  @media (min-width: 880px) and (min-height: 600px) {
+    header.topbar { padding-top: 20px; }
+    main { max-width: 680px; padding-top: 20px; padding-bottom: 24px; }
+    .check-wrap { width: 50px; height: 50px; margin-bottom: 14px; }
+    .eyebrow { margin-bottom: 8px; }
+    h1 { font-size: 30px; margin-bottom: 6px; }
+    .sub { font-size: 17px; margin-bottom: 10px; }
+    .lede { line-height: 1.6; margin-bottom: 18px; }
+    .lede br { display: none; }
+    .steps { padding: 18px 26px; margin-bottom: 16px; }
+    .steps-label { margin-bottom: 10px; }
+    .steps li { padding-bottom: 10px; }
+    .steps li:not(:last-child)::before { top: 28px; }
+    .steps p { line-height: 1.6; font-size: 14.5px; }
+    .support { line-height: 1.6; }
+    footer { padding-bottom: 16px; }
+    footer .foot-tag { margin-bottom: 4px; }
+  }
 </style>
 </head>
 <body>
