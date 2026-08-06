@@ -1,4 +1,4 @@
-# Deploy: Ear to Voice™ Self Expression LP
+# Deploy: Ear to Voice Self Expression LP
 
 **Goal:** serve this landing page at `https://www.harmonyhorizon.space/self-expression`
 Host: **Vercel**. Domain `harmonyhorizon.space` is already managed there.
