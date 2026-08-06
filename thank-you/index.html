@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#0D1B27">
-<title>ご購入ありがとうございます — Ear to Voice™ | Harmony Horizon</title>
-<meta name="description" content="Ear to Voice™ のご購入ありがとうございます。">
+<title>ご購入ありがとうございます — Ear to Voice | Harmony Horizon</title>
+<meta name="description" content="Ear to Voice のご購入ありがとうございます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -20,7 +20,8 @@
     --gold-bright:#FFB600;
     --gold-pale:  #E7C583;
     --ink:        #241F1A;
-    --ink-soft:   #665F53;
+    --ink-soft:   #57503F;
+    --gold-text:  #8A650F;
     --line:       rgba(20, 39, 58, 0.13);
     --shadow-soft:0 20px 60px rgba(13, 27, 39, 0.08);
     --shadow-card:0 30px 70px -24px rgba(13, 27, 39, 0.22);
@@ -33,7 +34,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    *, .reveal { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
+    * { animation: none !important; opacity: 1 !important; transform: none !important; transition: none !important; }
   }
 
   body {
@@ -60,37 +61,33 @@
   .brand { display: flex; align-items: center; gap: 14px; justify-content: center; }
   .brand-mark { width: 44px; height: 44px; flex-shrink: 0; }
   .brand-word { font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2.4vw, 23px); color: var(--navy-deep); line-height: 1.15; letter-spacing: 0.01em; }
-  .brand-tag { font-size: 11px; letter-spacing: 0.14em; color: var(--gold); font-weight: 600; margin-top: 3px; }
+  .brand-tag { font-size: 12px; letter-spacing: 0.14em; color: var(--gold-text); font-weight: 700; margin-top: 3px; }
 
-  header.topbar { position: relative; z-index: 2; padding: clamp(36px, 6vw, 56px) clamp(20px, 5vw, 48px) 0; }
+  header.topbar { position: relative; z-index: 2; padding: clamp(26px, 4.5vw, 40px) clamp(20px, 5vw, 48px) 0; }
 
   /* ---------------- Main ---------------- */
   main {
     position: relative; z-index: 2; max-width: 600px; margin: 0 auto;
-    padding: clamp(44px, 7vw, 76px) clamp(20px, 5vw, 48px) clamp(56px, 8vw, 88px);
+    padding: clamp(40px, 6.5vw, 64px) clamp(20px, 5vw, 48px) clamp(48px, 7vw, 76px);
     text-align: center;
   }
 
-  .check-wrap { margin: 0 auto 34px; width: 84px; height: 84px; }
+  .check-wrap { margin: 0 auto 24px; width: 78px; height: 78px; }
+  .check-wrap svg { width: 100%; height: 100%; }
   .check-ring { fill: none; stroke: var(--gold); stroke-width: 3; }
   .check-mark { fill: none; stroke: var(--navy-deep); stroke-width: 4.5; stroke-linecap: round; stroke-linejoin: round; }
 
-  .eyebrow {
-    font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--gold); font-weight: 700; margin: 0 0 18px;
-  }
-
   h1 {
     font-family: var(--font-display); font-weight: 600; color: var(--navy-deep);
-    font-size: clamp(34px, 5.5vw, 50px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 14px;
+    font-size: clamp(34px, 5.5vw, 50px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 10px;
   }
 
   .sub {
-    font-family: var(--font-display); font-weight: 600; color: var(--gold);
-    font-size: clamp(19px, 2.6vw, 24px); line-height: 1.5; margin: 0 0 22px;
+    font-family: var(--font-display); font-weight: 600; color: var(--gold-text);
+    font-size: clamp(20px, 2.7vw, 25px); line-height: 1.5; margin: 0 0 18px;
   }
 
-  .lede { font-size: clamp(15px, 1.6vw, 16.5px); line-height: 2; color: var(--ink-soft); margin: 0 0 44px; }
+  .lede { font-size: clamp(16px, 1.7vw, 17.5px); line-height: 2; color: var(--ink-soft); margin: 0 0 40px; }
   .lede strong { color: var(--ink); font-weight: 700; }
 
   /* ---------------- Steps timeline ---------------- */
@@ -99,7 +96,7 @@
     text-align: left; background: #FFFFFF; border: 1px solid var(--line); border-radius: 20px;
     box-shadow: var(--shadow-card);
   }
-  .steps-label { font-family: var(--font-body); font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; color: var(--gold); margin: 0 0 22px; text-transform: none; }
+  .steps-label { font-family: var(--font-body); font-size: 12.5px; font-weight: 700; letter-spacing: 0.14em; color: var(--gold-text); margin: 0 0 22px; text-transform: none; }
   .steps li { display: flex; gap: 18px; position: relative; padding-bottom: 26px; }
   .steps li:last-child { padding-bottom: 0; }
   .steps li:not(:last-child)::before {
@@ -110,9 +107,9 @@
     font-family: var(--font-display); font-weight: 600; font-size: 14px; display: flex; align-items: center;
     justify-content: center; position: relative; z-index: 1;
   }
-  .steps p { margin: 0; padding-top: 5px; font-size: 15px; line-height: 1.9; color: var(--ink); }
+  .steps p { margin: 0; padding-top: 5px; font-size: 16px; line-height: 1.9; color: var(--ink); }
 
-  .support { font-size: 13.5px; line-height: 2; color: var(--ink-soft); }
+  .support { font-size: 15px; line-height: 2; color: var(--ink-soft); }
   .support a { font-weight: 700; color: var(--navy); }
 
   /* ---------------- Footer ---------------- */
@@ -120,41 +117,37 @@
     position: relative; z-index: 2; text-align: center;
     padding: 0 clamp(20px, 5vw, 48px) clamp(40px, 6vw, 60px);
   }
-  footer .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
-  footer .foot-copy { font-size: 12px; color: var(--ink-soft); opacity: 0.8; }
+  footer .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 15px; color: var(--ink-soft); margin-bottom: 8px; }
+  footer .foot-copy { font-size: 13.5px; color: var(--ink-soft); }
   footer a { color: var(--navy); font-weight: 600; }
 
-  /* ---------------- Reveal-in ---------------- */
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
-  .reveal { opacity: 0; animation: fadeUp 0.8s cubic-bezier(.16,1,.3,1) both; }
-  .r1 { animation-delay: 0.05s; }
-  .r2 { animation-delay: 0.35s; }
-  .r3 { animation-delay: 0.5s; }
-  .r4 { animation-delay: 0.62s; }
-  .r5 { animation-delay: 0.74s; }
-  .r6 { animation-delay: 0.9s; }
-  .r7 { animation-delay: 1.05s; }
-  .r8 { animation-delay: 1.2s; }
+  /* ---------------- Entrance: one gentle fade for the whole page.
+     No per-element slide/stagger — elements must never appear to cross. ---------------- */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  header.topbar, main, footer { animation: fadeIn 0.7s ease both 0.1s; }
 
   :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
 
   /* ---------------- Desktop: trade mobile's generous scroll rhythm for
      density, so the whole confirmation fits one viewport without scrolling ---------------- */
   @media (min-width: 880px) and (min-height: 600px) {
-    header.topbar { padding-top: 20px; }
-    main { max-width: 680px; padding-top: 20px; padding-bottom: 24px; }
-    .check-wrap { width: 50px; height: 50px; margin-bottom: 14px; }
-    .eyebrow { margin-bottom: 8px; }
-    h1 { font-size: 30px; margin-bottom: 6px; }
-    .sub { font-size: 17px; margin-bottom: 10px; }
-    .lede { line-height: 1.6; margin-bottom: 18px; }
+    body { display: flex; flex-direction: column; }
+    header.topbar { padding-top: 24px; }
+    main {
+      max-width: 700px; width: 100%; padding-top: 20px; padding-bottom: 24px;
+      flex: 1 1 auto; display: flex; flex-direction: column; justify-content: safe center;
+    }
+    .check-wrap { width: 56px; height: 56px; margin-bottom: 16px; }
+    h1 { font-size: 34px; margin-bottom: 8px; }
+    .sub { font-size: 19px; margin-bottom: 12px; }
+    .lede { font-size: 16.5px; line-height: 1.7; margin-bottom: 20px; }
     .lede br { display: none; }
-    .steps { padding: 18px 26px; margin-bottom: 16px; }
-    .steps-label { margin-bottom: 10px; }
-    .steps li { padding-bottom: 10px; }
+    .steps { padding: 20px 28px; margin-bottom: 18px; }
+    .steps-label { margin-bottom: 12px; }
+    .steps li { padding-bottom: 12px; }
     .steps li:not(:last-child)::before { top: 28px; }
-    .steps p { line-height: 1.6; font-size: 14.5px; }
-    .support { line-height: 1.6; }
+    .steps p { line-height: 1.7; font-size: 15.5px; }
+    .support { font-size: 14.5px; line-height: 1.7; }
     footer { padding-bottom: 16px; }
     footer .foot-tag { margin-bottom: 4px; }
   }
@@ -165,7 +158,7 @@
 <div class="glow" aria-hidden="true"></div>
 
 <header class="topbar">
-  <div class="brand reveal r1">
+  <div class="brand">
     <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Ear to Voice">
       <circle cx="100" cy="100" r="96" fill="#16233A"/>
       <circle cx="100" cy="100" r="69" fill="none" stroke="#6C5A3B" stroke-width="8"/>
@@ -181,35 +174,34 @@
 
 <main>
 
-  <div class="check-wrap reveal r2">
+  <div class="check-wrap">
     <svg viewBox="0 0 84 84" width="84" height="84" role="img" aria-label="お支払い完了">
       <circle class="check-ring" cx="42" cy="42" r="38"/>
       <path class="check-mark" d="M25 43 L36.5 54.5 L59 30"/>
     </svg>
   </div>
 
-  <p class="eyebrow reveal r3">Payment Confirmed</p>
-  <h1 class="reveal r4">Thank you.</h1>
-  <p class="sub reveal r4">ご購入ありがとうございます。</p>
-  <p class="lede reveal r5">お支払いが完了しました。<br><strong>Ear to Voice™</strong> へようこそ。</p>
+  <h1>Thank you.</h1>
+  <p class="sub">ご購入ありがとうございます。</p>
+  <p class="lede">お支払いが完了しました。<br><strong>Ear to Voice</strong> へようこそ。</p>
 
-  <section class="steps reveal r6" aria-labelledby="next-steps-h">
+  <section class="steps" aria-labelledby="next-steps-h">
     <h2 id="next-steps-h" class="steps-label">NEXT STEPS ・ このあとの流れ</h2>
     <ol style="list-style:none; margin:0; padding:0;">
       <li><span class="n" aria-hidden="true">1</span><p>ご登録のメールアドレスに、確認メール(領収書)が届きます。</p></li>
-      <li><span class="n" aria-hidden="true">2</span><p>リンクをメールでお送りします。案内に沿って、Ear to Voice™ を始めてください。</p></li>
+      <li><span class="n" aria-hidden="true">2</span><p>リンクをメールでお送りします。案内に沿って、Ear to Voice を始めてください。</p></li>
       <li><span class="n" aria-hidden="true">3</span><p>今日から、少しずつ。聞いて、声に出して、自分の表現に。</p></li>
     </ol>
   </section>
 
-  <p class="support reveal r7">
+  <p class="support">
     メールが数分経っても届かない場合は、迷惑メールフォルダをご確認ください。<br>
     それでも見つからないときは <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> までご連絡ください。
   </p>
 
 </main>
 
-<footer class="reveal r8">
+<footer>
   <div class="foot-tag">Train your ears. Find your voice.</div>
   <div class="foot-copy">© 2026 Harmony Horizon ・ <a href="https://www.harmonyhorizon.space">harmonyhorizon.space</a></div>
 </footer>
@@ -222,11 +214,16 @@
   [ring, mark].forEach(function (el, i) {
     if (!el) return;
     var len = el.getTotalLength();
-    el.style.strokeDasharray = len;
-    el.style.strokeDashoffset = reduceMotion ? 0 : len;
+    // Gap must be longer than the path (len + 20) and the parked offset must
+    // overshoot (len + 8): at an offset of exactly len with a len-long gap,
+    // the dash boundary sits exactly on the path start, and stroke-linecap:
+    // round renders that zero-length boundary as a stray dot while the
+    // transition delay elapses.
+    el.style.strokeDasharray = len + ' ' + (len + 20);
+    el.style.strokeDashoffset = reduceMotion ? 0 : len + 8;
     if (reduceMotion) return;
     void el.getBoundingClientRect(); // force a style flush so the browser commits the "hidden" state before the transition below is triggered — a rAF-only handoff is not reliably flushed in every rendering pipeline
-    el.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1) ' + (0.55 + i * 0.55) + 's';
+    el.style.transition = 'stroke-dashoffset 0.7s cubic-bezier(.4,0,.2,1) ' + (0.5 + i * 0.5) + 's';
     el.style.strokeDashoffset = 0;
   });
 })();
