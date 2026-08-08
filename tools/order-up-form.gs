@@ -4,11 +4,13 @@
  * HOW TO USE
  * 1. script.google.com -> New project
  * 2. Delete the placeholder code, paste this whole file in, Save.
- * 3. Pick "quickTest" in the function dropdown, click Run. Approve the
- *    permission prompt. This proves authorization works before you run
- *    the big one.
- * 4. Pick "createOrderUpForm", click Run.
- * 5. Open the "Execution log" panel for the form link and the
+ * 3. Pick "verifyPaste" in the function dropdown, click Run. It checks
+ *    that all 22 sections and 152 sentences arrived intact. It creates
+ *    nothing, so it is safe to run first.
+ * 4. Pick "quickTest", click Run. Approve the permission prompt. This
+ *    proves authorization works before you run the big one.
+ * 5. Pick "createOrderUpForm", click Run.
+ * 6. Open the "Execution log" panel for the form link and the
  *    spreadsheet link. Send the form link to your friend.
  *
  * Re-running createOrderUpForm does NOT make a duplicate. It reuses the
@@ -317,7 +319,65 @@ function resetOrderUpForm() {
 }
 
 /**
- * Tiny form with one question. Run this first to confirm the project is
+ * Confirms the paste came through intact. Creates nothing and needs no
+ * permissions, so it is safe to run first. Expected result:
+ *
+ *   sections 22 / 22, phrases 152 / 152, checksum matches
+ *
+ * If the checksum does not match, some sentence text changed during the
+ * copy - paste the file again rather than hunting for it by eye.
+ */
+function verifyPaste() {
+  var EXPECTED_SECTIONS = 22;
+  var EXPECTED_PHRASES = 152;
+  var EXPECTED_CHECKSUM = 949727592;
+
+  var all = "";
+  var phrases = 0;
+  var curly = [];
+
+  for (var i = 0; i < SECTIONS.length; i++) {
+    var s = SECTIONS[i];
+    all += s.title;
+    for (var j = 0; j < s.items.length; j++) {
+      all += s.items[j][0] + s.items[j][1];
+      phrases++;
+      // Curly quotes are harmless to the code but change what your
+      // friend reads, so flag them rather than silently keeping them.
+      if (/[‘’“”]/.test(s.items[j][1])) {
+        curly.push(s.title + ": " + s.items[j][1]);
+      }
+    }
+  }
+
+  var sum = 0;
+  for (var k = 0; k < all.length; k++) {
+    sum = (sum * 31 + all.charCodeAt(k)) % 1000000007;
+  }
+
+  Logger.log("sections: " + SECTIONS.length + " / " + EXPECTED_SECTIONS);
+  Logger.log("phrases:  " + phrases + " / " + EXPECTED_PHRASES);
+
+  var ok = SECTIONS.length === EXPECTED_SECTIONS &&
+           phrases === EXPECTED_PHRASES &&
+           sum === EXPECTED_CHECKSUM;
+
+  if (ok) {
+    Logger.log("checksum: matches. The paste is intact.");
+  } else {
+    Logger.log("checksum: " + sum + " (expected " + EXPECTED_CHECKSUM + ")");
+    Logger.log("SOMETHING CHANGED during the copy. Paste the file again.");
+  }
+
+  for (var m = 0; m < curly.length; m++) {
+    Logger.log("Curly quote found in - " + curly[m]);
+  }
+
+  return ok;
+}
+
+/**
+ * Tiny form with one question. Run this second, to confirm the project is
  * authorized. If this fails, the problem is permissions, not the phrases.
  */
 function quickTest() {
