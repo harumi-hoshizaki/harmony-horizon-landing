@@ -61,7 +61,7 @@
   .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
   section { padding: var(--section-pad) 0; }
 
-  em { font-style: normal; color: var(--gold-bright); }
+  em { font-style: normal; color: var(--gold); }
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
@@ -111,21 +111,22 @@
   /* ---------------- Hero ---------------- */
   .hero {
     background:
-      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.2), transparent 65%),
-      linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
-    color: var(--cream); text-align: center; padding-top: clamp(56px, 9vw, 100px);
+      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.16), transparent 65%),
+      linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
+    color: var(--ink); text-align: center; padding-top: clamp(56px, 9vw, 100px);
   }
-  .hero .eyebrow { justify-content: center; color: var(--gold-bright); }
-  .hero .eyebrow::before, .hero .eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--gold-bright); }
+  .hero .eyebrow { justify-content: center; color: var(--gold); }
+  .hero .eyebrow::before, .hero .eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--gold); }
   .hero .eyebrow { gap: 10px; }
-  .hero h1 { font-size: clamp(2.3rem, 5.5vw, 3.8rem); line-height: 1.3; color: var(--cream); max-width: 780px; margin: 0 auto 22px; }
-  .hero .lede { max-width: 560px; margin: 0 auto 34px; font-size: 1.05rem; }
+  .hero h1 { font-size: clamp(2.3rem, 5.5vw, 3.8rem); line-height: 1.3; color: var(--navy-deep); max-width: 780px; margin: 0 auto 22px; }
+  .hero .lede { max-width: 560px; margin: 0 auto 34px; font-size: 1.05rem; color: var(--ink-soft); }
   .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 38px; }
   .hero-chips span {
-    background: rgba(250,243,230,0.08); border: 1px solid var(--line-light); border-radius: 999px;
-    padding: 10px 20px; font-size: 13.5px; font-weight: 600; color: var(--cream);
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px;
+    padding: 10px 20px; font-size: 13.5px; font-weight: 600; color: var(--navy-deep);
+    box-shadow: var(--shadow-soft);
   }
-  .hero-note { font-size: 12.5px; color: rgba(250,243,230,0.6); margin-top: 16px; }
+  .hero-note { font-size: 12.5px; color: var(--ink-soft); margin-top: 16px; }
   .hero-phone-wrap { display: flex; justify-content: center; margin-top: 56px; }
 
   /* ---------------- Phone mockup ---------------- */
@@ -282,7 +283,7 @@
 </header>
 
 <!-- HERO -->
-<section class="hero on-dark">
+<section class="hero">
   <div class="container reveal rd1">
     <span class="eyebrow eyebrow-product">Eatout ｜外食の英会話</span>
     <h1>何百回でも、<em>注文できる</em>。</h1>
