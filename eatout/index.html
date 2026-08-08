@@ -15,7 +15,9 @@
      数値は地色に対するコントラスト比の実測値(老眼鏡での閲覧が前提)。 */
   :root {
     --ink:        #2B2018;   /* 紙に対して 14.24:1 */
-    --ink-deep:   #1E1610;   /* 濃い帯の地色 */
+    /* 濃い帯の地色。#1E1610 はほぼ黒で、日本語の学習ページには冷たい。
+       本文と同じエスプレッソ色まで上げると、暗さより温かさが先に来る。 */
+    --ink-deep:   #2B2018;
     --paper:      #F7F2E9;
     --paper-soft: #F0E9DB;
     --card:       #FFFFFF;
@@ -218,6 +220,8 @@
   /* 黒い帯の上のカード。紙の上のカードと同じ形で、色だけ反転させる。
      以前は How It Works に inline style で直接書いていたが、2箇所目が
      できたのでクラスに切り出す(同じものを2通りで書かない)。 */
+  /* 紙の上で3枚を1組に見せる印。濃い帯を増やさずにまとまりを出す。 */
+  .card-accent { border-top: 3px solid var(--gold); }
   .card-dark { background: rgba(247, 242, 233, 0.06); border-color: var(--line-dark); }
   .card-dark h3 { color: var(--paper); }
   .card-dark p { color: rgba(247, 242, 233, 0.82); }
@@ -241,8 +245,14 @@
     flex: none; width: 22px;
   }
   .scene .t { font-size: 1.05rem; font-weight: 500; }
-  .scene .s { display: block; font-size: 0.95rem; color: var(--muted); font-weight: 400; }
+  /* 英語の例は、この教材が本物だという証拠。日本語より小さいままにして主役は
+     譲るが、灰色に沈めると読み飛ばされるので、金の文字色で拾わせる。 */
+  .scene .s { display: block; font-size: 0.95rem; color: var(--gold-text); font-weight: 500; margin-top: 2px; }
 
+  .scene-count {
+    margin: 18px 0 0; font-size: 1.05rem; color: var(--muted);
+  }
+  .scene-count b { color: var(--ink); font-weight: 700; }
   .stage-note {
     margin-top: 22px; padding: 18px 20px;
     border: 1px solid var(--line); border-left: 4px solid var(--gold);
@@ -406,27 +416,30 @@
       <li class="scene"><span class="n">◇</span><span class="t">聞き返しミニスキル<span class="s">どの場面でも使えます</span></span></li>
     </ol>
 
+    <p class="scene-count">この7つで、<b>スタッフの英語29フレーズ</b>と、<b>自分の答え29フレーズ</b>。</p>
+
     <p class="stage-note">まず <b>カフェ &amp; ファーストフード</b> の7つを進みます。<b>レストラン編</b>（席に着いて注文して、食べた後で払うお店）は準備中です。</p>
   </div>
 </section>
 
 <!-- FEATURES -->
-<!-- Harumi 2026-08-08: ここは黒い帯に。3枚のカードが主役の節なので、
-     地色を落とすとカードが浮いて、機能が一目で数えられる。 -->
-<section class="on-dark">
+<!-- 濃い帯は2つに絞る(「耳が先」と最後のCTA)。3つに増やすとページが重くなる。
+     「耳が先。文字はあとから。」は、目を閉じて聞く話なので暗さに意味がある。
+     ここはカードが主役なので、金の上罫でまとまりを出す方が軽くて速い。 */ -->
+<section style="background:var(--paper-soft);">
   <div class="container">
     <span class="eyebrow">What You Get</span>
     <h2><span class="nb">声も、速さも、</span><span class="nb">選べる。</span></h2>
     <div class="grid-3" style="margin-top:34px;">
-      <div class="card card-dark">
+      <div class="card card-accent">
         <h3>男性の声・女性の声</h3>
         <p>同じ文でも話す人が変われば聞こえ方が変わります。両方の声で確かめられます。</p>
       </div>
-      <div class="card card-dark">
+      <div class="card card-accent">
         <h3>ふつう・ゆっくり</h3>
         <p>まず自然な速さで。聞き取れなければゆっくりに落として、音のつながりを1つずつ確かめます。</p>
       </div>
-      <div class="card card-dark">
+      <div class="card card-accent">
         <h3>聞き取りのコツ</h3>
         <p>なぜそう聞こえるのかを、フレーズごとに説明します。単語の中の音と、単語と単語の境目の音を分けて。</p>
       </div>
