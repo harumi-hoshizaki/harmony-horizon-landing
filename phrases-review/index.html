@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Which of these do you actually say? — Phrase Check</title>
+<meta name="description" content="A 5-minute tap-only check: which everyday café, fast food and restaurant phrases sound natural in North America.">
+</head>
+<body>
+<style>
+:root{
+  --navy:#16283A; --navy-deep:#0F1E2B; --navy-mid:#24425B;
+  --cream:#FAF6EC; --cream-soft:#F3ECDC; --beige:#EDE1CB;
+  --gold:#C89B4A; --gold-bright:#FFB600;
+  --ink:#2B2723; --ink-soft:#5C564C;
+  --line:rgba(22,40,58,.14);
+  --no:#B4443A; --no-bg:rgba(180,68,58,.07);
+  --serif:Georgia,'Iowan Old Style','Times New Roman',serif;
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition-duration:.01ms!important;animation-duration:.01ms!important}}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px 180px}
+
+/* ---------- header ---------- */
+.hero{padding:46px 0 30px}
+.eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:0 0 14px}
+h1{font-family:var(--serif);font-weight:500;color:var(--navy-deep);font-size:clamp(1.9rem,5.5vw,2.7rem);line-height:1.15;margin:0 0 14px;letter-spacing:.005em}
+.lede{color:var(--ink-soft);margin:0 0 26px;font-size:16.5px}
+.rules{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:0 0 22px}
+.rules ol{margin:0;padding-left:1.15em}
+.rules li{margin:0 0 9px;font-size:15.4px}
+.rules li:last-child{margin-bottom:0}
+.rules b{color:var(--navy-deep)}
+.rules .sub{color:var(--ink-soft);font-size:14px}
+.who{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 8px}
+.who input{flex:1 1 200px;min-width:0;font:inherit;font-size:15px;padding:11px 13px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.who input:focus{outline:2px solid var(--gold);outline-offset:1px}
+.tiny{font-size:13px;color:var(--ink-soft);margin:6px 0 0}
+
+/* ---------- sticky bar ---------- */
+.bar{position:sticky;top:0;z-index:40;background:rgba(250,246,236,.94);backdrop-filter:blur(9px);border-bottom:1px solid var(--line);margin:0 -18px;padding:9px 18px}
+.bar-in{max-width:720px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.prog{flex:1;min-width:0}
+.prog-txt{font-size:12.5px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:10px;margin-bottom:5px}
+.prog-txt b{color:var(--navy-deep);font-weight:600}
+.track{height:5px;background:var(--beige);border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--gold);border-radius:99px;transition:width .25s ease}
+.bar .done-btn{flex:0 0 auto;font:inherit;font-size:13.5px;font-weight:600;padding:9px 15px;border-radius:99px;border:1px solid var(--navy);background:var(--navy);color:var(--cream);cursor:pointer}
+.bar .done-btn:hover{background:var(--navy-deep)}
+
+/* ---------- parts & sections ---------- */
+.part{margin:44px 0 10px;padding-top:8px;border-top:2px solid var(--navy);display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.part h2{font-family:var(--serif);font-size:1.45rem;font-weight:600;color:var(--navy-deep);margin:10px 0 0;letter-spacing:.02em}
+.part .jp{font-size:13px;color:var(--ink-soft)}
+
+section.sec{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;margin:14px 0;scroll-margin-top:80px;transition:border-color .2s,box-shadow .2s}
+section.sec.reviewed{border-color:rgba(200,155,74,.55);box-shadow:0 0 0 1px rgba(200,155,74,.25)}
+.sec-head{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin:0 0 4px}
+.sec-num{font-family:var(--serif);font-size:15px;color:var(--gold);font-weight:700;flex:0 0 auto}
+.sec-head h3{font-family:var(--serif);font-size:1.18rem;font-weight:600;color:var(--navy-deep);margin:0;letter-spacing:.01em}
+.sec-head .jp{font-size:12.5px;color:var(--ink-soft)}
+.sec-head .tick{margin-left:auto;font-size:12px;color:var(--gold);font-weight:700;opacity:0;transition:opacity .2s}
+section.sec.reviewed .tick{opacity:1}
+
+.grp{margin:16px 0 4px}
+.grp-lab{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--navy-mid);margin:0 0 8px;display:flex;align-items:center;gap:8px}
+.grp-lab .dot{width:7px;height:7px;border-radius:99px;background:var(--navy-mid);flex:0 0 auto}
+.grp-lab.you .dot{background:var(--gold)}
+.grp-lab.you{color:var(--gold)}
+.grp-hint{font-size:11px;letter-spacing:0;text-transform:none;font-weight:500;color:var(--ink-soft)}
+
+/* ---------- rows ---------- */
+.row{display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin:0 0 8px;background:#fff;transition:background .15s,border-color .15s}
+.row .txt{flex:1;min-width:0;font-size:16.5px;line-height:1.45;color:var(--ink);cursor:pointer;user-select:none;padding:2px 0}
+.row .txt:hover{color:var(--navy-deep)}
+.row .mark{flex:0 0 auto;width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:rgba(22,40,58,.17);cursor:pointer;background:var(--cream-soft);margin-top:2px}
+.row:hover .mark{color:var(--no);border-color:rgba(180,68,58,.4)}
+.row.no{background:var(--no-bg);border-color:rgba(180,68,58,.35)}
+.row.no .txt{color:var(--no);text-decoration:line-through;text-decoration-thickness:1.5px;opacity:.8}
+.row.no .mark{background:var(--no);border-color:var(--no);color:#fff}
+.row .star{flex:0 0 auto;width:34px;height:34px;border-radius:99px;border:none;background:transparent;cursor:pointer;font-size:17px;line-height:1;color:rgba(22,40,58,.2);display:flex;align-items:center;justify-content:center;transition:color .15s,transform .12s}
+.row .star:hover{color:var(--gold);transform:scale(1.15)}
+.row.star-on .star{color:var(--gold-bright)}
+.row.star-on{border-color:rgba(255,182,0,.6);background:rgba(255,182,0,.06)}
+.row.no .star{visibility:hidden}
+.row.fixed{background:var(--cream-soft);border-style:dashed}
+.row.fixed .txt{cursor:default;color:var(--ink-soft)}
+.row.fixed .mark{visibility:hidden}
+
+.why{display:none;gap:6px;flex-wrap:wrap;padding:0 0 10px 48px;margin:-4px 0 6px}
+.row.no + .why{display:flex}
+.why button{font:inherit;font-size:12.5px;padding:5px 11px;border-radius:99px;border:1px solid var(--line);background:#fff;color:var(--ink-soft);cursor:pointer}
+.why button:hover{border-color:var(--no);color:var(--no)}
+.why button.on{background:var(--no);border-color:var(--no);color:#fff}
+
+.dupe{display:flex;gap:8px;align-items:baseline;font-size:13.5px;color:var(--ink-soft);background:var(--cream-soft);border:1px dashed var(--line);border-radius:12px;padding:10px 13px;margin:14px 0}
+.dupe b{color:var(--navy-deep);font-weight:600}
+.note{display:none;width:100%;font:inherit;font-size:14.5px;padding:9px 11px;border:1px solid var(--line);border-radius:10px;margin:6px 0 4px;background:var(--cream-soft);color:var(--ink);resize:vertical}
+.note.on{display:block}
+.note:focus{outline:2px solid var(--gold);outline-offset:1px;background:#fff}
+.note-tog{font:inherit;font-size:13px;color:var(--ink-soft);background:none;border:none;padding:4px 0;cursor:pointer;text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--line)}
+.note-tog:hover{color:var(--navy)}
+
+.sec-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:4px 0 12px}
+.next{font:inherit;font-size:14px;font-weight:600;padding:10px 18px;border-radius:99px;border:1px solid var(--navy);background:transparent;color:var(--navy);cursor:pointer}
+.next:hover{background:var(--navy);color:var(--cream)}
+section.sec.reviewed .next{border-color:var(--line);color:var(--ink-soft);background:transparent}
+section.sec.reviewed .next:hover{background:var(--cream-soft);color:var(--ink)}
+
+/* ---------- finish ---------- */
+.finish{background:var(--navy);color:var(--cream);border-radius:18px;padding:26px 22px;margin:34px 0 0}
+.finish h2{font-family:var(--serif);color:var(--cream);font-size:1.5rem;font-weight:600;margin:0 0 8px}
+.finish p{color:rgba(250,246,236,.78);font-size:15px;margin:0 0 16px}
+.finish textarea{width:100%;min-height:110px;font:inherit;font-size:14.5px;padding:11px;border-radius:11px;border:1px solid rgba(250,246,236,.28);background:rgba(250,246,236,.07);color:var(--cream);resize:vertical}
+.finish textarea::placeholder{color:rgba(250,246,236,.45)}
+.finish textarea:focus{outline:2px solid var(--gold)}
+.acts{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.acts button,.acts a{font:inherit;font-size:14.5px;font-weight:600;padding:12px 20px;border-radius:99px;cursor:pointer;border:1px solid rgba(250,246,236,.4);background:transparent;color:var(--cream);text-decoration:none;display:inline-block}
+.acts .primary{background:var(--gold);border-color:var(--gold);color:var(--navy-deep)}
+.acts .primary:hover{background:var(--gold-bright)}
+.acts button:hover{background:rgba(250,246,236,.1)}
+.acts .primary:hover{background:var(--gold-bright)}
+
+/* ---------- modal ---------- */
+.ov{position:fixed;inset:0;background:rgba(15,30,43,.6);z-index:90;display:none;align-items:center;justify-content:center;padding:18px}
+.ov.on{display:flex}
+.modal{background:var(--cream);border-radius:16px;max-width:640px;width:100%;max-height:86vh;display:flex;flex-direction:column;overflow:hidden}
+.modal-h{padding:18px 20px 12px;border-bottom:1px solid var(--line)}
+.modal-h h2{font-family:var(--serif);margin:0 0 4px;font-size:1.3rem;color:var(--navy-deep)}
+.modal-h p{margin:0;font-size:13.5px;color:var(--ink-soft)}
+.modal textarea{flex:1;margin:0;border:none;border-radius:0;background:#fff;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12.5px;line-height:1.55;padding:16px 20px;color:var(--ink);resize:none;min-height:220px}
+.modal textarea:focus{outline:none}
+.modal-f{padding:14px 20px;border-top:1px solid var(--line);display:flex;gap:9px;flex-wrap:wrap}
+.modal-f button,.modal-f a{font:inherit;font-size:14px;font-weight:600;padding:11px 17px;border-radius:99px;border:1px solid var(--navy);background:transparent;color:var(--navy);cursor:pointer;text-decoration:none}
+.modal-f .primary{background:var(--navy);color:var(--cream)}
+.modal-f .ghost{border-color:var(--line);color:var(--ink-soft)}
+.modal-f button:hover{background:var(--cream-soft)}
+.modal-f .primary:hover{background:var(--navy-deep);color:var(--cream)}
+
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);background:var(--navy-deep);color:var(--cream);font-size:14px;font-weight:600;padding:11px 20px;border-radius:99px;z-index:120;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+footer.f{text-align:center;color:var(--ink-soft);font-size:12.5px;padding:30px 0 0}
+@media (max-width:520px){
+  .row .txt{font-size:16px}
+  .why{padding-left:0}
+}
+</style>
+
+<div class="wrap">
+
+  <div class="hero">
+    <p class="eyebrow">Harmony Horizon · Phrase Check</p>
+    <h1>Which of these would you<br>actually say?</h1>
+    <p class="lede">I'm building a phrasebook for Japanese learners moving to North America — café, fast food and restaurant small talk. I want to cut anything that sounds off, dated, or textbook-y to a native ear. <b>Tapping only. About 5 minutes.</b></p>
+
+    <div class="rules">
+      <ol>
+        <li><b>Everything starts as “keep.”</b> <span class="sub">Only tap the ones you'd <i>never</i> say. They turn red and cross out.</span></li>
+        <li><b>Tap ☆ for the one you'd actually say</b> <span class="sub">— one per group, optional. That's all the ranking I need.</span></li>
+        <li><b>No typing required.</b> <span class="sub">If you cross one out, three quick reason chips appear. Skip them if you want.</span></li>
+        <li><b>Hit “Looks good ›” to move on.</b> <span class="sub">It just tells me you actually saw that group.</span></li>
+      </ol>
+    </div>
+
+    <div class="who">
+      <input id="who-name" type="text" placeholder="Your name (optional)" autocomplete="name">
+      <input id="who-where" type="text" placeholder="Where you're from — e.g. Seattle, WA / Toronto, ON">
+    </div>
+    <p class="tiny">Nothing is sent anywhere automatically. Your answers save in this browser, and at the end you get one button that copies a summary to send back to me.</p>
+  </div>
+
+  <div class="bar">
+    <div class="bar-in">
+      <div class="prog">
+        <div class="prog-txt"><span>Reviewed <b id="p-done">0</b> / <b id="p-total">0</b></span><span id="p-side"></span></div>
+        <div class="track"><div class="fill" id="p-fill"></div></div>
+      </div>
+      <button class="done-btn" id="jump">Finish ›</button>
+    </div>
+  </div>
+
+  <main id="app"></main>
+
+  <div class="finish" id="finish">
+    <h2>That's everything — thank you.</h2>
+    <p>Anything else that struck you? Totally optional.</p>
+    <textarea id="free" placeholder="e.g. “Nobody says #2 anymore.” / “In the Midwest we'd say ___ instead.”"></textarea>
+    <div class="acts">
+      <button class="primary" id="show-results">Copy my answers ›</button>
+      <button id="reset">Start over</button>
+    </div>
+  </div>
+
+  <footer class="f">Harmony Horizon · internal review page</footer>
+</div>
+
+<div class="ov" id="ov">
+  <div class="modal">
+    <div class="modal-h">
+      <h2>Your answers</h2>
+      <p>Copy this and send it back — email, text, whatever's easiest.</p>
+    </div>
+    <textarea id="out" readonly spellcheck="false"></textarea>
+    <div class="modal-f">
+      <button class="primary" id="copy">Copy to clipboard</button>
+      <a id="mail" href="#">Email it</a>
+      <button id="dl">Download .txt</button>
+      <button class="ghost" id="close">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+"use strict";
+
+/* =========================================================================
+   DATA — every phrase, in the order it appears in the source document.
+   Duplicates are removed automatically at render time (see buildIndex), so a
+   phrase is only ever judged once no matter how many sections it appears in.
+   ========================================================================= */
+var PARTS = [
+{ title:"Café", jp:"カフェ", emoji:"☕", sections:[
+  { n:"1", en:"Walking in", jp:"入店・あいさつ", groups:[
+    { role:"staff", items:["Hi, how are you?","Hi, how's it going?","Hey! How are you guys doing?"] },
+    { role:"you",   items:["Good, how are you?","Good, thanks.","Pretty good."] }
+  ]},
+  { n:"2", en:"Taking the order", jp:"注文を聞かれる", groups:[
+    { role:"staff", items:["What can I get for you?","What would you like?"] },
+    { role:"you",   items:["Can I get a medium latte?","I'll have a medium latte.","Could I get a medium latte?","I'd like a medium latte."] }
+  ]},
+  { n:"3", en:"Size", jp:"サイズ", groups:[
+    { role:"staff", items:["What size?"] },
+    { role:"you",   items:["Medium, please."] }
+  ]},
+  { n:"4", en:"For here or to go", jp:"店内か持ち帰りか", groups:[
+    { role:"staff", items:["For here or to go?","For here?"] },
+    { role:"you",   items:["For here, please.","To go, please."] }
+  ]},
+  { n:"5", en:"Anything else", jp:"他に注文するか", groups:[
+    { role:"staff", items:["Anything else?","Can I get you anything else?","Is that everything?","Need anything else?"] },
+    { role:"you",   items:["No, that's it. Thanks.","That's all, thanks.","We're all set.","No, we're good."] }
+  ]},
+  { n:"6", en:"Paying", jp:"支払い", groups:[
+    { role:"staff", items:["Cash or card?","Debit or credit?","How would you like to pay?","You can tap right here."] },
+    { role:"you",   items:["By card.","I'll pay by card.","Cash.","Can I tap?","Do you take Apple Pay?"] }
+  ]},
+  { n:"7", en:"Receipt", jp:"レシート", groups:[
+    { role:"staff", items:["Would you like your receipt?"] },
+    { role:"you",   items:["Yes, please.","No, thank you."] }
+  ]},
+  { n:"8", en:"Name & pickup", jp:"名前・注文の受け取り", groups:[
+    { role:"staff", items:["What's the name?","Can I get a name for the order?"] },
+    { role:"you",   items:["Harumi."], fixed:true, note:"(just a name — nothing to judge)" },
+    { role:"staff", label:"Staff, handing it over", items:["Here you go."] },
+    { role:"you",   items:["Thank you."] }
+  ]},
+  { n:"9", en:"Leaving", jp:"退店", groups:[
+    { role:"staff", items:["Have a great day.","Have a great night.","Take care."] },
+    { role:"you",   items:["Thanks, you too.","Thank you.","Take care."] }
+  ]}
+]},
+
+{ title:"Fast food", jp:"ファストフード", emoji:"🍔", sections:[
+  { n:"10", en:"Ordering", jp:"注文", groups:[
+    { role:"staff", items:["What can I get for you?","What would you like?"] },
+    { role:"you",   items:["Can I get the number three?","I'll have the combo."] }
+  ]},
+  { n:"11", en:"Size", jp:"サイズ", groups:[
+    { role:"staff", items:["What size?"] },
+    { role:"you",   items:["Medium, please."] }
+  ]},
+  { n:"12", en:"For here or to go", jp:"店内か持ち帰りか", groups:[
+    { role:"staff", items:["For here or to go?"] },
+    { role:"you",   items:["For here, please.","To go, please."] }
+  ]},
+  { n:"13", en:"Anything else", jp:"他に注文するか", groups:[
+    { role:"staff", items:["Anything else?","Is that everything?"] },
+    { role:"you",   items:["No, that's it. Thanks.","That's all, thanks."] }
+  ]},
+  { n:"14", en:"Paying", jp:"支払い", groups:[
+    { role:"staff", items:["Cash or card?","Debit or credit?","You can tap right here."] },
+    { role:"you",   items:["By card.","Cash.","Can I tap?"] }
+  ]}
+]},
+
+{ title:"Restaurant", jp:"レストラン", emoji:"🍽️", sections:[
+  { n:"15", en:"Getting a table", jp:"入店・人数", groups:[
+    { role:"staff", items:["How many?","Do you have a reservation?"] },
+    { role:"you",   items:["Two, please.","Yes, we do.","Do you have a table for two?"] }
+  ]},
+  { n:"16", en:"The wait", jp:"待ち時間", groups:[
+    { role:"staff", items:["There's about a 20-minute wait."] },
+    { role:"you",   items:["That's okay.","How long is the wait?"] }
+  ]},
+  { n:"17", en:"Drinks", jp:"飲み物", groups:[
+    { role:"staff", items:["Can I get you something to drink?","What can I get you to drink?","Would you like something to drink?"] },
+    { role:"you",   items:["Can I get a Coke?","I'll have a Coke.","Just water for me.","I'm good, thanks."] }
+  ]},
+  { n:"18", en:"Ordering food", jp:"注文", groups:[
+    { role:"staff", items:["Ready to order?","Can I get your order?"] },
+    { role:"you",   items:["Can I get the burger?","I'll have the burger.","I'll go with the burger.","I'd like the burger."] }
+  ]},
+  { n:"19", en:"Asking about the menu", jp:"おすすめを聞く", groups:[
+    { role:"you", items:["What do you recommend?","What's your most popular dish?","What's in this?","Does this come with fries?"] }
+  ]},
+  { n:"20", en:"Checking in mid-meal", jp:"食事中の確認", groups:[
+    { role:"staff", items:["How's everything?","How's everything tasting?","Everything okay?","You guys doing okay?"] },
+    { role:"you",   items:["Everything's good, thanks.","It's really good.","We're good, thanks."] }
+  ]},
+  { n:"21", en:"Clearing plates", jp:"お皿を下げる", groups:[
+    { role:"staff", items:["Can I clear these?","Are you still working on that?","Are you finished with that?"] },
+    { role:"you",   items:["Yes, we're finished.","I'm still working on it.","You can leave it."] }
+  ]},
+  { n:"22", en:"Dessert", jp:"デザート", groups:[
+    { role:"staff", items:["Would you like to see the dessert menu?","Would you like dessert?"] },
+    { role:"you",   items:["No, thanks.","Yes, let's take a look.","We're too full."] }
+  ]},
+  { n:"23", en:"The check", jp:"お会計", groups:[
+    { role:"you", items:["Can we get the check?","Could we get the check?","Can we get the bill?"] }
+  ]},
+  { n:"24", en:"Leaving", jp:"退店", groups:[
+    { role:"staff", items:["Have a great day.","Have a great night.","Take care."] },
+    { role:"you",   items:["Thanks, you too.","Thank you.","Take care."] }
+  ]}
+]},
+
+{ title:"When you didn't catch it", jp:"聞き取れなかったとき", emoji:"🗣️", sections:[
+  { n:"25", en:"Asking them to repeat", jp:"聞き返す", groups:[
+    { role:"you", items:["Sorry, I didn't catch that.","Sorry, could you say that again?","Could you repeat that?"] }
+  ]}
+]}
+];
+
+var REASONS = ["Too formal","Sounds unnatural","Rarely used here"];
+
+/* ---------- state ---------- */
+var KEY = "hh-phrase-review-v2";
+var S = { no:{}, why:{}, star:{}, seen:{}, notes:{}, name:"", where:"", free:"" };
+try{ var raw = localStorage.getItem(KEY); if(raw){ var p = JSON.parse(raw); for(var k in p) if(p[k]!=null) S[k]=p[k]; } }catch(e){}
+var saveT = null;
+function save(){ clearTimeout(saveT); saveT = setTimeout(function(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }, 220); }
+
+/* ---------- dedupe index ---------- */
+// A phrase is identified by role + text, so "Take care." said by staff and by
+// you are two separate entries, but "What size?" in §3 and §11 is one.
+function pid(role, text){ return role + "␟" + text.toLowerCase(); }
+
+var firstAt = {};   // pid -> {n, en}
+var alsoIn  = {};   // pid -> [section numbers]
+PARTS.forEach(function(part){
+  part.sections.forEach(function(sec){
+    sec.groups.forEach(function(g){
+      g.items.forEach(function(t){
+        var id = pid(g.role, t);
+        if(!firstAt[id]){ firstAt[id] = sec; alsoIn[id] = []; }
+        else if(alsoIn[id].indexOf(sec.n) < 0) alsoIn[id].push(sec.n);
+      });
+    });
+  });
+});
+
+/* ---------- render ---------- */
+var app = document.getElementById("app");
+var sectionIds = [];
+var html = [];
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+
+PARTS.forEach(function(part, pi){
+  html.push('<div class="part"><h2>' + part.emoji + " " + esc(part.title) + '</h2><span class="jp">' + esc(part.jp) + "</span></div>");
+
+  part.sections.forEach(function(sec){
+    // Which groups still have anything new to judge?
+    var live = [];
+    var reusedFrom = {};
+    sec.groups.forEach(function(g, gi){
+      var fresh = g.items.filter(function(t){
+        var id = pid(g.role, t);
+        if(firstAt[id] === sec) return true;
+        reusedFrom[firstAt[id].n] = 1;
+        return false;
+      });
+      if(fresh.length) live.push({ g:g, gi:gi, items:fresh });
+    });
+
+    if(!live.length){
+      var from = Object.keys(reusedFrom).sort(function(a,b){ return a-b; }).map(function(x){ return "§" + x; }).join(", ");
+      html.push('<div class="dupe"><b>' + esc(sec.n) + ". " + esc(sec.en) + "</b><span>Same phrases as " + from + " — already covered, nothing to do here.</span></div>");
+      return;
+    }
+
+    var sid = "sec" + sec.n;
+    sectionIds.push(sid);
+    var open = ['<section class="sec" id="' + sid + '" data-sec="' + sec.n + '">',
+      '<div class="sec-head"><span class="sec-num">' + esc(sec.n) + '</span><h3>' + esc(sec.en) + '</h3>',
+      '<span class="jp">' + esc(sec.jp) + '</span><span class="tick">✓ reviewed</span></div>'];
+    html.push(open.join(""));
+
+    live.forEach(function(L){
+      var g = L.g, isYou = g.role === "you";
+      var lab = g.label ? g.label : (isYou ? "You say" : "Staff says");
+      // The ☆ hint is spelled out in the first section only; after that it's obvious.
+      var hint = (sec.n === "1" && !g.fixed && L.items.length > 1)
+        ? '<span class="grp-hint">— tap ☆ for the one you’d actually say</span>' : "";
+      html.push('<div class="grp"><div class="grp-lab ' + (isYou ? "you" : "staff") + '"><span class="dot"></span>' + esc(lab) + (g.note ? ' <span class="grp-hint">' + esc(g.note) + "</span>" : "") + hint + "</div>");
+
+      var gkey = sec.n + ":" + L.gi;
+      L.items.forEach(function(t){
+        var id = pid(g.role, t);
+        if(g.fixed){
+          html.push('<div class="row fixed"><span class="mark"></span><span class="txt">' + esc(t) + "</span></div>");
+          return;
+        }
+        var no = !!S.no[id], star = S.star[gkey] === id;
+        html.push(
+          '<div class="row' + (no ? " no" : "") + (star ? " star-on" : "") + '" data-id="' + esc(id) + '" data-g="' + esc(gkey) + '">' +
+            '<span class="mark" data-act="no">✕</span>' +
+            '<span class="txt" data-act="no">' + esc(t) + "</span>" +
+            '<button class="star" data-act="star" type="button" aria-label="I’d actually say this">' + (star ? "★" : "☆") + "</button>" +
+          "</div>",
+          '<div class="why" data-for="' + esc(id) + '">' +
+            REASONS.map(function(r){
+              var on = (S.why[id] || []).indexOf(r) >= 0;
+              return '<button type="button" data-act="why" data-r="' + esc(r) + '"' + (on ? ' class="on"' : "") + ">" + esc(r) + "</button>";
+            }).join("") +
+          "</div>"
+        );
+      });
+      html.push("</div>");
+    });
+
+    var hasNote = !!(S.notes[sec.n] || "").trim();
+    html.push('<textarea class="note' + (hasNote ? " on" : "") + '" data-note="' + esc(sec.n) + '" rows="2" placeholder="What would you say instead? (optional)">' + esc(S.notes[sec.n] || "") + "</textarea>");
+    html.push('<div class="sec-foot">' +
+      '<button class="note-tog" type="button" data-act="note">' + (hasNote ? "Hide note" : "+ Add a note") + "</button>" +
+      '<button class="next" type="button" data-act="next">Looks good ›</button></div>');
+    html.push("</section>");
+  });
+});
+app.innerHTML = html.join("");
+
+// restore "reviewed" flags
+sectionIds.forEach(function(sid){
+  var n = sid.slice(3);
+  if(S.seen[n]) document.getElementById(sid).classList.add("reviewed");
+});
+
+/* ---------- progress ---------- */
+var fill = document.getElementById("p-fill"), pDone = document.getElementById("p-done"),
+    pTotal = document.getElementById("p-total"), pSide = document.getElementById("p-side");
+pTotal.textContent = sectionIds.length;
+
+function refresh(){
+  var done = 0;
+  sectionIds.forEach(function(sid){ if(S.seen[sid.slice(3)]) done++; });
+  pDone.textContent = done;
+  fill.style.width = (sectionIds.length ? (done / sectionIds.length * 100) : 0) + "%";
+  var nos = Object.keys(S.no).filter(function(k){ return S.no[k]; }).length;
+  var stars = Object.keys(S.star).filter(function(k){ return S.star[k]; }).length;
+  pSide.innerHTML = "✕ <b>" + nos + "</b> · ★ <b>" + stars + "</b>";
+}
+
+function markSeen(sec){
+  if(!sec || S.seen[sec.dataset.sec]) return;
+  S.seen[sec.dataset.sec] = 1;
+  sec.classList.add("reviewed");
+  save(); refresh();
+}
+
+/* ---------- interaction ---------- */
+app.addEventListener("click", function(e){
+  var t = e.target.closest("[data-act]");
+  if(!t) return;
+  var act = t.dataset.act;
+  var sec = t.closest("section.sec");
+
+  if(act === "note"){
+    var ta = sec.querySelector(".note");
+    var opening = !ta.classList.contains("on");
+    ta.classList.toggle("on", opening);
+    t.textContent = opening ? "Hide note" : "+ Add a note";
+    if(opening) ta.focus();
+    return;
+  }
+
+  if(act === "next"){
+    markSeen(sec);
+    var i = sectionIds.indexOf(sec.id);
+    var nxt = sectionIds[i + 1];
+    if(nxt) document.getElementById(nxt).scrollIntoView({ block:"start" });
+    else document.getElementById("finish").scrollIntoView({ block:"start" });
+    return;
+  }
+
+  if(act === "why"){
+    var wid = t.parentNode.dataset.for;
+    var list = S.why[wid] || [];
+    var k = list.indexOf(t.dataset.r);
+    if(k >= 0) list.splice(k, 1); else list.push(t.dataset.r);
+    S.why[wid] = list;
+    t.classList.toggle("on", k < 0);
+    save();
+    return;
+  }
+
+  var row = t.closest(".row");
+  if(!row) return;
+
+  if(act === "no"){
+    var id = row.dataset.id;
+    S.no[id] = !S.no[id];
+    row.classList.toggle("no", !!S.no[id]);
+    if(S.no[id] && S.star[row.dataset.g] === id){   // a rejected phrase can't be the pick
+      S.star[row.dataset.g] = null;
+      row.classList.remove("star-on");
+      row.querySelector(".star").textContent = "☆";
+    }
+    markSeen(sec); save(); refresh();
+    return;
+  }
+
+  if(act === "star"){
+    var gk = row.dataset.g, myId = row.dataset.id;
+    var was = S.star[gk] === myId;
+    S.star[gk] = was ? null : myId;
+    Array.prototype.forEach.call(app.querySelectorAll('.row[data-g="' + gk + '"]'), function(r){
+      var on = !was && r.dataset.id === myId;
+      r.classList.toggle("star-on", on);
+      r.querySelector(".star").textContent = on ? "★" : "☆";
+    });
+    markSeen(sec); save(); refresh();
+  }
+});
+
+app.addEventListener("input", function(e){
+  if(e.target.dataset && e.target.dataset.note != null){
+    S.notes[e.target.dataset.note] = e.target.value;
+    markSeen(e.target.closest("section.sec"));
+    save();
+  }
+});
+
+var nameEl = document.getElementById("who-name"), whereEl = document.getElementById("who-where"), freeEl = document.getElementById("free");
+nameEl.value = S.name || ""; whereEl.value = S.where || ""; freeEl.value = S.free || "";
+nameEl.addEventListener("input", function(){ S.name = nameEl.value; save(); });
+whereEl.addEventListener("input", function(){ S.where = whereEl.value; save(); });
+freeEl.addEventListener("input", function(){ S.free = freeEl.value; save(); });
+
+document.getElementById("jump").addEventListener("click", function(){
+  document.getElementById("finish").scrollIntoView({ block:"start" });
+});
+
+/* ---------- results ---------- */
+function label(role){ return role === "you" ? "you" : "staff"; }
+
+function build(){
+  var L = [];
+  var who = (S.name || "anonymous") + (S.where ? " — " + S.where : "");
+  var done = 0; sectionIds.forEach(function(sid){ if(S.seen[sid.slice(3)]) done++; });
+
+  L.push("PHRASE CHECK — " + who);
+  L.push("Sections reviewed: " + done + " / " + sectionIds.length);
+  L.push("");
+
+  var nos = [], stars = [], notes = [];
+  PARTS.forEach(function(part){
+    part.sections.forEach(function(sec){
+      sec.groups.forEach(function(g, gi){
+        if(g.fixed) return;
+        var gkey = sec.n + ":" + gi;
+        g.items.forEach(function(t){
+          var id = pid(g.role, t);
+          if(firstAt[id] !== sec) return;
+          if(S.no[id]){
+            var why = (S.why[id] || []).join(", ");
+            nos.push("  §" + sec.n + " " + sec.en + " [" + label(g.role) + "]  “" + t + "”" + (why ? "   — " + why : ""));
+          }
+          if(S.star[gkey] === id){
+            stars.push("  §" + sec.n + " " + sec.en + " [" + label(g.role) + "]  “" + t + "”");
+          }
+        });
+      });
+      if(S.notes[sec.n] && S.notes[sec.n].trim()){
+        notes.push("  §" + sec.n + " " + sec.en + ": " + S.notes[sec.n].trim());
+      }
+    });
+  });
+
+  L.push("WOULD NOT SAY (" + nos.length + ")");
+  L.push(nos.length ? nos.join("\n") : "  — none, all of it sounded fine");
+  L.push("");
+  L.push("WOULD ACTUALLY SAY — top pick per group (" + stars.length + ")");
+  L.push(stars.length ? stars.join("\n") : "  — none marked");
+  if(notes.length){ L.push(""); L.push("NOTES BY SECTION"); L.push(notes.join("\n")); }
+  if(S.free && S.free.trim()){ L.push(""); L.push("GENERAL COMMENTS"); L.push("  " + S.free.trim()); }
+
+  L.push("");
+  L.push("--- machine-readable (please keep) ---");
+  L.push(JSON.stringify({ name:S.name, where:S.where, no:S.no, why:S.why, star:S.star, notes:S.notes, free:S.free, reviewed:done, total:sectionIds.length }));
+  return L.join("\n");
+}
+
+var ov = document.getElementById("ov"), out = document.getElementById("out"), toast = document.getElementById("toast");
+function say(m){ toast.textContent = m; toast.classList.add("on"); setTimeout(function(){ toast.classList.remove("on"); }, 1900); }
+
+document.getElementById("show-results").addEventListener("click", function(){
+  var txt = build();
+  out.value = txt;
+  document.getElementById("mail").href = "mailto:harumihoshizaki@hotmail.com"
+    + "?subject=" + encodeURIComponent("Phrase check — " + (S.name || "results"))
+    + "&body=" + encodeURIComponent(txt);
+  ov.classList.add("on");
+  out.focus(); out.setSelectionRange(0, 0);
+});
+document.getElementById("close").addEventListener("click", function(){ ov.classList.remove("on"); });
+ov.addEventListener("click", function(e){ if(e.target === ov) ov.classList.remove("on"); });
+document.addEventListener("keydown", function(e){ if(e.key === "Escape") ov.classList.remove("on"); });
+
+document.getElementById("copy").addEventListener("click", function(){
+  var txt = out.value;
+  function fallback(){ out.select(); try{ document.execCommand("copy"); say("Copied ✓"); }catch(e){ say("Select the text and copy manually"); } }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(function(){ say("Copied ✓"); }, fallback);
+  } else fallback();
+});
+
+document.getElementById("dl").addEventListener("click", function(){
+  var blob = new Blob([out.value], { type:"text/plain;charset=utf-8" });
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "phrase-check-" + (S.name ? S.name.replace(/[^\w-]+/g, "-").toLowerCase() : "results") + ".txt";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+});
+
+document.getElementById("reset").addEventListener("click", function(){
+  if(!confirm("Clear all your answers and start over?")) return;
+  try{ localStorage.removeItem(KEY); }catch(e){}
+  location.reload();
+});
+
+refresh();
+})();
+</script>
+</body>
+</html>
