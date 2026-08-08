@@ -130,23 +130,7 @@
   .btn-ghost { background: none; color: var(--ink); border: 2px solid var(--ink); box-shadow: none; }
   .on-dark .btn-ghost { color: var(--paper); border-color: var(--paper); }
 
-  /* 決済リンクがまだ無い間のCTA。押せる見た目のまま何も起きないボタンは
-     一番不親切なので、押せない見た目にして理由を出す。
-     Stripeリンクができたら、この4箇所を .btn に戻す。 */
-  .btn-soon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-size: 1.05rem;
-    font-weight: 700;
-    padding: 17px 32px;
-    border-radius: 999px;
-    background: none;
-    border: 2px dashed var(--gold);
-    color: var(--gold-text);
-  }
-  .on-dark .btn-soon { border-color: var(--gold-pale); color: var(--gold-pale); }
+  /* 買い切りである旨など、ボタンの下に置く一行。 */
   .soon-note { font-size: 0.98rem; color: var(--muted); margin-top: 14px; }
   .on-dark .soon-note { color: rgba(247, 242, 233, 0.75); }
 
@@ -336,8 +320,7 @@
         <span class="brand-tag">耳から、声へ</span>
       </span>
     </a>
-    <!-- 決済リンクができたら href を差し替え、文言を「¥1,000ではじめる」に -->
-    <a href="#price" class="btn btn-small">まもなく公開</a>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-small">¥1,000ではじめる</a>
   </div>
 </header>
 
@@ -351,7 +334,7 @@
       <div class="hero-chips">
         <span>聞く</span><span>意味を選ぶ</span><span>答えを決める</span><span>声に出す</span>
       </div>
-      <span class="btn-soon">まもなく公開します</span>
+      <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn">¥1,000ではじめる →</a>
       <div class="soon-note">買い切り ・ 追加料金なし ・ スマホだけで練習できます</div>
     </div>
 
@@ -493,8 +476,7 @@
         <div><span class="ck">✓</span>マイクに向かって言って、文字で確かめる</div>
         <div><span class="ck">✓</span>間違えた問題に★が付く復習機能</div>
       </div>
-      <span class="btn-soon" style="width:100%;">まもなく公開します</span>
-      <div class="soon-note">公開までもう少しお待ちください。</div>
+      <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn" style="width:100%;">Real-Life Dining English をはじめる</a>
     </div>
   </div>
 </section>
@@ -556,7 +538,7 @@
     <span class="eyebrow">Before You Order</span>
     <h2><span class="nb">「もう一回言ってください」を、</span><br class="sp"><span class="nb">言えるようにしておく。</span></h2>
     <p class="lede" style="max-width:32em;margin-left:auto;margin-right:auto;">聞き取れない日があってもいいんです。そのときに困らない言い方まで、一緒に練習します。</p>
-    <span class="btn-soon">まもなく公開します</span>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn">¥1,000ではじめる →</a>
   </div>
 </section>
 
