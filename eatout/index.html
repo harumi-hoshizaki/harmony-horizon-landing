@@ -215,6 +215,12 @@
     border-radius: 14px; padding: 26px 24px;
   }
   .card p { margin: 0; color: var(--muted); font-size: 1rem; }
+  /* 黒い帯の上のカード。紙の上のカードと同じ形で、色だけ反転させる。
+     以前は How It Works に inline style で直接書いていたが、2箇所目が
+     できたのでクラスに切り出す(同じものを2通りで書かない)。 */
+  .card-dark { background: rgba(247, 242, 233, 0.06); border-color: var(--line-dark); }
+  .card-dark h3 { color: var(--paper); }
+  .card-dark p { color: rgba(247, 242, 233, 0.82); }
   .card-num {
     display: inline-grid; place-items: center;
     width: 34px; height: 34px; border-radius: 50%;
@@ -351,7 +357,7 @@
   <div class="container" style="max-width:760px;">
     <span class="eyebrow">Problem</span>
     <h2><span class="nb">教科書どおりに</span><br class="sp"><span class="nb">言ってくれません。</span></h2>
-    <p class="lede" style="max-width:none;">"What can I get for you?" は、実際には「わっけなぃ」のように一息で飛んできます。"Anything else?" も "For here or to go?" も同じです。文字で読めば分かる英語が、耳では別物になる。</p>
+    <p class="lede" style="max-width:none;">"What can I get for you?" は、実際には「わっけなぃ」のように一息で飛んできます。"Anything else?" も "For here or to go?" も同じです。知っているはずの単語なのに、耳ではまったく別の音に聞こえる。</p>
     <p class="lede" style="max-width:none;margin-bottom:0;">聞き返すのが申し訳なくて、とりあえず頷いてしまう。頼んだつもりのないものが出てくる。<em>英語力の問題ではなく、その音を聞いたことがないだけ</em>です。</p>
   </div>
 </section>
@@ -364,20 +370,20 @@
     <p class="lede" style="max-width:38em;">聞く前に選択肢が見えていると、読んで当ててしまいます。それでは耳が育ちません。このアプリは、<em>一度でも音を再生するまで選択肢を伏せます</em>。</p>
 
     <div class="grid-3" style="margin-top:38px;">
-      <div class="card" style="background:rgba(247,242,233,0.06);border-color:var(--line-dark);">
+      <div class="card card-dark">
         <span class="card-num">1</span>
-        <h3 style="color:var(--paper);">聞く</h3>
-        <p style="color:rgba(247,242,233,0.82);">同じ場面でも言い方はいろいろです。「注文を聞かれる」だけで4通り。どれが来ても分かるように耳を慣らします。</p>
+        <h3>聞く</h3>
+        <p>同じ場面でも言い方はいろいろです。「注文を聞かれる」だけで4通り。どれが来ても分かるように耳を慣らします。</p>
       </div>
-      <div class="card" style="background:rgba(247,242,233,0.06);border-color:var(--line-dark);">
+      <div class="card card-dark">
         <span class="card-num">2</span>
-        <h3 style="color:var(--paper);">意味を選ぶ</h3>
-        <p style="color:rgba(247,242,233,0.82);">日本語の3択で答えます。間違えた問題には★が付いて、あとから優先して復習できます。</p>
+        <h3>意味を選ぶ</h3>
+        <p>日本語の3択で答えます。間違えた問題には★が付いて、あとから優先して復習できます。</p>
       </div>
-      <div class="card" style="background:rgba(247,242,233,0.06);border-color:var(--line-dark);">
+      <div class="card card-dark">
         <span class="card-num">3</span>
-        <h3 style="color:var(--paper);">声に出す</h3>
-        <p style="color:rgba(247,242,233,0.82);">自分の答え方を選んで、お手本を聞いて、マイクに向かって言ってみます。聞こえたとおりの文字が返ってきます。</p>
+        <h3>声に出す</h3>
+        <p>自分の答え方を選んで、お手本を聞いて、マイクに向かって言ってみます。聞こえたとおりの文字が返ってきます。</p>
       </div>
     </div>
   </div>
@@ -405,20 +411,22 @@
 </section>
 
 <!-- FEATURES -->
-<section style="background:var(--paper-soft);">
+<!-- Harumi 2026-08-08: ここは黒い帯に。3枚のカードが主役の節なので、
+     地色を落とすとカードが浮いて、機能が一目で数えられる。 -->
+<section class="on-dark">
   <div class="container">
     <span class="eyebrow">What You Get</span>
     <h2><span class="nb">声も、速さも、</span><span class="nb">選べる。</span></h2>
     <div class="grid-3" style="margin-top:34px;">
-      <div class="card">
+      <div class="card card-dark">
         <h3>男性の声・女性の声</h3>
         <p>同じ文でも話す人が変われば聞こえ方が変わります。両方の声で確かめられます。</p>
       </div>
-      <div class="card">
+      <div class="card card-dark">
         <h3>ふつう・ゆっくり</h3>
         <p>まず自然な速さで。聞き取れなければゆっくりに落として、音のつながりを1つずつ確かめます。</p>
       </div>
-      <div class="card">
+      <div class="card card-dark">
         <h3>聞き取りのコツ</h3>
         <p>なぜそう聞こえるのかを、フレーズごとに説明します。単語の中の音と、単語と単語の境目の音を分けて。</p>
       </div>
@@ -483,7 +491,7 @@
     </details>
     <details class="faq-item">
       <summary>発音は判定してもらえますか？<span class="sign">+</span></summary>
-      <div class="a">マイクに向かって言うと、聞こえたとおりの英語が文字で返ってきます。お手本と違うところが見えるので、どこを直せばいいかが分かります。ただし発音を採点するものではありません。</div>
+      <div class="a">マイクに向かって言うと、聞こえたとおりの英語が文字で返ってきます。お手本と違うところが見えるので、RがLになっているかなど、どこを直せばいいかが分かります。ただし発音を採点するものではありません。</div>
     </details>
     <details class="faq-item">
       <summary>レストランでも使えますか？<span class="sign">+</span></summary>
