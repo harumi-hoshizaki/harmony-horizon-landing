@@ -3,29 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>入国審査 — Ear to Voice | Harmony Horizon</title>
-<meta name="description" content="海外旅行の入国審査、耳で聞き取り声に出して備える Ear to Voice。頻出質問パターンをネイティブ音声で練習し、本番同様のシミュレーションで自信をつけます。">
+<title>外食の英会話 — Ear to Voice | Harmony Horizon</title>
+<meta name="description" content="北米のカフェ・ファーストフードでの注文、耳で聞き取り声に出して備える Ear to Voice。頻出フレーズをネイティブ音声で練習し、本番同様のシミュレーションで自信をつけます。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=EB+Garamond:wght@600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --navy-deep:  #0D1B27;
-    --navy:       #14273A;
-    --navy-mid:   #1C3246;
-    --cream:      #FAF6EC;
-    --cream-soft: #F2EAD9;
-    --gold:       #C08F3E;
-    --gold-bright:#FFB600;
-    --gold-pale:  #E7C583;
+    /* 2026-08-08: Immigration LPのnavy(入国審査の緊張感)ではなく、
+       Eatoutアプリ本体の配色(エスプレッソ+温かいクリーム)に合わせる。
+       アプリと同じ「その商品らしい色」を各LPで使う方針(フォントの件と同じ)。 */
+    --navy-deep:  #1D1610;
+    --navy:       #2B2018;
+    --navy-mid:   #3A2C1F;
+    --cream:      #FAF3E6;
+    --cream-soft: #F1E4CC;
+    --gold:       #A3782D;
+    --gold-bright:#E2A33D;
+    --gold-pale:  #D9B577;
     --ink:        #241F1A;
-    --ink-soft:   #665F53;
-    --line:       rgba(20, 39, 58, 0.13);
-    --line-light: rgba(250, 246, 236, 0.18);
-    --shadow-soft:0 20px 60px rgba(13, 27, 39, 0.08);
-    --shadow-card:0 30px 70px -24px rgba(13, 27, 39, 0.22);
-    /* 2026-08-08 Harumi指摘: アプリ(Zen Kaku Gothic New / EB Garamond)と
-       違うフォント(Lora / Noto Sans JP)を使っていた。アプリと揃える。
+    --ink-soft:   #6B5F4E;
+    --line:       rgba(43, 32, 24, 0.13);
+    --line-light: rgba(250, 243, 230, 0.18);
+    --shadow-soft:0 20px 60px rgba(29, 22, 16, 0.08);
+    --shadow-card:0 30px 70px -24px rgba(29, 22, 16, 0.22);
+    /* アプリ(Zen Kaku Gothic New / EB Garamond)と揃える。
        ブランドワード「EAR TO VOICE」だけは、アプリのロゴロックアップと
        同じくEB Garamondを個別に指定する(.brand-word参照)。 */
     --font-display: 'Zen Kaku Gothic New', sans-serif;
@@ -76,7 +78,7 @@
 
   p { margin: 0 0 1em; }
   .lede { color: var(--ink-soft); font-size: 1.02rem; line-height: 1.9; }
-  .on-dark .lede { color: rgba(250,246,236,0.78); }
+  .on-dark .lede { color: rgba(250,243,230,0.78); }
 
   /* ---------------- Buttons ---------------- */
   .btn {
@@ -84,8 +86,8 @@
     font-size: 14.5px; letter-spacing: 0.02em; font-weight: 700; cursor: pointer; border: none;
     transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
   }
-  .btn-gold { background: var(--gold-bright); color: var(--navy-deep); box-shadow: 0 14px 34px -12px rgba(255,182,0,0.55); }
-  .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -12px rgba(255,182,0,0.65); }
+  .btn-gold { background: var(--gold-bright); color: var(--navy-deep); box-shadow: 0 14px 34px -12px rgba(226,163,61,0.55); }
+  .btn-gold:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -12px rgba(226,163,61,0.65); }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
@@ -94,7 +96,7 @@
   /* ---------------- Nav ---------------- */
   .site-header {
     position: sticky; top: 0; z-index: 40;
-    background: rgba(250,246,236,0.92); backdrop-filter: blur(10px);
+    background: rgba(250,243,230,0.92); backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--line);
   }
   .site-header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 13px; padding-bottom: 13px; }
@@ -109,7 +111,7 @@
   /* ---------------- Hero ---------------- */
   .hero {
     background:
-      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(192,143,62,0.18), transparent 65%),
+      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.2), transparent 65%),
       linear-gradient(180deg, var(--navy-deep) 0%, var(--navy) 100%);
     color: var(--cream); text-align: center; padding-top: clamp(56px, 9vw, 100px);
   }
@@ -120,10 +122,10 @@
   .hero .lede { max-width: 560px; margin: 0 auto 34px; font-size: 1.05rem; }
   .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 38px; }
   .hero-chips span {
-    background: rgba(250,246,236,0.08); border: 1px solid var(--line-light); border-radius: 999px;
+    background: rgba(250,243,230,0.08); border: 1px solid var(--line-light); border-radius: 999px;
     padding: 10px 20px; font-size: 13.5px; font-weight: 600; color: var(--cream);
   }
-  .hero-note { font-size: 12.5px; color: rgba(250,246,236,0.6); margin-top: 16px; }
+  .hero-note { font-size: 12.5px; color: rgba(250,243,230,0.6); margin-top: 16px; }
   .hero-phone-wrap { display: flex; justify-content: center; margin-top: 56px; }
 
   /* ---------------- Phone mockup ---------------- */
@@ -159,7 +161,7 @@
   .ph-speaker-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
   .ph-speaker {
     width: 74px; height: 74px; border-radius: 50%; background: var(--navy-deep);
-    display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(13,27,39,0.5);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5);
   }
   .ph-toggles { display: flex; gap: 8px; margin-bottom: 18px; }
   .ph-toggle { flex: 1; display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
@@ -176,7 +178,7 @@
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
   .card-list .item {
     display: flex; gap: 14px; align-items: flex-start; background: #FFFFFF; border-radius: 14px;
-    padding: 18px 22px; box-shadow: 0 2px 12px -7px rgba(26,20,16,0.14);
+    padding: 18px 22px; box-shadow: 0 2px 12px -7px rgba(29,22,16,0.14);
   }
   .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 9px; }
   .card-list p { margin: 0; font-size: 15px; line-height: 1.8; }
@@ -265,30 +267,30 @@
   <div class="container">
     <a href="#" class="brand">
       <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Ear to Voice">
-        <circle cx="100" cy="100" r="96" fill="#16233A"/>
-        <circle cx="100" cy="100" r="69" fill="none" stroke="#6C5A3B" stroke-width="8"/>
-        <circle cx="100" cy="100" r="46" fill="none" stroke="#B4883C" stroke-width="12"/>
-        <circle cx="100" cy="100" r="16" fill="#B4883C"/>
+        <circle cx="100" cy="100" r="96" fill="#2B2018"/>
+        <circle cx="100" cy="100" r="69" fill="none" stroke="#6B5636" stroke-width="8"/>
+        <circle cx="100" cy="100" r="46" fill="none" stroke="#A3782D" stroke-width="12"/>
+        <circle cx="100" cy="100" r="16" fill="#A3782D"/>
       </svg>
       <div>
         <div class="brand-word">EAR TO VOICE</div>
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/9B68wPeTkeDS5YY68qeEo05?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold btn-small">¥1,000で始める</a>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold btn-small">¥1,000で始める</a>
   </div>
 </header>
 
 <!-- HERO -->
 <section class="hero on-dark">
   <div class="container reveal rd1">
-    <span class="eyebrow eyebrow-product">Immigration ｜入国審査</span>
-    <h1>何百回でも、<em>聞き直せる</em>。</h1>
-    <p class="lede">入国審査で聞かれることは、だいたい決まっています。<br>耳で聞き取り、声に出して、自分のペースで備えましょう。</p>
+    <span class="eyebrow eyebrow-product">Eatout ｜外食の英会話</span>
+    <h1>何百回でも、<em>注文できる</em>。</h1>
+    <p class="lede">カフェやファーストフードで聞かれることは、だいたい決まっています。<br>耳で聞き取り、声に出して、自分のペースで備えましょう。</p>
     <div class="hero-chips">
-      <span>聞く</span><span>声に出す</span><span>文字を見る</span><span>質問に答える</span>
+      <span>聞く</span><span>声に出す</span><span>文字を見る</span><span>注文する</span>
     </div>
-    <a href="https://buy.stripe.com/9B68wPeTkeDS5YY68qeEo05?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
     <div class="hero-note">買い切り ・ 追加料金なし ・ スキマ時間で練習</div>
   </div>
 
@@ -296,26 +298,26 @@
     <div class="phone">
       <div class="phone-screen">
         <div class="ph-row">
-          <span class="ph-eyebrow">LENGTH OF STAY</span>
-          <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">1 / 4</span>
+          <span class="ph-eyebrow">SIZE / FOR HERE OR TO GO</span>
+          <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">1 / 3</span>
         </div>
         <div class="ph-row">
-          <span class="ph-title">滞在期間</span>
+          <span class="ph-title">サイズ・店内か持ち帰りか</span>
           <span class="ph-back">← 一覧に戻る</span>
         </div>
         <div class="ph-hr"></div>
         <div class="ph-center">
-          <div class="ph-hint">4つの質問パターンを聞こう</div>
+          <div class="ph-hint">3つの質問パターンを聞こう</div>
           <div class="ph-pattern">
-            <span class="on">1</span><span>2</span><span>3</span><span>4</span>
+            <span class="on">1</span><span>2</span><span>3</span>
           </div>
         </div>
         <div class="ph-howto"><span><span class="q">?</span>この画面の使い方</span><span>›</span></div>
         <div class="ph-tap">タップして音声を聞きましょう</div>
         <div class="ph-speaker-wrap">
           <div class="ph-speaker">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF6EC" stroke="none"/>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF3E6" stroke="none"/>
               <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
             </svg>
           </div>
@@ -325,7 +327,7 @@
           <div class="ph-toggle"><span class="on">ふつう 1.0x</span><span>ゆっくり 0.7x</span></div>
         </div>
         <div class="ph-q">この質問は何を聞いていますか?</div>
-        <div class="ph-check"><span class="box"></span>何日間滞在予定ですか?</div>
+        <div class="ph-check"><span class="box"></span>どのサイズになさいますか?</div>
       </div>
     </div>
   </div>
@@ -335,14 +337,14 @@
 <section style="background:var(--cream-soft);">
   <div class="container" style="max-width:740px;">
     <span class="eyebrow">Problem</span>
-    <h2>入国審査、緊張しませんか?</h2>
+    <h2>カフェやお店での注文、緊張しませんか?</h2>
     <p class="lede">英語の勉強はしてきた。でも、</p>
     <div class="card-list">
-      <div class="item"><span class="dot"></span><p>審査官の質問が早口で、何を聞かれているか分からない</p></div>
+      <div class="item"><span class="dot"></span><p>店員さんの質問が早口で、何を聞かれているか分からない</p></div>
       <div class="item"><span class="dot"></span><p>単語は知っているのに、いざとなると声が出ない</p></div>
       <div class="item"><span class="dot"></span><p>練習する機会がないまま、本番を迎えてしまう</p></div>
     </div>
-    <p class="lede">そんな不安を抱えたまま、旅立ちたくないですよね。<br>入国審査で聞かれる質問は、実はある程度決まっています。<br><strong style="color:var(--ink);">「聞き取る力」と「答える練習」</strong>があれば、落ち着いて対応できます。</p>
+    <p class="lede">そんな不安を抱えたまま、旅立ちたくないですよね。<br>カフェやファーストフードで聞かれる質問は、実はある程度決まっています。<br><strong style="color:var(--ink);">「聞き取る力」と「答える練習」</strong>があれば、落ち着いて注文できます。</p>
   </div>
 </section>
 
@@ -353,7 +355,7 @@
     <h2>聞く。話す。<br>本番同様に、確かめる。</h2>
     <p class="lede">1つの質問パターンを、4つのステップで練習します。</p>
     <div class="method-steps">
-      <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、審査官の質問を聞く。声・速度も選べます。</span></div>
+      <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、店員さんの質問を聞く。声・速度も選べます。</span></div>
       <div class="row"><span class="n">02</span><span class="t">SPEAK ・ 声に出す</span><span class="d">聞き取った質問に、自分の声で英語で答えてみる。</span></div>
       <div class="row"><span class="n">03</span><span class="t">READ ・ 文字を見る</span><span class="d">意味を確認しながら、発音Tipsと基本文法をチェック。</span></div>
       <div class="row"><span class="n">04</span><span class="t">ANSWER ・ 質問に答える</span><span class="d">本番同様のシミュレーションで、最初から最後まで通して確認。</span></div>
@@ -370,24 +372,24 @@
     <div class="trio">
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF6EC" stroke="none"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF3E6" stroke="none"/></svg>
         </div>
         <h3>声も速さも、選べる</h3>
         <p>男性・女性の声、ふつう/ゆっくりの速度を切り替えて、自分の耳のペースで聞き取り練習ができます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
         <h3>意味を確認しながら学ぶ</h3>
         <p>質問の意味を選択式で確認しながら、聞き取った内容が合っているかその場でチェックできます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <h3>本番同様のシミュレーション</h3>
-        <p>審査官の質問を聞き取り、声に出して回答。すべての質問を通過すればゴールという、模擬体験形式です。</p>
+        <p>店員さんの声を聞き取り、声に出して回答。すべての質問を通過すればゴールという、模擬体験形式です。</p>
       </div>
     </div>
   </div>
@@ -399,9 +401,9 @@
     <span class="eyebrow">Who Is This For</span>
     <h2>こんな方におすすめです。</h2>
     <div class="who-list">
-      <div class="who-item"><span class="mark">01</span><p>海外旅行を控えていて、入国審査が不安な方</p></div>
+      <div class="who-item"><span class="mark">01</span><p>海外旅行を控えていて、注文が不安な方</p></div>
       <div class="who-item"><span class="mark">02</span><p>英語での会話にまだ自信がない方</p></div>
-      <div class="who-item"><span class="mark">03</span><p>何度も聞き返さず、落ち着いて対応したい方</p></div>
+      <div class="who-item"><span class="mark">03</span><p>何度も聞き返さず、落ち着いて注文したい方</p></div>
       <div class="who-item"><span class="mark">04</span><p>スキマ時間で効率よく準備したい方</p></div>
     </div>
   </div>
@@ -416,12 +418,12 @@
 
     <div class="price-card">
       <div class="label">EAR TO VOICE</div>
-      <div class="product">入国審査</div>
+      <div class="product">外食の英会話</div>
       <div class="amount">¥1,000</div>
       <div class="note">買い切り ・ 追加料金なし</div>
       <hr>
       <div class="includes">
-        <div><span class="ck">✓</span>入国審査の頻出質問パターン(複数シーン)</div>
+        <div><span class="ck">✓</span>カフェ・ファーストフードの頻出フレーズ(複数シーン)</div>
         <div><span class="ck">✓</span>ネイティブ音声(男性・女性選択可)</div>
         <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
         <div><span class="ck">✓</span>発音Tips(つながる音・リンキングのコツ)</div>
@@ -429,7 +431,7 @@
         <div><span class="ck">✓</span>意味確認クイズ</div>
         <div><span class="ck">✓</span>本番同様のシミュレーション練習</div>
       </div>
-      <a href="https://buy.stripe.com/9B68wPeTkeDS5YY68qeEo05?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
+      <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
     </div>
   </div>
 </section>
@@ -449,8 +451,8 @@
         <div class="a">スキマ時間で進められる設計です。移動時間や空き時間に、少しずつ練習を積み重ねられます。</div>
       </details>
       <details class="faq-item">
-        <summary>実際の入国審査と同じ質問が出ますか?<span class="sign">+</span></summary>
-        <div class="a">よく聞かれる質問パターンをもとに構成していますが、実際の審査官や状況によって質問内容は異なります。あくまで「聞き取り」と「答え方」に慣れるための練習教材としてご利用ください。</div>
+        <summary>実際のお店と同じ質問が出ますか?<span class="sign">+</span></summary>
+        <div class="a">よく聞かれる質問パターンをもとに構成していますが、実際のお店やスタッフによって質問内容は異なります。あくまで「聞き取り」と「答え方」に慣れるための練習教材としてご利用ください。</div>
       </details>
     </div>
   </div>
@@ -459,10 +461,10 @@
 <!-- FINAL CTA -->
 <section class="cta-band">
   <div class="container">
-    <span class="eyebrow" style="justify-content:center;">Before You Fly</span>
-    <h2>海外旅行を、<br>安心して迎えるために。</h2>
-    <p class="lede">入国審査での「聞こえない」「言えない」を、今日から少しずつ減らしていきましょう。</p>
-    <a href="https://buy.stripe.com/9B68wPeTkeDS5YY68qeEo05?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
+    <span class="eyebrow" style="justify-content:center;">Before You Order</span>
+    <h2>海外での外食を、<br>安心して楽しむために。</h2>
+    <p class="lede">外食での「聞こえない」「言えない」を、今日から少しずつ減らしていきましょう。</p>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
   </div>
 </section>
 
