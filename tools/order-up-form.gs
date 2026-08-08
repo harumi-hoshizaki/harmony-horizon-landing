@@ -5,10 +5,11 @@
  * 1. script.google.com -> New project
  * 2. Delete the placeholder code, paste this whole file in, Save.
  * 3. Pick "verifyPaste" in the function dropdown, click Run. It checks
- *    that all 22 sections and 152 sentences arrived intact. It creates
- *    nothing, so it is safe to run first.
- * 4. Pick "quickTest", click Run. Approve the permission prompt. This
- *    proves authorization works before you run the big one.
+ *    that all 22 sections and 152 sentences arrived intact. Approve the
+ *    authorization prompt when it appears - see the note on verifyPaste
+ *    below for why a function that creates nothing still asks.
+ * 4. Pick "quickTest", click Run. It makes one throwaway form, proving
+ *    the authorization actually works before you run the big one.
  * 5. Pick "createOrderUpForm", click Run.
  * 6. Open the "Execution log" panel for the form link and the
  *    spreadsheet link. Send the form link to your friend.
@@ -319,8 +320,12 @@ function resetOrderUpForm() {
 }
 
 /**
- * Confirms the paste came through intact. Creates nothing and needs no
- * permissions, so it is safe to run first. Expected result:
+ * Confirms the paste came through intact. It creates no form, no
+ * spreadsheet and no files at all - but Apps Script decides permissions
+ * by scanning the whole project, so the first run of ANY function here
+ * still shows the authorization prompt. Approving it is expected.
+ *
+ * Expected result:
  *
  *   sections 22 / 22, phrases 152 / 152, checksum matches
  *
