@@ -243,6 +243,15 @@
   /* ---------------- CTA band ---------------- */
   .cta-band { text-align: center; }
   .cta-band .lede { max-width: 480px; margin-left: auto; margin-right: auto; }
+  /* 2026-08-08: 「暗すぎる」の指摘を受けhero含め全体を明るくしたが、
+     引き締めの一箇所として最後のCTAだけ濃色に戻す(Harumi了承)。 */
+  .cta-band.on-dark {
+    background:
+      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(192,143,62,0.18), transparent 65%),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+  }
+  .cta-band.on-dark .eyebrow { color: var(--gold-bright); }
+  .cta-band.on-dark .eyebrow::before { background: var(--gold-bright); }
 
   /* ---------------- Footer ---------------- */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
@@ -458,7 +467,7 @@
 </section>
 
 <!-- FINAL CTA -->
-<section class="cta-band">
+<section class="cta-band on-dark">
   <div class="container">
     <span class="eyebrow" style="justify-content:center;">Before You Fly</span>
     <h2>海外旅行を、<br>安心して迎えるために。</h2>
