@@ -19,22 +19,24 @@
  * IF SOMETHING FAILS, read the troubleshooting notes at the bottom of
  * this file - the common causes are authorization, not the code.
  *
- * Everything here is plain ASCII on purpose. Copying code out of a chat
- * window can silently swap straight quotes (') for curly ones and break
- * the script with "SyntaxError: Invalid or unexpected token".
+ * NOTE ON COPYING: pasting from a chat window can swap the straight
+ * double quotes (") that delimit each string for curly ones, which
+ * breaks the script with "SyntaxError: Invalid or unexpected token".
+ * Copy from the raw file to be safe. Apostrophes and dashes *inside*
+ * the sentences are fine either way - they are just text.
  */
 
-var FORM_TITLE = "Order Up - Phrases I Do Not Need";
-var SHEET_TITLE = "Order Up - Responses";
+var FORM_TITLE = "Order Up — Phrases I Don't Need";
+var SHEET_TITLE = "Order Up — Responses";
 
 var FORM_DESCRIPTION =
-  "Check any phrase you already know and do not need to practice. " +
-  "Leave everything else unchecked, then hit Submit at the bottom.";
+  "Check any phrase you already know and don't need to practice. " +
+  "Leave everything else unchecked.";
 
 var WHO_LABEL = { staff: "staff", you: "you", "you-start": "you start" };
 
 var SECTIONS = [
-  { title: "Cafe - Starting Your Order", items: [
+  { title: "Cafe — Starting Your Order", items: [
     ["staff", "Hi, how are you?"],
     ["staff", "Hi, how's it going?"],
     ["staff", "What can I get for you?"],
@@ -44,7 +46,7 @@ var SECTIONS = [
     ["you", "Can I get a latte?"],
     ["you", "I'll have a latte."]
   ]},
-  { title: "Cafe - Size / Hot or Iced / Milk", items: [
+  { title: "Cafe — Size / Hot or Iced / Milk", items: [
     ["staff", "What size?"],
     ["staff", "Hot or iced?"],
     ["staff", "What kind of milk would you like?"],
@@ -57,7 +59,7 @@ var SECTIONS = [
     ["you", "Almond milk, please."],
     ["you", "Regular milk, please."]
   ]},
-  { title: "Cafe - For Here or To Go", items: [
+  { title: "Cafe — For Here or To Go", items: [
     ["staff", "For here or to go?"],
     ["staff", "Anything else?"],
     ["staff", "Is that everything?"],
@@ -68,7 +70,7 @@ var SECTIONS = [
     ["you", "We're all set."],
     ["you", "No, we're good."]
   ]},
-  { title: "Cafe - Payment", items: [
+  { title: "Cafe — Payment", items: [
     ["staff", "Cash or card?"],
     ["staff", "Debit or credit?"],
     ["staff", "How would you like to pay?"],
@@ -83,7 +85,7 @@ var SECTIONS = [
     ["you-start", "Can I tap?"],
     ["you-start", "Do you take Apple Pay?"]
   ]},
-  { title: "Cafe - Name / Pickup / Leaving", items: [
+  { title: "Cafe — Name / Pickup / Leaving", items: [
     ["staff", "What's the name?"],
     ["staff", "Can I get a name for the order?"],
     ["staff", "Here you go."],
@@ -118,13 +120,13 @@ var SECTIONS = [
     ["you-start", "Sorry, could you say that again?"],
     ["you-start", "Could you repeat that?"]
   ]},
-  { title: "Cafe - When You Need to Ask", items: [
+  { title: "Cafe — When You Need to Ask", items: [
     ["you-start", "Can I get this without sugar?"],
     ["you-start", "Can I get this with oat milk?"],
     ["you-start", "Can I get this without cheese?"],
     ["you-start", "Can I get this without onions?"]
   ]},
-  { title: "Restaurant - Entering / Party Size", items: [
+  { title: "Restaurant — Entering / Party Size", items: [
     ["staff", "How many?"],
     ["staff", "How many people?"],
     ["staff", "Do you have a reservation?"],
@@ -135,7 +137,7 @@ var SECTIONS = [
     ["you", "That's okay."],
     ["you", "How long is the wait?"]
   ]},
-  { title: "Restaurant - Drinks", items: [
+  { title: "Restaurant — Drinks", items: [
     ["staff", "Can I get you something to drink?"],
     ["staff", "What can I get you to drink?"],
     ["staff", "Would you like something to drink?"],
@@ -145,13 +147,13 @@ var SECTIONS = [
     ["you", "I'll have water."],
     ["you", "I'm good, thanks."]
   ]},
-  { title: "Restaurant - Ready to Order?", items: [
+  { title: "Restaurant — Ready to Order?", items: [
     ["staff", "Are you ready to order?"],
     ["staff", "Do you need another minute?"],
     ["you", "We're ready."],
     ["you", "We need another minute."]
   ]},
-  { title: "Restaurant - Ordering", items: [
+  { title: "Restaurant — Ordering", items: [
     ["staff", "What can I get for you?"],
     ["staff", "What would you like?"],
     ["you", "Can I get the burger?"],
@@ -272,7 +274,7 @@ function createOrderUpForm() {
 
   var totalChoices = 0;
   for (var i = 0; i < SECTIONS.length; i++) {
-    totalChoices += addSection_(form, SECTIONS[i], i + 1);
+    totalChoices += addSection_(form, SECTIONS[i]);
   }
 
   var sheetUrl = attachResponseSheet_(form, props);
@@ -329,7 +331,7 @@ function quickTest() {
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
 
-function addSection_(form, section, position) {
+function addSection_(form, section) {
   var seen = {};
   var choices = [];
 
@@ -354,7 +356,7 @@ function addSection_(form, section, position) {
   }
 
   var item = form.addCheckboxItem();
-  item.setTitle(position + ". " + section.title);
+  item.setTitle(section.title);
   item.setChoiceValues(choices);
   item.setRequired(false);
   return choices.length;
