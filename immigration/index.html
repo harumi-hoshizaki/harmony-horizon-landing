@@ -92,19 +92,20 @@
   .btn-small { padding: 11px 22px; font-size: 12.5px; }
 
   /* ---------------- Nav ---------------- */
+  /* 2026-08-08: 明るくした本文とのコントラストを出すため、ヘッダーだけ濃色に(Harumi指示) */
   .site-header {
     position: sticky; top: 0; z-index: 40;
-    background: rgba(250,246,236,0.92); backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--line);
+    background: var(--navy-deep);
+    border-bottom: 1px solid var(--line-light);
   }
   .site-header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 13px; padding-bottom: 13px; }
   .brand { display: flex; align-items: center; gap: 12px; }
   .brand-mark { width: 38px; height: 38px; flex-shrink: 0; }
   /* 3つのLPで同じロックアップ: EAR TO VOICE / 耳から、声へ */
-  .brand-word { font-family: 'EB Garamond', serif; font-weight: 600; font-size: 17px; letter-spacing: 0.06em; color: var(--navy-deep); line-height: 1.15; }
+  .brand-word { font-family: 'EB Garamond', serif; font-weight: 600; font-size: 17px; letter-spacing: 0.06em; color: var(--cream); line-height: 1.15; }
   /* 「耳から、声へ」は日本語。英字の全大文字用の字間をかけると崩れるし、
      10px では老眼鏡でも読めない。 */
-  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold); font-weight: 700; line-height: 1.4; }
+  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 700; line-height: 1.4; }
 
   /* ---------------- Hero ---------------- */
   .hero {
