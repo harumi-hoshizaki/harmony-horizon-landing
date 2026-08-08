@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Real-Life Dining English | Harmony Horizon</title>
+<title>飲食店英語 — Ear to Voice | Harmony Horizon</title>
 <meta name="description" content="北米のカフェ・ファーストフードで店員さんが言う英語は、だいたい決まっています。耳で聞き取り、声に出して、落ち着いて注文できるように備える練習アプリです。">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,6 +72,9 @@
     margin-bottom: 14px;
   }
   .on-dark .eyebrow { color: var(--gold-pale); }
+  /* 商品名の行だけは大文字化しない。Real-Life Dining English は
+     この綴りで一つの名前なので、全大文字にすると別物に見える。 */
+  .eyebrow-product { text-transform: none; letter-spacing: 0.08em; font-size: 0.95rem; }
 
   h1 {
     font-size: clamp(1.85rem, 4.4vw, 2.65rem);
@@ -162,7 +165,7 @@
   }
   .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
   .brand-mark { width: 38px; height: 38px; flex: none; }
-  .brand-word { font-size: 1.02rem; font-weight: 700; line-height: 1.3; }
+  .brand-word { font-size: 1.02rem; font-weight: 700; letter-spacing: 0.06em; line-height: 1.3; }
   /* 「耳から声へ」は日本語。英字用の字間と大文字化をかけると崩れる。 */
   .brand-tag {
     display: block;
@@ -329,8 +332,8 @@
         <circle cx="16" cy="16" r="11.8" fill="none" stroke="#A3782D" stroke-width="1.6" opacity="0.55"/>
       </svg>
       <span>
-        <span class="brand-word">Ear to Voice</span>
-        <span class="brand-tag">耳から声へ</span>
+        <span class="brand-word">EAR TO VOICE</span>
+        <span class="brand-tag">耳から、声へ</span>
       </span>
     </a>
     <!-- 決済リンクができたら href を差し替え、文言を「¥1,000ではじめる」に -->
@@ -342,7 +345,7 @@
 <section class="hero">
   <div class="container hero-grid">
     <div>
-      <span class="eyebrow">Real-Life Dining English</span>
+      <span class="eyebrow eyebrow-product">Real-Life Dining English ｜飲食店英語</span>
       <h1><span class="nb">注文のとき、</span><br class="sp"><span class="nb"><em>もう固まらない</em>。</span></h1>
       <p class="lede">北米のカフェやファーストフードで店員さんが言うことは、だいたい決まっています。何を言われるかを先に知って、耳を慣らしておきましょう。</p>
       <div class="hero-chips">
@@ -474,8 +477,8 @@
     <h2><span class="nb">次に行く前に、</span><span class="nb">耳を慣らす。</span></h2>
 
     <div class="price-card">
-      <div class="label">Real-Life Dining English</div>
-      <div class="product">カフェ &amp; ファーストフード</div>
+      <div class="label">EAR TO VOICE</div>
+      <div class="product">飲食店英語</div>
       <div class="amount">¥1,000</div>
       <div class="note">買い切り ・ 追加料金なし</div>
       <hr>
@@ -532,13 +535,13 @@
     <p class="lede" style="max-width:none;">思い当たるものがあれば、そこから始めても大丈夫です。</p>
     <div class="apps">
       <a class="app-card" href="/immigration/">
-        <span class="tag">Essential Immigration</span>
+        <span class="tag">Immigration ｜入国審査</span>
         <h3><span class="nb">入国審査の列に並ぶと、</span><br class="sp"><span class="nb">胃が痛くなる</span></h3>
         <p>滞在期間、宿泊先、渡航目的。聞かれることは決まっています。決まっているなら、先に聞いておけばいい。</p>
         <span class="go">この悩みを見てみる →</span>
       </a>
       <a class="app-card" href="/self-expression/">
-        <span class="tag">Self Expression</span>
+        <span class="tag">Self Expression ｜自己表現</span>
         <h3><span class="nb">話しかけられたのに、</span><br class="sp"><span class="nb">言葉が出てこない</span></h3>
         <p>難しいことを言おうとしていませんか。今の自分のことなら、短い一文で言えます。そこから始めましょう。</p>
         <span class="go">この悩みを見てみる →</span>
