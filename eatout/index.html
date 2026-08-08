@@ -72,14 +72,14 @@
   .on-dark .eyebrow { color: var(--gold-pale); }
 
   h1 {
-    font-size: clamp(2rem, 6vw, 3.4rem);
+    font-size: clamp(1.85rem, 4.4vw, 2.65rem);
     font-weight: 700;
     line-height: 1.32;
     letter-spacing: 0.01em;
     margin: 0 0 22px;
   }
   h2 {
-    font-size: clamp(1.55rem, 3.6vw, 2.3rem);
+    font-size: clamp(1.4rem, 2.8vw, 1.85rem);
     font-weight: 700;
     line-height: 1.45;
     margin: 0 0 20px;
@@ -88,7 +88,15 @@
   em { font-style: normal; color: var(--gold-text); }
   .on-dark em { color: var(--gold-pale); }
 
-  .lede { font-size: 1.1rem; line-height: 1.9; color: var(--muted); margin: 0 0 26px; max-width: 46ch; }
+  /* 日本語の1行は35字前後が読みやすい。ch は半角「0」の幅なので、
+     46ch でも全角では23字しか入らず、行がやたら折れて読みにくかった。 */
+  .lede { font-size: 1.1rem; line-height: 1.9; color: var(--muted); margin: 0 0 26px; max-width: 34em; }
+
+  /* 携帯の幅に合わせた改行。広い画面では行が余っているのに折れてしまうので消す。
+     text-wrap: balance は対応ブラウザだけの上乗せ(古いSafariは無視する)。 */
+  h1, h2 { text-wrap: balance; }
+  br.sp { display: none; }
+  @media (max-width: 760px) { br.sp { display: inline; } }
 
   /* ---------------- Buttons ---------------- */
   .btn {
@@ -166,30 +174,58 @@
   .hero-grid { display: grid; gap: clamp(36px, 6vw, 64px); align-items: center; }
   @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; } }
 
-  /* 画面の見本。実際のアプリの並びをそのまま写したもの */
+  /* 画面の見本。実際のアプリの並びをそのまま写したもの。
+     縦横比は必ず固定する — 高さを中身任せにすると、中身が短い時に
+     ほぼ正方形になって、電話ではなくタブレットに見えてしまう。
+     280 × 574 は約 1:2.05 で、今どきの電話とほぼ同じ。 */
+  .phone-wrap { display: flex; justify-content: center; }
   .phone {
-    max-width: 320px; margin: 0 auto;
-    border: 10px solid var(--ink); border-radius: 34px;
-    background: var(--paper); padding: 18px 16px 22px;
+    width: 280px; height: 574px;
+    flex: none;
+    border: 11px solid var(--ink); border-radius: 40px;
+    background: var(--paper);
     box-shadow: 0 34px 70px -28px rgba(43, 32, 24, 0.5);
+    display: flex; flex-direction: column;
+    overflow: hidden;
   }
+  @media (max-width: 420px) {
+    .phone { width: 232px; height: 476px; border-width: 9px; border-radius: 34px; }
+  }
+  /* 受話口。これがあるだけで「電話だ」と読める */
+  .ph-speaker {
+    flex: none; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ph-speaker i { display: block; width: 52px; height: 5px; border-radius: 3px; background: var(--line-faint, #D3C8B4); }
+  .ph-body { flex: 1; display: flex; flex-direction: column; padding: 2px 16px 0; min-height: 0; }
   .ph-top {
-    font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.16em;
+    font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--gold-text); text-align: center;
   }
-  .ph-rule { height: 1px; background: var(--line); margin: 12px 0 16px; }
-  .ph-hint { font-size: 0.92rem; color: var(--gold-text); font-weight: 700; text-align: center; }
+  .ph-rule { height: 1px; background: var(--line); margin: 10px 0 14px; }
+  .ph-hint { font-size: 0.88rem; color: var(--gold-text); font-weight: 700; text-align: center; margin: 0; }
   .ph-play {
-    width: 84px; height: 84px; border-radius: 50%;
-    background: var(--ink); margin: 12px auto 16px;
+    width: 92px; height: 92px; border-radius: 50%;
+    background: var(--ink); margin: 12px auto 14px;
     display: grid; place-items: center; color: var(--paper);
+    box-shadow: 0 12px 26px -12px rgba(43, 32, 24, 0.6);
   }
-  .ph-q { font-size: 1.05rem; font-weight: 700; text-align: center; margin: 0 0 12px; }
+  .ph-seg { display: flex; gap: 6px; margin-bottom: 16px; }
+  .ph-seg span {
+    flex: 1; text-align: center; font-size: 0.72rem; padding: 7px 2px;
+    border: 1px solid var(--line); border-radius: 999px;
+    background: #fff; color: var(--muted);
+  }
+  .ph-seg span.on { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+  .ph-q { font-size: 1rem; font-weight: 700; text-align: center; margin: 0 0 10px; }
   .ph-veil {
     border: 1px dashed var(--line); border-radius: 10px;
-    padding: 14px 12px; text-align: center;
-    font-size: 0.9rem; color: var(--muted); background: rgba(255,255,255,0.6);
+    padding: 13px 10px; text-align: center;
+    font-size: 0.82rem; line-height: 1.6; color: var(--muted); background: rgba(255,255,255,0.6);
   }
+  /* ホームインジケータ */
+  .ph-home { flex: none; height: 22px; display: flex; align-items: center; justify-content: center; }
+  .ph-home i { display: block; width: 96px; height: 4px; border-radius: 3px; background: var(--ink); opacity: 0.28; }
 
   /* ---------------- Cards ---------------- */
   .grid-3 { display: grid; gap: 20px; }
@@ -310,7 +346,7 @@
   <div class="container hero-grid">
     <div>
       <span class="eyebrow">Real-Life Dining English</span>
-      <h1>注文のとき、<br><em>聞き取れなかった</em>を<br>なくす。</h1>
+      <h1>注文のとき、<br class="sp"><em>聞き取れなかった</em>を<br class="sp">なくす。</h1>
       <p class="lede">北米のカフェやファーストフードで店員さんが言うことは、だいたい決まっています。何を言われるかを先に知って、耳を慣らしておきましょう。</p>
       <div class="hero-chips">
         <span>聞く</span><span>意味を選ぶ</span><span>答えを決める</span><span>声に出す</span>
@@ -319,19 +355,27 @@
       <div class="soon-note">買い切り ・ 追加料金なし ・ スマホだけで練習できます</div>
     </div>
 
-    <div class="phone" aria-hidden="true">
-      <div class="ph-top">Real-Life Dining English</div>
-      <div class="ph-rule"></div>
-      <div class="ph-hint">タップして音声を聞きましょう</div>
-      <div class="ph-play">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
-          <path d="M4 9.5v5a1 1 0 0 0 1 1h3l4.2 3.6a.8.8 0 0 0 1.3-.6V5.5a.8.8 0 0 0-1.3-.6L8 8.5H5a1 1 0 0 0-1 1z" fill="currentColor"/>
-          <path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-          <path d="M18.8 6.2a8 8 0 0 1 0 11.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        </svg>
+    <div class="phone-wrap">
+      <div class="phone" aria-hidden="true">
+        <div class="ph-speaker"><i></i></div>
+        <div class="ph-body">
+          <div class="ph-top">Real-Life Dining English</div>
+          <div class="ph-rule"></div>
+          <p class="ph-hint">タップして音声を聞きましょう</p>
+          <div class="ph-play">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+              <path d="M4 9.5v5a1 1 0 0 0 1 1h3l4.2 3.6a.8.8 0 0 0 1.3-.6V5.5a.8.8 0 0 0-1.3-.6L8 8.5H5a1 1 0 0 0-1 1z" fill="currentColor"/>
+              <path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+              <path d="M18.8 6.2a8 8 0 0 1 0 11.6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="ph-seg"><span class="on">女性の声</span><span>男性の声</span></div>
+          <div class="ph-seg"><span class="on">ふつう</span><span>ゆっくり</span></div>
+          <p class="ph-q">いま、何と言われましたか？</p>
+          <div class="ph-veil">まず、再生ボタンを押して聞いてください</div>
+        </div>
+        <div class="ph-home"><i></i></div>
       </div>
-      <p class="ph-q">いま、何と言われましたか？</p>
-      <div class="ph-veil">まず、再生ボタンを押して聞いてください</div>
     </div>
   </div>
 </section>
@@ -340,7 +384,7 @@
 <section style="background:var(--paper-soft);">
   <div class="container" style="max-width:760px;">
     <span class="eyebrow">Problem</span>
-    <h2>教科書どおりに<br>言ってくれません。</h2>
+    <h2>教科書どおりに<br class="sp">言ってくれません。</h2>
     <p class="lede" style="max-width:none;">"What can I get for you?" は、実際には「わっけなぃ」のように一息で飛んできます。"Anything else?" も "For here or to go?" も同じです。文字で読めば分かる英語が、耳では別物になる。</p>
     <p class="lede" style="max-width:none;margin-bottom:0;">聞き返すのが申し訳なくて、とりあえず頷いてしまう。頼んだつもりのないものが出てくる。<em>英語力の問題ではなく、その音を聞いたことがないだけ</em>です。</p>
   </div>
@@ -350,8 +394,8 @@
 <section class="on-dark">
   <div class="container">
     <span class="eyebrow">How It Works</span>
-    <h2>耳が先。<br>文字はあとから。</h2>
-    <p class="lede" style="max-width:52ch;">聞く前に選択肢が見えていると、読んで当ててしまいます。それでは耳が育ちません。このアプリは、<em>一度でも音を再生するまで選択肢を伏せます</em>。</p>
+    <h2>耳が先。<br class="sp">文字はあとから。</h2>
+    <p class="lede" style="max-width:38em;">聞く前に選択肢が見えていると、読んで当ててしまいます。それでは耳が育ちません。このアプリは、<em>一度でも音を再生するまで選択肢を伏せます</em>。</p>
 
     <div class="grid-3" style="margin-top:38px;">
       <div class="card" style="background:rgba(247,242,233,0.06);border-color:var(--line-dark);">
@@ -377,7 +421,7 @@
 <section>
   <div class="container" style="max-width:860px;">
     <span class="eyebrow">What's Inside</span>
-    <h2>店に入ってから出るまで、<br>起きる順に進みます。</h2>
+    <h2>店に入ってから出るまで、<br class="sp">起きる順に進みます。</h2>
     <p class="lede" style="max-width:none;">場面をバラバラに覚えるのではなく、実際の順番どおりに練習します。今どこにいるかが分かるので、迷いません。</p>
 
     <ol class="scenes">
@@ -490,7 +534,7 @@
 <section style="background:var(--paper-soft);">
   <div class="container" style="max-width:860px;">
     <span class="eyebrow">Also from Ear to Voice</span>
-    <h2>同じ作り方で、<br>ほかにも。</h2>
+    <h2>同じ作り方で、<br class="sp">ほかにも。</h2>
     <p class="lede" style="max-width:none;">聞き取って、自分の答えを声に出すところまでを一つの練習にする。同じ考え方で、別の場面のものも作っています。</p>
     <div class="apps">
       <a class="app-card" href="/immigration/">
@@ -513,8 +557,8 @@
 <section class="on-dark">
   <div class="container" style="text-align:center;">
     <span class="eyebrow">Before You Order</span>
-    <h2>「もう一回言ってください」を、<br>言えるようにしておく。</h2>
-    <p class="lede" style="max-width:44ch;margin-left:auto;margin-right:auto;">聞き取れない日があってもいいんです。そのときに困らない言い方まで、一緒に練習します。</p>
+    <h2>「もう一回言ってください」を、<br class="sp">言えるようにしておく。</h2>
+    <p class="lede" style="max-width:32em;margin-left:auto;margin-right:auto;">聞き取れない日があってもいいんです。そのときに困らない言い方まで、一緒に練習します。</p>
     <span class="btn-soon">まもなく公開します</span>
   </div>
 </section>
