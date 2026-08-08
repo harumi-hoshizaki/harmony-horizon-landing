@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>飲食店英語 — Ear to Voice | Harmony Horizon</title>
+<meta name="description" content="北米のカフェ・ファーストフードで店員さんが言う英語は、だいたい決まっています。耳で聞き取り、声に出して、落ち着いて注文できるように備える練習アプリです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* 配色と書体は eatout アプリ本体(app.harmonyhorizon.space/eatout)と同じ体系。
+     入国審査LPのネイビー+明朝は「堅い役所」を狙ったもので、飲食店には冷たい。
+     骨格だけ入国審査LPから引き継ぎ、色はエスプレッソ茶に振る。
+     数値は地色に対するコントラスト比の実測値(老眼鏡での閲覧が前提)。 */
+  :root {
+    --ink:        #2B2018;   /* 紙に対して 14.24:1 */
+    /* 濃い帯の地色。#1E1610 はほぼ黒で、日本語の学習ページには冷たい。
+       本文と同じエスプレッソ色まで上げると、暗さより温かさが先に来る。 */
+    --ink-deep:   #2B2018;
+    --paper:      #F7F2E9;
+    --paper-soft: #F0E9DB;
+    --card:       #FFFFFF;
+    --gold:       #A3782D;   /* 枠線・図形。3.57:1 */
+    --gold-solid: #996F25;   /* 白文字が 4.51:1 で乗る */
+    --gold-text:  #8A6516;   /* 紙の上の文字。4.76:1 */
+    --gold-pale:  #D9BC81;   /* 濃い地の上の文字。8.29:1 */
+    --muted:      #5A5147;   /* 6.97:1 */
+    --line:       #E2DACB;
+    --line-dark:  rgba(247, 242, 233, 0.20);
+    --display: 'Zen Kaku Gothic New', sans-serif;
+    --body:    'Zen Kaku Gothic New', sans-serif;
+    --mono:    'JetBrains Mono', monospace;
+    --max-w: 1080px;
+    --pad: clamp(20px, 5vw, 44px);
+    --sec: clamp(60px, 8vw, 108px);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+  }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--body);
+    /* 50代・老眼鏡での閲覧を前提に、入国審査LPの16.5pxより上げる */
+    font-size: 17px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
+  section { padding: var(--sec) 0; }
+  .on-dark { background: var(--ink-deep); color: var(--paper); }
+  .on-dark .lede, .on-dark p { color: rgba(247, 242, 233, 0.86); }
+
+  .eyebrow {
+    display: block;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+    margin-bottom: 14px;
+  }
+  .on-dark .eyebrow { color: var(--gold-pale); }
+  /* 商品名の行だけは大文字化しない。Real-Life Dining English は
+     この綴りで一つの名前なので、全大文字にすると別物に見える。 */
+  .eyebrow-product { text-transform: none; letter-spacing: 0.08em; font-size: 0.95rem; }
+
+  h1 {
+    font-size: clamp(1.85rem, 4.4vw, 2.65rem);
+    font-weight: 700;
+    line-height: 1.32;
+    letter-spacing: 0.01em;
+    margin: 0 0 22px;
+  }
+  h2 {
+    font-size: clamp(1.4rem, 2.8vw, 1.85rem);
+    font-weight: 700;
+    line-height: 1.45;
+    margin: 0 0 20px;
+  }
+  h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 8px; line-height: 1.5; }
+  em { font-style: normal; color: var(--gold-text); }
+  .on-dark em { color: var(--gold-pale); }
+
+  /* 日本語の1行は35字前後が読みやすい。ch は半角「0」の幅なので、
+     46ch でも全角では23字しか入らず、行がやたら折れて読みにくかった。 */
+  .lede { font-size: 1.1rem; line-height: 1.9; color: var(--muted); margin: 0 0 26px; max-width: 34em; }
+
+  /* 携帯の幅に合わせた改行。広い画面では行が余っているのに折れてしまうので消す。
+     text-wrap: balance は対応ブラウザだけの上乗せ(古いSafariは無視する)。 */
+  h1, h2 { text-wrap: balance; }
+  /* 日本語は文字単位でどこでも折り返せる。語の途中で割れると読みにくいので、
+     割りたくない塊は inline-block で束ねる(「聞き取れ / なかった」対策)。 */
+  .nb { display: inline-block; }
+  br.sp { display: none; }
+  @media (max-width: 760px) { br.sp { display: inline; } }
+
+  /* ---------------- Buttons ---------------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: var(--body);
+    font-size: 1.05rem;
+    font-weight: 700;
+    padding: 17px 32px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    background: var(--gold-solid);
+    color: #fff;
+    box-shadow: 0 14px 32px -14px rgba(43, 32, 24, 0.55);
+    transition: transform 0.16s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn:active { transform: scale(0.98); }
+  .btn-small { font-size: 0.95rem; padding: 11px 20px; }
+  .btn-ghost { background: none; color: var(--ink); border: 2px solid var(--ink); box-shadow: none; }
+  .on-dark .btn-ghost { color: var(--paper); border-color: var(--paper); }
+
+  /* 買い切りである旨など、ボタンの下に置く一行。 */
+  .soon-note { font-size: 0.98rem; color: var(--muted); margin-top: 14px; }
+  .on-dark .soon-note { color: rgba(247, 242, 233, 0.75); }
+
+  :focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+  /* ---------------- Header ---------------- */
+  .site-header {
+    position: sticky; top: 0; z-index: 20;
+    background: rgba(247, 242, 233, 0.94);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .container {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding-top: 12px; padding-bottom: 12px;
+  }
+  .brand { display: flex; align-items: center; gap: 11px; min-width: 0; }
+  .brand-mark { width: 38px; height: 38px; flex: none; }
+  .brand-word { font-size: 1.02rem; font-weight: 700; letter-spacing: 0.06em; line-height: 1.3; }
+  /* 「耳から声へ」は日本語。英字用の字間と大文字化をかけると崩れる。 */
+  .brand-tag {
+    display: block;
+    font-size: 0.82rem; letter-spacing: 0.06em;
+    color: var(--gold-text); line-height: 1.4;
+  }
+  /* 「価格を見る」が2行に折れていた。ヘッダーのボタンは絶対に折らない。 */
+  .site-header .btn { white-space: nowrap; flex: none; }
+
+  /* ---------------- Hero ---------------- */
+  .hero { padding-top: clamp(48px, 7vw, 84px); }
+  .hero-chips { display: flex; flex-wrap: wrap; gap: 9px; margin: 0 0 30px; }
+  .hero-chips span {
+    font-size: 0.95rem; font-weight: 500;
+    padding: 7px 15px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card); color: var(--muted);
+  }
+  .hero-grid { display: grid; gap: clamp(36px, 6vw, 64px); align-items: center; }
+  @media (min-width: 900px) { .hero-grid { grid-template-columns: 1.05fr 0.95fr; } }
+
+  /* 見本は作り物ではなく、アプリの実画面を撮ったもの
+     (app-screen.png = iPhone 15 の 390x844 を2倍で撮影)。
+     枠の内寸を写真と同じ 1:2.164 に合わせてあるので、切れずに収まる。
+     作った見本だと本物とズレて、買った人が「話が違う」と感じる。 */
+  .phone-wrap { display: flex; justify-content: center; }
+  .phone {
+    position: relative;
+    width: 280px; height: 584px;
+    flex: none;
+    border: 10px solid var(--ink);
+    border-radius: 42px;
+    background: var(--ink);
+    overflow: hidden;
+    box-shadow: 0 34px 70px -26px rgba(43, 32, 24, 0.55);
+  }
+  .phone-shot { width: 100%; height: 100%; object-fit: cover; object-position: top center; display: block; }
+  /* 上部の黒いピル。これがあるだけで「電話だ」と読める */
+  .phone-island {
+    position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
+    width: 68px; height: 16px; border-radius: 999px; background: var(--ink);
+  }
+  @media (max-width: 420px) {
+    .phone { width: 236px; height: 492px; border-width: 8px; border-radius: 34px; }
+    .phone-island { width: 56px; height: 13px; top: 5px; }
+  }
+
+  /* ---------------- Cards ---------------- */
+  .grid-3 { display: grid; gap: 20px; }
+  @media (min-width: 760px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+  .card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 26px 24px;
+  }
+  .card p { margin: 0; color: var(--muted); font-size: 1rem; }
+  /* 黒い帯の上のカード。紙の上のカードと同じ形で、色だけ反転させる。
+     以前は How It Works に inline style で直接書いていたが、2箇所目が
+     できたのでクラスに切り出す(同じものを2通りで書かない)。 */
+  /* 紙の上で3枚を1組に見せる印。濃い帯を増やさずにまとまりを出す。 */
+  .card-accent { border-top: 3px solid var(--gold); }
+  .card-dark { background: rgba(247, 242, 233, 0.06); border-color: var(--line-dark); }
+  .card-dark h3 { color: var(--paper); }
+  .card-dark p { color: rgba(247, 242, 233, 0.82); }
+  .card-num {
+    display: inline-grid; place-items: center;
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--gold-solid); color: #fff;
+    font-family: var(--mono); font-size: 0.95rem; margin-bottom: 14px;
+  }
+
+  /* ---------------- Scene list ---------------- */
+  .scenes { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  @media (min-width: 700px) { .scenes { grid-template-columns: repeat(2, 1fr); } }
+  .scene {
+    display: flex; align-items: baseline; gap: 14px;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 11px; padding: 15px 18px;
+  }
+  .scene .n {
+    font-family: var(--mono); font-size: 0.95rem; color: var(--gold-text);
+    flex: none; width: 22px;
+  }
+  .scene .t { font-size: 1.05rem; font-weight: 500; }
+  /* 英語の例は、この教材が本物だという証拠。日本語より小さいままにして主役は
+     譲るが、灰色に沈めると読み飛ばされるので、金の文字色で拾わせる。 */
+  .scene .s { display: block; font-size: 0.95rem; color: var(--gold-text); font-weight: 500; margin-top: 2px; }
+
+  .scene-count {
+    margin: 18px 0 0; font-size: 1.05rem; color: var(--muted);
+  }
+  .scene-count b { color: var(--ink); font-weight: 700; }
+  .stage-note {
+    margin-top: 22px; padding: 18px 20px;
+    border: 1px solid var(--line); border-left: 4px solid var(--gold);
+    border-radius: 8px; background: var(--card);
+    font-size: 1rem; color: var(--muted);
+  }
+
+  /* ---------------- Price ---------------- */
+  .price-card {
+    max-width: 470px; margin: 34px auto 0;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 18px; padding: 34px 30px;
+    box-shadow: 0 30px 66px -30px rgba(43, 32, 24, 0.32);
+    text-align: center;
+  }
+  .price-card .label {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold-text);
+  }
+  .price-card .product { font-size: 1.3rem; font-weight: 700; margin-top: 6px; }
+  .price-card .amount { font-size: clamp(2.6rem, 7vw, 3.4rem); font-weight: 700; line-height: 1.2; margin: 10px 0 4px; }
+  .price-card .note { font-size: 1rem; color: var(--muted); }
+  .price-card hr { border: none; border-top: 1px solid var(--line); margin: 24px 0; }
+  .includes { text-align: left; display: grid; gap: 11px; margin-bottom: 26px; }
+  .includes div { display: flex; gap: 11px; font-size: 1rem; line-height: 1.7; }
+  .ck { color: var(--gold-text); font-weight: 700; flex: none; }
+
+  /* ---------------- FAQ ---------------- */
+  .faq-item { border-bottom: 1px solid var(--line); }
+  .faq-item summary {
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+    padding: 20px 0; cursor: pointer; font-size: 1.08rem; font-weight: 700;
+    list-style: none;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item .sign { color: var(--gold-text); font-size: 1.4rem; flex: none; line-height: 1; }
+  .faq-item[open] .sign { transform: rotate(45deg); }
+  .faq-item .a { padding: 0 0 22px; color: var(--muted); font-size: 1.02rem; }
+
+  /* ---------------- Other apps ---------------- */
+  .apps { display: grid; gap: 18px; margin-top: 8px; }
+  @media (min-width: 760px) { .apps { grid-template-columns: repeat(2, 1fr); } }
+  .app-card {
+    display: block;
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: 14px; padding: 24px 24px 22px;
+    transition: transform 0.16s ease, border-color 0.16s ease;
+  }
+  .app-card:hover { transform: translateY(-3px); border-color: var(--gold); }
+  .app-card .tag {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--gold-text);
+  }
+  .app-card h3 { margin: 8px 0 10px; font-size: 1.15rem; line-height: 1.55; }
+  .app-card p { margin: 0 0 14px; color: var(--muted); font-size: 1rem; }
+  .app-card .go { font-weight: 700; color: var(--gold-text); font-size: 1rem; }
+
+  /* ---------------- Footer ---------------- */
+  footer { background: var(--ink-deep); color: var(--paper); padding: 46px 0 40px; text-align: center; }
+  .foot-tag { font-family: var(--mono); font-size: 0.8rem; letter-spacing: 0.16em; color: var(--gold-pale); }
+  .foot-copy { margin-top: 12px; font-size: 0.95rem; color: rgba(247, 242, 233, 0.8); }
+  .foot-copy a { color: var(--gold-pale); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="https://www.harmonyhorizon.space" class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" role="img" aria-label="Ear to Voice">
+        <circle cx="16" cy="16" r="16" fill="#2B2018"/>
+        <circle cx="16" cy="16" r="2.7" fill="#A3782D"/>
+        <circle cx="16" cy="16" r="7.2" fill="none" stroke="#A3782D" stroke-width="2"/>
+        <circle cx="16" cy="16" r="11.8" fill="none" stroke="#A3782D" stroke-width="1.6" opacity="0.55"/>
+      </svg>
+      <span>
+        <span class="brand-word">EAR TO VOICE</span>
+        <span class="brand-tag">耳から、声へ</span>
+      </span>
+    </a>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-small">¥1,000ではじめる</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="eyebrow eyebrow-product">Real-Life Dining English ｜飲食店英語</span>
+      <h1><span class="nb">注文のとき、</span><br class="sp"><span class="nb"><em>もう固まらない</em>。</span></h1>
+      <p class="lede">北米のカフェやファーストフードで店員さんが言うことは、だいたい決まっています。何を言われるかを先に知って、耳を慣らしておきましょう。</p>
+      <div class="hero-chips">
+        <span>聞く</span><span>意味を選ぶ</span><span>答えを決める</span><span>声に出す</span>
+      </div>
+      <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn">¥1,000ではじめる →</a>
+      <div class="soon-note">買い切り ・ 追加料金なし ・ スマホだけで練習できます</div>
+    </div>
+
+    <div class="phone-wrap">
+      <div class="phone">
+        <img class="phone-shot" src="app-screen.png" width="780" height="1688"
+             alt="アプリの画面。「入店のあいさつ」の1問目。再生ボタンと、声・速さの切り替えがあり、まだ再生していないので選択肢は伏せられている。">
+        <span class="phone-island" aria-hidden="true"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section style="background:var(--paper-soft);">
+  <div class="container" style="max-width:760px;">
+    <span class="eyebrow">Problem</span>
+    <h2><span class="nb">教科書どおりに</span><br class="sp"><span class="nb">言ってくれません。</span></h2>
+    <p class="lede" style="max-width:none;">"What can I get for you?" は、実際には「わっけなぃ」のように一息で飛んできます。"Anything else?" も "For here or to go?" も同じです。知っているはずの単語なのに、耳ではまったく別の音に聞こえる。</p>
+    <p class="lede" style="max-width:none;margin-bottom:0;">聞き返すのが申し訳なくて、とりあえず頷いてしまう。頼んだつもりのないものが出てくる。<em>英語力の問題ではなく、その音を聞いたことがないだけ</em>です。</p>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="on-dark">
+  <div class="container">
+    <span class="eyebrow">How It Works</span>
+    <h2><span class="nb">耳が先。</span><br class="sp"><span class="nb">文字はあとから。</span></h2>
+    <p class="lede" style="max-width:38em;">聞く前に選択肢が見えていると、読んで当ててしまいます。それでは耳が育ちません。このアプリは、<em>一度でも音を再生するまで選択肢を伏せます</em>。</p>
+
+    <div class="grid-3" style="margin-top:38px;">
+      <div class="card card-dark">
+        <span class="card-num">1</span>
+        <h3>聞く</h3>
+        <p>同じ場面でも言い方はいろいろです。「注文を聞かれる」だけで4通り。どれが来ても分かるように耳を慣らします。</p>
+      </div>
+      <div class="card card-dark">
+        <span class="card-num">2</span>
+        <h3>意味を選ぶ</h3>
+        <p>日本語の3択で答えます。間違えた問題には★が付いて、あとから優先して復習できます。</p>
+      </div>
+      <div class="card card-dark">
+        <span class="card-num">3</span>
+        <h3>声に出す</h3>
+        <p>自分の答え方を選んで、お手本を聞いて、マイクに向かって言ってみます。聞こえたとおりの文字が返ってきます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENES -->
+<section>
+  <div class="container" style="max-width:860px;">
+    <span class="eyebrow">What's Inside</span>
+    <h2><span class="nb">店に入ってから出るまで、</span><br class="sp"><span class="nb">起きる順に進みます。</span></h2>
+    <p class="lede" style="max-width:none;">場面をバラバラに覚えるのではなく、実際の順番どおりに練習します。今どこにいるかが分かるので、迷いません。</p>
+
+    <ol class="scenes">
+      <li class="scene"><span class="n">1</span><span class="t">入店のあいさつ<span class="s">Hi, how are you? / Hi, how's it going?</span></span></li>
+      <li class="scene"><span class="n">2</span><span class="t">注文を聞かれる<span class="s">What can I get for you?</span></span></li>
+      <li class="scene"><span class="n">3</span><span class="t">サイズ・店内か持ち帰りか<span class="s">What size? / For here or to go?</span></span></li>
+      <li class="scene"><span class="n">4</span><span class="t">他にご注文は？<span class="s">Anything else? / Is that everything?</span></span></li>
+      <li class="scene"><span class="n">5</span><span class="t">支払い<span class="s">Cash or card?</span></span></li>
+      <li class="scene"><span class="n">6</span><span class="t">名前・受け取り<span class="s">What's the name? / Here you go.</span></span></li>
+      <li class="scene"><span class="n">◇</span><span class="t">聞き返しミニスキル<span class="s">どの場面でも使えます</span></span></li>
+    </ol>
+
+    <!-- ▲数字あり▲ この節の「7つ」「29フレーズ」はアプリの中身の実測値。
+         コンテンツを足し引きすると変わる。目視で数え直さないこと。
+             harmony-horizon リポジトリで  node scripts/count-content.js
+         を実行すると、ここに書くべき文がそのまま出る。
+         公開前チェックリスト: harmony-horizon/docs/eatout-production-rules.md -->
+    <p class="scene-count">この7つで、<b>スタッフの英語29フレーズ</b>と、<b>自分の答え29フレーズ</b>。</p>
+
+    <!-- ▲数字あり▲ 「7つ」は実測値。レストラン編が入ったら「準備中」も消すこと -->
+    <p class="stage-note">まず <b>カフェ &amp; ファーストフード</b> の7つを進みます。<b>レストラン編</b>（席に着いて注文して、食べた後で払うお店）は準備中です。</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<!-- 濃い帯は2つに絞る(「耳が先」と最後のCTA)。3つに増やすとページが重くなる。
+     「耳が先。文字はあとから。」は、目を閉じて聞く話なので暗さに意味がある。
+     ここはカードが主役なので、金の上罫でまとまりを出す方が軽くて速い。 */ -->
+<section style="background:var(--paper-soft);">
+  <div class="container">
+    <span class="eyebrow">What You Get</span>
+    <h2><span class="nb">声も、速さも、</span><span class="nb">選べる。</span></h2>
+    <div class="grid-3" style="margin-top:34px;">
+      <div class="card card-accent">
+        <h3>男性の声・女性の声</h3>
+        <p>同じ文でも話す人が変われば聞こえ方が変わります。両方の声で確かめられます。</p>
+      </div>
+      <div class="card card-accent">
+        <h3>ふつう・ゆっくり</h3>
+        <p>まず自然な速さで。聞き取れなければゆっくりに落として、音のつながりを1つずつ確かめます。</p>
+      </div>
+      <div class="card card-accent">
+        <h3>聞き取りのコツ</h3>
+        <p>なぜそう聞こえるのかを、フレーズごとに説明します。単語の中の音と、単語と単語の境目の音を分けて。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section>
+  <div class="container" style="max-width:740px;">
+    <span class="eyebrow">Who Is This For</span>
+    <h2>こんな方に。</h2>
+    <ul style="padding-left:1.2em;margin:0;">
+      <li>旅行や出張で、カフェやファーストフードを使う予定がある方</li>
+      <li>読めば分かるのに、聞くと分からなくなる方</li>
+      <li>聞き返すのが気まずくて、頷いてしまった経験のある方</li>
+      <li>短い時間で、実際に使うところだけ練習したい方</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section id="price" style="background:var(--paper-soft);">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow" style="text-align:center;">Price</span>
+    <h2><span class="nb">次に行く前に、</span><span class="nb">耳を慣らす。</span></h2>
+
+    <div class="price-card">
+      <div class="label">EAR TO VOICE</div>
+      <div class="product">飲食店英語</div>
+      <div class="amount">¥1,000</div>
+      <div class="note">買い切り ・ 追加料金なし</div>
+      <hr>
+      <div class="includes">
+        <!-- ▲数字あり▲ 「7つ」は実測値。count-content.js で数え直すこと -->
+        <div><span class="ck">✓</span>店で起きる順に並んだ7つの場面</div>
+        <div><span class="ck">✓</span>同じ場面の、いろいろな言い方</div>
+        <div><span class="ck">✓</span>男性・女性の声</div>
+        <div><span class="ck">✓</span>ふつう / ゆっくりの2段階</div>
+        <div><span class="ck">✓</span>フレーズごとの聞き取りのコツ</div>
+        <div><span class="ck">✓</span>自分の答え方を選んで、声に出す練習</div>
+        <div><span class="ck">✓</span>マイクに向かって言って、文字で確かめる</div>
+        <div><span class="ck">✓</span>間違えた問題に★が付く復習機能</div>
+      </div>
+      <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn" style="width:100%;">Real-Life Dining English をはじめる</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section>
+  <div class="container" style="max-width:740px;">
+    <span class="eyebrow">FAQ</span>
+    <h2>よくある質問</h2>
+    <details class="faq-item" open>
+      <summary>英語に自信がなくても大丈夫ですか？<span class="sign">+</span></summary>
+      <div class="a">短いフレーズばかりです。文法を組み立てて話すのではなく、決まった言い方をそのまま覚える練習なので、初めての方でも進められます。</div>
+    </details>
+    <details class="faq-item">
+      <summary>アプリのインストールは必要ですか？<span class="sign">+</span></summary>
+      <div class="a">いりません。スマホやパソコンのブラウザで開くだけです。</div>
+    </details>
+    <details class="faq-item">
+      <summary>発音は判定してもらえますか？<span class="sign">+</span></summary>
+      <div class="a">マイクに向かって言うと、聞こえたとおりの英語が文字で返ってきます。お手本と違うところが見えるので、RがLになっているかなど、どこを直せばいいかが分かります。ただし発音を採点するものではありません。</div>
+    </details>
+    <details class="faq-item">
+      <summary>レストランでも使えますか？<span class="sign">+</span></summary>
+      <div class="a">今回はカウンターで注文して先に払うお店（カフェ・ファーストフード）の内容です。席に着いて注文するレストランは準備中です。</div>
+    </details>
+    <details class="faq-item">
+      <summary>この通りに言われますか？<span class="sign">+</span></summary>
+      <div class="a">実際によく使われる言い方を集めていますが、お店や地域によって言い方は変わります。「この言い方も、あの言い方も、意味は同じ」と分かる耳を作るための教材としてお使いください。</div>
+    </details>
+  </div>
+</section>
+
+<!-- OTHER APPS -->
+<section style="background:var(--paper-soft);">
+  <div class="container" style="max-width:860px;">
+    <span class="eyebrow">Also from Ear to Voice</span>
+    <h2><span class="nb">固まってしまう場面は、</span><br class="sp"><span class="nb">レジの前だけじゃない。</span></h2>
+    <p class="lede" style="max-width:none;">思い当たるものがあれば、そこから始めても大丈夫です。</p>
+    <div class="apps">
+      <a class="app-card" href="/immigration/">
+        <span class="tag">Immigration ｜入国審査</span>
+        <h3><span class="nb">入国審査の列に並ぶと、</span><br class="sp"><span class="nb">胃が痛くなる</span></h3>
+        <p>滞在期間、宿泊先、渡航目的。聞かれることは決まっています。決まっているなら、先に聞いておけばいい。</p>
+        <span class="go">この悩みを見てみる →</span>
+      </a>
+      <a class="app-card" href="/self-expression/">
+        <span class="tag">Self Expression ｜自己表現</span>
+        <h3><span class="nb">話しかけられたのに、</span><br class="sp"><span class="nb">言葉が出てこない</span></h3>
+        <p>難しいことを言おうとしていませんか。今の自分のことなら、短い一文で言えます。そこから始めましょう。</p>
+        <span class="go">この悩みを見てみる →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="on-dark">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow">Before You Order</span>
+    <h2><span class="nb">「もう一回言ってください」を、</span><br class="sp"><span class="nb">言えるようにしておく。</span></h2>
+    <p class="lede" style="max-width:32em;margin-left:auto;margin-right:auto;">聞き取れない日があってもいいんです。そのときに困らない言い方まで、一緒に練習します。</p>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn">¥1,000ではじめる →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="foot-tag">Train your ears. Find your voice.</div>
+    <div class="foot-copy">© 2026 Harmony Horizon ・ <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> ・ <a href="https://www.harmonyhorizon.space">harmonyhorizon.space</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
