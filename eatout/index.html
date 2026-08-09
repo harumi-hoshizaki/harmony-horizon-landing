@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>飲食店の英会話 — Ear to Voice | Harmony Horizon</title>
-<meta name="description" content="北米のカフェ・レストランでの注文、耳で聞き取り声に出して備える Ear to Voice。頻出フレーズをネイティブ音声で練習し、本番同様のシミュレーションで自信をつけます。">
+<meta name="description" content="北米のカフェ・レストランでの注文、耳で聞き取り声に出して備える Ear to Voice。頻出フレーズをネイティブ音声で練習し、マイクで発音を確かめながら自信をつけます。">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%232B2018'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%236B5636' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23A3782D' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23A3782D'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -93,6 +93,11 @@
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
   .btn-small { padding: 12px 22px; font-size: 14px; border-radius: 12px; }
+  /* 音声ができるまでのCTA。押せる見た目で何も起きないより、押せない見た目で
+     理由を出す方が親切。音声ができたら、この class ごと使わなくなる。 */
+  .btn-soon { background: transparent; border: 2px dashed var(--gold); color: var(--gold);
+              box-shadow: none; cursor: default; }
+  .btn-soon:hover { transform: none; }
 
   /* ---------------- Nav ---------------- */
   /* 2026-08-08: 明るくした本文とのコントラストを出すため、ヘッダーだけ濃色に(Harumi指示) */
@@ -315,7 +320,8 @@
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold btn-small">¥1,000で始める</a>
+    <!-- 音声ができたら、この span を元の <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" ...> に戻す -->
+    <span class="btn btn-soon btn-small">まもなく公開</span>
   </div>
 </header>
 
@@ -328,8 +334,8 @@
     <div class="hero-chips">
       <span>聞く</span><span>声に出す</span><span>文字を見る</span><span>注文する</span>
     </div>
-    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
-    <div class="hero-note">買い切り ・ 追加料金なし ・ スキマ時間で練習</div>
+    <span class="btn btn-soon">まもなく公開します</span>
+    <div class="hero-note">音声を準備しています。もう少しお待ちください。</div>
   </div>
 
   <div class="hero-phone-wrap reveal rd3">
@@ -396,7 +402,7 @@
       <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、店員さんの質問を聞く。声・速度も選べます。</span></div>
       <div class="row"><span class="n">02</span><span class="t">SPEAK ・ 声に出す</span><span class="d">聞き取った質問に、自分の声で英語で答えてみる。</span></div>
       <div class="row"><span class="n">03</span><span class="t">READ ・ 文字を見る</span><span class="d">意味を確認しながら、発音Tipsと基本文法をチェック。</span></div>
-      <div class="row"><span class="n">04</span><span class="t">ANSWER ・ 質問に答える</span><span class="d">本番同様のシミュレーションで、最初から最後まで通して確認。</span></div>
+      <div class="row"><span class="n">04</span><span class="t">CHECK ・ 発音を確かめる</span><span class="d">マイクに向かって言うと、聞こえたとおりの英語が文字で出ます。お手本と見比べて、直すところが分かります。</span></div>
     </div>
   </div>
 </section>
@@ -426,8 +432,8 @@
         <div class="trio-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
-        <h3>本番同様のシミュレーション</h3>
-        <p>店員さんの声を聞き取り、声に出して回答。すべての質問を通過すればゴールという、模擬体験形式です。</p>
+        <h3>マイクで発音チェック</h3>
+        <p>お手本を聞いたあと、マイクに向かって言ってみます。聞こえたとおりの英語が文字で出るので、どこが違うかが目で分かります。</p>
       </div>
     </div>
   </div>
@@ -467,9 +473,9 @@
         <div><span class="ck">✓</span>発音Tips(つながる音・リンキングのコツ)</div>
         <div><span class="ck">✓</span>基本文法の解説</div>
         <div><span class="ck">✓</span>意味確認クイズ</div>
-        <div><span class="ck">✓</span>本番同様のシミュレーション練習</div>
+        <div><span class="ck">✓</span>マイクで発音を確かめる練習</div>
       </div>
-      <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
+      <span class="btn btn-soon" style="width:100%;justify-content:center;">まもなく公開します</span>
     </div>
   </div>
 </section>
@@ -502,7 +508,7 @@
     <span class="eyebrow" style="justify-content:center;">Before You Order</span>
     <h2>海外での外食を、<br>安心して楽しむために。</h2>
     <p class="lede">外食での「聞こえない」「言えない」を、今日から少しずつ減らしていきましょう。</p>
-    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
+    <span class="btn btn-soon">まもなく公開します</span>
   </div>
 </section>
 
