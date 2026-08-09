@@ -101,9 +101,9 @@
     background: var(--navy-deep);
     border-bottom: 1px solid var(--line-light);
   }
-  .site-header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 13px; padding-bottom: 13px; }
+  .site-header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; padding-bottom: 10px; }
   .brand { display: flex; align-items: center; gap: 12px; }
-  .brand-mark { width: 38px; height: 38px; flex-shrink: 0; }
+  .brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
   /* 3つのLPで同じロックアップ: EAR TO VOICE / 耳から、声へ */
   .brand-word { font-family: 'EB Garamond', serif; font-weight: 600; font-size: 17px; letter-spacing: 0.06em; color: var(--cream); line-height: 1.15; }
   /* 「耳から、声へ」は日本語。英字の全大文字用の字間をかけると崩れるし、
@@ -115,12 +115,13 @@
     background:
       radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.16), transparent 65%),
       linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
-    color: var(--ink); text-align: center; padding-top: clamp(56px, 9vw, 100px);
+    color: var(--ink); text-align: center;
+    padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(40px, 6vw, 72px);
   }
   .hero .eyebrow { justify-content: center; color: var(--gold); }
   .hero .eyebrow::before, .hero .eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--gold); }
   .hero .eyebrow { gap: 10px; }
-  .hero h1 { font-size: clamp(2.3rem, 5.5vw, 3.8rem); line-height: 1.3; color: var(--navy-deep); max-width: 780px; margin: 0 auto 22px; }
+  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.3; color: var(--navy-deep); max-width: 780px; margin: 0 auto 22px; }
   .hero .lede { max-width: 560px; margin: 0 auto 34px; font-size: 1.05rem; color: var(--ink-soft); }
   .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 38px; }
   .hero-chips span {
@@ -129,7 +130,7 @@
     box-shadow: var(--shadow-soft);
   }
   .hero-note { font-size: 12.5px; color: var(--ink-soft); margin-top: 16px; }
-  .hero-phone-wrap { display: flex; justify-content: center; margin-top: 56px; }
+  .hero-phone-wrap { display: flex; justify-content: center; margin-top: 40px; }
 
   /* ---------------- Phone mockup ---------------- */
   .phone {
