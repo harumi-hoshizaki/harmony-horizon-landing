@@ -271,6 +271,27 @@
   .rd4 { animation-delay: .5s; } .rd5 { animation-delay: .65s; } .rd6 { animation-delay: .8s; }
 
   :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
+
+  /* ---------------- Mobile readability ---------------- */
+  /* 2026-08-09: 「携帯だと文字が小さく感じる」の指摘(Harumi)。
+     50代以上の読者を想定し、狭い画面では本文・ラベル類を一段階大きくする。 */
+  @media (max-width: 640px) {
+    body { font-size: 17.5px; }
+    .lede { font-size: 1.1rem; }
+    .eyebrow { font-size: 13.5px; }
+    .eyebrow-product { font-size: 14px; }
+    .hero-note { font-size: 13.5px; }
+    .hero-chips span { font-size: 14.5px; }
+    .trio-card p { font-size: 15.5px; }
+    .who-item p { font-size: 16px; }
+    .method-steps .d { font-size: 15.5px; }
+    .price-card .note { font-size: 15.5px; }
+    .price-card .label { font-size: 13.5px; }
+    .price-card .includes div { font-size: 15.5px; }
+    .faq-item summary { font-size: 16px; }
+    .faq-item .a { font-size: 15.5px; }
+    .foot-copy { font-size: 13.5px; }
+  }
 </style>
 </head>
 <body>
