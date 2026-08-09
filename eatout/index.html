@@ -83,8 +83,8 @@
 
   /* ---------------- Buttons ---------------- */
   .btn {
-    display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 999px;
-    font-size: 14.5px; letter-spacing: 0.02em; font-weight: 700; cursor: pointer; border: none;
+    display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 14px;
+    font-size: 16px; letter-spacing: 0.02em; font-weight: 700; cursor: pointer; border: none;
     transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
   }
   .btn-gold { background: var(--gold-bright); color: var(--navy-deep); box-shadow: 0 14px 34px -12px rgba(226,163,61,0.55); }
@@ -92,7 +92,7 @@
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
-  .btn-small { padding: 11px 22px; font-size: 12.5px; }
+  .btn-small { padding: 12px 22px; font-size: 14px; border-radius: 12px; }
 
   /* ---------------- Nav ---------------- */
   /* 2026-08-08: 明るくした本文とのコントラストを出すため、ヘッダーだけ濃色に(Harumi指示) */
@@ -125,7 +125,7 @@
   .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 38px; }
   .hero-chips span {
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px;
-    padding: 10px 20px; font-size: 13.5px; font-weight: 600; color: var(--navy-deep);
+    padding: 10px 20px; font-size: 14.5px; font-weight: 600; color: var(--navy-deep);
     box-shadow: var(--shadow-soft);
   }
   .hero-note { font-size: 12.5px; color: var(--ink-soft); margin-top: 16px; }
@@ -197,7 +197,7 @@
   }
   .method-steps .n { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--gold); }
   .method-steps .t { font-family: var(--font-display); font-weight: 600; font-size: 16px; min-width: 130px; color: var(--navy-deep); }
-  .method-steps .d { flex: 1 1 220px; font-size: 14.5px; color: var(--ink-soft); }
+  .method-steps .d { flex: 1 1 220px; font-size: 15.5px; color: var(--ink-soft); }
 
   /* ---------------- Feature trio ---------------- */
   .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; }
@@ -209,7 +209,7 @@
   }
   .trio-icon svg { width: 20px; height: 20px; }
   .trio-card h3 { font-size: 18px; margin-bottom: 8px; }
-  .trio-card p { font-size: 14.5px; color: var(--ink-soft); margin: 0; }
+  .trio-card p { font-size: 15.5px; color: var(--ink-soft); margin: 0; }
 
   /* ---------------- Who list ---------------- */
   .who-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; margin-top: 36px; }
@@ -223,13 +223,13 @@
     max-width: 460px; margin: 40px auto 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px;
     padding: clamp(32px, 5vw, 44px); text-align: center; box-shadow: var(--shadow-card);
   }
-  .price-card .label { font-size: 12.5px; letter-spacing: 0.14em; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
-  .price-card .product { font-family: var(--font-display); font-weight: 600; font-size: 16px; color: var(--navy-deep); margin-bottom: 18px; }
+  .price-card .label { font-size: 14px; letter-spacing: 0.14em; color: var(--gold); font-weight: 700; margin-bottom: 6px; }
+  .price-card .product { font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--navy-deep); margin-bottom: 18px; }
   .price-card .amount { font-family: var(--font-display); font-weight: 700; font-size: 3.2rem; color: var(--navy-deep); line-height: 1; }
-  .price-card .note { font-size: 14.5px; color: var(--ink-soft); margin: 8px 0 26px; }
+  .price-card .note { font-size: 15.5px; color: var(--ink-soft); margin: 8px 0 26px; }
   .price-card hr { border: none; height: 1px; background: var(--line); margin-bottom: 24px; }
   .price-card .includes { text-align: left; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
-  .price-card .includes div { display: flex; gap: 10px; font-size: 14.5px; }
+  .price-card .includes div { display: flex; gap: 10px; font-size: 15.5px; }
   .price-card .includes .ck { color: var(--gold); font-weight: 700; }
 
   /* ---------------- FAQ ---------------- */
@@ -237,12 +237,12 @@
   .faq-item { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
   .faq-item summary {
     list-style: none; cursor: pointer; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;
-    font-weight: 700; font-size: 15px; color: var(--navy-deep);
+    font-weight: 700; font-size: 16px; color: var(--navy-deep);
   }
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item summary .sign { color: var(--gold); font-size: 18px; font-weight: 400; transition: transform 0.25s ease; }
   .faq-item[open] summary .sign { transform: rotate(45deg); }
-  .faq-item .a { padding: 0 22px 20px; font-size: 14.5px; color: var(--ink-soft); line-height: 1.85; }
+  .faq-item .a { padding: 0 22px 20px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; }
 
   /* ---------------- CTA band ---------------- */
   .cta-band { text-align: center; }
@@ -274,22 +274,26 @@
 
   /* ---------------- Mobile readability ---------------- */
   /* 2026-08-09: 「携帯だと文字が小さく感じる」の指摘(Harumi)。
-     50代以上の読者を想定し、狭い画面では本文・ラベル類を一段階大きくする。 */
+     50代以上の読者を想定し、狭い画面では本文・ラベル類を一段階大きくする。
+     2026-08-09 追記: 白背景カード内の文字がまだ小さいとの指摘を受け、再度引き上げ。 */
   @media (max-width: 640px) {
     body { font-size: 17.5px; }
     .lede { font-size: 1.1rem; }
     .eyebrow { font-size: 13.5px; }
     .eyebrow-product { font-size: 14px; }
     .hero-note { font-size: 13.5px; }
-    .hero-chips span { font-size: 14.5px; }
-    .trio-card p { font-size: 15.5px; }
+    .hero-chips span { font-size: 15.5px; }
+    .btn { font-size: 17px; }
+    .btn-small { font-size: 15px; }
+    .trio-card p { font-size: 16.5px; }
     .who-item p { font-size: 16px; }
-    .method-steps .d { font-size: 15.5px; }
-    .price-card .note { font-size: 15.5px; }
-    .price-card .label { font-size: 13.5px; }
-    .price-card .includes div { font-size: 15.5px; }
-    .faq-item summary { font-size: 16px; }
-    .faq-item .a { font-size: 15.5px; }
+    .method-steps .d { font-size: 16.5px; }
+    .price-card .label { font-size: 15px; }
+    .price-card .product { font-size: 18px; }
+    .price-card .note { font-size: 16.5px; }
+    .price-card .includes div { font-size: 16.5px; }
+    .faq-item summary { font-size: 17px; }
+    .faq-item .a { font-size: 16.5px; }
     .foot-copy { font-size: 13.5px; }
   }
 </style>
