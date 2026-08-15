@@ -177,6 +177,28 @@
     border-radius: 12px; padding: 12px 14px; font-size: 11.5px; color: var(--ink);
   }
   .ph-check .box { width: 15px; height: 15px; border: 1.5px solid var(--line); border-radius: 4px; flex-shrink: 0; }
+  /* Current app UI (2026-08-15 espresso build): step pill header + multiple-choice
+     quiz options with a highlighted correct answer, replacing the old
+     pattern-selector + single-checkbox layout above. */
+  .ph-step-bar {
+    display: flex; align-items: center; justify-content: space-between; background: var(--navy-deep); color: var(--cream);
+    border-radius: 12px; padding: 10px 14px; margin-bottom: 16px;
+  }
+  .ph-step-bar .ph-q-icon {
+    width: 22px; height: 22px; border-radius: 50%; background: rgba(250,243,230,0.14); color: var(--cream);
+    display: inline-flex; align-items: center; justify-content: center; font-size: 11px; margin-right: 8px;
+  }
+  .ph-step-bar .ph-step-label { font-size: 9px; letter-spacing: 0.12em; color: var(--gold-bright); font-weight: 700; }
+  .ph-step-bar .ph-step-title { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; }
+  .ph-step-bar .ph-step-count { font-size: 12px; color: var(--cream); opacity: 0.85; }
+  .ph-options { display: flex; flex-direction: column; gap: 8px; }
+  .ph-opt {
+    display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid var(--line);
+    border-radius: 12px; padding: 12px 14px; font-size: 11.5px; line-height: 1.5; color: var(--ink);
+  }
+  .ph-opt .box { width: 18px; height: 18px; border: 1.5px solid var(--line); border-radius: 5px; flex-shrink: 0; }
+  .ph-opt.correct { background: #EFF7EE; border-color: #6FA46A; }
+  .ph-opt.correct .box { background: #4E9349; border-color: #4E9349; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
 
   /* ---------------- Problem ---------------- */
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
@@ -337,36 +359,40 @@
     <div class="phone">
       <div class="phone-screen">
         <div class="ph-row">
-          <span class="ph-eyebrow">TAKING YOUR ORDER</span>
+          <span class="ph-eyebrow">WALKING IN</span>
           <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">1 / 3</span>
         </div>
         <div class="ph-row">
-          <span class="ph-title">注文を聞かれる</span>
+          <span class="ph-title">入店のあいさつ</span>
           <span class="ph-back">← 一覧に戻る</span>
         </div>
         <div class="ph-hr"></div>
-        <div class="ph-center">
-          <div class="ph-hint">3つの質問パターンを聞こう</div>
-          <div class="ph-pattern">
-            <span class="on">1</span><span>2</span><span>3</span>
-          </div>
+        <div class="ph-step-bar">
+          <span><span class="ph-q-icon">?</span></span>
+          <span style="flex:1;">
+            <span class="ph-step-label">STEP 01</span><br>
+            <span class="ph-step-title">聞き取り練習</span>
+          </span>
+          <span class="ph-step-count">1 / 3</span>
         </div>
-        <div class="ph-howto"><span><span class="q">?</span>この画面の使い方</span><span>›</span></div>
         <div class="ph-tap">タップして音声を聞きましょう</div>
         <div class="ph-speaker-wrap">
-          <div class="ph-speaker">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF3E6" stroke="none"/>
+          <div class="ph-speaker" style="background:var(--gold-bright);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
               <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
             </svg>
           </div>
         </div>
         <div class="ph-toggles">
-          <div class="ph-toggle"><span>女性の声</span><span class="on">男性の声</span></div>
+          <div class="ph-toggle"><span class="on">女性の声</span><span>男性の声</span></div>
           <div class="ph-toggle"><span class="on">ふつう 1.0x</span><span>ゆっくり 0.7x</span></div>
         </div>
-        <div class="ph-q">この質問は何を聞いていますか?</div>
-        <div class="ph-check"><span class="box"></span>何にしますか?</div>
+        <div class="ph-q">いま、何と言われましたか?</div>
+        <div class="ph-options">
+          <div class="ph-opt"><span class="box"></span>ミルクは何にしますか?</div>
+          <div class="ph-opt correct"><span class="box">✓</span>「こんにちは、元気ですか?」— いちばんよく聞くあいさつ</div>
+        </div>
       </div>
     </div>
   </div>
