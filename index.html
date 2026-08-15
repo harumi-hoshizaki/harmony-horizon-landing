@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Harmony Horizon — Find Your Voice. Connect with the World. | HARU</title>
-<meta name="description" content="Harmony Horizon is a personal English coaching practice by HARU — 25+ years between Japan and Canada, built around listening, pronunciation, and confidence.">
+<meta name="description" content="Harmony Horizon is a personal English lesson practice by HARU — 25+ years between Japan and Canada, built around listening, pronunciation, and confidence.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500&family=Caveat:wght@500;600&family=Inter:wght@400;500;600;700&family=Noto+Serif+JP:wght@500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -343,8 +343,8 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
 .trio-item::before { content: ''; position: absolute; top: 0; left: 0; width: 44px; height: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-bright)); }
 
 /* Programs */
-.program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 68px; }
-@media (max-width: 980px) { .program-grid { grid-template-columns: 1fr; } }
+.program-grid { display: flex; justify-content: center; margin-top: 68px; }
+.program-grid .program-card { max-width: 420px; width: 100%; }
 .program-card {
   background: var(--navy-deep); color: var(--cream); border-radius: 8px; padding: 48px 38px;
   display: flex; flex-direction: column; gap: 18px; position: relative; overflow: hidden;
@@ -550,28 +550,13 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   <div class="container">
     <div class="reveal center" style="max-width:600px;">
       <span class="eyebrow">Programs</span>
-      <h2>Choose Your <em>Journey</em></h2>
-      <p class="jp">あなたの目的に合わせた、3つの学びの道。</p>
+      <h2>Your <em>Journey</em></h2>
+      <p class="jp">あなたの目的に合わせた、学びの道。</p>
     </div>
     <div class="program-grid">
-      <div class="program-card reveal">
-        <span class="num">01</span>
-        <span class="eyebrow program-eyebrow">Foundation</span>
-        <h3>Confidence Up Booster</h3>
-        <p class="jp">聞く力・発音の土台を整え、話す自信を育てるプログラム。</p>
-        <a href="programs.html" class="program-link">Learn more <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
       <div class="program-card featured reveal">
-        <span class="num">02</span>
-        <span class="eyebrow program-eyebrow">Adventure</span>
-        <h3>Survival English for Travelers</h3>
-        <p class="jp">海外旅行を、もっと自由に、もっと楽しく。実践英語プログラム。</p>
-        <a href="programs.html" class="program-link">Learn more <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-      </div>
-      <div class="program-card reveal">
-        <span class="num">03</span>
         <span class="eyebrow program-eyebrow">Personal</span>
-        <h3>Personalized English Coaching</h3>
+        <h3>Personalized English Lessons</h3>
         <p class="jp">あなただけの目標に合わせた、完全個別のマンツーマン指導。</p>
         <a href="programs.html" class="program-link">Learn more <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
@@ -628,7 +613,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
           <span class="logo-mark-img" aria-hidden="true"></span>
       <span class="brand-word">Harmony Horizon</span>
         </div>
-        <p class="small" style="margin-top:10px;max-width:260px;">A personal English coaching practice by HARU. Montréal, Canada.</p>
+        <p class="small" style="margin-top:10px;max-width:260px;">A personal English lesson practice by HARU. Montréal, Canada.</p>
       </div>
       <nav class="footer-links">
         <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a>
