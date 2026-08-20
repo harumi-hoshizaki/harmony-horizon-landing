@@ -191,15 +191,21 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 /* お手本を聞く。上の大きい丸(店員の音声)とは役割が違うので、
    同じ丸にはせず、一回り小さい横長のボタンにして区別する */
 /* 上の音声ブロックを後半で消したので、速さの切り替えもここに移した。
-   状態を持つトグルにはせず、押した方が鳴るだけの2つのボタンにする */
-.rv-listen{display:flex;justify-content:center;align-items:stretch;gap:8px;margin-top:15px}
-.rv-play,.rv-slow{display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  min-height:50px;padding:0 20px;border-radius:999px;cursor:pointer;
+   状態を持つトグルにはせず、押した方が鳴るだけの2つにする。
+   横に並べると375pxで「ゆっく/り」と折り返したので、縦に置き、
+   「ゆっくり」は文字リンクにした。主役は「お手本を聞く」の方で、
+   速さは要る人だけが押す —— 見た目の重さも、その順番に合わせる。 */
+.rv-listen{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:15px}
+.rv-play{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:50px;padding:0 22px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  background:var(--navy-deep);color:var(--cream);border:none;
   font-family:var(--font-body);font-size:1.02rem;font-weight:700;
   -webkit-tap-highlight-color:transparent;transition:transform .08s ease}
-.rv-play{background:var(--navy-deep);color:var(--cream);border:none}
-.rv-slow{background:#FFFFFF;color:var(--ink);border:1.5px solid var(--line)}
-.rv-play:active,.rv-slow:active{transform:scale(.97)}
+.rv-slow{background:none;border:none;cursor:pointer;white-space:nowrap;
+  font-family:var(--font-body);font-size:.96rem;font-weight:700;color:var(--hold);
+  text-decoration:underline;text-underline-offset:4px;padding:4px 8px;
+  -webkit-tap-highlight-color:transparent}
+.rv-play:active{transform:scale(.97)}
 .rv-play svg{width:21px;height:21px;flex:none}
 .rv-play.playing,.rv-slow.playing{animation:rvring 1.1s ease-out infinite}
 @keyframes rvring{0%{box-shadow:0 0 0 0 rgba(226,163,61,.55)}
@@ -562,11 +568,19 @@ var QUIZ = [
     ansSrc: 'audio/a_drink_justwater_please',
     en: 'Just water, please.',
     ja: 'お水だけ、お願いします。',
-    note: '「〜だけ」は <b>just</b>。長い文はいりません。' +
-          'Q2で選んだのと同じ言い方です。日本語からでも、出てきましたか。',
+    /* ★2026-08-20 Harumi。解説を短い一言に差し替え。
+       英文・和訳・お手本・コツは、上の公開カードに全部出ている。
+       ここで説明を足すと、同じことを二度言うことになる。
+       praise:true = この一言は「言えた」を押した人にだけ出す。
+       「まだ言えない」に「やったー」を出したら嘘になるため
+       (showFb 参照)。 */
+    note: 'やったー。さすがです！',
+    praise: true,
     tips: [
+      '<b>【消えるT】</b>"Just" の最後の t は破裂させず、' +
+      '舌をtの位置で止めて、次の "water" につなげます。',
       '<b>【Flap T】</b>"water" の t は「ら行」の音に変身します。' +
-      '「じゃすと うぉーたー」ではなく <b>「じゃすっわらー」</b> と一息で言い、' +
+      '2つ合わせて「じゃすと うぉーたー」ではなく <b>「じゃすっわらー」</b> と一息で。' +
       '最後に <b>please</b>（「ぷりーz」）を添えます。'
     ]
   },
@@ -581,10 +595,13 @@ var QUIZ = [
        I’m good は「他にご注文は？」への返事(本体 key: else_imgood)。
        待ち時間に対して言うと「いえ、結構です」= 帰ります、になる。
        取り違えやすいところなので、そのまま解説にした。 */
-    note: '日本語の「大丈夫です」は、<b>「はい、それでいいです」</b>と<b>「いいえ、けっこうです」</b>の' +
-          'どちらにも使えます。英語では、どちらなのかを決めて言わないと伝わりません。' +
-          'ここで <b>I’m good.</b> と言うと「いえ、結構です」＝<b>待たずに帰ります</b>、' +
-          'の意味に取られます。待つなら <b>That’s fine, we’ll wait.</b> です。',
+    /* ★2026-08-20 Harumi「これは非常に混乱させます。削除して」。
+       前は「大丈夫です」の両義性と I’m good. の誤読を並べていた。
+       広告で初めて触る人に、否定形の説明を2つ重ねるのは重すぎた。
+       文面はHarumi指定のとおり、この文がどう組み立っているかだけを言う。 */
+    note: '<b>fine</b> は、「大丈夫です」という意味です。' +
+          '「私たちは待ちますよ」という未来形で、<b>We’ll wait</b> と言います。' +
+          '他にも言い方はたくさんあります。一つの例ですよ。',
     tips: [
       '<b>【機能語の弱形】</b>"we’ll" は「うぃー うぃる」ではなく <b>「ぅぃぅ」</b>。' +
       'Q3の "It’ll" と同じで、will は<b>「ぅ」</b>のような音になります。'
@@ -742,7 +759,7 @@ function buildReveal(q) {
       var slow = document.createElement('button');
       slow.className = 'rv-slow';
       slow.type = 'button';
-      slow.textContent = 'ゆっくり';
+      slow.textContent = 'ゆっくり聞く';
       /* 上のトグルを後半では消したので、速さはここで選ぶ。
          状態は持たせない —— 押した方が鳴るだけにして、
          「今どっちだったか」を覚えなくていいようにする。 */
@@ -821,12 +838,15 @@ function showFb(kind) {
     notyet: ['hold', HOLD, 'ここが、伸びしろ。']
   }[kind];
   var full = (kind === 'ok' || kind === 'ng');
+  /* praise の一言(「やったー。さすがです！」)は、できた人にだけ。
+     「まだ言えない」を正直に押した人に出したら嘘になる。 */
+  var showNote = !!q.note && !(q.praise && kind === 'notyet');
 
   $('fb').innerHTML =
     '<div class="fb ' + head[0] + '">' +
       '<p class="verdict">' + head[1] + head[2] + '</p>' +
       (full ? '<p class="en">' + q.en + '</p><p class="ja">' + q.ja + '</p>' : '') +
-      '<p class="note">' + q.note + '</p>' +
+      (showNote ? '<p class="note">' + q.note + '</p>' : '') +
       (full ? tipsHtml(q) : '') +
       '<button class="btn" id="next" type="button">' +
         (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
