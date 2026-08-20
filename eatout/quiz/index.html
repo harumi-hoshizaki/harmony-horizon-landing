@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>海外のカフェで、これ聞かれたら答えられる？ — 1分の無料クイズ</title>
+<meta name="description" content="海外のカフェ・レストランで実際に言われる英語を3問。音声を聞いて、答えてみてください。約1分・無料・登録なし。">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="海外のカフェで、これ聞かれたら答えられる？">
+<meta property="og:description" content="音声を聞いて、答えてみてください。約1分・無料。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=EB+Garamond:wght@600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   Eat Out — 広告からの着地専用クイズ  /eatout/quiz
+   2026-08-20
+
+   LPの中にある体験ウィジェット(#try)とは役割が違う。
+     LP      … 商品を調べに来た人向け。途中に体験が挟まる
+     このページ … 広告から「クイズをやりに」来た人向け。いきなり始まる
+   LPのウィジェットは残したまま、こちらを別に置く。
+
+   配色・書体はLP(eatout/index.html)の :root をそのまま持ってくる。
+   広告の着地なので、LPより「音声ボタン・4択・正解の合図・CTA」だけを
+   一段大きくしている。それ以外は変えない。
+
+   音声はLPのウィジェットと同じく HTMLAudio で鳴らす。
+   ただし「ゆっくり」に playbackRate は使わない。アプリ側で
+   ffmpeg(atempo)で作った _slow.mp3 を用意してあるので、そちらを鳴らす。
+   playbackRate は音程がずれるうえ、iOSで無音になる個体がある。
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --navy-deep:  #1D1610;
+  --navy:       #2B2018;
+  --cream:      #FAF3E6;
+  --cream-soft: #F1E4CC;
+  --gold:       #A3782D;
+  --gold-bright:#E2A33D;
+  --ink:        #241F1A;
+  --ink-soft:   #6B5F4E;
+  --line:       rgba(43, 32, 24, 0.13);
+  --shadow-card:0 30px 70px -24px rgba(29, 22, 16, 0.22);
+  --ok:#2E6B45; --ok-line:#6FA46A; --ok-bg:#EFF7EE;
+  --ng:#8E3B2C; --ng-line:#D98888; --ng-bg:#FBEAEA;
+  --font-display:'Zen Kaku Gothic New', sans-serif;
+  --font-body:   'Zen Kaku Gothic New', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--font-body);
+  font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;min-height:100vh}
+main{max-width:520px;margin:0 auto;
+  padding:max(18px,env(safe-area-inset-top)) 22px calc(48px + env(safe-area-inset-bottom))}
+.screen{display:none} .screen.on{display:block}
+.center{text-align:center}
+
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--gold)}
+h1{font-family:var(--font-display);font-weight:900;color:var(--navy-deep);
+  font-size:clamp(1.66rem,7.2vw,2.15rem);line-height:1.44;letter-spacing:.01em}
+h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
+  font-size:1.34rem;line-height:1.5}
+.lede{font-size:1.06rem;color:var(--ink-soft);margin-top:14px;line-height:1.85}
+
+/* 広告なのでCTAは本体より一段大きく */
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  min-height:64px;border:none;border-radius:999px;cursor:pointer;text-decoration:none;
+  background:var(--gold-bright);color:var(--navy-deep);
+  box-shadow:0 14px 34px -12px rgba(226,163,61,.55);
+  font-family:var(--font-body);font-size:1.16rem;font-weight:700;letter-spacing:.02em;
+  transition:transform .08s ease;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.98)}
+.tlink{display:inline-block;font-size:1rem;color:var(--gold);text-decoration:underline;
+  text-underline-offset:4px;cursor:pointer;background:none;border:none;
+  font-family:var(--font-body)}
+
+/* ── ファーストビュー ── */
+.hero{padding-top:clamp(34px,10vh,80px);text-align:center}
+.hero h1{margin-top:12px}
+.hero .sub{margin-top:20px;font-size:1.1rem;color:var(--ink-soft)}
+.hero .btn{margin-top:30px}
+.hero .fine{margin-top:14px;font-size:.9rem;letter-spacing:.06em;color:var(--ink-soft)}
+.cup{font-size:2.4rem;line-height:1}
+
+/* ── 進み具合 ── */
+.steps{display:flex;align-items:center;gap:8px;padding:2px 0 22px}
+.steps i{flex:1;height:4px;border-radius:999px;background:var(--line)}
+.steps i.on{background:var(--gold-bright)}
+.steps span{font-size:.84rem;letter-spacing:.08em;color:var(--ink-soft);font-weight:700}
+
+/* ── 音声（LPの .trial-speaker を大きくしたもの） ── */
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:22px;
+  padding:clamp(24px,5vw,32px) clamp(20px,4vw,26px);box-shadow:var(--shadow-card)}
+.tag{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--gold);font-weight:700;text-align:center}
+.speaker{width:104px;height:104px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--gold-bright);display:flex;align-items:center;justify-content:center;
+  margin:20px auto 0;box-shadow:0 16px 34px -12px rgba(29,22,16,.5);
+  transition:transform .1s ease;-webkit-tap-highlight-color:transparent}
+.speaker:active{transform:scale(.95)}
+.speaker svg{width:40px;height:40px}
+.speaker.playing{animation:ring 1.1s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 16px 34px -12px rgba(29,22,16,.5),0 0 0 0 rgba(226,163,61,.5)}
+  100%{box-shadow:0 16px 34px -12px rgba(29,22,16,.5),0 0 0 20px rgba(226,163,61,0)}}
+@media (prefers-reduced-motion:reduce){.speaker.playing{animation:none}}
+.hint{margin-top:14px;font-size:.94rem;font-weight:700;color:var(--ink-soft);text-align:center}
+
+.toggles{display:flex;flex-direction:column;gap:10px;margin:18px 0 0}
+.toggle{display:flex;border:1px solid var(--line);border-radius:999px;
+  overflow:hidden;background:#FFFFFF}
+.toggle button{flex:1;border:none;background:transparent;padding:12px 8px;
+  font-family:var(--font-body);font-size:.96rem;font-weight:700;color:var(--ink-soft);
+  cursor:pointer;transition:background .15s ease,color .15s ease;
+  -webkit-tap-highlight-color:transparent}
+.toggle button.on{background:var(--navy-deep);color:var(--cream);border-radius:999px}
+
+/* ── 4択（広告なので大きく） ── */
+.q-title{margin-top:26px;padding-top:24px;border-top:1px solid var(--line);
+  font-family:var(--font-display);font-weight:700;font-size:1.14rem;
+  color:var(--navy-deep);text-align:center;line-height:1.55}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.opt{display:flex;align-items:center;gap:13px;width:100%;min-height:62px;
+  padding:13px 16px;border-radius:14px;cursor:pointer;text-align:left;
+  background:#FFFFFF;border:1.5px solid var(--line);color:var(--ink);
+  font-family:var(--font-body);font-size:1.05rem;line-height:1.5;
+  transition:border-color .2s ease;-webkit-tap-highlight-color:transparent}
+.opt .k{flex:none;width:29px;height:29px;border-radius:50%;border:1.5px solid var(--line);
+  font-size:.86rem;font-weight:700;color:var(--ink-soft);
+  display:flex;align-items:center;justify-content:center}
+.opt:disabled{cursor:default}
+.opt.correct{background:var(--ok-bg);border-color:var(--ok-line);border-width:2.5px}
+.opt.correct .k{background:var(--ok-line);border-color:var(--ok-line);color:#fff}
+.opt.wrong{background:var(--ng-bg);border-color:var(--ng-line);border-width:2.5px}
+.opt.wrong .k{background:var(--ng-line);border-color:var(--ng-line);color:#fff}
+.opt.dim{opacity:.45}
+
+/* ── 正解／不正解 ── */
+.fb{margin-top:20px;border-radius:18px;padding:20px;border:1.5px solid}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok-line)}
+.fb.ng{background:var(--ng-bg);border-color:var(--ng-line)}
+.fb .verdict{display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:1.24rem;font-weight:900}
+.fb.ok .verdict{color:var(--ok)} .fb.ng .verdict{color:var(--ng)}
+.fb .verdict svg{width:23px;height:23px;stroke:currentColor;stroke-width:2.6;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;flex:none}
+.fb .en{margin-top:12px;font-size:1.22rem;font-weight:700;color:var(--navy-deep);
+  line-height:1.55}
+.fb .en u{text-decoration:none;background:linear-gradient(transparent 58%,#F5DFA8 58%);
+  padding:0 1px}
+.fb .ja{margin-top:4px;font-size:1.02rem;color:var(--ink-soft)}
+.fb .note{margin-top:14px;padding-top:14px;border-top:1px solid rgba(43,32,24,.14);
+  font-size:1rem;line-height:1.8;color:var(--ink)}
+.fb .note b{color:var(--navy-deep);font-weight:700}
+.fb .btn{margin-top:20px}
+
+/* ── 結果 ── */
+.score{font-size:1rem;letter-spacing:.1em;color:var(--ink-soft);font-weight:700}
+.score b{font-family:var(--font-display);font-size:2.5rem;font-weight:900;
+  color:var(--navy-deep);letter-spacing:0}
+.sell{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+.sell ul{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:11px}
+.sell li{display:flex;gap:11px;font-size:1.02rem;color:var(--ink);line-height:1.6}
+.sell li svg{width:19px;height:19px;flex:none;margin-top:5px;stroke:var(--gold);
+  stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.price{margin-top:24px;display:flex;align-items:baseline;gap:12px}
+.price b{font-family:var(--font-display);font-size:2.1rem;font-weight:900;
+  color:var(--navy-deep)}
+.price span{font-size:.9rem;letter-spacing:.04em;color:var(--ink-soft)}
+.foot{margin-top:38px;text-align:center;font-size:.84rem;color:var(--ink-soft)}
+.foot a{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<main>
+
+<!-- ══════════ ファーストビュー ══════════ -->
+<section class="screen on" id="s-intro">
+  <div class="hero">
+    <p class="cup">☕️</p>
+    <h1>海外のカフェで、<br>これ聞かれたら<br>答えられる？</h1>
+    <p class="sub">音声を聞いて、答えてみてください。</p>
+    <button class="btn" id="start" type="button">START QUIZ</button>
+    <p class="fine">約1分 ・ 無料 ・ 登録なし</p>
+  </div>
+</section>
+
+<!-- ══════════ 出題 ══════════ -->
+<section class="screen" id="s-quiz">
+  <div class="steps">
+    <i id="st1"></i><i id="st2"></i><i id="st3"></i><span id="stn">1 / 3</span>
+  </div>
+
+  <div class="card">
+    <p class="tag" id="tag">☕ Café Challenge</p>
+
+    <button class="speaker" id="play" type="button" aria-label="音声を聞く">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
+        <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+      </svg>
+    </button>
+    <p class="hint">🎧 タップして音声を聞く</p>
+
+    <div class="toggles" role="group" aria-label="声と速度の設定">
+      <div class="toggle">
+        <button type="button" class="on" data-voice="f">女性の声</button>
+        <button type="button" data-voice="m">男性の声</button>
+      </div>
+      <div class="toggle">
+        <button type="button" class="on" data-rate="1">ふつう 1.0x</button>
+        <button type="button" data-rate="0.7">ゆっくり 0.7x</button>
+      </div>
+    </div>
+
+    <p class="q-title" id="qlead"></p>
+    <div class="opts" id="opts"></div>
+    <div id="fb"></div>
+  </div>
+</section>
+
+<!-- ══════════ 結果 ══════════ -->
+<section class="screen" id="s-done">
+  <div class="center" style="padding-top:24px">
+    <span class="eyebrow">Your result</span>
+    <p class="score" style="margin-top:14px"><b id="sc">0</b> / 3 問正解</p>
+    <h2 id="sc-word" style="margin-top:12px"></h2>
+    <p class="lede" style="max-width:25em;margin-left:auto;margin-right:auto" id="sc-note"></p>
+  </div>
+
+  <div class="sell">
+    <span class="eyebrow">Ear to Voice</span>
+    <h2 style="margin-top:10px">海外で「え？今なんて言った？」を減らす。</h2>
+    <p class="lede">カフェ・レストランで実際によく使われる英語を、
+      <b style="color:var(--navy-deep)">聞く → 考える → 話す → チェック</b> の流れで練習できます。</p>
+    <ul>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>167フレーズ収録</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>ネイティブ音声（女性・男性）</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>通常速度・ゆっくり速度</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>つながる音・発音のTips</li>
+      <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>マイクでの発音チェック</li>
+    </ul>
+    <div class="price"><b>¥1,000</b><span>買い切り ・ 追加料金なし</span></div>
+    <a class="btn" style="margin-top:22px" id="buy"
+       href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout_quiz"
+       target="_blank" rel="noopener">もっと本番形式で練習する →</a>
+    <p class="center" style="margin-top:18px">
+      <button class="tlink" id="again" type="button">もう一度クイズをやる</button></p>
+    <p class="foot">© 2026 Harmony Horizon ・
+      <a href="/eatout/">Eat Out について詳しく見る</a></p>
+  </div>
+</section>
+
+</main>
+
+<script>
+'use strict';
+/* ══════════════════════════════════════════════════════════════
+   3問。すべてEat Outアプリ本体に実在するフレーズ・音声。
+   idは本体のものをそのまま使い、あとで照合できるようにしてある。
+
+   ダミーの選択肢だけは本体に無いのでここで書いた。本体は他の問題の
+   meaningJa から自動生成しているが、ここには3問しか無いので使えない。
+   Q3のダミーは「20分/2時間」「分/ドル」と数字と単位を近づけてある。
+   about a の t が「ら行」に化けるのを聞き取れたかどうかが出るように。
+   ══════════════════════════════════════════════════════════════ */
+var QUIZ = [
+  {
+    id: 'size_02', tag: '☕ Café Challenge',
+    lead: '今、何と言われましたか？',
+    src: 'audio/q_size_02_',
+    en: 'For here or <u>to go</u>?',
+    ja: '店内ですか？お持ち帰りですか？',
+    opts: ['お飲み物はいかがですか？',
+           '店内ですか？お持ち帰りですか？',
+           '他にご注文はありますか？',
+           'お名前は何ですか？'],
+    ans: 1,
+    note: '北米のカフェでいちばん多い質問です。<b>Yes / No では答えられません。</b>' +
+          '「A or B?」の二択なので、<b>For here.</b>（店内で）か <b>To go.</b>（持ち帰りで）と答えます。'
+  },
+  {
+    id: 'drink_04', tag: '🍽 Restaurant Challenge',
+    lead: 'あなたなら、何と答えますか？',
+    src: 'audio/q_drink_04_',
+    en: 'Can I start you off with <u>something to drink</u>?',
+    ja: 'まず、お飲み物はいかがですか？',
+    opts: ['Just water, please.',
+           'For here, please.',
+           'That’s all, thank you.',
+           'I’m looking at the menu.'],
+    ans: 0,
+    note: '席についてすぐ、いちばん最初に聞かれる質問です。' +
+          '<b>start you off</b> は「まず最初に」。長い文はいりません。' +
+          '<b>Just water, please.</b>（お水だけで）で十分伝わります。'
+  },
+  {
+    id: 'seat_05', tag: '🍽 Restaurant Challenge',
+    lead: '今、何と言われた？',
+    src: 'audio/q_seat_05_',
+    en: 'It’ll be <u>about a</u> 20-minute wait.',
+    ja: '20分ほど、お待ちいただくことになります。',
+    opts: ['20分ほど、お待ちいただきます。',
+           '2時間ほど、お待ちいただきます。',
+           '20ドルのお会計になります。',
+           '20分後に、また来てください。'],
+    ans: 0,
+    note: '<b>about a</b> の t は、母音にはさまれると「ら行」に化けます。' +
+          '「アバウト・ア」ではなく <b>「あばぅら」</b>。' +
+          '単語はどれも知っているのに聞き取れないのは、これが理由です。'
+  }
+];
+
+/* ── 音声 ─────────────────────────────────────────
+   LPの体験ウィジェットと同じく、呼ばれるたびに新しいHTMLAudioを作る。
+   「ゆっくり」に playbackRate は使わない。音程がずれるうえ、iOSで
+   無音になる個体があるため。アプリ側で作った _slow.mp3 を鳴らす。
+   ────────────────────────────────────────────── */
+var cur = null;
+function playClip(src, btn) {
+  try { if (cur) { cur.pause(); cur.currentTime = 0; } } catch (e) {}
+  var a = new Audio(src);
+  cur = a;
+  if (btn) {
+    btn.classList.add('playing');
+    var off = function () { btn.classList.remove('playing'); };
+    a.addEventListener('ended', off);
+    a.addEventListener('error', off);
+  }
+  var p = a.play();
+  if (p && typeof p['catch'] === 'function') {
+    p['catch'](function () { if (btn) btn.classList.remove('playing'); });
+  }
+}
+
+/* ── 進行 ── */
+var idx = 0, score = 0, answered = false, voice = 'f', rate = 1;
+function $(id) { return document.getElementById(id); }
+function show(id) {
+  ['s-intro', 's-quiz', 's-done'].forEach(function (s) { $(s).classList.remove('on'); });
+  $(id).classList.add('on');
+  window.scrollTo(0, 0);
+}
+function srcFor() {
+  var q = QUIZ[idx];
+  return q.src + voice + (rate === 1 ? '' : '_slow') + '.mp3';
+}
+
+function render() {
+  var q = QUIZ[idx];
+  answered = false;
+  $('tag').textContent = q.tag;
+  $('stn').textContent = (idx + 1) + ' / 3';
+  [1, 2, 3].forEach(function (n) { $('st' + n).classList.toggle('on', n <= idx + 1); });
+  $('qlead').textContent = q.lead;
+  $('fb').innerHTML = '';
+
+  var box = $('opts');
+  box.innerHTML = '';
+  q.opts.forEach(function (t, i) {
+    var b = document.createElement('button');
+    b.className = 'opt';
+    b.type = 'button';
+    b.innerHTML = '<span class="k">' + 'ABCD'[i] + '</span><span>' + t + '</span>';
+    b.addEventListener('click', function () { pick(i); });
+    box.appendChild(b);
+  });
+  /* 次の問題の音声を先に取っておく(押した瞬間に鳴るように) */
+  var nx = QUIZ[idx + 1];
+  if (nx) { try { new Audio(nx.src + voice + '.mp3').load(); } catch (e) {} }
+}
+
+function pick(i) {
+  if (answered) return;
+  answered = true;
+  var q = QUIZ[idx];
+  var ok = (i === q.ans);
+  if (ok) { score++; playClip('audio/se-correct.mp3'); }
+
+  var bs = $('opts').querySelectorAll('.opt');
+  for (var n = 0; n < bs.length; n++) {
+    bs[n].disabled = true;
+    if (n === q.ans) bs[n].classList.add('correct');
+    else if (n === i) bs[n].classList.add('wrong');
+    else bs[n].classList.add('dim');
+  }
+
+  var last = (idx === QUIZ.length - 1);
+  $('fb').innerHTML =
+    '<div class="fb ' + (ok ? 'ok' : 'ng') + '">' +
+      '<p class="verdict">' +
+        (ok ? '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Correct!'
+            : '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>Not quite!') +
+      '</p>' +
+      '<p class="en">' + q.en + '</p>' +
+      '<p class="ja">' + q.ja + '</p>' +
+      '<p class="note">' + q.note + '</p>' +
+      '<button class="btn" id="next" type="button">' +
+        (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
+    '</div>';
+  $('next').addEventListener('click', next);
+}
+
+function next() {
+  try { if (cur) cur.pause(); } catch (e) {}
+  if (idx === QUIZ.length - 1) { finish(); return; }
+  idx++;
+  render();
+  window.scrollTo(0, 0);
+}
+
+function finish() {
+  $('sc').textContent = String(score);
+  /* 点数は主役ではない。「本番では、聞いてすぐ答える」という気づきが主役。 */
+  var W = [
+    { h: 'ここからが、面白いところです。',
+      n: '実際の海外旅行では、こういうやり取りが次々に出てきます。相手の英語を聞いて、その場で自分から答えなければいけません。' },
+    { h: '1問、聞き取れました。',
+      n: '単語は知っているのに聞き取れない。英語力ではなく、「つながる音」に耳が慣れていないだけです。' },
+    { h: 'かなり、いい感じです。',
+      n: 'でも本番では、相手の英語を聞いて、すぐに自分で答えなければいけません。しかも、1回きりです。' },
+    { h: '全問正解。すばらしい。',
+      n: '実際のお店では、これが立て続けに来ます。聞き取れることと、その場で答えられることは、別の力です。' }
+  ][score];
+  $('sc-word').textContent = W.h;
+  $('sc-note').textContent = W.n;
+  show('s-done');
+}
+
+/* ── 配線 ── */
+$('start').addEventListener('click', function () {
+  show('s-quiz');
+  render();
+  /* STARTを押した操作の流れなので、1問目はそのまま鳴らせる */
+  playClip(srcFor(), $('play'));
+});
+$('play').addEventListener('click', function () { playClip(srcFor(), $('play')); });
+
+document.querySelectorAll('[data-voice]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    voice = b.getAttribute('data-voice');
+    document.querySelectorAll('[data-voice]').forEach(function (o) {
+      o.classList.toggle('on', o === b);
+    });
+    playClip(srcFor(), $('play'));
+  });
+});
+document.querySelectorAll('[data-rate]').forEach(function (b) {
+  b.addEventListener('click', function () {
+    rate = parseFloat(b.getAttribute('data-rate'));
+    document.querySelectorAll('[data-rate]').forEach(function (o) {
+      o.classList.toggle('on', o === b);
+    });
+    playClip(srcFor(), $('play'));
+  });
+});
+$('again').addEventListener('click', function () {
+  idx = 0; score = 0; show('s-quiz'); render();
+});
+</script>
+</body>
+</html>
