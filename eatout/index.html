@@ -190,7 +190,7 @@
   .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 700; font-size: 14.5px; color: var(--navy-deep); box-shadow: var(--shadow-soft); white-space: nowrap; }
   .flow-steps .arrow { color: var(--gold); font-size: 16px; font-weight: 700; }
 
-  /* ---------------- Coverage chips (167フレーズ) ---------------- */
+  /* ---------------- Coverage chips (13場面) ---------------- */
   .coverage-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 36px 0 22px; }
   .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 700; color: var(--navy-deep); box-shadow: var(--shadow-soft); }
   .coverage-count { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--gold); }
@@ -575,7 +575,7 @@
   </div>
 </section>
 
-<!-- COVERAGE (167フレーズ) -->
+<!-- COVERAGE (13場面) -->
 <section style="background:var(--cream-soft);">
   <div class="container" style="text-align:center;">
     <span class="eyebrow" style="justify-content:center;">What's Inside</span>
@@ -587,7 +587,16 @@
       <span class="chip">💳 お会計</span>
       <span class="chip">👋 退店</span>
     </div>
-    <div class="coverage-count">167のリアルな質問・返答パターン</div>
+    <!-- ★2026-08-20 Harumi「13場面に変えましょう」。
+     それまでは「167フレーズ」。アプリを機械で数えると161で、167は
+     根拠のない数字だった(node scripts/dump-phrases.js で確認できる)。
+     数だけを出すと、同じ値段の「1000フレーズ」本と数で比べられる。
+     Eat Outの強みは範囲の狭さ —— 入店のあいさつから退店まで、
+     カフェ・レストランの13場面だけを、音声2種×2速度＋つながる音＋
+     発音＋マイク判定まで付けて持っていること。場面の数で言えば
+     「少ない」ではなく「その場面を丸ごと」と読める。
+     フレーズの数はもう出さない(増減のたびに嘘になるため)。 -->
+    <div class="coverage-count">入店から退店まで、13場面のリアルな質問・返答</div>
   </div>
 </section>
 
@@ -653,7 +662,7 @@
       <div class="note">買い切り ・ 月額なし ・ 追加料金なし</div>
       <hr>
       <div class="includes">
-        <div><span class="ck">✓</span>カフェ・レストランの頻出フレーズ 167種(複数シーン)</div>
+        <div><span class="ck">✓</span>カフェ・レストランの13場面(入店から退店まで)</div>
         <div><span class="ck">✓</span>ネイティブ音声(男性・女性選択可)</div>
         <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
         <div><span class="ck">✓</span>発音Tips(つながる音・リンキングのコツ)</div>
