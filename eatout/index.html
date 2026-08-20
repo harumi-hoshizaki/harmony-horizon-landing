@@ -324,6 +324,14 @@
 
   :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
 
+  /* 携帯幅だけで追加する改行。PC幅では非表示にし、見出しの改行位置は変えない。
+     携帯では文字が大きくなる分、PC向けの改行のあとの続きがさらに折り返され、
+     単語の途中(「決まってい/ます」等)で不自然に割れてしまうのを防ぐ。 */
+  .br-mobile-only { display: none; }
+  @media (max-width: 640px) {
+    .br-mobile-only { display: inline; }
+  }
+
   /* ---------------- Mobile readability ---------------- */
   /* 2026-08-09: 「携帯だと文字が小さく感じる」の指摘(Harumi)。
      50代以上の読者を想定し、狭い画面では本文・ラベル類を一段階大きくする。
@@ -384,7 +392,7 @@
 <section class="hero">
   <div class="container reveal rd1">
     <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-    <h1>海外のカフェで、<br><em>「え？今なんて言った？」</em>を減らす。</h1>
+    <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を減らす。</h1>
     <p class="lede">英語を読む練習ではなく、実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、旅行前に何度でも練習できます。</p>
     <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
     <div class="hero-note">登録不要 ・ 30秒で終わります</div>
@@ -452,7 +460,7 @@
 
     <div class="confession">
       <p class="lede">知っている単語なのに、会話になると聞き取れない。<br>そして、「Sorry?」「Could you say that again?」と聞き返す。</p>
-      <p class="big-statement" style="margin-top:20px;">でも本当に怖いのは、英語を知らないことではありません。<br>「<em>次に何を聞かれるか分からないこと</em>」。</p>
+      <p class="big-statement" style="margin-top:20px;">でも本当に怖いのは、<br class="br-mobile-only">英語を知らないことでは<br class="br-mobile-only">ありません。<br>「<em>次に何を聞かれるか分からないこと</em>」。</p>
     </div>
   </div>
 </section>
@@ -461,7 +469,7 @@
 <section>
   <div class="container" style="max-width:740px;text-align:center;">
     <span class="eyebrow" style="justify-content:center;">The Truth</span>
-    <h2>実は、飲食店で聞かれることは<br>「ある程度決まっています」。</h2>
+    <h2>実は、飲食店で聞かれることは<br>「ある程度<br class="br-mobile-only">決まっています」。</h2>
     <p class="lede">旅行中に起こる場面を、先回りして練習できます。</p>
     <div class="flow-steps">
       <span class="step">入店</span><span class="arrow">→</span>
@@ -541,7 +549,7 @@
 <section style="background:var(--cream-soft);">
   <div class="container" style="text-align:center;">
     <span class="eyebrow" style="justify-content:center;">What's Inside</span>
-    <h2>これだけ練習しておけば<br>安心。</h2>
+    <h2>これだけ練習して<br class="br-mobile-only">おけば<br>安心。</h2>
     <div class="coverage-chips">
       <span class="chip">☕ カフェ</span>
       <span class="chip">🍔 レストラン</span>
@@ -655,7 +663,7 @@
   <div class="container">
     <span class="eyebrow" style="justify-content:center;">Before You Order</span>
     <p class="cta-lede-pre">旅行当日になってから、練習することはできません。<br>今日、1つ聞いてみる。1つ答えてみる。<br>その積み重ねが、本番の安心につながります。</p>
-    <h2>海外での外食を、<br>安心して楽しむために。</h2>
+    <h2>海外での外食を、<br>安心して<br class="br-mobile-only">楽しむために。</h2>
     <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
     <div class="cta-price-note">¥1,000 ・ 買い切り</div>
   </div>
