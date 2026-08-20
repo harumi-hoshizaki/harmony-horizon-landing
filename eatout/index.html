@@ -678,20 +678,18 @@
   var micBtn = document.getElementById('trialMicBtn');
   var result = document.getElementById('trialResult');
 
-  function speak(text) {
-    if (!('speechSynthesis' in window)) return;
+  var trialAudio = new Audio('audio/trial-for-here-or-to-go.mp3');
+
+  function playTrialClip() {
     try {
-      window.speechSynthesis.cancel();
-      var u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-US';
-      u.rate = 0.95;
-      window.speechSynthesis.speak(u);
+      trialAudio.currentTime = 0;
+      trialAudio.play();
     } catch (e) {}
   }
 
   if (speakBtn) {
     speakBtn.addEventListener('click', function () {
-      speak('For here or to go?');
+      playTrialClip();
       if (!qBlock.classList.contains('show')) {
         qBlock.classList.add('show');
         qBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
