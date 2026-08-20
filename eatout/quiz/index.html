@@ -482,17 +482,15 @@ var QUIZ = [
      iOSの音声セッションの手当てを実機確認できないまま広告の着地ページに
      置くことになるため。CTAの売り文句としては残してある。
 
-     Q4・Q5は前半と同じ場面なので、音声も前半のものを使い回す。
-     Q6だけは新しい場面(Anything else?)。
-     ★2026-08-20 Harumi「I’m goodだったと思います」。最初、Q6の
-     「大丈夫です」を20分待ちへの返事(That’s fine, we’ll wait.)と
-     読んで作っていたが、Harumiが指していたのは「他にご注文は？」への
-     返事の方だった。場面ごと差し替えた。
-     こちらの方が「大丈夫です」の話としても筋が通る —— この場面の
-     「大丈夫です」は、はっきり No から始めないと伝わらないため。
-
+     場面は前半と同じ3つ。店員の音声も前半のものを使い回す。
      答えの英語はすべてアプリ本体の answers にあるもの
-     (togo / justwater / else_imgood)で、Tipsも本体から写した。 */
+     (togo / justwater / thatsokay)で、Tipsも本体から写した。
+
+     Q6の「大丈夫です」について(Harumi「I’m goodだったと思いますが
+     確認お願いします」): I’m good は「他にご注文は？」への返事
+     (本体 key: else_imgood)。20分待ちに対して言うと
+     「いえ、結構です」= 待たずに帰ります、の意味に取られる。
+     取り違えやすいので、そのままQ6の note にしてある。 */
   {
     id: 'togo', part2: true, tag: '☕ Café Challenge',
     /* <br> は折り返し位置の指定。無いと最後の1文字だけが次の行に落ちる(375px) */
@@ -520,19 +518,21 @@ var QUIZ = [
     scene: { en: 'Can I start you off with something to drink?', ja: 'まず、お飲み物はいかがですか？' },
     lead: '「お水だけお願いします」<br>英語で、声に出して言ってみてください。',
     src: 'audio/q_drink_04_',
-    ansSrc: 'audio/a_drink_justwater',   /* 本体 key: justwater のお手本音声 */
-    /* 画面の英文と、お手本の音声で言っている英文は必ず同じにする。
-       本体のお手本は "Just water for me."。Q2の選択肢に出した
-       "Just water, please." には音声が無いので、こちらを表に出し、
-       同じ意味だと note で結ぶ。 */
-    en: 'Just water for me.',
-    ja: '私はお水だけで。',
-    note: '「〜だけ」は <b>just</b>。Q2で選んだ <b>Just water, please.</b> でも同じです。' +
-          'どちらも「お水だけで」。長い文はいりません。' +
-          '日本語からでも、すぐに出てきましたか。',
+    /* ★2026-08-20 Harumi「Just water for me. って普通言いますか？
+       Just water please の方が言うのでは？」。そのとおりで、
+       for me は複数人で「私は水だけ」と区別する時の言い方。
+       本体のフレーズを Just water, please. に直し、音声も作り直した
+       (本体 key: justwater / a_drink_justwater_please)。
+       画面に出す英文と、お手本の音声が言っている英文は必ず一致させる。 */
+    ansSrc: 'audio/a_drink_justwater_please',
+    en: 'Just water, please.',
+    ja: 'お水だけ、お願いします。',
+    note: '「〜だけ」は <b>just</b>。長い文はいりません。' +
+          'Q2で選んだのと同じ言い方です。日本語からでも、出てきましたか。',
     tips: [
       '<b>【Flap T】</b>"water" の t は「ら行」の音に変身します。' +
-      '「じゃすと うぉーたー」ではなく <b>「じゃすっわらー」</b> のように一息で。'
+      '「じゃすと うぉーたー」ではなく <b>「じゃすっわらー」</b> と一息で言い、' +
+      '最後に <b>please</b>（「ぷりーz」）を添えます。'
     ]
   },
   {
