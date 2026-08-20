@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>飲食店の英会話 — Ear to Voice | Harmony Horizon</title>
-<meta name="description" content="北米のカフェ・レストランでの注文、耳で聞き取り声に出して備える Ear to Voice。頻出フレーズをネイティブ音声で練習し、マイクで発音を確かめながら自信をつけます。">
+<meta name="description" content="海外のカフェ・レストランで「え？今なんて言った？」を減らす Ear to Voice。よく聞かれる質問を耳で聞き取り、声に出して、旅行前に何度でも練習できます。">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%232B2018'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%236B5636' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23A3782D' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23A3782D'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -121,15 +121,9 @@
   .hero .eyebrow { justify-content: center; color: var(--gold); }
   .hero .eyebrow::before, .hero .eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--gold); }
   .hero .eyebrow { gap: 10px; }
-  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.3; color: var(--navy-deep); max-width: 780px; margin: 0 auto 22px; }
+  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.4; color: var(--navy-deep); max-width: 780px; margin: 0 auto 22px; }
   .hero .lede { max-width: 560px; margin: 0 auto 34px; font-size: 1.05rem; color: var(--ink-soft); }
-  .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-bottom: 38px; }
-  .hero-chips span {
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px;
-    padding: 10px 20px; font-size: 14.5px; font-weight: 600; color: var(--navy-deep);
-    box-shadow: var(--shadow-soft);
-  }
-  .hero-note { font-size: 12.5px; color: var(--ink-soft); margin-top: 16px; }
+  .hero-note { font-size: 13px; color: var(--ink-soft); margin-top: 16px; }
   .hero-phone-wrap { display: flex; justify-content: center; margin-top: 40px; }
 
   /* ---------------- Phone mockup ---------------- */
@@ -148,38 +142,6 @@
   .ph-title { font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--navy-deep); }
   .ph-back { font-size: 10.5px; color: var(--ink-soft); }
   .ph-hr { height: 1px; background: var(--line); margin: 10px 0 18px; }
-  .ph-center { text-align: center; }
-  .ph-hint { font-size: 12px; font-weight: 700; color: var(--navy-deep); margin-bottom: 10px; }
-  .ph-pattern { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
-  .ph-pattern span {
-    width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-weight: 700; font-size: 14px; background: #FFFFFF; border: 1px solid var(--line); color: var(--navy-deep);
-  }
-  .ph-pattern span.on { background: var(--gold); color: var(--navy-deep); border-color: var(--gold); }
-  .ph-howto {
-    display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border: 1px solid var(--line);
-    border-radius: 12px; padding: 10px 14px; font-size: 11.5px; font-weight: 700; color: var(--navy-deep); margin-bottom: 18px;
-  }
-  .ph-howto .q { width: 18px; height: 18px; border-radius: 50%; background: var(--navy-deep); color: var(--cream); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; margin-right: 8px; }
-  .ph-tap { text-align: center; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 14px; }
-  .ph-speaker-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
-  .ph-speaker {
-    width: 74px; height: 74px; border-radius: 50%; background: var(--navy-deep);
-    display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5);
-  }
-  .ph-toggles { display: flex; gap: 8px; margin-bottom: 18px; }
-  .ph-toggle { flex: 1; display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
-  .ph-toggle span { flex: 1; text-align: center; padding: 8px 6px; font-size: 10px; font-weight: 700; color: var(--ink-soft); }
-  .ph-toggle span.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
-  .ph-q { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--navy-deep); margin-bottom: 10px; }
-  .ph-check {
-    display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid var(--line);
-    border-radius: 12px; padding: 12px 14px; font-size: 11.5px; color: var(--ink);
-  }
-  .ph-check .box { width: 15px; height: 15px; border: 1.5px solid var(--line); border-radius: 4px; flex-shrink: 0; }
-  /* Current app UI (2026-08-15 espresso build): step pill header + multiple-choice
-     quiz options with a highlighted correct answer, replacing the old
-     pattern-selector + single-checkbox layout above. */
   .ph-step-bar {
     display: flex; align-items: center; justify-content: space-between; background: var(--navy-deep); color: var(--cream);
     border-radius: 12px; padding: 10px 14px; margin-bottom: 16px;
@@ -191,6 +153,17 @@
   .ph-step-bar .ph-step-label { font-size: 9px; letter-spacing: 0.12em; color: var(--gold-bright); font-weight: 700; }
   .ph-step-bar .ph-step-title { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; }
   .ph-step-bar .ph-step-count { font-size: 12px; color: var(--cream); opacity: 0.85; }
+  .ph-tap { text-align: center; font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 14px; }
+  .ph-speaker-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
+  .ph-speaker {
+    width: 74px; height: 74px; border-radius: 50%; background: var(--navy-deep);
+    display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5);
+  }
+  .ph-toggles { display: flex; gap: 8px; margin-bottom: 18px; }
+  .ph-toggle { flex: 1; display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
+  .ph-toggle span { flex: 1; text-align: center; padding: 8px 6px; font-size: 10px; font-weight: 700; color: var(--ink-soft); }
+  .ph-toggle span.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
+  .ph-q { font-family: var(--font-display); font-weight: 700; font-size: 13.5px; color: var(--navy-deep); margin-bottom: 10px; }
   .ph-options { display: flex; flex-direction: column; gap: 8px; }
   .ph-opt {
     display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid var(--line);
@@ -200,7 +173,61 @@
   .ph-opt.correct { background: #EFF7EE; border-color: #6FA46A; }
   .ph-opt.correct .box { background: #4E9349; border-color: #4E9349; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
 
-  /* ---------------- Problem ---------------- */
+  /* ---------------- Chat mockup (あるある) ---------------- */
+  .chat-mock { display: flex; flex-direction: column; gap: 16px; max-width: 480px; margin: 36px auto 0; }
+  .chat-row { display: flex; flex-direction: column; gap: 6px; }
+  .chat-row.you { align-items: flex-end; }
+  .chat-row.staff { align-items: flex-start; }
+  .chat-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
+  .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: 16.5px; line-height: 1.6; }
+  .chat-row.staff .chat-bubble { background: #FFFFFF; border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-soft); }
+  .chat-row.you .chat-bubble { background: var(--navy-deep); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
+  .confession { text-align: center; margin-top: 36px; }
+  .confession .highlight { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.3rem, 2.6vw, 1.7rem); color: var(--navy-deep); margin-top: 20px; line-height: 1.6; }
+
+  /* ---------------- Flow diagram ---------------- */
+  .flow-steps { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 6px; margin: 40px 0 0; }
+  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 700; font-size: 14.5px; color: var(--navy-deep); box-shadow: var(--shadow-soft); white-space: nowrap; }
+  .flow-steps .arrow { color: var(--gold); font-size: 16px; font-weight: 700; }
+
+  /* ---------------- Coverage chips (167フレーズ) ---------------- */
+  .coverage-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 36px 0 22px; }
+  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 700; color: var(--navy-deep); box-shadow: var(--shadow-soft); }
+  .coverage-count { text-align: center; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--gold); }
+
+  /* ---------------- Big statement ---------------- */
+  .big-statement { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.35rem, 2.8vw, 1.9rem); color: var(--navy-deep); text-align: center; margin: 44px auto 0; line-height: 1.6; max-width: 620px; }
+
+  /* ---------------- Trial widget ---------------- */
+  .trial-card { max-width: 480px; margin: 36px auto 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); text-align: center; }
+  .trial-tag { font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
+  .trial-speaker-wrap { display: flex; justify-content: center; margin-bottom: 18px; }
+  .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; }
+  .trial-speaker:hover { transform: scale(1.06); }
+  .trial-hint { font-size: 13.5px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+  .trial-q { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .trial-q.show { display: block; }
+  .trial-q-title { font-family: var(--font-display); font-weight: 700; font-size: 16.5px; color: var(--navy-deep); margin-bottom: 16px; }
+  .trial-options { display: flex; flex-direction: column; gap: 10px; }
+  .trial-opt { display: block; width: 100%; text-align: left; background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: var(--font-body); color: var(--ink); cursor: pointer; transition: 0.2s ease; }
+  .trial-opt:hover:not(:disabled) { border-color: var(--gold); }
+  .trial-opt.correct { background: #EFF7EE; border-color: #6FA46A; }
+  .trial-opt.wrong { background: #FBEAEA; border-color: #D98888; }
+  .trial-opt:disabled { cursor: default; }
+  .trial-feedback { margin-top: 16px; font-weight: 700; color: var(--gold); font-size: 15.5px; display: none; }
+  .trial-feedback.show { display: block; }
+  .trial-step2 { display: none; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .trial-step2.show { display: block; }
+  .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 700; margin: 12px 0 20px; }
+  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy-deep); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.25s ease; }
+  .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
+  .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
+  .trial-result { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .trial-result.show { display: block; }
+  .trial-result .nice { font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; color: var(--gold); margin-bottom: 10px; }
+  .trial-cta-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
+
+  /* ---------------- Problem card list (legacy, still used sparingly) ---------------- */
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
   .card-list .item {
     display: flex; gap: 14px; align-items: flex-start; background: #FFFFFF; border-radius: 14px;
@@ -219,7 +246,7 @@
     padding: 16px clamp(18px, 2.5vw, 24px); box-shadow: var(--shadow-soft);
   }
   .method-steps .n { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--gold); }
-  .method-steps .t { font-family: var(--font-display); font-weight: 600; font-size: 16px; min-width: 130px; color: var(--navy-deep); }
+  .method-steps .t { font-family: var(--font-display); font-weight: 600; font-size: 16px; min-width: 150px; color: var(--navy-deep); }
   .method-steps .d { flex: 1 1 220px; font-size: 15.5px; color: var(--ink-soft); }
 
   /* ---------------- Feature trio ---------------- */
@@ -238,7 +265,7 @@
   .who-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; margin-top: 36px; }
   @media (max-width: 700px) { .who-list { grid-template-columns: 1fr; } }
   .who-item { display: flex; gap: 14px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 16px; }
-  .who-item .mark { font-family: var(--font-display); font-style: italic; color: var(--gold); font-size: 1.2rem; min-width: 22px; }
+  .who-item .mark { font-family: var(--font-display); font-weight: 700; color: var(--gold); font-size: 1.2rem; min-width: 22px; }
   .who-item p { margin: 0; font-size: 15px; }
 
   /* ---------------- Price ---------------- */
@@ -279,6 +306,8 @@
   }
   .cta-band.on-dark .eyebrow { color: var(--gold-bright); }
   .cta-band.on-dark .eyebrow::before { background: var(--gold-bright); }
+  .cta-lede-pre { font-size: 15.5px; color: rgba(250,243,230,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
+  .cta-price-note { font-size: 13.5px; color: rgba(250,243,230,0.65); margin-top: 14px; }
 
   /* ---------------- Footer ---------------- */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
@@ -305,7 +334,6 @@
     .eyebrow { font-size: 13.5px; }
     .eyebrow-product { font-size: 14px; }
     .hero-note { font-size: 13.5px; }
-    .hero-chips span { font-size: 15.5px; }
     .btn { font-size: 17px; }
     .btn-small { font-size: 15px; }
     .trio-card p { font-size: 16.5px; }
@@ -319,6 +347,16 @@
     .faq-item summary { font-size: 17px; }
     .faq-item .a { font-size: 16.5px; }
     .foot-copy { font-size: 13.5px; }
+    .chat-bubble { font-size: 17px; }
+    .chat-row.you .chat-bubble { font-size: 22px; }
+    .confession .highlight { font-size: 1.3rem; }
+    .flow-steps .step { font-size: 15px; }
+    .coverage-chips .chip { font-size: 16px; }
+    .big-statement { font-size: 1.35rem; }
+    .trial-q-title { font-size: 17px; }
+    .trial-opt { font-size: 16px; }
+    .trial-prompt-bubble { font-size: 18px; }
+    .cta-lede-pre { font-size: 16px; }
   }
 </style>
 </head>
@@ -346,13 +384,10 @@
 <section class="hero">
   <div class="container reveal rd1">
     <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-    <h1>何回でも、<em>注文できる</em>。</h1>
-    <p class="lede">カフェやレストランで聞かれることは、だいたい決まっています。<br>耳で聞き取り、声に出して、自分のペースで備えましょう。</p>
-    <div class="hero-chips">
-      <span>聞く</span><span>声に出す</span><span>文字を見る</span><span>注文する</span>
-    </div>
-    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
-    <div class="hero-note">買い切り ・ 追加料金なし ・ スキマ時間で練習</div>
+    <h1>海外のカフェで、<br><em>「え？今なんて言った？」</em>を減らす。</h1>
+    <p class="lede">英語を読む練習ではなく、実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、旅行前に何度でも練習できます。</p>
+    <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
+    <div class="hero-note">登録不要 ・ 30秒で終わります</div>
   </div>
 
   <div class="hero-phone-wrap reveal rd3">
@@ -398,18 +433,91 @@
   </div>
 </section>
 
-<!-- PROBLEM -->
+<!-- SOUND FAMILIAR (あるある) -->
 <section style="background:var(--cream-soft);">
-  <div class="container" style="max-width:740px;">
-    <span class="eyebrow">Problem</span>
-    <h2>カフェやレストランでの注文、緊張しませんか?</h2>
-    <p class="lede">英語の勉強はしてきた。でも、</p>
-    <div class="card-list">
-      <div class="item"><span class="dot"></span><p>店員さんの質問が早口で、何を聞かれているか分からない</p></div>
-      <div class="item"><span class="dot"></span><p>単語は知っているのに、いざとなると声が出ない</p></div>
-      <div class="item"><span class="dot"></span><p>練習する機会がないまま、本番を迎えてしまう</p></div>
+  <div class="container" style="max-width:620px;text-align:center;">
+    <span class="eyebrow" style="justify-content:center;">Sound Familiar?</span>
+    <h2>こんな経験、<br>ありませんか?</h2>
+
+    <div class="chat-mock">
+      <div class="chat-row staff">
+        <span class="chat-label">店員</span>
+        <div class="chat-bubble">“Would you like anything to drink?”</div>
+      </div>
+      <div class="chat-row you">
+        <span class="chat-label">あなた</span>
+        <div class="chat-bubble">……😳</div>
+      </div>
     </div>
-    <p class="lede">そんな不安を抱えたまま、旅立ちたくないですよね。<br><br>カフェやレストランで聞かれる質問は、実はある程度決まっています。<br><strong style="color:var(--ink);">「聞き取る力」と「答える練習」</strong>があれば、落ち着いて注文できます。</p>
+
+    <div class="confession">
+      <p class="lede">知っている単語なのに、会話になると聞き取れない。<br>そして、「Sorry?」「Could you say that again?」と聞き返す。</p>
+      <p class="big-statement" style="margin-top:20px;">でも本当に怖いのは、英語を知らないことではありません。<br>「<em>次に何を聞かれるか分からないこと</em>」。</p>
+    </div>
+  </div>
+</section>
+
+<!-- THE TRUTH (解決策+flow) -->
+<section>
+  <div class="container" style="max-width:740px;text-align:center;">
+    <span class="eyebrow" style="justify-content:center;">The Truth</span>
+    <h2>実は、飲食店で聞かれることは<br>「ある程度決まっています」。</h2>
+    <p class="lede">旅行中に起こる場面を、先回りして練習できます。</p>
+    <div class="flow-steps">
+      <span class="step">入店</span><span class="arrow">→</span>
+      <span class="step">注文</span><span class="arrow">→</span>
+      <span class="step">サイズ・種類</span><span class="arrow">→</span>
+      <span class="step">店内 / 持ち帰り</span><span class="arrow">→</span>
+      <span class="step">追加注文</span><span class="arrow">→</span>
+      <span class="step">お会計</span><span class="arrow">→</span>
+      <span class="step">退店</span>
+    </div>
+  </div>
+</section>
+
+<!-- FREE TRIAL -->
+<section id="try" style="background:var(--cream-soft);">
+  <div class="container" style="max-width:520px;text-align:center;">
+    <span class="eyebrow" style="justify-content:center;">Free Trial</span>
+    <h2>あなたなら、<br>どう答える?</h2>
+    <p class="lede">実際にお店で聞かれるフレーズで、少しだけ体験してみましょう。</p>
+
+    <div class="trial-card">
+      <div class="trial-tag">☕ Café Challenge</div>
+
+      <button type="button" id="trialSpeak" class="trial-speaker" aria-label="音声を聞く">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
+          <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+        </svg>
+      </button>
+      <div class="trial-hint">🎧 タップして音声を聞く</div>
+
+      <div class="trial-q" id="trialQ">
+        <div class="trial-q-title">今、何と言われましたか?</div>
+        <div class="trial-options">
+          <button type="button" class="trial-opt" data-correct="false">A. 何を注文しますか?</button>
+          <button type="button" class="trial-opt" data-correct="true">B. 店内ですか?お持ち帰りですか?</button>
+          <button type="button" class="trial-opt" data-correct="false">C. お飲み物はいかがですか?</button>
+        </div>
+        <div class="trial-feedback" id="trialFeedback"></div>
+      </div>
+
+      <div class="trial-step2" id="trialStep2">
+        <p style="margin-bottom:0;">次は、あなたの番です。<br>こう答えてみましょう。</p>
+        <div class="trial-prompt-bubble">「持ち帰りでお願いします」</div><br>
+        <button type="button" id="trialMicBtn" class="trial-mic-btn">
+          🎤 マイクで答えてみる
+        </button>
+      </div>
+
+      <div class="trial-result" id="trialResult">
+        <div class="nice">Nice! 🎉</div>
+        <p class="lede" style="margin-bottom:0;">実際の海外旅行では、こうしたやり取りが次々に出てきます。</p>
+        <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:22px;width:100%;justify-content:center;">もっと練習してみる →</a>
+        <div class="trial-cta-note">¥1,000 ・ 買い切り</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -417,14 +525,31 @@
 <section>
   <div class="container">
     <span class="eyebrow">How It Works</span>
-    <h2>聞く。話す。<br>本番同様に、確かめる。</h2>
-    <p class="lede">1つの質問パターンを、4つのステップで練習します。<br>北米英語の音のつながりや発音のクセを、耳と声で身につけます。</p>
+    <h2>本番と同じ順番で<br>練習する。</h2>
+    <p class="lede">実際の会話の流れそのままに、聞く → 考える → 話す → 確認、の順で練習します。</p>
     <div class="method-steps">
-      <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、店員さんの質問を聞く。声・速度も選べます。</span></div>
-      <div class="row"><span class="n">02</span><span class="t">SPEAK ・ 声に出す</span><span class="d">聞き取った質問に、自分の声で英語で答えてみる。</span></div>
-      <div class="row"><span class="n">03</span><span class="t">READ ・ 文字を見る</span><span class="d">意味を確認しながら、発音Tipsと基本文法をチェック。</span></div>
-      <div class="row"><span class="n">04</span><span class="t">CHECK ・ 発音を確かめる</span><span class="d">マイクに向かって言うと、聞こえたとおりの英語が文字で出ます。お手本と見比べて、直すところが分かります。</span></div>
+      <div class="row"><span class="n">01</span><span class="t">👂 聞く</span><span class="d">店員さんの英語を聞く。</span></div>
+      <div class="row"><span class="n">02</span><span class="t">🧠 考える</span><span class="d">「何を聞かれた?」— 意味を確認する。</span></div>
+      <div class="row"><span class="n">03</span><span class="t">🗣️ 答える</span><span class="d">自分なら、どう答える?</span></div>
+      <div class="row"><span class="n">04</span><span class="t">🎤 声をチェック</span><span class="d">実際に自分の声で言ってみる。お手本と見比べる。</span></div>
     </div>
+    <p class="big-statement">読むだけでは、<em>本番で聞き取れない。</em></p>
+  </div>
+</section>
+
+<!-- COVERAGE (167フレーズ) -->
+<section style="background:var(--cream-soft);">
+  <div class="container" style="text-align:center;">
+    <span class="eyebrow" style="justify-content:center;">What's Inside</span>
+    <h2>これだけ練習しておけば<br>安心。</h2>
+    <div class="coverage-chips">
+      <span class="chip">☕ カフェ</span>
+      <span class="chip">🍔 レストラン</span>
+      <span class="chip">🥤 ドリンク</span>
+      <span class="chip">💳 お会計</span>
+      <span class="chip">👋 退店</span>
+    </div>
+    <div class="coverage-count">167のリアルな質問・返答パターン</div>
   </div>
 </section>
 
@@ -433,7 +558,7 @@
   <div class="container">
     <span class="eyebrow">What You Get</span>
     <h2>声も速さも、選べる。</h2>
-    <p class="lede">カフェ・レストランで実際に使われる167種類のフレーズを、3つの練習モードで繰り返し鍛えます。</p>
+    <p class="lede">同じ意味でも、聞かれ方は何通りもあります。「聞き取るべきフレーズ」と「言えるべきフレーズ」に分けて、効率よく練習できます。</p>
     <div class="trio">
       <div class="trio-card">
         <div class="trio-icon">
@@ -446,8 +571,8 @@
         <div class="trio-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
-        <h3>意味を確認しながら学ぶ</h3>
-        <p>質問の意味を選択式で確認しながら、聞き取った内容が合っているかその場でチェックできます。</p>
+        <h3>発音Tips・基本文法</h3>
+        <p>つながる音・リンキングのコツと基本文法をあわせて解説。意味確認クイズでその場で理解度をチェックできます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
@@ -464,12 +589,14 @@
 <section style="background:var(--cream-soft);">
   <div class="container">
     <span class="eyebrow">Who Is This For</span>
-    <h2>こんな方におすすめです。</h2>
+    <h2>こんな方に<br>おすすめです。</h2>
     <div class="who-list">
-      <div class="who-item"><span class="mark">01</span><p>海外旅行を控えていて、注文が不安な方</p></div>
-      <div class="who-item"><span class="mark">02</span><p>英語での会話にまだ自信がない方</p></div>
-      <div class="who-item"><span class="mark">03</span><p>何度も聞き返さず、落ち着いて注文したい方</p></div>
-      <div class="who-item"><span class="mark">04</span><p>スキマ時間で効率よく準備したい方</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>海外旅行で注文するとき緊張する</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>店員さんの英語が早いと聞き取れない</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>「Sorry?」を何度も言うのが嫌</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>英語を勉強しているのに、会話になると声が出ない</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>旅行前に最低限の英語だけ準備したい</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>カフェやレストランくらいは自信を持って利用したい</p></div>
     </div>
   </div>
 </section>
@@ -485,7 +612,7 @@
       <div class="label">EAR TO VOICE</div>
       <div class="product">飲食店の英会話</div>
       <div class="amount">¥1,000</div>
-      <div class="note">買い切り ・ 追加料金なし</div>
+      <div class="note">買い切り ・ 月額なし ・ 追加料金なし</div>
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>カフェ・レストランの頻出フレーズ 167種(複数シーン)</div>
@@ -527,9 +654,10 @@
 <section class="cta-band on-dark">
   <div class="container">
     <span class="eyebrow" style="justify-content:center;">Before You Order</span>
+    <p class="cta-lede-pre">旅行当日になってから、練習することはできません。<br>今日、1つ聞いてみる。1つ答えてみる。<br>その積み重ねが、本番の安心につながります。</p>
     <h2>海外での外食を、<br>安心して楽しむために。</h2>
-    <p class="lede">外食での「聞こえない」「言えない」を、今日から少しずつ減らしていきましょう。</p>
-    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">¥1,000で体験する →</a>
+    <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
+    <div class="cta-price-note">¥1,000 ・ 買い切り</div>
   </div>
 </section>
 
@@ -539,6 +667,69 @@
     <div class="foot-copy">© 2026 Harmony Horizon ・ <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> ・ <a href="https://www.harmonyhorizon.space">harmonyhorizon.space</a></div>
   </div>
 </footer>
+
+<script>
+(function () {
+  var speakBtn = document.getElementById('trialSpeak');
+  var qBlock = document.getElementById('trialQ');
+  var opts = document.querySelectorAll('.trial-opt');
+  var feedback = document.getElementById('trialFeedback');
+  var step2 = document.getElementById('trialStep2');
+  var micBtn = document.getElementById('trialMicBtn');
+  var result = document.getElementById('trialResult');
+
+  function speak(text) {
+    if (!('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US';
+      u.rate = 0.95;
+      window.speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  if (speakBtn) {
+    speakBtn.addEventListener('click', function () {
+      speak('For here or to go?');
+      if (!qBlock.classList.contains('show')) {
+        qBlock.classList.add('show');
+        qBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    });
+  }
+
+  opts.forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      opts.forEach(function (o) { o.disabled = true; });
+      var isCorrect = opt.dataset.correct === 'true';
+      if (!isCorrect) opt.classList.add('wrong');
+      opts.forEach(function (o) {
+        if (o.dataset.correct === 'true') o.classList.add('correct');
+      });
+      feedback.textContent = isCorrect
+        ? '正解! 「店内ですか?お持ち帰りですか?」という意味でした。'
+        : '正解は「店内ですか?お持ち帰りですか?」でした。';
+      feedback.classList.add('show');
+      setTimeout(function () {
+        step2.classList.add('show');
+        step2.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 700);
+    });
+  });
+
+  if (micBtn) {
+    micBtn.addEventListener('click', function () {
+      micBtn.disabled = true;
+      micBtn.textContent = '🎤 聞き取り中...';
+      setTimeout(function () {
+        result.classList.add('show');
+        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 900);
+    });
+  }
+})();
+</script>
 
 </body>
 </html>
