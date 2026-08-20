@@ -608,7 +608,12 @@ var QUIZ = [
   {
     id: 'thatsokay', part2: true, tag: '🍽 Restaurant Challenge',
     scene: { en: 'It’ll be about a 20-minute wait.', ja: '20分の待ち時間になります。' },
-    lead: '「大丈夫です。」<br>英語で、声に出して言ってみてください。',
+    /* ★2026-08-20 Harumi「『待ちます』を追加してください」。
+       「大丈夫です。」だけだと、待つのか帰るのかが決まらない
+       (I’m good. = 帰ります、とも取れる)。答えの和訳
+       「大丈夫です。待ちます。」と同じ形にして、言うべきことを
+       ひとつに定める。 */
+    lead: '「大丈夫です。待ちます。」<br>英語で、声に出して言ってみてください。',
     ansSrc: 'audio/a_seat_thatsokay',   /* 本体 key: thatsokay のお手本音声 */
     en: 'That’s fine, we’ll wait.',
     /* ★2026-08-20 Harumi「和訳は『大丈夫です。待ちます』ですよね」。
