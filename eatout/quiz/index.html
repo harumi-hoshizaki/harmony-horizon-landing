@@ -138,6 +138,15 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
   color:var(--navy-deep);text-align:center;line-height:1.55}
 /* 後半は .scene が区切り線の役をするので、こちらの線は消す */
 .q-title.tight{margin-top:18px;padding-top:0;border-top:none}
+/* ★2026-08-20 Harumi「このページに音声っていりますか？」。
+   後半は聞き取りを試す場面ではなく、店員のセリフは .scene に英文も
+   和訳も出ている。同じものを鳴らす大きなボタンと2つの切り替えが、
+   肝心の「英語で言ってみてください」を画面のずっと下へ押し下げていた。
+   後半では丸ごと出さない。お手本(自分が言う文)だけは公開後に残す。 */
+.card.say-mode .speaker,
+.card.say-mode .hint,
+.card.say-mode .toggles{display:none}
+.card.say-mode .scene{margin-top:20px;padding-top:0;border-top:none}
 /* 「店員に、こう言われている」の一言。後半だけ出す */
 .scene{margin-top:26px;padding-top:24px;border-top:1px solid var(--line);text-align:center}
 .scene[hidden]{display:none}
@@ -181,17 +190,21 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .rv-ja{margin-top:5px;font-size:1rem;color:var(--ink-soft)}
 /* お手本を聞く。上の大きい丸(店員の音声)とは役割が違うので、
    同じ丸にはせず、一回り小さい横長のボタンにして区別する */
-.rv-play{display:inline-flex;align-items:center;justify-content:center;gap:9px;
-  margin-top:15px;min-height:50px;padding:0 22px;border-radius:999px;cursor:pointer;
-  background:var(--navy-deep);color:var(--cream);border:none;
+/* 上の音声ブロックを後半で消したので、速さの切り替えもここに移した。
+   状態を持つトグルにはせず、押した方が鳴るだけの2つのボタンにする */
+.rv-listen{display:flex;justify-content:center;align-items:stretch;gap:8px;margin-top:15px}
+.rv-play,.rv-slow{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  min-height:50px;padding:0 20px;border-radius:999px;cursor:pointer;
   font-family:var(--font-body);font-size:1.02rem;font-weight:700;
   -webkit-tap-highlight-color:transparent;transition:transform .08s ease}
-.rv-play:active{transform:scale(.97)}
+.rv-play{background:var(--navy-deep);color:var(--cream);border:none}
+.rv-slow{background:#FFFFFF;color:var(--ink);border:1.5px solid var(--line)}
+.rv-play:active,.rv-slow:active{transform:scale(.97)}
 .rv-play svg{width:21px;height:21px;flex:none}
-.rv-play.playing{animation:rvring 1.1s ease-out infinite}
+.rv-play.playing,.rv-slow.playing{animation:rvring 1.1s ease-out infinite}
 @keyframes rvring{0%{box-shadow:0 0 0 0 rgba(226,163,61,.55)}
   100%{box-shadow:0 0 0 14px rgba(226,163,61,0)}}
-@media (prefers-reduced-motion:reduce){.rv-play.playing{animation:none}}
+@media (prefers-reduced-motion:reduce){.rv-play.playing,.rv-slow.playing{animation:none}}
 /* カードが白なので、中のコツ箱は白のままだと境目が消える */
 .rv .tips{background:var(--cream);text-align:left}
 
@@ -497,15 +510,21 @@ var QUIZ = [
     partbar: 'ここからは、<br>声に出して言えるかどうかです。',
     scene: { en: 'For here or to go?', ja: '店内ですか？お持ち帰りですか？' },
     lead: '「テイクアウトで」<br>英語で、声に出して言ってみてください。',
-    src: 'audio/q_size_02_',
     ansSrc: 'audio/a_size_togo',     /* 本体 key: togo のお手本音声 */
     en: 'To go, please.',
     ja: '持ち帰りでお願いします。',
     /* 本体 L4300 の言い回しをそのまま使う:
        「北米では『テイクアウト』より to go が普通の言い方です」 */
-    note: '日本語の「テイクアウト」につられて <b>Take out, please.</b> と言ってしまいがちですが、' +
-          '北米のカフェで普通に使われるのは <b>To go, please.</b> です。' +
-          '<b>For here.</b> は反対の「店内で」なので、逆の意味になってしまいます。',
+    /* ★2026-08-20 Harumi「Takeout, please. も実はオッケー。ただ、北米の
+       カフェで普通に使われるのは To go, please.。Takeoutだと、前もって
+       注文していた食べ物を取りに来た雰囲気？」。
+       前は「つられて言ってしまいがち」と、間違いのように書いていた。
+       通じる言い方を間違い扱いにすると、そこが嘘になる。 */
+    note: '<b>Takeout, please.</b> でも通じます。ただ、カフェのカウンターで' +
+          '普通に使われるのは <b>To go, please.</b> です。' +
+          '<b>takeout</b> は「持ち帰りの注文」そのものを指す言葉なので、' +
+          '前もって注文した品を取りに来た人のような響きになります。' +
+          '（<b>For here.</b> は反対の「店内で」）',
     /* 後半のTipsは1本ずつ、短く(Harumi「発音Tipsを軽く」)。
        ここは商品の中身を見せる場所であって、教え込む場所ではない。 */
     tips: [
@@ -517,7 +536,6 @@ var QUIZ = [
     id: 'justwater', part2: true, tag: '🍽 Restaurant Challenge',
     scene: { en: 'Can I start you off with something to drink?', ja: 'まず、お飲み物はいかがですか？' },
     lead: '「お水だけお願いします」<br>英語で、声に出して言ってみてください。',
-    src: 'audio/q_drink_04_',
     /* ★2026-08-20 Harumi「Just water for me. って普通言いますか？
        Just water please の方が言うのでは？」。そのとおりで、
        for me は複数人で「私は水だけ」と区別する時の言い方。
@@ -539,7 +557,6 @@ var QUIZ = [
     id: 'thatsokay', part2: true, tag: '🍽 Restaurant Challenge',
     scene: { en: 'It’ll be about a 20-minute wait.', ja: '20分の待ち時間になります。' },
     lead: '「大丈夫です。」<br>英語で、声に出して言ってみてください。',
-    src: 'audio/q_seat_05_',
     ansSrc: 'audio/a_seat_thatsokay',   /* 本体 key: thatsokay のお手本音声 */
     en: 'That’s fine, we’ll wait.',
     ja: '大丈夫です、待ちます。',
@@ -571,6 +588,7 @@ var MODEL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
    ────────────────────────────────────────────── */
 var cur = null;
 function playClip(src, btn) {
+  if (!src) return;
   try { if (cur) { cur.pause(); cur.currentTime = 0; } } catch (e) {}
   var a = new Audio(src);
   cur = a;
@@ -594,8 +612,13 @@ function show(id) {
   $(id).classList.add('on');
   window.scrollTo(0, 0);
 }
+/* 店員の音声。後半の問題は src を持たない(あの音声ブロックごと
+   消してある)ので、その時は null を返して鳴らさない。
+   後半では下のボタン類も非表示なので普段は呼ばれないが、
+   "undefined_f.mp3" を取りに行く事故を構造で塞いでおく。 */
 function srcFor() {
   var q = QUIZ[idx];
+  if (!q.src) return null;
   return q.src + voice + (rate === 1 ? '' : '_slow') + '.mp3';
 }
 
@@ -625,6 +648,8 @@ function render() {
                    '<em>' + q.scene.ja + '</em>';
   }
   $('qlead').classList.toggle('tight', !!q.scene);
+  /* 後半は上の音声ブロックを出さない(CSSの .say-mode 参照) */
+  document.querySelector('.card').classList.toggle('say-mode', !!q.part2);
 
   $('qlead').innerHTML = q.lead;
   $('fb').innerHTML = '';
@@ -647,7 +672,10 @@ function render() {
   }
   /* 次の問題の音声を先に取っておく(押した瞬間に鳴るように) */
   var nx = QUIZ[idx + 1];
-  if (nx) { try { new Audio(nx.src + voice + '.mp3').load(); } catch (e) {} }
+  if (nx && nx.src) { try { new Audio(nx.src + voice + '.mp3').load(); } catch (e) {} }
+  /* 後半の1問目に入る時は、代わりにお手本を取っておく
+     (タップした瞬間に鳴るように) */
+  if (nx && nx.ansSrc) { try { new Audio(nx.ansSrc + '.mp3').load(); } catch (e) {} }
 }
 
 /* ── 後半: セリフチェック ────────────────────────────
@@ -688,16 +716,28 @@ function buildReveal(q) {
     card.appendChild(ja);
 
     if (q.ansSrc) {
+      var row = document.createElement('div');
+      row.className = 'rv-listen';
       var lis = document.createElement('button');
       lis.className = 'rv-play';
       lis.type = 'button';
       lis.innerHTML = MODEL_SVG + '<span>お手本を聞く</span>';
+      var slow = document.createElement('button');
+      slow.className = 'rv-slow';
+      slow.type = 'button';
+      slow.textContent = 'ゆっくり';
+      /* 上のトグルを後半では消したので、速さはここで選ぶ。
+         状態は持たせない —— 押した方が鳴るだけにして、
+         「今どっちだったか」を覚えなくていいようにする。 */
       lis.addEventListener('click', function (e) {
-        e.stopPropagation();
-        playClip(q.ansSrc + (rate === 1 ? '' : '_slow') + '.mp3', lis);
+        e.stopPropagation(); playClip(q.ansSrc + '.mp3', lis);
       });
-      card.appendChild(lis);
-      playClip(q.ansSrc + (rate === 1 ? '' : '_slow') + '.mp3', lis);
+      slow.addEventListener('click', function (e) {
+        e.stopPropagation(); playClip(q.ansSrc + '_slow.mp3', slow);
+      });
+      row.appendChild(lis); row.appendChild(slow);
+      card.appendChild(row);
+      playClip(q.ansSrc + '.mp3', lis);
     }
 
     var tips = document.createElement('div');
