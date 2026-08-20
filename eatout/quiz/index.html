@@ -154,6 +154,16 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .fb .note{margin-top:14px;padding-top:14px;border-top:1px solid rgba(43,32,24,.14);
   font-size:1rem;line-height:1.8;color:var(--ink)}
 .fb .note b{color:var(--navy-deep);font-weight:700}
+/* つながる音・発音のTips。アプリ本体の linkingTips / pronunciationTips を
+   そのまま出す。ここが商品の中身そのものなので、解説の中でいちばん
+   下に置きつつ、白地で囲って「別のもの」として立たせる。 */
+.tips{margin-top:14px;background:#FFFFFF;border:1px solid var(--line);
+  border-radius:14px;padding:14px 16px}
+.tips h4{font-size:.78rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.tips p{font-size:.98rem;line-height:1.8;color:var(--ink)}
+.tips p + p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.tips b{color:var(--navy-deep);font-weight:700}
 .fb .btn{margin-top:20px}
 
 /* ── 結果 ── */
@@ -286,7 +296,13 @@ var QUIZ = [
            'お名前は何ですか？'],
     ans: 1,
     note: '北米のカフェでいちばん多い質問です。<b>Yes / No では答えられません。</b>' +
-          '「A or B?」の二択なので、<b>For here.</b>（店内で）か <b>To go.</b>（持ち帰りで）と答えます。'
+          '「A or B?」の二択なので、<b>For here.</b>（店内で）か <b>To go.</b>（持ち帰りで）と答えます。',
+    tips: [
+      '<b>【Toの弱形】</b>"to go" の to は弱く、「とぅー」ではなく <b>「t’ご」</b> のように短く聞こえます。' +
+      '<b>「るご」</b>に近く聞こえることもあります。',
+      '<b>【前置詞】</b>"For" は "f" の音だけのように軽く発音され、次の "here" にドッキングします。' +
+      '"here or" もつながって「ひあor」のように一息で聞こえます。'
+    ]
   },
   {
     id: 'drink_04', tag: '🍽 Restaurant Challenge',
@@ -301,7 +317,12 @@ var QUIZ = [
     ans: 0,
     note: '席についてすぐ、いちばん最初に聞かれる質問です。' +
           '<b>start you off</b> は「まず最初に」。長い文はいりません。' +
-          '<b>Just water, please.</b>（お水だけで）で十分伝わります。'
+          '<b>Just water, please.</b>（お水だけで）で十分伝わります。',
+    tips: [
+      '<b>【同化】</b>"start you" は t と y がくっついて <b>「すたーちゅ」</b> のように聞こえます。',
+      '<b>【母音ドッキング】</b>"Can I" はつながって <b>「けなぃ」</b> のように一息で聞こえます。' +
+      '"can" も文中では弱く「けん」「くん」のように短くなります。'
+    ]
   },
   {
     id: 'seat_05', tag: '🍽 Restaurant Challenge',
@@ -316,7 +337,13 @@ var QUIZ = [
     ans: 0,
     note: '<b>about a</b> の t は、母音にはさまれると「ら行」に化けます。' +
           '「アバウト・ア」ではなく <b>「あばぅら」</b>。' +
-          '単語はどれも知っているのに聞き取れないのは、これが理由です。'
+          '単語はどれも知っているのに聞き取れないのは、これが理由です。',
+    tips: [
+      '<b>【Flap T】</b>"about a" の t は母音に挟まれて「ら行」の音に変身し、' +
+      '<b>「あばぅら」</b> のように聞こえます。',
+      '<b>【消えるT】</b>文末の "wait" の最後の t も、破裂させず舌をtの位置で止めるだけで終わります。' +
+      '"It’ll" も <b>「いろぅ」</b> のようにつぶれ、「イット ウィル」とは聞こえません。'
+    ]
   }
 ];
 
@@ -404,6 +431,8 @@ function pick(i) {
       '<p class="en">' + q.en + '</p>' +
       '<p class="ja">' + q.ja + '</p>' +
       '<p class="note">' + q.note + '</p>' +
+      (q.tips ? '<div class="tips"><h4>つながる音・発音のコツ</h4>' +
+        q.tips.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>' : '') +
       '<button class="btn" id="next" type="button">' +
         (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
     '</div>';
