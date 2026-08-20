@@ -246,6 +246,21 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
    間違い扱いにすると、次から押されなくなる */
 .fb.hold{background:#FBF4E6;border-color:var(--gold)}
 .fb.hold .verdict{color:var(--hold)}
+
+/* ★2026-08-20 Harumi「ちょっと目立つ感じで、描ける？」。
+   「答えはひとつではない」「アプリでは自分用のフレーズを選んで
+   積み重ねる」という話は、解説の続きに埋めると流れて読まれない。
+   .fb の地(緑・黄)の上に、クリームの塊として別に立てる。
+   .tips(白地)ともぶつからない色を選んである。 */
+.fb .more{margin-top:14px;padding:15px 17px;border-radius:14px;
+  background:var(--cream-soft);border:1.5px solid var(--gold)}
+/* 見出しは金ではなく地の色。--hold(#8C651F)をクリーム地(#F1E4CC)に
+   置くと4.18:1でAA(4.5:1)を割る。ここは「目立たせる」のが目的なので、
+   濃くする方が狙いにも合う。金は枠線が受け持つ。 */
+.fb .more h5{font-size:.84rem;font-weight:700;letter-spacing:.08em;
+  color:var(--navy-deep);margin-bottom:8px}
+.fb .more p{font-size:1rem;line-height:1.8;color:var(--ink)}
+.fb .more b{color:var(--navy-deep);font-weight:700}
 .fb .verdict{display:flex;align-items:center;gap:10px;
   font-family:var(--font-display);font-size:1.24rem;font-weight:900}
 .fb.ok .verdict{color:var(--ok)} .fb.ng .verdict{color:var(--ng)}
@@ -630,8 +645,16 @@ var QUIZ = [
        文面はHarumi指定のとおり、この文がどう組み立っているかだけを言う。 */
     note: '<b>fine</b> は、「大丈夫です」という意味です。' +
           '「私たちは待ちますよ」という未来形で、<b>We’ll wait</b> と言います。' +
-          '一人なら <b>I’ll wait.</b> です。' +
-          '他にも言い方はたくさんあります。一つの例ですよ。',
+          '一人なら <b>I’ll wait.</b> です。',
+    /* 目立つ枠。ここだけは「教える」ではなく「商品の中身」を見せる。
+       アプリの「これがあなたのフレーズです」(showYourAnswer)と
+       「別の言い方も挑戦」(showChoosePurposeAgain)を、
+       買う前の人に一言で説明する場所。 */
+    extra: { h: '言い方は、ひとつじゃない',
+             p: '<b>No problem.</b> でも伝わります。' +
+                'アプリでは、いくつかの言い方の中から' +
+                '<b>「自分だったら、どう言うか」</b>を1つ選んで、' +
+                '自分のフレーズとして積み重ねていきます。' },
     tips: [
       '<b>【機能語の弱形】</b>"we’ll" は「うぃー うぃる」ではなく <b>「ぅぃぅ」</b>。' +
       'Q3の "It’ll" と同じで、will は<b>「ぅ」</b>のような音になります。'
@@ -884,6 +907,8 @@ function showFb(kind) {
       '<p class="verdict">' + head[1] + head[2] + '</p>' +
       (full ? '<p class="en">' + q.en + '</p><p class="ja">' + q.ja + '</p>' : '') +
       (body ? '<p class="note">' + body + '</p>' : '') +
+      (q.extra ? '<div class="more"><h5>' + q.extra.h + '</h5>' +
+                 '<p>' + q.extra.p + '</p></div>' : '') +
       (full ? tipsHtml(q) : '') +
       '<button class="btn" id="next" type="button">' +
         (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
