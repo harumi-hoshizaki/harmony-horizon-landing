@@ -204,6 +204,10 @@
   .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; margin-bottom: 18px; }
   .trial-speaker:hover { transform: scale(1.06); }
   .trial-hint { font-size: 13.5px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
+  .trial-toggles { display: flex; flex-direction: column; gap: 10px; margin: 18px 0 4px; }
+  .trial-toggle { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
+  .trial-toggle-btn { flex: 1; border: none; background: transparent; padding: 10px 8px; font-family: var(--font-body); font-size: 13.5px; font-weight: 700; color: var(--ink-soft); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+  .trial-toggle-btn.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
   .trial-q { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-q.show { display: block; }
   .trial-q-title { font-family: var(--font-display); font-weight: 700; font-size: 16.5px; color: var(--navy-deep); margin-bottom: 16px; }
@@ -373,6 +377,7 @@
     .trial-q-title { font-size: 17px; }
     .trial-opt { font-size: 16px; }
     .trial-prompt-bubble { font-size: 18px; }
+    .trial-toggle-btn { font-size: 14.5px; }
     .cta-lede-pre { font-size: 16px; }
   }
 </style>
@@ -510,6 +515,17 @@
       </button>
       <div class="trial-hint">🎧 タップして音声を聞く</div>
 
+      <div class="trial-toggles" role="group" aria-label="声と速度の設定">
+        <div class="trial-toggle">
+          <button type="button" class="trial-toggle-btn on" data-voice="f">女性の声</button>
+          <button type="button" class="trial-toggle-btn" data-voice="m">男性の声</button>
+        </div>
+        <div class="trial-toggle">
+          <button type="button" class="trial-toggle-btn on" data-rate="1">ふつう 1.0x</button>
+          <button type="button" class="trial-toggle-btn" data-rate="0.7">ゆっくり 0.7x</button>
+        </div>
+      </div>
+
       <div class="trial-q" id="trialQ">
         <div class="trial-q-title">今、何と言われましたか?</div>
         <div class="trial-options">
@@ -540,8 +556,7 @@
     </div>
   </div>
 
-  <audio id="trialAudioEl" preload="auto" src="/eatout/audio/trial-for-here-or-to-go.mp3"></audio>
-  <audio id="trialCorrectSe" preload="auto" src="/eatout/audio/se-correct.mp3"></audio>
+
 </section>
 
 <!-- METHOD -->
@@ -703,14 +718,30 @@
   var result = document.getElementById('trialResult');
   var resultHeadline = document.getElementById('trialResultHeadline');
   var heardEl = document.getElementById('trialHeard');
-  var trialAudio = document.getElementById('trialAudioEl');
-  var correctSe = document.getElementById('trialCorrectSe');
+  var voiceBtns = document.querySelectorAll('.trial-toggle-btn[data-voice]');
+  var rateBtns = document.querySelectorAll('.trial-toggle-btn[data-rate]');
+  var voice = 'f';
+  var rate = 1;
+  var CLIP_SRC = {
+    f: '/eatout/audio/trial-for-here-or-to-go-f.mp3',
+    m: '/eatout/audio/trial-for-here-or-to-go-m.mp3'
+  };
+  var SE_CORRECT_SRC = '/eatout/audio/se-correct.mp3';
 
-  function playEl(el) {
-    if (!el) return;
+  // Play via a fresh HTMLAudioElement per call, matching the pattern already
+  // proven in the shipped app: WebAudio's playbackRate shifts pitch and can
+  // route sound through the iPhone earpiece when the "ゆっくり" speed is
+  // used; plain HTMLAudio with preservesPitch avoids both. The rate is only
+  // ever touched when it isn't 1 — some iOS devices go silent if you set
+  // playbackRate at normal speed at all, even to 1.
+  function playClip(src, rate) {
     try {
-      el.currentTime = 0;
-      var p = el.play();
+      var player = new Audio(src);
+      if (rate && rate !== 1) {
+        try { player.preservesPitch = true; player.webkitPreservesPitch = true; } catch (e) {}
+        try { player.playbackRate = rate; } catch (e) {}
+      }
+      var p = player.play();
       if (p && typeof p.catch === 'function') {
         p.catch(function () {
           // Autoplay/permission restrictions: fail silently, nothing more we can do here.
@@ -719,9 +750,23 @@
     } catch (e) {}
   }
 
+  voiceBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      voice = btn.dataset.voice;
+      voiceBtns.forEach(function (b) { b.classList.toggle('on', b === btn); });
+    });
+  });
+
+  rateBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      rate = parseFloat(btn.dataset.rate);
+      rateBtns.forEach(function (b) { b.classList.toggle('on', b === btn); });
+    });
+  });
+
   if (speakBtn) {
     speakBtn.addEventListener('click', function () {
-      playEl(trialAudio);
+      playClip(CLIP_SRC[voice], rate);
       if (!qBlock.classList.contains('show')) {
         qBlock.classList.add('show');
         qBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -737,7 +782,7 @@
       opts.forEach(function (o) {
         if (o.dataset.correct === 'true') o.classList.add('correct');
       });
-      if (isCorrect) playEl(correctSe);
+      if (isCorrect) playClip(SE_CORRECT_SRC, 1);
       feedback.textContent = isCorrect
         ? '正解! 「店内ですか?お持ち帰りですか?」という意味でした。'
         : '正解は「店内ですか?お持ち帰りですか?」でした。';
