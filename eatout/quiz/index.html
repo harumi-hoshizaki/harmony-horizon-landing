@@ -151,6 +151,11 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .fb .en u{text-decoration:none;background:linear-gradient(transparent 58%,#F5DFA8 58%);
   padding:0 1px}
 .fb .ja{margin-top:4px;font-size:1.02rem;color:var(--ink-soft)}
+/* 英文のハイライトと同じ色を、和訳の対応する場所にも引く。
+   英語のどの塊が日本語のどこに当たるのかを、線の色で結ぶ。
+   文字が小さいので、線の開始位置は英文と同じ58%のままで合う。 */
+.fb .ja u{text-decoration:none;background:linear-gradient(transparent 58%,#F5DFA8 58%);
+  padding:0 1px}
 .fb .note{margin-top:14px;padding-top:14px;border-top:1px solid rgba(43,32,24,.14);
   font-size:1rem;line-height:1.8;color:var(--ink)}
 .fb .note b{color:var(--navy-deep);font-weight:700}
@@ -313,7 +318,10 @@ var QUIZ = [
     lead: 'あなたなら、何と答えますか？',
     src: 'audio/q_drink_04_',
     en: 'Can I start you off with <u>something to drink</u>?',
-    ja: 'まず、お飲み物はいかがですか？',
+    /* 英文の <u>something to drink</u> と同じ色で「お飲み物」を引く。
+       「something to drink（飲むためのもの）＝お飲み物」だと、
+       線を見ただけで分かるようにする。 */
+    ja: 'まず、<u>お飲み物</u>はいかがですか？',
     opts: ['Just water, please.',
            'For here, please.',
            'That’s all, thank you.',
@@ -332,7 +340,7 @@ var QUIZ = [
     lead: '今、何と言われた？',
     src: 'audio/q_seat_05_',
     en: 'It’ll be <u>about a</u> 20-minute wait.',
-    ja: '20分ほど、お待ちいただくことになります。',
+    ja: '20分の待ち時間になります。',
     opts: ['20分ほど、お待ちいただきます。',
            '2時間ほど、お待ちいただきます。',
            '20ドルのお会計になります。',
