@@ -256,10 +256,14 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
   background:var(--cream-soft);border:1.5px solid var(--gold)}
 /* 見出しは金ではなく地の色。--hold(#8C651F)をクリーム地(#F1E4CC)に
    置くと4.18:1でAA(4.5:1)を割る。ここは「目立たせる」のが目的なので、
-   濃くする方が狙いにも合う。金は枠線が受け持つ。 */
-.fb .more h5{font-size:.84rem;font-weight:700;letter-spacing:.08em;
-  color:var(--navy-deep);margin-bottom:8px}
+   濃くする方が狙いにも合う。金は枠線が受け持つ。
+   ★2026-08-20 Harumi「文字が小さすぎます」。.84rem(13.4px)は
+   小見出しの大きさで、枠を立てた意味が消えていた。本文と同じ
+   大きさまで上げ、字間も詰めて1行に収める。 */
+.fb .more h5{font-family:var(--font-display);font-size:1.04rem;font-weight:700;
+  letter-spacing:.02em;color:var(--navy-deep);margin-bottom:10px}
 .fb .more p{font-size:1rem;line-height:1.8;color:var(--ink)}
+.fb .more p + p{margin-top:10px}
 .fb .more b{color:var(--navy-deep);font-weight:700}
 .fb .verdict{display:flex;align-items:center;gap:10px;
   font-family:var(--font-display);font-size:1.24rem;font-weight:900}
@@ -651,10 +655,13 @@ var QUIZ = [
        「別の言い方も挑戦」(showChoosePurposeAgain)を、
        買う前の人に一言で説明する場所。 */
     extra: { h: '言い方は、ひとつじゃない',
-             p: '<b>No problem.</b> でも伝わります。' +
-                'アプリでは、いくつかの言い方の中から' +
-                '<b>「自分だったら、どう言うか」</b>を1つ選んで、' +
-                '自分のフレーズとして積み重ねていきます。' },
+             /* 2つに分ける。1つ目は「他の言い方もある」、2つ目は
+                「アプリでは自分用に選んで積み上げる」。役割が違うので、
+                段落も分ける(Harumi指定の並び)。 */
+             p: ['<b>No problem.</b> でもオッケー！',
+                 'アプリでは、いくつかの言い方の中から' +
+                 '<b>「自分だったら、どう言うか」</b>を1つ選んで、' +
+                 '自分のフレーズとして積み重ねていきます。'] },
     tips: [
       '<b>【機能語の弱形】</b>"we’ll" は「うぃー うぃる」ではなく <b>「ぅぃぅ」</b>。' +
       'Q3の "It’ll" と同じで、will は<b>「ぅ」</b>のような音になります。'
@@ -908,7 +915,8 @@ function showFb(kind) {
       (full ? '<p class="en">' + q.en + '</p><p class="ja">' + q.ja + '</p>' : '') +
       (body ? '<p class="note">' + body + '</p>' : '') +
       (q.extra ? '<div class="more"><h5>' + q.extra.h + '</h5>' +
-                 '<p>' + q.extra.p + '</p></div>' : '') +
+                 [].concat(q.extra.p).map(function (t) {
+                   return '<p>' + t + '</p>'; }).join('') + '</div>' : '') +
       (full ? tipsHtml(q) : '') +
       '<button class="btn" id="next" type="button">' +
         (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
