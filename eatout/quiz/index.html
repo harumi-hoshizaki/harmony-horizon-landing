@@ -152,8 +152,13 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .scene[hidden]{display:none}
 .scene .who{display:block;font-size:.76rem;font-weight:700;letter-spacing:.12em;
   text-transform:uppercase;color:var(--hold);margin-bottom:7px}
-.scene b{display:block;font-family:var(--font-display);font-size:1.08rem;font-weight:700;
-  color:var(--navy-deep);line-height:1.5}
+/* ★2026-08-20 Harumi「For here or to go? の文章をもっと大きく。
+   デザイン的に質問として重要だと思うので」。1.08rem では和訳(.94rem)と
+   ほとんど差がなく、「何に答えるのか」が目に入ってこなかった。
+   下の設問(.q-title 1.14rem)より大きくして、この画面でいちばん強い
+   一行にする。ここは後半3問で共通の1箇所なので、直せば3問とも変わる。 */
+.scene b{display:block;font-family:var(--font-display);font-size:1.32rem;font-weight:700;
+  color:var(--navy-deep);line-height:1.45;letter-spacing:.01em}
 .scene em{display:block;font-style:normal;margin-top:3px;font-size:.94rem;color:var(--ink-soft)}
 .opts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .opt{display:flex;align-items:center;gap:13px;width:100%;min-height:62px;
@@ -192,20 +197,24 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
    同じ丸にはせず、一回り小さい横長のボタンにして区別する */
 /* 上の音声ブロックを後半で消したので、速さの切り替えもここに移した。
    状態を持つトグルにはせず、押した方が鳴るだけの2つにする。
-   横に並べると375pxで「ゆっく/り」と折り返したので、縦に置き、
-   「ゆっくり」は文字リンクにした。主役は「お手本を聞く」の方で、
-   速さは要る人だけが押す —— 見た目の重さも、その順番に合わせる。 */
-.rv-listen{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:15px}
-.rv-play{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+
+   ★2026-08-20 Harumi「スピードの部分が二行になってしまうので、
+   通常／ゆっくり って書くのはどうですか？」→「通常よりも『ふつう』で」。
+   前半のトグルが「ふつう 1.0x」なので、同じ言葉に揃う。
+   ボタンの中に「お手本を聞く」まで入れると375pxで折り返す。
+   「何を聞くのか」は上の小さい見出しに出し、ボタンは速さの名前
+   だけにする。2語と4語なので、どちらも1行に収まる。 */
+.rv-listen{margin-top:15px}
+.rv-listen-label{font-size:.86rem;font-weight:700;color:var(--ink-soft);
+  text-align:center;margin-bottom:8px}
+.rv-listen-row{display:flex;justify-content:center;gap:9px}
+.rv-play,.rv-slow{display:inline-flex;align-items:center;justify-content:center;gap:8px;
   min-height:50px;padding:0 22px;border-radius:999px;cursor:pointer;white-space:nowrap;
-  background:var(--navy-deep);color:var(--cream);border:none;
   font-family:var(--font-body);font-size:1.02rem;font-weight:700;
   -webkit-tap-highlight-color:transparent;transition:transform .08s ease}
-.rv-slow{background:none;border:none;cursor:pointer;white-space:nowrap;
-  font-family:var(--font-body);font-size:.96rem;font-weight:700;color:var(--hold);
-  text-decoration:underline;text-underline-offset:4px;padding:4px 8px;
-  -webkit-tap-highlight-color:transparent}
-.rv-play:active{transform:scale(.97)}
+.rv-play{background:var(--navy-deep);color:var(--cream);border:none}
+.rv-slow{background:#FFFFFF;color:var(--ink);border:1.5px solid var(--line)}
+.rv-play:active,.rv-slow:active{transform:scale(.97)}
 .rv-play svg{width:21px;height:21px;flex:none}
 .rv-play.playing,.rv-slow.playing{animation:rvring 1.1s ease-out infinite}
 @keyframes rvring{0%{box-shadow:0 0 0 0 rgba(226,163,61,.55)}
@@ -576,6 +585,11 @@ var QUIZ = [
        (showFb 参照)。 */
     note: 'やったー。さすがです！',
     praise: true,
+    /* 「まだ言えない」を押した人には、褒め言葉ではなくハードルを
+       下げる一言を出す(Harumi文面)。ここで「言えないと駄目」の空気を
+       残すと、次の問題に進む前に閉じられてしまう。 */
+    noteNg: '<b>Water, please.</b> で十分ですよ。まずは、water なり自分の飲みたいものを' +
+            '「<b>飲みたいもの、please</b>」って表現できるようになれば大丈夫。',
     tips: [
       '<b>【消えるT】</b>"Just" の最後の t は破裂させず、' +
       '舌をtの位置で止めて、次の "water" につなげます。',
@@ -752,14 +766,16 @@ function buildReveal(q) {
     if (q.ansSrc) {
       var row = document.createElement('div');
       row.className = 'rv-listen';
+      row.innerHTML = '<p class="rv-listen-label">お手本を聞く</p>' +
+                      '<div class="rv-listen-row"></div>';
       var lis = document.createElement('button');
       lis.className = 'rv-play';
       lis.type = 'button';
-      lis.innerHTML = MODEL_SVG + '<span>お手本を聞く</span>';
+      lis.innerHTML = MODEL_SVG + '<span>ふつう</span>';   /* 前半のトグル「ふつう 1.0x」と同じ言葉に揃える */
       var slow = document.createElement('button');
       slow.className = 'rv-slow';
       slow.type = 'button';
-      slow.textContent = 'ゆっくり聞く';
+      slow.textContent = 'ゆっくり';
       /* 上のトグルを後半では消したので、速さはここで選ぶ。
          状態は持たせない —— 押した方が鳴るだけにして、
          「今どっちだったか」を覚えなくていいようにする。 */
@@ -769,7 +785,8 @@ function buildReveal(q) {
       slow.addEventListener('click', function (e) {
         e.stopPropagation(); playClip(q.ansSrc + '_slow.mp3', slow);
       });
-      row.appendChild(lis); row.appendChild(slow);
+      var inner = row.querySelector('.rv-listen-row');
+      inner.appendChild(lis); inner.appendChild(slow);
       card.appendChild(row);
       playClip(q.ansSrc + '.mp3', lis);
     }
@@ -838,15 +855,19 @@ function showFb(kind) {
     notyet: ['hold', HOLD, 'ここが、伸びしろ。']
   }[kind];
   var full = (kind === 'ok' || kind === 'ng');
-  /* praise の一言(「やったー。さすがです！」)は、できた人にだけ。
-     「まだ言えない」を正直に押した人に出したら嘘になる。 */
-  var showNote = !!q.note && !(q.praise && kind === 'notyet');
+  /* 解説は分岐で出し分ける。
+       praise の一言(「やったー。さすがです！」)は、できた人にだけ。
+       「まだ言えない」には noteNg があればそれを出す。
+     正直に押した人に褒め言葉を出したら嘘になるし、そこで何も出さない
+     と「言えなかった」だけが残る。 */
+  var body = q.note;
+  if (kind === 'notyet') body = q.noteNg || (q.praise ? '' : q.note);
 
   $('fb').innerHTML =
     '<div class="fb ' + head[0] + '">' +
       '<p class="verdict">' + head[1] + head[2] + '</p>' +
       (full ? '<p class="en">' + q.en + '</p><p class="ja">' + q.ja + '</p>' : '') +
-      (showNote ? '<p class="note">' + q.note + '</p>' : '') +
+      (body ? '<p class="note">' + body + '</p>' : '') +
       (full ? tipsHtml(q) : '') +
       '<button class="btn" id="next" type="button">' +
         (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
