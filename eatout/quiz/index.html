@@ -44,6 +44,10 @@
   --shadow-card:0 30px 70px -24px rgba(29, 22, 16, 0.22);
   --ok:#2E6B45; --ok-line:#6FA46A; --ok-bg:#EFF7EE;
   --ng:#8E3B2C; --ng-line:#D98888; --ng-bg:#FBEAEA;
+  /* 後半の「まだ言えない」用。--gold(#A3782D)を見出しに使うと
+     #FBF4E6 の地に対して 3.6:1 しか出ず、大きい文字でもAAAに届かない。
+     --ok / --ng と同じ「線より濃い文字色」を、金にも用意する */
+  --hold:#8C651F;
   --font-display:'Zen Kaku Gothic New', sans-serif;
   --font-body:   'Zen Kaku Gothic New', sans-serif;
 }
@@ -56,8 +60,12 @@ main{max-width:520px;margin:0 auto;
 .screen{display:none} .screen.on{display:block}
 .center{text-align:center}
 
+/* 金色を文字に使う場所は、すべて一段濃い --hold にしてある。
+   --gold(#A3782D)はクリーム地に対して3.6:1しか出ず、12px級の
+   小さい文字ではAA(4.5:1)に届かない。線・アイコンなど文字でない
+   ところは --gold のまま。 */
 .eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;
-  font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold)}
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hold)}
 .eyebrow::before{content:'';width:22px;height:1px;background:var(--gold)}
 h1{font-family:var(--font-display);font-weight:900;color:var(--navy-deep);
   font-size:clamp(1.66rem,7.2vw,2.15rem);line-height:1.44;letter-spacing:.01em}
@@ -73,7 +81,7 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
   font-family:var(--font-body);font-size:1.16rem;font-weight:700;letter-spacing:.02em;
   transition:transform .08s ease;-webkit-tap-highlight-color:transparent}
 .btn:active{transform:scale(.98)}
-.tlink{display:inline-block;font-size:1rem;color:var(--gold);text-decoration:underline;
+.tlink{display:inline-block;font-size:1rem;color:var(--hold);text-decoration:underline;
   text-underline-offset:4px;cursor:pointer;background:none;border:none;
   font-family:var(--font-body)}
 
@@ -102,7 +110,7 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .card{background:#FFFFFF;border:1px solid var(--line);border-radius:22px;
   padding:clamp(24px,5vw,32px) clamp(20px,4vw,26px);box-shadow:var(--shadow-card)}
 .tag{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--gold);font-weight:700;text-align:center}
+  color:var(--hold);font-weight:700;text-align:center}
 .speaker{width:104px;height:104px;border-radius:50%;border:none;cursor:pointer;
   background:var(--gold-bright);display:flex;align-items:center;justify-content:center;
   margin:20px auto 0;box-shadow:0 16px 34px -12px rgba(29,22,16,.5);
@@ -134,7 +142,7 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .scene{margin-top:26px;padding-top:24px;border-top:1px solid var(--line);text-align:center}
 .scene[hidden]{display:none}
 .scene .who{display:block;font-size:.76rem;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+  text-transform:uppercase;color:var(--hold);margin-bottom:7px}
 .scene b{display:block;font-family:var(--font-display);font-size:1.08rem;font-weight:700;
   color:var(--navy-deep);line-height:1.5}
 .scene em{display:block;font-style:normal;margin-top:3px;font-size:.94rem;color:var(--ink-soft)}
@@ -154,10 +162,62 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .opt.wrong .k{background:var(--ng-line);border-color:var(--ng-line);color:#fff}
 .opt.dim{opacity:.45}
 
+/* ── 後半: セリフチェック（アプリ本体の「あなたの答え」画面と同じ作り）──
+   本体は答えの英文を filter:blur(9px) で伏せておき、タップで見せる。
+   「思い出そうとしてから見る」のと「最初から見える」のとでは、
+   残り方がまるで違う。広告でもそこは同じにする。
+   ぼかしの強さは本体と同じ9px。弱くすると透けて読めてしまい、
+   考える前に目が拾ってしまう。 */
+.rv{margin-top:18px;background:#FFFFFF;border:1.5px dashed var(--line);
+  border-radius:16px;padding:20px 18px;text-align:center;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:border-color .2s ease}
+.rv.open{border-style:solid;border-color:var(--gold)}
+.rv-label{font-size:.76rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold);margin-bottom:9px}
+.rv-en{font-family:var(--font-display);font-size:1.3rem;font-weight:700;
+  color:var(--navy-deep);line-height:1.5}
+.rv-en.blurred{filter:blur(9px);user-select:none;-webkit-user-select:none}
+.rv-cap{margin-top:13px;font-size:.92rem;font-weight:700;color:var(--hold)}
+.rv-ja{margin-top:5px;font-size:1rem;color:var(--ink-soft)}
+/* お手本を聞く。上の大きい丸(店員の音声)とは役割が違うので、
+   同じ丸にはせず、一回り小さい横長のボタンにして区別する */
+.rv-play{display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  margin-top:15px;min-height:50px;padding:0 22px;border-radius:999px;cursor:pointer;
+  background:var(--navy-deep);color:var(--cream);border:none;
+  font-family:var(--font-body);font-size:1.02rem;font-weight:700;
+  -webkit-tap-highlight-color:transparent;transition:transform .08s ease}
+.rv-play:active{transform:scale(.97)}
+.rv-play svg{width:21px;height:21px;flex:none}
+.rv-play.playing{animation:rvring 1.1s ease-out infinite}
+@keyframes rvring{0%{box-shadow:0 0 0 0 rgba(226,163,61,.55)}
+  100%{box-shadow:0 0 0 14px rgba(226,163,61,0)}}
+@media (prefers-reduced-motion:reduce){.rv-play.playing{animation:none}}
+/* カードが白なので、中のコツ箱は白のままだと境目が消える */
+.rv .tips{background:var(--cream);text-align:left}
+
+/* 公開したあとに出る自己申告。2つとも同じ重さにしてある。
+   片方を目立たせると「言えた」を押させる圧になり、答えが嘘になる。 */
+.say{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.say > p{text-align:center;font-family:var(--font-display);font-weight:700;
+  font-size:1.06rem;color:var(--navy-deep);margin-bottom:12px}
+.say-row{display:flex;gap:10px}
+.say-row button{flex:1;min-height:58px;padding:10px 8px;border-radius:14px;cursor:pointer;
+  background:#FFFFFF;border:1.5px solid var(--line);color:var(--ink);
+  font-family:var(--font-body);font-size:1.04rem;font-weight:700;line-height:1.4;
+  transition:border-color .2s ease;-webkit-tap-highlight-color:transparent}
+.say-row button:disabled{cursor:default}
+.say-row button.dim{opacity:.4}
+.say-row button.tookit{background:var(--ok-bg);border-color:var(--ok-line);border-width:2.5px}
+.say-row button.notyet{background:var(--cream-soft);border-color:var(--gold);border-width:2.5px}
+
 /* ── 正解／不正解 ── */
 .fb{margin-top:20px;border-radius:18px;padding:20px;border:1.5px solid}
 .fb.ok{background:var(--ok-bg);border-color:var(--ok-line)}
 .fb.ng{background:var(--ng-bg);border-color:var(--ng-line)}
+/* 後半の「まだ言えない」用。赤(=不正解)にはしない。正直に押した人を
+   間違い扱いにすると、次から押されなくなる */
+.fb.hold{background:#FBF4E6;border-color:var(--gold)}
+.fb.hold .verdict{color:var(--hold)}
 .fb .verdict{display:flex;align-items:center;gap:10px;
   font-family:var(--font-display);font-size:1.24rem;font-weight:900}
 .fb.ok .verdict{color:var(--ok)} .fb.ng .verdict{color:var(--ng)}
@@ -181,8 +241,11 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
    下に置きつつ、白地で囲って「別のもの」として立たせる。 */
 .tips{margin-top:14px;background:#FFFFFF;border:1px solid var(--line);
   border-radius:14px;padding:14px 16px}
+/* 12px級の小さい文字なので「大きい文字」の緩い基準は使えない。
+   --gold(#A3782D)だと白地でも3.9:1でAA(4.5:1)に届かないため、
+   一段濃い --hold にする。見た目はほとんど変わらない */
 .tips h4{font-size:.78rem;font-weight:700;letter-spacing:.12em;
-  text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  text-transform:uppercase;color:var(--hold);margin-bottom:8px}
 .tips p{font-size:.98rem;line-height:1.8;color:var(--ink)}
 .tips p + p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 .tips b{color:var(--navy-deep);font-weight:700}
@@ -259,6 +322,8 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 
     <p class="q-title" id="qlead"></p>
     <div class="opts" id="opts"></div>
+    <!-- 後半だけ。ぼかした答え → タップで公開 → 自己申告 -->
+    <div id="reveal"></div>
     <div id="fb"></div>
   </div>
 </section>
@@ -267,7 +332,8 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 <section class="screen" id="s-done">
   <div class="center" style="padding-top:24px">
     <span class="eyebrow">Your result</span>
-    <p class="score" style="margin-top:14px"><b id="sc">0</b> / <span id="scmax">6</span> 問正解</p>
+    <!-- 前半は「正解」、後半は「言えた」。両方をまとめて言える言葉にする -->
+    <p class="score" style="margin-top:14px"><b id="sc">0</b> / <span id="scmax">6</span> 問できました</p>
     <h2 id="sc-word" style="margin-top:12px"></h2>
     <p class="lede" style="max-width:25em;margin-left:auto;margin-right:auto" id="sc-note"></p>
   </div>
@@ -403,84 +469,100 @@ var QUIZ = [
   },
 
   /* ══════════ ここから後半。今度は「言えるか」 ══════════
-     場面は前半と同じ3つ。答えの英語はすべてアプリ本体の answers に
-     あるもの(togo / justwater / thatsokay)で、Tipsも本体から持ってきた。
-     ダミーの選択肢だけは、ここで書いた。日本人がつい言ってしまう形
-     (Take out / Only water / I’m OK) を1つずつ混ぜてある。 */
+     ★2026-08-20 Harumi指示「実際のアプリの流れを体験できるように。
+     モザイクかかったページをタップして答えreveal」。
+     4択をやめ、アプリ本体の「あなたの答え」画面と同じ形にした:
+       声に出して言ってみる → ぼかしをタップして答え合わせ
+       → お手本を聞く → 発音のコツを読む → 言えた/まだ言えない
+     4択だと、答えが目の前に並んでいるので「思い出す」ことが起きない。
+     伏せてあるから、思い出そうとする。そこが商品の中身そのもの。
+
+     マイクでの発音チェックは、ここには載せない(Harumi判断)。
+     広告から来た人にいきなりマイク許可を求めると、拒否・離脱が出るうえ、
+     iOSの音声セッションの手当てを実機確認できないまま広告の着地ページに
+     置くことになるため。CTAの売り文句としては残してある。
+
+     Q4・Q5は前半と同じ場面なので、音声も前半のものを使い回す。
+     Q6だけは新しい場面(Anything else?)。
+     ★2026-08-20 Harumi「I’m goodだったと思います」。最初、Q6の
+     「大丈夫です」を20分待ちへの返事(That’s fine, we’ll wait.)と
+     読んで作っていたが、Harumiが指していたのは「他にご注文は？」への
+     返事の方だった。場面ごと差し替えた。
+     こちらの方が「大丈夫です」の話としても筋が通る —— この場面の
+     「大丈夫です」は、はっきり No から始めないと伝わらないため。
+
+     答えの英語はすべてアプリ本体の answers にあるもの
+     (togo / justwater / else_imgood)で、Tipsも本体から写した。 */
   {
     id: 'togo', part2: true, tag: '☕ Café Challenge',
-    /* <br> は折り返し位置の指定。無いと「…番で / す。」と最後の1文字だけが
-       次の行に落ちる幅がある(375px) */
-    partbar: 'ここからは、<br>あなたが英語で答える番です。',
+    /* <br> は折り返し位置の指定。無いと最後の1文字だけが次の行に落ちる(375px) */
+    partbar: 'ここからは、<br>声に出して言えるかどうかです。',
     scene: { en: 'For here or to go?', ja: '店内ですか？お持ち帰りですか？' },
-    lead: '「テイクアウトでお願いします。」<br>英語では？',
+    lead: '「テイクアウトで」<br>英語で、声に出して言ってみてください。',
     src: 'audio/q_size_02_',
+    ansSrc: 'audio/a_size_togo',     /* 本体 key: togo のお手本音声 */
     en: 'To go, please.',
-    ja: 'テイクアウトでお願いします。',
-    opts: ['To go, please.',
-           'Take out, please.',
-           'For here, please.',
-           'I want take away.'],
-    ans: 0,
+    ja: '持ち帰りでお願いします。',
     /* 本体 L4300 の言い回しをそのまま使う:
        「北米では『テイクアウト』より to go が普通の言い方です」 */
-    note: '日本語の「テイクアウト」につられて <b>Take out, please.</b> と言いたくなりますが、' +
+    note: '日本語の「テイクアウト」につられて <b>Take out, please.</b> と言ってしまいがちですが、' +
           '北米のカフェで普通に使われるのは <b>To go, please.</b> です。' +
           '<b>For here.</b> は反対の「店内で」なので、逆の意味になってしまいます。',
+    /* 後半のTipsは1本ずつ、短く(Harumi「発音Tipsを軽く」)。
+       ここは商品の中身を見せる場所であって、教え込む場所ではない。 */
     tips: [
-      '<b>【Toの弱形】</b>Q1で聞いた <b>「t’ごぅ」</b> は、自分で言うときも同じです。' +
-      '「とぅー ごー」と均等に言わず、to を軽く短く、<b>go だけをはっきり</b>言うと自然に聞こえます。',
-      '<b>【おぅの二重母音】</b>"go" の o は「ごー」ではなく、<b>「ごぅ」</b>と二重母音にします。'
+      '<b>【Toの弱形】</b>「とぅー ごー」と均等に言わず、to は軽く短く、' +
+      '<b>go だけをはっきり</b>。Q1で聞いた <b>「t’ごぅ」</b> と同じです。'
     ]
   },
   {
     id: 'justwater', part2: true, tag: '🍽 Restaurant Challenge',
     scene: { en: 'Can I start you off with something to drink?', ja: 'まず、お飲み物はいかがですか？' },
-    lead: '「お水だけお願いします。」<br>英語では？',
+    lead: '「お水だけお願いします」<br>英語で、声に出して言ってみてください。',
     src: 'audio/q_drink_04_',
-    en: 'Just water, please.',
-    ja: 'お水だけお願いします。',
-    opts: ['Just water, please.',
-           'Only water, please.',
-           'Water only, thank you.',
-           'I need water, please.'],
-    ans: 0,
-    note: '「〜だけ」は <b>just</b>。どれも意味は通じますが、店で実際によく使われるのは ' +
-          '<b>Just water, please.</b> です。Q2で選んだ言い方と同じもの。' +
+    ansSrc: 'audio/a_drink_justwater',   /* 本体 key: justwater のお手本音声 */
+    /* 画面の英文と、お手本の音声で言っている英文は必ず同じにする。
+       本体のお手本は "Just water for me."。Q2の選択肢に出した
+       "Just water, please." には音声が無いので、こちらを表に出し、
+       同じ意味だと note で結ぶ。 */
+    en: 'Just water for me.',
+    ja: '私はお水だけで。',
+    note: '「〜だけ」は <b>just</b>。Q2で選んだ <b>Just water, please.</b> でも同じです。' +
+          'どちらも「お水だけで」。長い文はいりません。' +
           '日本語からでも、すぐに出てきましたか。',
     tips: [
-      '<b>【消えるT】</b>"Just" の最後の t は破裂させず、舌をtの位置で止めて、次の "water" につなげます。',
-      '<b>【Flap T】</b>"water" の t は母音に挟まれて「ら行」の音に変身し、<b>「わらー」</b>のように聞こえます。' +
-      '2つ合わせると「じゃすと うぉーたー」ではなく、<b>「じゃすっわらー」</b>のように一息になります。'
+      '<b>【Flap T】</b>"water" の t は「ら行」の音に変身します。' +
+      '「じゃすと うぉーたー」ではなく <b>「じゃすっわらー」</b> のように一息で。'
     ]
   },
   {
     id: 'thatsokay', part2: true, tag: '🍽 Restaurant Challenge',
     scene: { en: 'It’ll be about a 20-minute wait.', ja: '20分の待ち時間になります。' },
-    /* 「大丈夫です」だけだと、待つのか帰るのかが決まらない。
-       選択肢に両方を出すので、問題文の側で「待つ」と決めておく。
-       なぜその一言が要ったのかは、下の note がそのまま説明になる。 */
-    lead: '「大丈夫です。」（待ちます、という意味で）<br>英語では？',
+    lead: '「大丈夫です。」<br>英語で、声に出して言ってみてください。',
     src: 'audio/q_seat_05_',
+    ansSrc: 'audio/a_seat_thatsokay',   /* 本体 key: thatsokay のお手本音声 */
     en: 'That’s fine, we’ll wait.',
     ja: '大丈夫です、待ちます。',
-    opts: ['That’s fine, we’ll wait.',
-           'I’m OK.',
-           'No, thanks. We’ll come back later.',
-           'How long is the wait?'],
-    ans: 0,
+    /* ★2026-08-20 Harumi「I’m goodだったと思いますが確認お願いします」。
+       I’m good は「他にご注文は？」への返事(本体 key: else_imgood)。
+       待ち時間に対して言うと「いえ、結構です」= 帰ります、になる。
+       取り違えやすいところなので、そのまま解説にした。 */
     note: '日本語の「大丈夫です」は、<b>「はい、それでいいです」</b>と<b>「いいえ、けっこうです」</b>の' +
           'どちらにも使えます。英語では、どちらなのかを決めて言わないと伝わりません。' +
-          '待つなら <b>That’s fine, we’ll wait.</b>、待たずに出るなら ' +
-          '<b>No, thanks. We’ll come back later.</b> です。',
+          'ここで <b>I’m good.</b> と言うと「いえ、結構です」＝<b>待たずに帰ります</b>、' +
+          'の意味に取られます。待つなら <b>That’s fine, we’ll wait.</b> です。',
     tips: [
-      '<b>【カジュアルな短縮形】</b>"We will" は会話では <b>"We’ll"（ぅぃぅ）</b> と縮めます。' +
-      '「うぃー うぃる」と分けないでください。Q3の "It’ll" と同じで、' +
-      'will は<b>「ぅ」</b>のようなリズム感、音になります。',
-      '<b>【消えるT】</b>"That’s" の t は s に挟まれて、ほとんど聞こえません。'
+      '<b>【機能語の弱形】</b>"we’ll" は「うぃー うぃる」ではなく <b>「ぅぃぅ」</b>。' +
+      'Q3の "It’ll" と同じで、will は<b>「ぅ」</b>のような音になります。'
     ]
   }
 ];
+
+/* お手本ボタンの中のスピーカー。上の大きい丸と同じ形にしてある */
+var MODEL_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+  'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+  '<polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="currentColor" stroke="none"/>' +
+  '<path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
 
 /* ── 音声 ─────────────────────────────────────────
    LPの体験ウィジェットと同じく、呼ばれるたびに新しいHTMLAudioを作る。
@@ -549,17 +631,103 @@ function render() {
 
   var box = $('opts');
   box.innerHTML = '';
-  q.opts.forEach(function (t, i) {
-    var b = document.createElement('button');
-    b.className = 'opt';
-    b.type = 'button';
-    b.innerHTML = '<span class="k">' + 'ABCD'[i] + '</span><span>' + t + '</span>';
-    b.addEventListener('click', function () { pick(i); });
-    box.appendChild(b);
-  });
+  $('reveal').innerHTML = '';
+
+  if (q.part2) {
+    buildReveal(q);
+  } else {
+    q.opts.forEach(function (t, i) {
+      var b = document.createElement('button');
+      b.className = 'opt';
+      b.type = 'button';
+      b.innerHTML = '<span class="k">' + 'ABCD'[i] + '</span><span>' + t + '</span>';
+      b.addEventListener('click', function () { pick(i); });
+      box.appendChild(b);
+    });
+  }
   /* 次の問題の音声を先に取っておく(押した瞬間に鳴るように) */
   var nx = QUIZ[idx + 1];
   if (nx) { try { new Audio(nx.src + voice + '.mp3').load(); } catch (e) {} }
+}
+
+/* ── 後半: セリフチェック ────────────────────────────
+   アプリ本体の「あなたの答え」画面と同じ順番。
+     ① 声に出して言ってみる(ここは画面の外の出来事)
+     ② ぼかしをタップ → 英文が出る
+     ③ お手本を聞く / 発音のコツを読む
+     ④ 言えた・まだ言えない を自分で押す
+   ③をタップの前に出してしまうと、答えが透けて見えるのと同じことに
+   なるので、必ず公開のあとに出す。
+   ────────────────────────────────────────────── */
+function tipsHtml(q) {
+  if (!q.tips) return '';
+  return '<div class="tips"><h4>つながる音・発音のコツ</h4>' +
+    q.tips.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>';
+}
+
+function buildReveal(q) {
+  var card = document.createElement('div');
+  card.className = 'rv';
+  card.innerHTML =
+    '<p class="rv-label">Your Answer</p>' +
+    '<p class="rv-en blurred">' + q.en + '</p>' +
+    '<p class="rv-cap">言ってから、タップして答え合わせ</p>';
+  var opened = false;
+  card.addEventListener('click', function () {
+    if (opened) return;             /* 一度開いたら閉じない。閉じても得がない */
+    opened = true;
+    card.classList.add('open');
+    card.querySelector('.rv-en').classList.remove('blurred');
+    card.querySelector('.rv-cap').remove();
+
+    /* 和訳・お手本・コツは、公開したこの瞬間から使えるようにする。
+       本体もここで「お手本を聞く」「発音のヒント」が並ぶ。 */
+    var ja = document.createElement('p');
+    ja.className = 'rv-ja';
+    ja.textContent = q.ja;
+    card.appendChild(ja);
+
+    if (q.ansSrc) {
+      var lis = document.createElement('button');
+      lis.className = 'rv-play';
+      lis.type = 'button';
+      lis.innerHTML = MODEL_SVG + '<span>お手本を聞く</span>';
+      lis.addEventListener('click', function (e) {
+        e.stopPropagation();
+        playClip(q.ansSrc + (rate === 1 ? '' : '_slow') + '.mp3', lis);
+      });
+      card.appendChild(lis);
+      playClip(q.ansSrc + (rate === 1 ? '' : '_slow') + '.mp3', lis);
+    }
+
+    var tips = document.createElement('div');
+    tips.innerHTML = tipsHtml(q);
+    if (tips.firstChild) card.appendChild(tips.firstChild);
+
+    /* 自己申告。2つとも同じ見た目にしてある */
+    var say = document.createElement('div');
+    say.className = 'say';
+    say.innerHTML = '<p>声に出して、言えましたか？</p>' +
+      '<div class="say-row">' +
+        '<button type="button" id="said-yes">言えた</button>' +
+        '<button type="button" id="said-no">まだ言えない</button>' +
+      '</div>';
+    $('reveal').appendChild(say);
+    $('said-yes').addEventListener('click', function () { sayDone(true); });
+    $('said-no').addEventListener('click', function () { sayDone(false); });
+  });
+  $('reveal').appendChild(card);
+}
+
+function sayDone(said) {
+  if (answered) return;
+  answered = true;
+  if (said) { score++; playClip('audio/se-correct.mp3'); }
+  var yes = $('said-yes'), no = $('said-no');
+  yes.disabled = no.disabled = true;
+  (said ? yes : no).classList.add(said ? 'tookit' : 'notyet');
+  (said ? no : yes).classList.add('dim');
+  showFb(said ? 'said' : 'notyet');
 }
 
 function pick(i) {
@@ -576,19 +744,33 @@ function pick(i) {
     else if (n === i) bs[n].classList.add('wrong');
     else bs[n].classList.add('dim');
   }
+  showFb(ok ? 'ok' : 'ng');
+}
 
+/* 前半(4択)と後半(自己申告)で、見出しと出すものだけが違う。
+   後半は英文・和訳・コツを上のカードに出し終えているので、
+   ここでは繰り返さず note だけにする。 */
+function showFb(kind) {
+  var q = QUIZ[idx];
   var last = (idx === QUIZ.length - 1);
+  var OK  = '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>';
+  var NG  = '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>';
+  var HOLD = '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/>' +
+             '<path d="M12 7.5v5M12 16v.01"/></svg>';
+  var head = {
+    ok:     ['ok',   OK,   'Correct!'],
+    ng:     ['ng',   NG,   'Not quite!'],
+    said:   ['ok',   OK,   '言えましたね。'],
+    notyet: ['hold', HOLD, 'ここが、伸びしろ。']
+  }[kind];
+  var full = (kind === 'ok' || kind === 'ng');
+
   $('fb').innerHTML =
-    '<div class="fb ' + (ok ? 'ok' : 'ng') + '">' +
-      '<p class="verdict">' +
-        (ok ? '<svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>Correct!'
-            : '<svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>Not quite!') +
-      '</p>' +
-      '<p class="en">' + q.en + '</p>' +
-      '<p class="ja">' + q.ja + '</p>' +
+    '<div class="fb ' + head[0] + '">' +
+      '<p class="verdict">' + head[1] + head[2] + '</p>' +
+      (full ? '<p class="en">' + q.en + '</p><p class="ja">' + q.ja + '</p>' : '') +
       '<p class="note">' + q.note + '</p>' +
-      (q.tips ? '<div class="tips"><h4>つながる音・発音のコツ</h4>' +
-        q.tips.map(function (t) { return '<p>' + t + '</p>'; }).join('') + '</div>' : '') +
+      (full ? tipsHtml(q) : '') +
       '<button class="btn" id="next" type="button">' +
         (last ? '結果を見る →' : '次の問題へ →') + '</button>' +
     '</div>';
@@ -612,14 +794,14 @@ function finish() {
      終わる。この直後にCTAが来るので、そこへ渡す一文にする。 */
   /* ★2026-08-20 後半3問を足して6問になったので、0〜6の7通りにした。
      0・4・6 の文章は前の4通りのまま(Harumi承認済みの言い回し)。
-     1の見出しだけ「聞き取れました」→「正解しました」に変えている。
-     後半は聞き取りではなく発話なので、その言葉が合わなくなったため。 */
+     1・2の見出しは「できました」。後半は聞き取りでも4択でもなく
+     「声に出して言えたか」なので、「正解」も「聞き取れた」も合わない。 */
   var W = [
     { h: 'ここからが、面白いところです。',
       n: '実際の海外旅行では、こういうやり取りが次々に出てきます。アプリでは「質問を聞き取る」ところから始めて、その場で答えられるようになるまで練習します。' },
-    { h: '1問、正解しました。',
+    { h: '1問、できました。',
       n: '単語は知っているのに聞き取れない。英語力ではなく、「つながる音」に耳が慣れていないだけです。アプリでは、その音に耳を慣らすところから練習します。' },
-    { h: '2問、正解しました。',
+    { h: '2問、できました。',
       n: '単語は知っているのに聞き取れない。英語力ではなく、「つながる音」に耳が慣れていないだけです。アプリでは、その音に耳を慣らすところから練習します。' },
     { h: '半分まで来ました。',
       n: '聞き取れることと、その場で答えられることは、別の力です。アプリでは、その両方を順番に練習していきます。' },
@@ -627,7 +809,7 @@ function finish() {
       n: 'でも本番では、相手の英語を聞いて、すぐに自分で答えなければいけません。アプリでは「質問を聞き取り」、それに答えられるようになるまでトレーニングしていきます。' },
     { h: 'あと1問でした。惜しい。',
       n: 'でも本番では、相手の英語を聞いて、すぐに自分で答えなければいけません。アプリでは「質問を聞き取り」、それに答えられるようになるまでトレーニングしていきます。' },
-    { h: '全問正解。すばらしい。',
+    { h: '全問クリア。すばらしい。',
       n: '聞き取れることと、その場で答えられることは、別の力です。アプリでは、聞き取ったあと「声に出して答える」ところまで練習します。' }
   ][score];
   $('sc-word').textContent = W.h;
