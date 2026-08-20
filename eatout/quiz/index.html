@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>海外のカフェで、これ聞かれたら答えられる？ — 2分の無料クイズ</title>
-<meta name="description" content="海外のカフェ・レストランで実際に言われる英語を6問。前半は聞き取れるか、後半は言えるか。約2分・無料・登録なし。">
+<title>海外のカフェで、これ聞かれたら答えられる？ — 全6問の無料クイズ</title>
+<meta name="description" content="海外のカフェ・レストランで実際に言われる英語を6問。前半は聞き取れるか、後半は言えるか。無料・登録なし。">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="海外のカフェで、これ聞かれたら答えられる？">
-<meta property="og:description" content="聞き取れますか。そして、言えますか。約2分・無料。">
+<meta property="og:description" content="聞き取れますか。そして、言えますか。全6問・無料。">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -304,12 +304,19 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
   <div class="hero">
     <p class="cup">☕️</p>
     <h1>海外のカフェで、<br>これ聞かれたら<br>答えられる？</h1>
-    <!-- ★2026-08-20 Harumi指示で後半3問(発話)を追加。
-         前半＝聞き取れるか、後半＝言えるか、の2部構成になったので
-         ここの一文と所要時間もそれに合わせる。 -->
-    <p class="sub">前半は、聞き取れるかどうか。<br>後半は、あなたが英語で言えるかどうか。</p>
+    <!-- ★2026-08-20 Harumi「これ必要？」。前半・後半の作りをここで
+         説明していたが、始める前の人には要らない情報だった。見出しが
+         もう「これ聞かれたら答えられる？」と問いかけているので、
+         次に要るのは説明ではなくボタン。後半に入る時は帯(.partbar)が
+         出るので、そこで分かる。
+
+         ★2026-08-20 Harumi「2分ですかねぇ？？？？」。画面に出る文字は
+         2,386字あり、読むだけで約4.8分、音声と操作を足すと約6分。
+         コツを飛ばしても約4分で、「約2分」は半分以下の嘘だった。
+         所要時間の主張自体をやめ、数えられる事実(全6問)にする。
+         進み具合のバーも「1 / 6」と出ているので、そちらとも揃う。 -->
     <button class="btn" id="start" type="button">START QUIZ</button>
-    <p class="fine">約2分 ・ 無料 ・ 登録なし</p>
+    <p class="fine">全6問 ・ 無料 ・ 登録なし</p>
   </div>
 </section>
 
@@ -446,7 +453,7 @@ var QUIZ = [
        買ってから読んでもらえばいい。 */
     tips: [
       '<b>【Toの弱形】</b>"to go" の to は弱く、「とぅー」ではなく <b>「t’ごぅ」</b> のように短く聞こえます。' +
-      '<b>「るごぅ」</b>に近く聞こえることもあります。' +
+      '<b>「るごぅ」</b>みたいに聞こえることが多々あります。' +
       '（go の o は「ごー」ではなく、<b>「ごぅ」</b>と二重母音になります）'
     ]
   },
