@@ -202,7 +202,7 @@
   .trial-card { max-width: 480px; margin: 36px auto 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); text-align: center; }
   .trial-tag { font-size: 12.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 16px; }
   .trial-speaker-wrap { display: flex; justify-content: center; margin-bottom: 18px; }
-  .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; }
+  .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; }
   .trial-speaker:hover { transform: scale(1.06); }
   .trial-hint { font-size: 13.5px; font-weight: 700; color: var(--ink-soft); margin-bottom: 6px; }
   .trial-q { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
@@ -218,10 +218,13 @@
   .trial-feedback.show { display: block; }
   .trial-step2 { display: none; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-step2.show { display: block; }
-  .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 700; margin: 12px 0 20px; }
+  .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 700; margin: 12px 0 6px; font-style: italic; }
+  .trial-prompt-jp { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 20px; }
   .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy-deep); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 15px; font-weight: 700; cursor: pointer; transition: transform 0.25s ease; }
   .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
+  .trial-mic-note { font-size: 13.5px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
+  .trial-heard { font-size: 15px; color: var(--ink); background: var(--cream-soft); border-radius: 10px; padding: 10px 16px; margin: 4px 0 14px; }
   .trial-result { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-result.show { display: block; }
   .trial-result .nice { font-family: var(--font-display); font-weight: 700; font-size: 1.9rem; color: var(--gold); margin-bottom: 10px; }
@@ -519,21 +522,27 @@
       </div>
 
       <div class="trial-step2" id="trialStep2">
-        <p style="margin-bottom:0;">次は、あなたの番です。<br>こう答えてみましょう。</p>
-        <div class="trial-prompt-bubble">「持ち帰りでお願いします」</div><br>
+        <p style="margin-bottom:0;">次は、あなたの番です。<br>声に出して、こう答えてみましょう。</p>
+        <div class="trial-prompt-bubble">“To go, please.”</div>
+        <div class="trial-prompt-jp">（持ち帰りでお願いします）</div>
         <button type="button" id="trialMicBtn" class="trial-mic-btn">
           🎤 マイクで答えてみる
         </button>
+        <div class="trial-mic-note" id="trialMicNote"></div>
       </div>
 
       <div class="trial-result" id="trialResult">
-        <div class="nice">Nice! 🎉</div>
+        <div class="nice" id="trialResultHeadline">Nice! 🎉</div>
+        <p class="trial-heard" id="trialHeard"></p>
         <p class="lede" style="margin-bottom:0;">実際の海外旅行では、こうしたやり取りが次々に出てきます。</p>
         <a href="https://buy.stripe.com/aFa00jeTkfHWfzy68qeEo04?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:22px;width:100%;justify-content:center;">もっと練習してみる →</a>
         <div class="trial-cta-note">¥1,000 ・ 買い切り</div>
       </div>
     </div>
   </div>
+
+  <audio id="trialAudioEl" preload="auto" src="audio/trial-for-here-or-to-go.mp3"></audio>
+  <audio id="trialCorrectSe" preload="auto" src="audio/se-correct.mp3"></audio>
 </section>
 
 <!-- METHOD -->
@@ -691,20 +700,29 @@
   var feedback = document.getElementById('trialFeedback');
   var step2 = document.getElementById('trialStep2');
   var micBtn = document.getElementById('trialMicBtn');
+  var micNote = document.getElementById('trialMicNote');
   var result = document.getElementById('trialResult');
+  var resultHeadline = document.getElementById('trialResultHeadline');
+  var heardEl = document.getElementById('trialHeard');
+  var trialAudio = document.getElementById('trialAudioEl');
+  var correctSe = document.getElementById('trialCorrectSe');
 
-  var trialAudio = new Audio('audio/trial-for-here-or-to-go.mp3');
-
-  function playTrialClip() {
+  function playEl(el) {
+    if (!el) return;
     try {
-      trialAudio.currentTime = 0;
-      trialAudio.play();
+      el.currentTime = 0;
+      var p = el.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function () {
+          // Autoplay/permission restrictions: fail silently, nothing more we can do here.
+        });
+      }
     } catch (e) {}
   }
 
   if (speakBtn) {
     speakBtn.addEventListener('click', function () {
-      playTrialClip();
+      playEl(trialAudio);
       if (!qBlock.classList.contains('show')) {
         qBlock.classList.add('show');
         qBlock.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -720,6 +738,7 @@
       opts.forEach(function (o) {
         if (o.dataset.correct === 'true') o.classList.add('correct');
       });
+      if (isCorrect) playEl(correctSe);
       feedback.textContent = isCorrect
         ? '正解! 「店内ですか?お持ち帰りですか?」という意味でした。'
         : '正解は「店内ですか?お持ち帰りですか?」でした。';
@@ -731,14 +750,79 @@
     });
   });
 
+  // Real speech recognition where the browser supports it (Chrome/Edge/Android).
+  // iOS Safari and Firefox don't implement SpeechRecognition, so we never touch
+  // the microphone there and fall back to an honest message instead of faking
+  // a result — this also sidesteps any risk of the getUserMedia-related audio
+  // routing issues seen elsewhere on iOS.
+  var SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+  var TARGET_WORDS = ['to', 'go'];
+
+  function showResult(headline, heardText) {
+    resultHeadline.textContent = headline;
+    if (heardText) {
+      heardEl.textContent = 'こう聞こえました: 「' + heardText + '」';
+      heardEl.style.display = 'block';
+    } else {
+      heardEl.textContent = '';
+      heardEl.style.display = 'none';
+    }
+    result.classList.add('show');
+    result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function resetMicBtn(label) {
+    micBtn.disabled = false;
+    micBtn.textContent = label || '🎤 マイクで答えてみる';
+  }
+
   if (micBtn) {
     micBtn.addEventListener('click', function () {
+      if (!SpeechRecognitionCtor) {
+        micNote.textContent = 'このブラウザはマイクでの聞き取りに対応していません。実際のアプリでは録音してお手本と比較できます。';
+        showResult('Good try! 👍', null);
+        return;
+      }
+
       micBtn.disabled = true;
       micBtn.textContent = '🎤 聞き取り中...';
-      setTimeout(function () {
-        result.classList.add('show');
-        result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }, 900);
+      micNote.textContent = '';
+
+      var recognition = new SpeechRecognitionCtor();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      var settled = false;
+
+      recognition.onresult = function (event) {
+        settled = true;
+        var transcript = event.results[0][0].transcript || '';
+        var normalized = transcript.toLowerCase().replace(/[^a-z\s]/g, '');
+        var matched = TARGET_WORDS.every(function (w) { return normalized.indexOf(w) !== -1; });
+        resetMicBtn();
+        showResult(matched ? 'Nice! 🎉' : 'Good try! 👍', transcript);
+      };
+
+      recognition.onerror = function () {
+        settled = true;
+        resetMicBtn('🎤 もう一度試す');
+        micNote.textContent = 'うまく聞き取れませんでした。マイクの使用を許可して、もう一度お試しください。';
+      };
+
+      recognition.onend = function () {
+        if (!settled) {
+          resetMicBtn('🎤 もう一度試す');
+          micNote.textContent = '音声が聞き取れませんでした。もう一度お試しください。';
+        }
+      };
+
+      try {
+        recognition.start();
+      } catch (e) {
+        resetMicBtn();
+        micNote.textContent = 'マイクを開始できませんでした。もう一度お試しください。';
+      }
     });
   }
 })();
