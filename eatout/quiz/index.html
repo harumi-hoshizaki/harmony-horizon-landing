@@ -429,6 +429,10 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 
 </main>
 
+<!-- リールごとの流入元をStripeまで運ぶ。詳しくは src-tag.js の先頭。
+     LPと同じ挙動にするため、1つのファイルを両方から読む -->
+<script src="../src-tag.js"></script>
+
 <script>
 'use strict';
 /* ══════════════════════════════════════════════════════════════
@@ -935,6 +939,11 @@ function next() {
 function finish() {
   $('sc').textContent = String(score);
   $('scmax').textContent = String(QUIZ.length);
+  /* 購入リンクに「どのリールから来たか」と「何問できたか」を載せる。
+     Stripeの画面に eatout_quiz-togo-s5 のように並ぶので、
+     ネタ別の売上と、点数と購入の関係の両方が後から見られる。
+     src-tag.js が読めなかった時のために、存在を確かめてから呼ぶ。 */
+  if (window.eatoutStampBuyLinks) window.eatoutStampBuyLinks('s' + score);
   /* 点数は主役ではない。「本番では、聞いてすぐ答える」という気づきが主役。 */
   /* ★2026-08-20 Harumi指示。4つとも「本番は厳しい」で終わっていた。
      不安を置いて終わるのではなく、「アプリで何ができるようになるか」で
