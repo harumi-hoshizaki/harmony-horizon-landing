@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>海外のカフェで、これ聞かれたら答えられる？ — 1分の無料クイズ</title>
-<meta name="description" content="海外のカフェ・レストランで実際に言われる英語を3問。音声を聞いて、答えてみてください。約1分・無料・登録なし。">
+<title>海外のカフェで、これ聞かれたら答えられる？ — 2分の無料クイズ</title>
+<meta name="description" content="海外のカフェ・レストランで実際に言われる英語を6問。前半は聞き取れるか、後半は言えるか。約2分・無料・登録なし。">
 <meta name="robots" content="noindex">
 <meta property="og:title" content="海外のカフェで、これ聞かれたら答えられる？">
-<meta property="og:description" content="音声を聞いて、答えてみてください。約1分・無料。">
+<meta property="og:description" content="聞き取れますか。そして、言えますか。約2分・無料。">
 <meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -89,7 +89,14 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .steps{display:flex;align-items:center;gap:8px;padding:2px 0 22px}
 .steps i{flex:1;height:4px;border-radius:999px;background:var(--line)}
 .steps i.on{background:var(--gold-bright)}
-.steps span{font-size:.84rem;letter-spacing:.08em;color:var(--ink-soft);font-weight:700}
+.steps span{font-size:.84rem;letter-spacing:.08em;color:var(--ink-soft);font-weight:700;
+  flex:none}
+/* 前半(聞き取り)と後半(発話)の区切り。後半の1問目に1度だけ出す */
+.partbar{margin:0 0 16px;padding:13px 16px;border-radius:14px;
+  background:var(--cream-soft);border:1px solid var(--line);text-align:center;
+  font-family:var(--font-display);font-size:1.02rem;font-weight:700;
+  color:var(--navy-deep);line-height:1.6}
+.partbar[hidden]{display:none}
 
 /* ── 音声（LPの .trial-speaker を大きくしたもの） ── */
 .card{background:#FFFFFF;border:1px solid var(--line);border-radius:22px;
@@ -121,6 +128,16 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .q-title{margin-top:26px;padding-top:24px;border-top:1px solid var(--line);
   font-family:var(--font-display);font-weight:700;font-size:1.14rem;
   color:var(--navy-deep);text-align:center;line-height:1.55}
+/* 後半は .scene が区切り線の役をするので、こちらの線は消す */
+.q-title.tight{margin-top:18px;padding-top:0;border-top:none}
+/* 「店員に、こう言われている」の一言。後半だけ出す */
+.scene{margin-top:26px;padding-top:24px;border-top:1px solid var(--line);text-align:center}
+.scene[hidden]{display:none}
+.scene .who{display:block;font-size:.76rem;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--gold);margin-bottom:7px}
+.scene b{display:block;font-family:var(--font-display);font-size:1.08rem;font-weight:700;
+  color:var(--navy-deep);line-height:1.5}
+.scene em{display:block;font-style:normal;margin-top:3px;font-size:.94rem;color:var(--ink-soft)}
 .opts{display:flex;flex-direction:column;gap:10px;margin-top:16px}
 .opt{display:flex;align-items:center;gap:13px;width:100%;min-height:62px;
   padding:13px 16px;border-radius:14px;cursor:pointer;text-align:left;
@@ -196,17 +213,22 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
   <div class="hero">
     <p class="cup">☕️</p>
     <h1>海外のカフェで、<br>これ聞かれたら<br>答えられる？</h1>
-    <p class="sub">音声を聞いて、答えてみてください。</p>
+    <!-- ★2026-08-20 Harumi指示で後半3問(発話)を追加。
+         前半＝聞き取れるか、後半＝言えるか、の2部構成になったので
+         ここの一文と所要時間もそれに合わせる。 -->
+    <p class="sub">音声を聞いて、答えてみてください。<br>後半は、あなたが英語で答える番です。</p>
     <button class="btn" id="start" type="button">START QUIZ</button>
-    <p class="fine">約1分 ・ 無料 ・ 登録なし</p>
+    <p class="fine">約2分 ・ 無料 ・ 登録なし</p>
   </div>
 </section>
 
 <!-- ══════════ 出題 ══════════ -->
 <section class="screen" id="s-quiz">
-  <div class="steps">
-    <i id="st1"></i><i id="st2"></i><i id="st3"></i><span id="stn">1 / 3</span>
-  </div>
+  <!-- 目盛りはQUIZの数だけ render() が作る。問題数を変えても直さなくていい -->
+  <div class="steps" id="steps"><span id="stn">1 / 6</span></div>
+
+  <!-- 後半に入る1回だけ出す帯。画面の作りが変わるので、その予告 -->
+  <p class="partbar" id="partbar" hidden></p>
 
   <div class="card">
     <p class="tag" id="tag">☕ Café Challenge</p>
@@ -231,6 +253,10 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
       </div>
     </div>
 
+    <!-- 後半だけ。何に答えるのかを文字でも出す。後半は聞き取りを
+         試す場面ではないので、音声だけに頼らせない -->
+    <p class="scene" id="scene" hidden></p>
+
     <p class="q-title" id="qlead"></p>
     <div class="opts" id="opts"></div>
     <div id="fb"></div>
@@ -241,7 +267,7 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 <section class="screen" id="s-done">
   <div class="center" style="padding-top:24px">
     <span class="eyebrow">Your result</span>
-    <p class="score" style="margin-top:14px"><b id="sc">0</b> / 3 問正解</p>
+    <p class="score" style="margin-top:14px"><b id="sc">0</b> / <span id="scmax">6</span> 問正解</p>
     <h2 id="sc-word" style="margin-top:12px"></h2>
     <p class="lede" style="max-width:25em;margin-left:auto;margin-right:auto" id="sc-note"></p>
   </div>
@@ -286,8 +312,15 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 <script>
 'use strict';
 /* ══════════════════════════════════════════════════════════════
-   3問。すべてEat Outアプリ本体に実在するフレーズ・音声。
+   6問。すべてEat Outアプリ本体に実在するフレーズ・音声。
    idは本体のものをそのまま使い、あとで照合できるようにしてある。
+
+   ★2026-08-20 Harumi指示「クイズは今度、答えられるかチェック」。
+   前半3問(Q1-Q3) … 店員の英語を聞いて、何と言われたか / どう答えるか
+   後半3問(Q4-Q6) … 同じ3場面で、その返事を英語で言えるか
+   後半は場面が同じなので、音声も前半と同じものを使い回している
+   (say側の音声は増やさない)。一度聞いた文をもう一度聞くのは無駄では
+   なく、「今度は意味が分かる」という体験そのものになる。
 
    ダミーの選択肢だけは本体に無いのでここで書いた。本体は他の問題の
    meaningJa から自動生成しているが、ここには3問しか無いので使えない。
@@ -367,6 +400,85 @@ var QUIZ = [
       '<b>【Flap T】</b>"be about a" の t は母音に挟まれて「ら行」の音に変身し、' +
       '<b>「びぁばぅら」</b> のように聞こえます。'
     ]
+  },
+
+  /* ══════════ ここから後半。今度は「言えるか」 ══════════
+     場面は前半と同じ3つ。答えの英語はすべてアプリ本体の answers に
+     あるもの(togo / justwater / thatsokay)で、Tipsも本体から持ってきた。
+     ダミーの選択肢だけは、ここで書いた。日本人がつい言ってしまう形
+     (Take out / Only water / I’m OK) を1つずつ混ぜてある。 */
+  {
+    id: 'togo', part2: true, tag: '☕ Café Challenge',
+    /* <br> は折り返し位置の指定。無いと「…番で / す。」と最後の1文字だけが
+       次の行に落ちる幅がある(375px) */
+    partbar: 'ここからは、<br>あなたが英語で答える番です。',
+    scene: { en: 'For here or to go?', ja: '店内ですか？お持ち帰りですか？' },
+    lead: '「テイクアウトでお願いします。」<br>英語では？',
+    src: 'audio/q_size_02_',
+    en: 'To go, please.',
+    ja: 'テイクアウトでお願いします。',
+    opts: ['To go, please.',
+           'Take out, please.',
+           'For here, please.',
+           'I want take away.'],
+    ans: 0,
+    /* 本体 L4300 の言い回しをそのまま使う:
+       「北米では『テイクアウト』より to go が普通の言い方です」 */
+    note: '日本語の「テイクアウト」につられて <b>Take out, please.</b> と言いたくなりますが、' +
+          '北米のカフェで普通に使われるのは <b>To go, please.</b> です。' +
+          '<b>For here.</b> は反対の「店内で」なので、逆の意味になってしまいます。',
+    tips: [
+      '<b>【Toの弱形】</b>Q1で聞いた <b>「t’ごぅ」</b> は、自分で言うときも同じです。' +
+      '「とぅー ごー」と均等に言わず、to を軽く短く、<b>go だけをはっきり</b>言うと自然に聞こえます。',
+      '<b>【おぅの二重母音】</b>"go" の o は「ごー」ではなく、<b>「ごぅ」</b>と二重母音にします。'
+    ]
+  },
+  {
+    id: 'justwater', part2: true, tag: '🍽 Restaurant Challenge',
+    scene: { en: 'Can I start you off with something to drink?', ja: 'まず、お飲み物はいかがですか？' },
+    lead: '「お水だけお願いします。」<br>英語では？',
+    src: 'audio/q_drink_04_',
+    en: 'Just water, please.',
+    ja: 'お水だけお願いします。',
+    opts: ['Just water, please.',
+           'Only water, please.',
+           'Water only, thank you.',
+           'I need water, please.'],
+    ans: 0,
+    note: '「〜だけ」は <b>just</b>。どれも意味は通じますが、店で実際によく使われるのは ' +
+          '<b>Just water, please.</b> です。Q2で選んだ言い方と同じもの。' +
+          '日本語からでも、すぐに出てきましたか。',
+    tips: [
+      '<b>【消えるT】</b>"Just" の最後の t は破裂させず、舌をtの位置で止めて、次の "water" につなげます。',
+      '<b>【Flap T】</b>"water" の t は母音に挟まれて「ら行」の音に変身し、<b>「わらー」</b>のように聞こえます。' +
+      '2つ合わせると「じゃすと うぉーたー」ではなく、<b>「じゃすっわらー」</b>のように一息になります。'
+    ]
+  },
+  {
+    id: 'thatsokay', part2: true, tag: '🍽 Restaurant Challenge',
+    scene: { en: 'It’ll be about a 20-minute wait.', ja: '20分の待ち時間になります。' },
+    /* 「大丈夫です」だけだと、待つのか帰るのかが決まらない。
+       選択肢に両方を出すので、問題文の側で「待つ」と決めておく。
+       なぜその一言が要ったのかは、下の note がそのまま説明になる。 */
+    lead: '「大丈夫です。」（待ちます、という意味で）<br>英語では？',
+    src: 'audio/q_seat_05_',
+    en: 'That’s fine, we’ll wait.',
+    ja: '大丈夫です、待ちます。',
+    opts: ['That’s fine, we’ll wait.',
+           'I’m OK.',
+           'No, thanks. We’ll come back later.',
+           'How long is the wait?'],
+    ans: 0,
+    note: '日本語の「大丈夫です」は、<b>「はい、それでいいです」</b>と<b>「いいえ、けっこうです」</b>の' +
+          'どちらにも使えます。英語では、どちらなのかを決めて言わないと伝わりません。' +
+          '待つなら <b>That’s fine, we’ll wait.</b>、待たずに出るなら ' +
+          '<b>No, thanks. We’ll come back later.</b> です。',
+    tips: [
+      '<b>【カジュアルな短縮形】</b>"We will" は会話では <b>"We’ll"（ぅぃぅ）</b> と縮めます。' +
+      '「うぃー うぃる」と分けないでください。Q3の "It’ll" と同じで、' +
+      'will は<b>「ぅ」</b>のようなリズム感、音になります。',
+      '<b>【消えるT】</b>"That’s" の t は s に挟まれて、ほとんど聞こえません。'
+    ]
   }
 ];
 
@@ -409,9 +521,30 @@ function render() {
   var q = QUIZ[idx];
   answered = false;
   $('tag').textContent = q.tag;
-  $('stn').textContent = (idx + 1) + ' / 3';
-  [1, 2, 3].forEach(function (n) { $('st' + n).classList.toggle('on', n <= idx + 1); });
-  $('qlead').textContent = q.lead;
+
+  /* 目盛りは問題数から作る。QUIZを増やしてもここは直さなくていい */
+  var bars = '';
+  for (var s = 0; s < QUIZ.length; s++) {
+    bars += '<i' + (s <= idx ? ' class="on"' : '') + '></i>';
+  }
+  $('steps').innerHTML = bars + '<span id="stn"></span>';
+  $('stn').textContent = (idx + 1) + ' / ' + QUIZ.length;
+
+  /* 後半に入る1問目にだけ帯を出す */
+  var bar = $('partbar');
+  bar.hidden = !q.partbar;
+  if (q.partbar) bar.innerHTML = q.partbar;
+
+  /* 後半は「何に答えるのか」を文字でも出す */
+  var sc = $('scene');
+  sc.hidden = !q.scene;
+  if (q.scene) {
+    sc.innerHTML = '<span class="who">店員</span><b>' + q.scene.en + '</b>' +
+                   '<em>' + q.scene.ja + '</em>';
+  }
+  $('qlead').classList.toggle('tight', !!q.scene);
+
+  $('qlead').innerHTML = q.lead;
   $('fb').innerHTML = '';
 
   var box = $('opts');
@@ -472,16 +605,27 @@ function next() {
 
 function finish() {
   $('sc').textContent = String(score);
+  $('scmax').textContent = String(QUIZ.length);
   /* 点数は主役ではない。「本番では、聞いてすぐ答える」という気づきが主役。 */
   /* ★2026-08-20 Harumi指示。4つとも「本番は厳しい」で終わっていた。
      不安を置いて終わるのではなく、「アプリで何ができるようになるか」で
      終わる。この直後にCTAが来るので、そこへ渡す一文にする。 */
+  /* ★2026-08-20 後半3問を足して6問になったので、0〜6の7通りにした。
+     0・4・6 の文章は前の4通りのまま(Harumi承認済みの言い回し)。
+     1の見出しだけ「聞き取れました」→「正解しました」に変えている。
+     後半は聞き取りではなく発話なので、その言葉が合わなくなったため。 */
   var W = [
     { h: 'ここからが、面白いところです。',
       n: '実際の海外旅行では、こういうやり取りが次々に出てきます。アプリでは「質問を聞き取る」ところから始めて、その場で答えられるようになるまで練習します。' },
-    { h: '1問、聞き取れました。',
+    { h: '1問、正解しました。',
       n: '単語は知っているのに聞き取れない。英語力ではなく、「つながる音」に耳が慣れていないだけです。アプリでは、その音に耳を慣らすところから練習します。' },
+    { h: '2問、正解しました。',
+      n: '単語は知っているのに聞き取れない。英語力ではなく、「つながる音」に耳が慣れていないだけです。アプリでは、その音に耳を慣らすところから練習します。' },
+    { h: '半分まで来ました。',
+      n: '聞き取れることと、その場で答えられることは、別の力です。アプリでは、その両方を順番に練習していきます。' },
     { h: 'かなり、いい感じです。',
+      n: 'でも本番では、相手の英語を聞いて、すぐに自分で答えなければいけません。アプリでは「質問を聞き取り」、それに答えられるようになるまでトレーニングしていきます。' },
+    { h: 'あと1問でした。惜しい。',
       n: 'でも本番では、相手の英語を聞いて、すぐに自分で答えなければいけません。アプリでは「質問を聞き取り」、それに答えられるようになるまでトレーニングしていきます。' },
     { h: '全問正解。すばらしい。',
       n: '聞き取れることと、その場で答えられることは、別の力です。アプリでは、聞き取ったあと「声に出して答える」ところまで練習します。' }
