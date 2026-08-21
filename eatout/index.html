@@ -719,6 +719,10 @@
      クイズと同じ挙動にするため、1つのファイルを両方から読む -->
 <script src="src-tag.js"></script>
 
+<!-- iPhoneで音が受話口から出るのを防ぐ。詳しくは audio-fix.js の先頭。
+     クイズと同じ挙動にするため、1つのファイルを両方から読む -->
+<script src="audio-fix.js"></script>
+
 <script>
 (function () {
   var speakBtn = document.getElementById('trialSpeak');
@@ -754,6 +758,14 @@
         try { player.preservesPitch = true; player.webkitPreservesPitch = true; } catch (e) {}
         try { player.playbackRate = rate; } catch (e) {}
       }
+      /* ★2026-08-21 受話口へ回る問題の手当て(audio-fix.js)。
+         このLPは「ゆっくり」に playbackRate を使っている。速さを変えると
+         出力先が決め直されるので、何音目でも受話口へ回る可能性がある。
+         audio-fix.js は rate!==1 の時も鳴らし直すようにしてある。
+         rate は上で既に player に入れてあるが、audio-fix にも渡す ——
+         向こうは「鳴らし直しが要るか」の判断にこれを使うため。
+         同じ値を2回入れることになるが、害は無い。 */
+      if (window.eatoutPlay) { window.eatoutPlay(player, { rate: rate }); return; }
       var p = player.play();
       if (p && typeof p.catch === 'function') {
         p.catch(function () {

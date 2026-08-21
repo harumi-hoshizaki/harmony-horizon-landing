@@ -433,6 +433,10 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
      LPと同じ挙動にするため、1つのファイルを両方から読む -->
 <script src="../src-tag.js"></script>
 
+<!-- iPhoneで音が受話口から出るのを防ぐ。詳しくは audio-fix.js の先頭。
+     LPと同じ挙動にするため、1つのファイルを両方から読む -->
+<script src="../audio-fix.js"></script>
+
 <script>
 'use strict';
 /* ══════════════════════════════════════════════════════════════
@@ -695,6 +699,19 @@ function playClip(src, btn) {
     var off = function () { btn.classList.remove('playing'); };
     a.addEventListener('ended', off);
     a.addEventListener('error', off);
+  }
+  /* ★2026-08-21 Harumi実機報告「クイズの音が通話口から出る方がいます。
+     iPhone chrome」。iOSは「これは再生用です」と宣言しないと、音声
+     セッションを通話向けの扱いのままにすることがあり、その時
+     HTMLAudioは受話口へ回る。宣言と、それでも効かない端末向けの
+     鳴らし直しは audio-fix.js にまとめた。
+     読み込めなかった時のために、存在を確かめてから呼ぶ。 */
+  if (window.eatoutPlay) {
+    window.eatoutPlay(a, {
+      isCurrent: function () { return cur === a; },
+      onFail: function () { if (btn) btn.classList.remove('playing'); }
+    });
+    return;
   }
   var p = a.play();
   if (p && typeof p['catch'] === 'function') {
