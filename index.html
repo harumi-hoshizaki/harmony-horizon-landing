@@ -241,11 +241,11 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
 
 /* ---------------- Hero (index) ---------------- */
 .hero {
-  position: relative; min-height: 102vh; display: flex; align-items: flex-end; overflow: hidden;
+  position: relative; min-height: 88vh; display: flex; align-items: flex-end; overflow: hidden;
   color: var(--cream); padding-top: 130px;
   background:
     radial-gradient(ellipse 900px 320px at 50% 74%, rgba(255,182,0,0.14), transparent 72%),
-    linear-gradient(180deg, #0A141D 0%, #14273A 55%, #2C4A61 71%, #C08F3E 71.4%, #E9DCC2 72%, var(--cream) 86%);
+    linear-gradient(180deg, #0A141D 0%, #14273A 46%, #2C4A61 61.5%, #C08F3E 62%, #E9DCC2 62.7%, var(--cream) 82%);
 }
 .hero .stars {
   position: absolute; inset: 0; z-index: 0; opacity: 0.9;
@@ -261,13 +261,40 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   background-repeat: no-repeat;
 }
 .hero-sun {
-  position: absolute; left: 50%; top: 58.4%; width: clamp(170px, 24vw, 360px); height: clamp(170px, 24vw, 360px);
+  position: absolute; left: 74%; top: 62%; width: clamp(120px, 15vw, 220px); height: clamp(120px, 15vw, 220px);
   border-radius: 50%; transform: translate(-50%, -50%);
   background: radial-gradient(circle at 32% 32%, #FFF6DE, var(--gold-bright) 66%);
-  box-shadow: 0 0 140px rgba(255, 182, 0, 0.55);
+  box-shadow: 0 0 110px rgba(255, 182, 0, 0.45);
   animation: rise 1.6s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes rise { from { transform: translate(-50%, 16%); opacity: 0; } to { transform: translate(-50%, -50%); opacity: 1; } }
+/* 地平線の高さは画面幅で変える。日本語リード文の折り返し行数が変わるため、
+   本文が地平線（＝明るい帯）にかからない位置を幅ごとに確保している。 */
+@media (max-width: 1023px) {
+  .hero {
+    background:
+      radial-gradient(ellipse 620px 260px at 50% 88%, rgba(255,182,0,0.14), transparent 72%),
+      linear-gradient(180deg, #0A141D 0%, #14273A 54%, #2C4A61 75.5%, #C08F3E 76%, #E9DCC2 76.7%, var(--cream) 92%);
+  }
+  .hero-sun { left: 80%; top: 76%; width: clamp(110px, 17vw, 170px); height: clamp(110px, 17vw, 170px); box-shadow: 0 0 90px rgba(255, 182, 0, 0.42); }
+}
+@media (max-width: 640px) {
+  .hero {
+    background:
+      radial-gradient(ellipse 520px 220px at 50% 82%, rgba(255,182,0,0.14), transparent 72%),
+      linear-gradient(180deg, #0A141D 0%, #14273A 50%, #2C4A61 69.5%, #C08F3E 70%, #E9DCC2 70.7%, var(--cream) 88%);
+  }
+  .hero-sun { left: 88%; top: 70%; width: 92px; height: 92px; box-shadow: 0 0 70px rgba(255, 182, 0, 0.4); }
+}
+@media (min-width: 481px) and (max-width: 640px) {
+  /* 幅540px前後（折りたたみ端末など）はリード文が最も深くなるので、地平線を下げる */
+  .hero {
+    background:
+      radial-gradient(ellipse 560px 240px at 50% 86%, rgba(255,182,0,0.14), transparent 72%),
+      linear-gradient(180deg, #0A141D 0%, #14273A 52%, #2C4A61 73.5%, #C08F3E 74%, #E9DCC2 74.7%, var(--cream) 90%);
+  }
+  .hero-sun { top: 74%; width: 104px; height: 104px; }
+}
 
 .hero-content { position: relative; z-index: 2; width: 100%; padding-bottom: clamp(110px, 15vw, 190px); }
 .hero-content .container { max-width: 940px; }
@@ -479,6 +506,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
 <!-- ============ HERO ============ -->
 <section class="hero grain">
   <div class="stars" aria-hidden="true"></div>
+  <div class="hero-sun" aria-hidden="true"></div>
   <div class="hero-content">
     <div class="container">
       <h1>
