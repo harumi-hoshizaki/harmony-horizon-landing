@@ -98,6 +98,11 @@ em { font-style: italic; color: var(--gold); position: relative; }
 
 p { margin: 0 0 1.1em; color: var(--ink); }
 .lede { font-size: 1.05rem; color: var(--ink-soft); font-weight: 400; max-width: 620px; line-height: 1.75; }
+/* 日本語の組版: 文節単位で折り返し、行末に1〜2文字だけ残るのを防ぐ。
+   .ph で囲んだ塊は途中で改行されない。palt は仮名を詰めて欧文と密度を揃える。 */
+.jp-flow { font-feature-settings: "palt" 1; letter-spacing: 0.02em; line-break: strict; }
+p.jp, p.lede { text-wrap: pretty; }
+.ph { display: inline-block; }
 
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
 section { padding: var(--section-pad) 0; position: relative; }
@@ -503,8 +508,8 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
 <section class="page-hero">
   <div class="container reveal">
     <span class="eyebrow">Your Next Horizon Is Waiting</span>
-    <h1>You don't need perfect<br class="br-desktop">English to <em class="accent-underline">begin<svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M4,20 Q50,4 100,18 T196,14" fill="none" stroke="var(--gold-bright)" stroke-width="4" stroke-linecap="round"/></svg></em>.</h1>
-    <p class="lede">完璧な英語は必要ありません。最初の一歩を踏み出し、あなた自身の声を見つけてください。</p>
+    <h1>You don't need perfect <br class="br-desktop">English to <em class="accent-underline">begin<svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M4,20 Q50,4 100,18 T196,14" fill="none" stroke="var(--gold-bright)" stroke-width="4" stroke-linecap="round"/></svg></em>.</h1>
+    <p class="lede jp-flow"><span class="ph">完璧な英語は</span><span class="ph">必要ありません。</span><span class="ph">最初の一歩を踏み出し、</span><span class="ph">あなた自身の声を</span><span class="ph">見つけてください。</span></p>
   </div>
 </section>
 
@@ -517,28 +522,28 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
       <div class="why-item">
         <span class="mark">01</span>
         <div>
-          <h3>25年以上、カナダで生きてきた経験</h3>
-          <p class="jp">教科書ではなく、実生活の中で培われた「生きた英語」の知恵があります。</p>
+          <h3><span class="ph">25年以上、</span><span class="ph">カナダで生きてきた経験</span></h3>
+          <p class="jp">教科書ではなく、実生活の中で培われた「生きた英語」の<span class="ph">知恵があります。</span></p>
         </div>
       </div>
       <div class="why-item">
         <span class="mark">02</span>
         <div>
-          <h3>日本人学習者への深い理解</h3>
-          <p class="jp">日本語話者が英語学習でつまずくポイントを、誰よりも理解しています。</p>
+          <h3><span class="ph">日本人学習者への</span><span class="ph">深い理解</span></h3>
+          <p class="jp">日本語話者が英語学習でつまずくポイントを、誰よりも<span class="ph">理解しています。</span></p>
         </div>
       </div>
       <div class="why-item">
         <span class="mark">03</span>
         <div>
-          <h3>「聞く力」を起点にした指導法</h3>
+          <h3><span class="ph">「聞く力」を</span><span class="ph">起点にした指導法</span></h3>
           <p class="jp">まず耳を育てることから始める、独自のリスニング先行アプローチ。</p>
         </div>
       </div>
       <div class="why-item">
         <span class="mark">04</span>
         <div>
-          <h3>ひとりひとりに寄り添う個別指導</h3>
+          <h3><span class="ph">ひとりひとりに</span><span class="ph">寄り添う個別指導</span></h3>
           <p class="jp">画一的なカリキュラムではなく、あなたのペースと目標に合わせて設計します。</p>
         </div>
       </div>
@@ -606,13 +611,13 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
             <span class="note-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </span>
-            <p class="jp">英語でも日本語でも、どちらでもご連絡いただけます。</p>
+            <p class="jp">英語でも日本語でも、どちらでも<span class="ph">ご連絡いただけます。</span></p>
           </div>
           <div class="note-item">
             <span class="note-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
             </span>
-            <p class="jp">Montréal, Canada を拠点に、オンラインでレッスンを行っています。</p>
+            <p class="jp">Montréal, Canada を拠点に、オンラインでレッスンを<span class="ph">行っています。</span></p>
           </div>
         </div>
       </aside>

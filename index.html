@@ -98,6 +98,11 @@ em { font-style: italic; color: var(--gold); position: relative; }
 
 p { margin: 0 0 1.1em; color: var(--ink); }
 .lede { font-size: 1.05rem; color: var(--ink-soft); font-weight: 400; max-width: 620px; line-height: 1.75; }
+/* 日本語の組版: 文節単位で折り返し、行末に1〜2文字だけ残るのを防ぐ。
+   .ph で囲んだ塊は途中で改行されない。palt は仮名を詰めて欧文と密度を揃える。 */
+.jp-flow { font-feature-settings: "palt" 1; letter-spacing: 0.02em; line-break: strict; }
+p.jp, p.lede { text-wrap: pretty; }
+.ph { display: inline-block; }
 
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
 section { padding: var(--section-pad) 0; position: relative; }
@@ -509,9 +514,9 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
         <span>Find Your <span class="accent-circle">Voice<svg viewBox="0 0 160 90" preserveAspectRatio="none" aria-hidden="true"><path d="M12,48 C0,22 42,4 84,6 C130,8 152,30 146,52 C140,76 96,86 56,82 C22,79 8,66 12,48 Z" fill="none" stroke="var(--gold-bright)" stroke-width="3.5" stroke-linecap="round"/></svg></span>.</span>
         <span><em>Connect</em> with the World.</span>
       </h1>
-      <p class="lede">英語は、勉強するためだけのものではありません。<br>
-      自分を表現し、人とつながり、世界を広げていくためのもの。<br>
-      あなたの声を、ここから見つけていきましょう。</p>
+      <p class="lede jp-flow"><span class="ph">英語は、</span><span class="ph">勉強するためだけの</span><span class="ph">ものではありません。</span><br>
+      <span class="ph">自分を表現し、</span><span class="ph">人とつながり、</span><span class="ph">世界を広げていくためのもの。</span><br>
+      <span class="ph">あなたの声を、</span><span class="ph">ここから見つけていきましょう。</span></p>
       <div class="hero-actions">
         <a href="contact.html" class="btn btn-gold">Start Your English Journey <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
@@ -526,10 +531,10 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
     <div class="split reveal">
       <div class="split-text">
         <span class="eyebrow">About HARU</span>
-        <h2>フランスに1年、<br>カナダに25年以上。</h2>
+        <h2>フランスに1年、<br><span class="ph">カナダに</span><span class="ph">25年以上。</span></h2>
         <p class="jp">文法は完璧なのに、話せない。相手の英語が速すぎて、聞き取れない。間違えるのが怖くて、声が出ない ——
         そんな悩みを、HARUは誰よりも理解しています。フランス語、英語、スペイン語——海外で暮らしながら、自分自身がいくつもの言語を学んできたから。</p>
-        <p class="jp">Harmony Horizonは、「知っている英語」を「使える英語」に変えるための、静かで丁寧な場所です。</p>
+        <p class="jp">Harmony Horizonは、「知っている英語」を「使える英語」に変えるための、静かで<span class="ph">丁寧な場所です。</span></p>
         <a href="contact.html" class="btn btn-gold">Start Your English Journey</a>
       </div>
       <div class="split-media">
@@ -547,23 +552,23 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
     <div class="reveal center" style="max-width:640px;">
       <span class="eyebrow">Teaching Philosophy</span>
       <h2>Listen. Speak. <em>Connect.</em></h2>
-      <p class="jp">従来の「勉強法」とは違う、耳から、声へ。</p>
+      <p class="jp jp-flow"><span class="ph">従来の「勉強法」とは違う、</span><span class="ph">耳から、声へ。</span></p>
     </div>
     <div class="trio">
       <div class="trio-item reveal">
         <span class="step-word">Listen</span>
-        <h3>本物の音を、聞き取る耳をつくる</h3>
-        <p class="jp">教科書の英語ではなく、実際にネイティブが話す速さ、つながる音、リズムを丁寧に聞き分ける力を育てます。</p>
+        <h3><span class="ph">本物の音を、</span><span class="ph">聞き取る耳をつくる</span></h3>
+        <p class="jp">教科書の英語ではなく、実際にネイティブが話す速さ、つながる音、リズムを丁寧に聞き<span class="ph">分ける力を育てます。</span></p>
       </div>
       <div class="trio-item reveal">
         <span class="step-word">Speak</span>
-        <h3>発音とリズムを、身体で覚える</h3>
-        <p class="jp">正しい口の形、音のつながり、イントネーション。頭で理解するだけでなく、実際に声に出して練習します。</p>
+        <h3><span class="ph">発音とリズムを、</span><span class="ph">身体で覚える</span></h3>
+        <p class="jp">正しい口の形、音のつながり、イントネーション。頭で理解するだけでなく、実際に声に<span class="ph">出して練習します。</span></p>
       </div>
       <div class="trio-item reveal">
         <span class="step-word">Connect</span>
-        <h3>小さな成功が、自信になる</h3>
-        <p class="jp">完璧を目指すのではなく、「伝わった」という小さな成功体験を積み重ねることで、自然な自信が育っていきます。</p>
+        <h3><span class="ph">小さな成功が、</span><span class="ph">自信になる</span></h3>
+        <p class="jp">完璧を目指すのではなく、「伝わった」という小さな成功体験を積み重ねることで、自然な自信が<span class="ph">育っていきます。</span></p>
       </div>
     </div>
   </div>
@@ -608,7 +613,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
       <div class="testimonial">
         <span class="quote-mark">"</span>
         <p class="arc">English became enjoyable, not stressful.</p>
-        <p class="jp">「正しく話さなきゃ」というプレッシャーがなくなり、英語が楽しいものに変わりました。</p>
+        <p class="jp">「正しく話さなきゃ」というプレッシャーがなくなり、英語が楽しい<span class="ph">ものに変わりました。</span></p>
         <p class="who">Y.K.</p>
       </div>
     </div>
@@ -623,8 +628,8 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   <div class="cta-glow" aria-hidden="true"></div>
   <div class="container reveal">
     <span class="eyebrow center" style="color:var(--gold-bright); justify-content:center;">Your Next Horizon Is Waiting</span>
-    <h2>You don't need perfect English<br class="br-desktop">to <em>begin</em>.</h2>
-    <p class="lede center">完璧な英語は、必要ありません。<br>最初の一歩を踏み出し、あなた自身の声を見つけてください。</p>
+    <h2>You don't need perfect English <br class="br-desktop">to <em>begin</em>.</h2>
+    <p class="lede center jp-flow"><span class="ph">完璧な英語は、</span><span class="ph">必要ありません。</span><br><span class="ph">最初の一歩を踏み出し、</span><span class="ph">あなた自身の声を</span><span class="ph">見つけてください。</span></p>
     <a href="contact.html" class="btn btn-gold">Start Your English Journey <svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
   </div>
 </section>

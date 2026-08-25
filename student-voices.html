@@ -98,6 +98,11 @@ em { font-style: italic; color: var(--gold); position: relative; }
 
 p { margin: 0 0 1.1em; color: var(--ink); }
 .lede { font-size: 1.05rem; color: var(--ink-soft); font-weight: 400; max-width: 620px; line-height: 1.75; }
+/* 日本語の組版: 文節単位で折り返し、行末に1〜2文字だけ残るのを防ぐ。
+   .ph で囲んだ塊は途中で改行されない。palt は仮名を詰めて欧文と密度を揃える。 */
+.jp-flow { font-feature-settings: "palt" 1; letter-spacing: 0.02em; line-break: strict; }
+p.jp, p.lede { text-wrap: pretty; }
+.ph { display: inline-block; }
 
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
 section { padding: var(--section-pad) 0; position: relative; }
@@ -504,7 +509,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   <div class="container reveal">
     <span class="eyebrow">Real Stories From My Students</span>
     <h1>Small Steps.<br><em class="accent-circle">Big Changes.<svg viewBox="0 0 160 90" preserveAspectRatio="none" aria-hidden="true"><path d="M12,48 C0,22 42,4 84,6 C130,8 152,30 146,52 C140,76 96,86 56,82 C22,79 8,66 12,48 Z" fill="none" stroke="var(--gold-bright)" stroke-width="3.5" stroke-linecap="round"/></svg></em></h1>
-    <p class="lede">数字や評価ではなく、ひとりひとりの変化の物語を。</p>
+    <p class="lede jp-flow"><span class="ph">数字や評価ではなく、</span><span class="ph">ひとりひとりの変化の物語を。</span></p>
   </div>
 </section>
 
@@ -517,28 +522,28 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
         <span class="quote-mark">"</span>
         <p class="arc">From confusion to confidence.</p>
         <p class="jp">レッスンを始めたばかりの頃は、何を練習すればいいのか分からず、ずっと不安を抱えていました。
-        HARUのレッスンで一つひとつのステップが明確になり、今では自分の言葉で話すことに少しずつ自信を持てるようになっています。</p>
+        HARUのレッスンで一つひとつのステップが明確になり、今では自分の言葉で話すことに少しずつ自信を持てる<span class="ph">ようになっています。</span></p>
         <p class="who">K.A.</p>
       </div>
       <div class="testimonial">
         <span class="quote-mark">"</span>
         <p class="arc">Understanding the sounds, enjoying the speaking.</p>
         <p class="jp">英語の音がどうつながっているのか、なぜ聞き取れなかったのかが、初めて腑に落ちました。
-        音の仕組みが分かるようになってから、話すこと自体が楽しくなりました。</p>
+        音の仕組みが分かるようになってから、話すこと自体が<span class="ph">楽しくなりました。</span></p>
         <p class="who">F.M.</p>
       </div>
       <div class="testimonial">
         <span class="quote-mark">"</span>
         <p class="arc">Discovering pronunciation through detailed feedback.</p>
         <p class="jp">自分では気づけなかった発音のクセを、HARUが丁寧に指摘してくれます。
-        一つひとつのフィードバックが具体的で、レッスンのたびに「できるようになった」実感があります。</p>
+        一つひとつのフィードバックが具体的で、レッスンのたびに「できるようになった」<span class="ph">実感があります。</span></p>
         <p class="who">N.T.</p>
       </div>
       <div class="testimonial">
         <span class="quote-mark">"</span>
         <p class="arc">English became enjoyable, not stressful.</p>
         <p class="jp">以前は「正しく話さなければ」というプレッシャーで、英語がストレスの原因でした。
-        今は間違いを恐れず、会話そのものを楽しめるようになりました。</p>
+        今は間違いを恐れず、会話そのものを楽しめる<span class="ph">ようになりました。</span></p>
         <p class="who">Y.K.</p>
       </div>
     </div>
@@ -550,7 +555,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   <div class="container reveal">
     <span class="eyebrow" style="color:var(--gold-bright)">Your Story Could Be Next</span>
     <h2>Every transformation<br>starts with one <em>lesson</em>.</h2>
-    <p class="lede center">あなたの変化の物語も、最初の一歩から始まります。</p>
+    <p class="lede center jp-flow"><span class="ph">あなたの変化の物語も、</span><span class="ph">最初の一歩から始まります。</span></p>
     <a href="contact.html" class="btn btn-gold">Start Your English Journey</a>
   </div>
 </section>

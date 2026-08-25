@@ -98,6 +98,11 @@ em { font-style: italic; color: var(--gold); position: relative; }
 
 p { margin: 0 0 1.1em; color: var(--ink); }
 .lede { font-size: 1.05rem; color: var(--ink-soft); font-weight: 400; max-width: 620px; line-height: 1.75; }
+/* 日本語の組版: 文節単位で折り返し、行末に1〜2文字だけ残るのを防ぐ。
+   .ph で囲んだ塊は途中で改行されない。palt は仮名を詰めて欧文と密度を揃える。 */
+.jp-flow { font-feature-settings: "palt" 1; letter-spacing: 0.02em; line-break: strict; }
+p.jp, p.lede { text-wrap: pretty; }
+.ph { display: inline-block; }
 
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
 section { padding: var(--section-pad) 0; position: relative; }
@@ -504,7 +509,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   <div class="container reveal">
     <span class="eyebrow">Programs</span>
     <h1>One Path.<br>One <em class="accent-underline">Horizon<svg viewBox="0 0 200 40" preserveAspectRatio="none" aria-hidden="true"><path d="M4,20 Q50,4 100,18 T196,14" fill="none" stroke="var(--gold-bright)" stroke-width="4" stroke-linecap="round"/></svg></em>.</h1>
-    <p class="lede">あなたの目的やペースに合わせた、学びの道。<br>「話せるようになる」ことを目指しています。</p>
+    <p class="lede jp-flow"><span class="ph">あなたの目的やペースに</span><span class="ph">合わせた、学びの道。</span><br><span class="ph">「話せるようになる」ことを</span><span class="ph">目指しています。</span></p>
   </div>
 </section>
 
@@ -517,12 +522,12 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
       <div class="split-text">
         <span class="eyebrow">For Your Personal Goal</span>
         <h2>Personalized English Lessons</h2>
-        <p class="lede jp">あなただけの目標に合わせた、完全個別のマンツーマン指導。</p>
+        <p class="lede jp jp-flow"><span class="ph">あなただけの目標に合わせた、</span><span class="ph">完全個別のマンツーマン指導。</span></p>
         <p class="jp">仕事のための英語、留学の準備、日常会話の上達 ——
         目的は人それぞれ。HARUがあなたの現在地とゴールを丁寧にヒアリングし、
-        あなただけのカリキュラムを組み立てます。</p>
+        あなただけのカリキュラム<span class="ph">を組み立てます。</span></p>
         <ul class="jp" style="padding-left:20px;">
-          <li>個別カウンセリングから始まるオーダーメイド設計</li>
+          <li><span class="ph">個別カウンセリングから始まる</span><span class="ph">オーダーメイド設計</span></li>
           <li>ペース・頻度もあなたに合わせて調整</li>
           <li>継続的なフィードバックで着実に前進</li>
         </ul>
@@ -542,7 +547,7 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
   <div class="container reveal">
     <span class="eyebrow" style="color:var(--gold-bright)">Ready to Begin?</span>
     <h2>Let's find your <em>starting point</em>, together.</h2>
-    <p class="lede center">まずは気軽にお問い合わせください。</p>
+    <p class="lede center jp-flow"><span class="ph">まずは気軽に</span><span class="ph">お問い合わせください。</span></p>
     <a href="contact.html" class="btn btn-gold">Start Your English Journey</a>
   </div>
 </section>
