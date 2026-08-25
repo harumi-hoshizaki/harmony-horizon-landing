@@ -315,6 +315,11 @@ body.on-dark .site-header:not(.is-scrolled) .nav-links a.nav-cta:hover { backgro
 .photo-frame.round::before, .photo-frame.round::after { display: none; }
 @media (max-width: 880px) {
   .photo-frame { max-width: 260px; }
+  /* 丸写真は .photo-frame.round の max-width が勝つため、ここでも指定する */
+  .photo-frame.round { max-width: 300px; }
+}
+@media (max-width: 480px) {
+  .photo-frame.round { max-width: 216px; }
 }
 .photo-frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
 .photo-frame .ph-label { font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); opacity: 0.55; }
