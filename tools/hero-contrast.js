@@ -49,7 +49,7 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
     console.log(n,
       'h1(白)', cr([255,255,255], out.h1),
       '| 導入文(rgba .9→近似 #E9E6E1)', cr([233,230,225], out.lede),
-      '| 前書き(銅 #C98A5C)', cr([201,138,92], out.eyebrow));
+      '| 前書き(#E9B98C)', cr([233,185,140], out.eyebrow));
     await ctx.close();
   }
   await b.close();
