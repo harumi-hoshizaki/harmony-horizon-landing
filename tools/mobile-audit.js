@@ -1,0 +1,112 @@
+/* 携帯の実測監査（追補4 §167-B の和文版）。
+   目視で確かめない。3幅で機械的に測る。
+   使い方: python3 -m http.server 8104 &  node tools/mobile-audit.js  */
+const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
+
+/* 和文の寸法。欧文の §31 より小さいのは、同じ px でも和文のほうが
+   大きく見えるため（追補5）。 */
+const SPEC = { h1: [30, 36], h2: [24, 28], h3: [17, 20], body: [16, 18] };
+/* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
+const SPEC_LEGAL = { h1: [24, 34], h2: [17, 22], h3: [15, 18], body: [16, 18] };
+const PAGES = ['/', '/programs.html', '/student-voices.html', '/contact.html'];
+const BASE = 'http://localhost:8105';
+
+/* まだ入手していない素材。404 でも不合格にはせず「未入手」として別に数える。
+   ここに書き忘れた 404 は本物の不具合として落ちる。素材が入れば静かに消える。
+   常に赤い監査は読まれなくなるので、待ちの項目と不具合は分けて出す。 */
+const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
+
+(async () => {
+  const b = await chromium.launch();
+  let fails = 0;
+  const waiting = new Set();
+  for (const w of [320, 393, 430]) {
+    const ctx = await b.newContext({ viewport: { width: w, height: 844 }, deviceScaleFactor: 2, hasTouch: true, reducedMotion: 'reduce' });
+    for (const p of PAGES) {
+      const pg = await ctx.newPage();
+      const errs = [], pending = new Set();
+      pg.on('pageerror', e => errs.push('JS ' + e.message));
+      pg.on('response', r => {
+        if (r.status() < 400) return;
+        const path = new URL(r.url()).pathname;
+        if (PENDING.includes(path)) pending.add(path);
+        else errs.push(r.status() + ' ' + r.url());
+      });
+      await pg.goto(BASE + p, { waitUntil: 'networkidle' });
+      await pg.waitForTimeout(300);
+      const spec = SPEC;
+      const r = await pg.evaluate((SPEC) => {
+        const de = document.documentElement, vw = de.clientWidth;
+        const px = s => { const e = document.querySelector(s); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize)) : null; };
+
+        const over = [...document.querySelectorAll('*')]
+          .filter(e => e.getBoundingClientRect().right > vw + 1)
+          .slice(0, 3).map(e => e.tagName + '.' + (e.className || '').toString().slice(0, 20));
+
+        /* zone tactile : tout ce qui se touche, sauf les liens dans un paragraphe */
+        /* 除外するもの：
+           1. `.skip` — 焦点が当たるまで clip-path で隠してある。隠れている
+              間の高さ1pxを不合格にしても意味がない
+           2. 文章の中のリンク — WCAG 2.5.8 も文中のリンクは対象外としている。
+              クラス名で列挙すると必ず漏れるので、「親に自分以外の文字が
+              あるか」で判定する。あればそれは文章の中のリンク。 */
+        const inProse = e => {
+          if (e.classList.contains('skip')) return true;
+          if (e.tagName !== 'A') return false;
+          const parent = e.parentElement;
+          if (!parent) return false;
+          const own = (e.textContent || '').trim();
+          const all = (parent.textContent || '').trim();
+          return all.length > own.length + 1;
+        };
+        const small = [...document.querySelectorAll('a, button, summary, input, select')]
+          .filter(e => e.offsetParent !== null && !inProse(e))
+          .map(e => ({ t: (e.textContent || '').trim().slice(0, 16) || e.tagName, h: Math.round(e.getBoundingClientRect().height) }))
+          .filter(x => x.h > 0 && x.h < 44);
+
+        /* texte collé au bord : on mesure le bord du *contenu*, pas de la boîte */
+        const pad = parseFloat(getComputedStyle(document.querySelector('.wrap')).paddingLeft) || 24;
+        const edge = e => {
+          const rc = e.getBoundingClientRect(), cs = getComputedStyle(e);
+          return [rc.left + (parseFloat(cs.paddingLeft) || 0), rc.right - (parseFloat(cs.paddingRight) || 0), rc.width];
+        };
+        const flush = [...document.querySelectorAll('h1,h2,h3,p,li,dt,dd')]
+          .filter(e => e.offsetParent !== null && !e.closest('.hero__media, .slot'))
+          .filter(e => { const [l, rt, wd] = edge(e); return wd > 40 && (l < pad - 2 || rt > vw - pad + 2); })
+          .slice(0, 3).map(e => e.tagName + ' "' + (e.textContent || '').trim().slice(0, 16) + '"');
+
+        /* 和文で欧文の書体が出ていないか（部分集合の抜けを検出） */
+        const jpFallback = [];
+        const chk = (k, v) => v == null ? null : (v >= SPEC[k][0] && v <= SPEC[k][1]);
+        const t = { h1: px('h1'), h2: px('h2'), h3: px('h3'), body: Math.round(parseFloat(getComputedStyle(document.body).fontSize)) };
+        return {
+          vw, overflow: de.scrollWidth - vw, over, pad, flush, type: t, jpFallback,
+          typeOk: { h1: chk('h1', t.h1), h2: chk('h2', t.h2), h3: chk('h3', t.h3), body: chk('body', t.body) },
+          third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin)).map(x => x.name),
+          small: small.slice(0, 5), smallN: small.length
+        };
+      }, spec);
+
+      const bad = [];
+      if (r.overflow > 0) bad.push(`横溢れ ${r.overflow}px ${JSON.stringify(r.over)}`);
+      if (r.flush.length) bad.push(`端の余白なし ×${r.flush.length} ${JSON.stringify(r.flush)}`);
+      if (r.smallN) bad.push(`タップ領域 44px未満 ×${r.smallN} ${JSON.stringify(r.small)}`);
+      for (const k of Object.keys(r.typeOk)) {
+        if (r.typeOk[k] === false) bad.push(`${k} ${r.type[k]}px は範囲 ${spec[k].join('–')} の外`);
+      }
+      if (r.third.length) bad.push(`第三者への通信 ${JSON.stringify(r.third)}`);
+      if (errs.length) bad.push(errs.join(' / '));
+
+      if (bad.length) { fails += bad.length; console.log(`✕ ${w}px ${p}`); bad.forEach(x => console.log('   ' + x)); }
+      pending.forEach(x => waiting.add(x));
+      await pg.close();
+    }
+    await ctx.close();
+  }
+  await b.close();
+  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・活字は追補5の範囲内・第三者通信ゼロ・エラーなし');
+  if (waiting.size) {
+    console.log(`\n未入手の素材 ${waiting.size} 件（不具合ではありません）:`);
+    waiting.forEach(x => console.log('   ・' + x));
+  }
+})();
