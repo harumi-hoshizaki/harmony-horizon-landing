@@ -225,13 +225,28 @@ section.alt { background: var(--paper-warm); }
    耳（x≈1350）だけが写り、「耳から、声へ」の声のほうが消える。
    携帯には 4:5 に切り直した hero-mobile を出し（<picture> の media）、
    枠いっぱいにせず**帯**として置く（追補4 §154-B）。 */
-.hero { --hero-band: min(calc(100vw * 1.25), 620px); }
+/* 帯の高さは「画面の幅」ではなく「残っている高さ」から決める。
+   実機の Safari は下に操作バーが出るので、iPhone 14 は 852px ではなく
+   659px しか見えていない。幅から 100vw×1.25 = 491px の帯を作ると、
+   ヘッダー 69 + 帯 491 + 文字塊 322 = 882px となり、
+   **導入文の途中で画面が終わり、ボタンが一度も見えない。**
+   文字塊は実測 322px。svh（バーが出ている時の高さ）から引く。 */
+.hero {
+  --hero-text: 396px;                 /* 文字塊 322 + ヘッダー 69 + 余裕 */
+  --hero-band: min(
+    calc(100vw * 1.25),               /* 幅に対して縦長になりすぎない */
+    max(180px, calc(100svh - var(--hero-text))),
+    560px);
+}
 .hero__media {
   position: absolute; top: 0; left: 0; right: 0;
   height: var(--hero-band);
 }
 .hero__img, .hero__media picture { width: 100%; height: 100%; display: block; }
-.hero__img { object-fit: cover; object-position: 50% 45%; }
+/* 携帯用は 1:1。帯の高さが端末のバーで 180〜460px と大きく変わるので、
+   縦を切られても耳（縦42%）と口（縦53%）が残る位置に寄せてある。
+   短い帯では頭頂が切れるが、それは帯として正しい切り方。 */
+.hero__img { object-fit: cover; object-position: 50% 42%; }
 
 /* 階調は帯の中だけ。**下端で地色（--deep）に到達させる**のが肝心で、
    途中で止めると帯の切れ目が線になって見える。上は素のまま。 */
@@ -241,10 +256,9 @@ section.alt { background: var(--paper-warm); }
     rgba(31,27,23,0) 0%, rgba(31,27,23,.03) 42%, rgba(31,27,23,.20) 56%,
     rgba(31,27,23,.66) 67%, rgba(31,27,23,.93) 80%, rgba(31,27,23,1) 92%);
 }
-/* 文字の頭は帯の下端から 168px 上。重なるのはソファの部分だけで、
-   顔・耳・口には一切かからない。帯と別々の値を書くとずれるので
-   同じ --hero-band から引く。 */
-.hero__in { position: relative; padding-block: calc(var(--hero-band) - 168px) var(--s6); }
+/* 文字の頭は帯の下端から 96px 上。帯が短い端末では 168px も上げると
+   顔にかかるので、重ねる量は控えめにする。 */
+.hero__in { position: relative; padding-block: max(120px, calc(var(--hero-band) - 96px)) var(--s6); }
 .hero h1 { color: #fff; max-width: 12em; margin-bottom: var(--s3); }
 .hero .lede { color: rgba(251,249,246,.94); max-width: 30em; }
 /* 前書きは11pxの小さい文字なので 4.5:1 が要る。銅（#C98A5C）だと
@@ -604,6 +618,10 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 }
 .sticky a:hover { background: var(--bronze); }
 .sticky--one { grid-template-columns: 1fr; }
+/* ヒーローに同じ行き先のボタンが出ている間は、固定バーを出さない。
+   同じ誘導が二重になるうえ、一番狭い最初の画面で 58px を食う。
+   JS が動かない時は出したままにする（.js が付いた時だけ隠す）。 */
+.js .sticky[hidden] { display: none; }
 @media (min-width: 1000px) { .sticky { display: none; } }
 /* バーの高さは文言の折り返しで変わる。実測して --sticky-h に入れる */
 /* 問い合わせページには固定バーがない。:has で「ある時だけ」空ける。

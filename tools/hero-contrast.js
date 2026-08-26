@@ -4,7 +4,9 @@ const L = ([r,g,b]) => 0.2126*lin(r)+0.7152*lin(g)+0.0722*lin(b);
 const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.min(x,y)+0.05)).toFixed(2)); };
 (async () => {
   const b = await chromium.launch();
-  for (const [w,h,n] of [[1440,900,'卓上'],[393,852,'携帯'],[320,568,'小']]) {
+    // 実機の Safari は下に操作バーが出る。852 ではなく 659 しか見えない。
+  // 帯の高さが変わると文字の下の地色も変わるので、必ず両方測る。
+  for (const [w,h,n] of [[1440,900,'卓上'],[393,852,'携帯'],[393,659,'携帯(バー有)'],[430,690,'大(バー有)'],[320,568,'小']]) {
     const ctx = await b.newContext({ viewport:{width:w,height:h}, deviceScaleFactor:1, reducedMotion:'reduce' });
     const pg = await ctx.newPage();
     await pg.goto('http://localhost:8105/', { waitUntil:'networkidle' });
