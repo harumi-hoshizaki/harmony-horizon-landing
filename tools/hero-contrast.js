@@ -19,10 +19,24 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
         if(!rs.length) return null;
         const x=Math.min(...rs.map(r=>r.left)), y=Math.min(...rs.map(r=>r.top));
         const x2=Math.max(...rs.map(r=>r.right)), y2=Math.max(...rs.map(r=>r.bottom));
-        return {x:Math.max(0,Math.round(x)),y:Math.max(0,Math.round(y)),w:Math.round(x2-x),h:Math.round(y2-y)}; };
+        // 撮影は表示領域の分だけ。はみ出した範囲を採ると、
+        // 画布の外＝別のもの（固定バーなど）を拾って嘘の値が出る。
+        const X=Math.max(0,Math.round(x)), Y=Math.max(0,Math.round(y));
+        const X2=Math.min(innerWidth,Math.round(x2)), Y2=Math.min(innerHeight,Math.round(y2));
+        if (X2<=X || Y2<=Y) return null;
+        return {x:X,y:Y,w:X2-X,h:Y2-Y}; };
       return { h1:g('.hero h1'), lede:g('.hero .lede'), eyebrow:g('.hero .eyebrow') };
     });
-    await pg.evaluate(() => document.querySelectorAll('.hero h1, .hero .lede, .hero .eyebrow, .hero .row').forEach(e => e.style.visibility='hidden'));
+    // 文字を消す。合わせて**手前に浮くもの**も消す。固定バーは石色で、
+    // 文字範囲に重なると地色として拾われ、1.18 のような偽の値になる。
+    await pg.evaluate(() => {
+      document.querySelectorAll('.hero h1, .hero .lede, .hero .eyebrow, .hero .row')
+        .forEach(e => e.style.visibility = 'hidden');
+      document.querySelectorAll('body *').forEach(e => {
+        const p = getComputedStyle(e).position;
+        if ((p === 'fixed' || p === 'sticky') && !e.closest('.hero')) e.style.visibility = 'hidden';
+      });
+    });
     await pg.waitForTimeout(200);
     const shot = await pg.screenshot({ clip: { x:0, y:0, width:w, height:h } });
     const { createCanvas, loadImage } = { createCanvas:null, loadImage:null };

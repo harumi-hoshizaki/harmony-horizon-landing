@@ -16,9 +16,24 @@ FONTS = ['zen-old-mincho-600-jp', 'zen-old-mincho-400-jp',
          'zen-kaku-400-jp', 'zen-kaku-500-jp']
 PAGES = sorted((pathlib.Path(__file__).resolve().parent.parent / 'content/pages').glob('*.html'))
 
+def strip_code_comments(text, suffix):
+    """注釈の日本語を拾わない。
+
+    build-site.py や site.js には、なぜそう書いたかを日本語で残している。
+    それを字面として数えると、画面に出ない字のために部分集合が太る
+    （注釈を一行足すたびに書体を作り直す羽目になる）。
+    """
+    if suffix == '.py':
+        text = re.sub(r'^\s*#.*$', '', text, flags=re.M)
+        text = re.sub(r'^\s*"""(?:.|\n)*?"""', '', text, flags=re.M)
+    elif suffix == '.js':
+        text = re.sub(r'/\*(?:.|\n)*?\*/', '', text)
+        text = re.sub(r'^\s*//.*$', '', text, flags=re.M)
+    return text
+
 body = ''
 for f in PAGES + [ROOT / 'tools/build-site.py', ROOT / 'assets/site/site.js']:
-    h = f.read_text(encoding='utf-8')
+    h = strip_code_comments(f.read_text(encoding='utf-8'), f.suffix)
     t = re.sub(r'<script.*?</script>|<style.*?</style>', '', h, flags=re.S)
     vals = ' '.join(re.findall(r'(?:aria-label|data-on|data-off|content|title|placeholder)="([^"]*)"', t))
     body += re.sub(r'<[^>]+>', ' ', t) + ' ' + vals

@@ -60,6 +60,20 @@
   }
 
   /* 出現アニメーション */
+  /* 固定バーの実際の高さ。文言が2行に折り返すと伸びるので、決め打ちに
+     すると脚注の最終行がバーの裏に隠れる（追補4 §167-B、型10）。 */
+  var sticky = document.querySelector('.sticky');
+  if (sticky) {
+    var setStickyH = function () {
+      var h = Math.round(sticky.getBoundingClientRect().height);
+      document.documentElement.style.setProperty('--sticky-h', (h + 8) + 'px');
+    };
+    setStickyH();
+    window.addEventListener('resize', setStickyH);
+    window.addEventListener('orientationchange', setStickyH);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setStickyH);
+  }
+
   var items = document.querySelectorAll('[data-reveal]');
   if (!items.length) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;

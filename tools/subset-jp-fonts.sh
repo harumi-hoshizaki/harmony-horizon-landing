@@ -19,8 +19,19 @@ python3 - "$TMP/keep.txt" <<'PY'
 import re, sys, pathlib
 import glob
 body = ''
+def strip_code_comments(text, suffix):
+    # 注釈の日本語は画面に出ない。数えると注釈を書くたびに書体が太る。
+    # check-jp-fonts.py と同じ規則。片方だけ直すと両者がずれる。
+    if suffix == '.py':
+        text = re.sub(r'^\s*#.*$', '', text, flags=re.M)
+        text = re.sub(r'^\s*\"\"\"(?:.|\n)*?\"\"\"', '', text, flags=re.M)
+    elif suffix == '.js':
+        text = re.sub(r'/\*(?:.|\n)*?\*/', '', text)
+        text = re.sub(r'^\s*//.*$', '', text, flags=re.M)
+    return text
+
 for f in sorted(glob.glob('content/pages/*.html')) + ['tools/build-site.py', 'assets/site/site.js']:
-    h = open(f, encoding='utf-8').read()
+    h = strip_code_comments(open(f, encoding='utf-8').read(), pathlib.Path(f).suffix)
     t = re.sub(r'<script.*?</script>|<style.*?</style>', '', h, flags=re.S)
     vals = ' '.join(re.findall(r'(?:aria-label|data-on|data-off|content|title|placeholder)="([^"]*)"', t))
     body += re.sub(r'<[^>]+>', ' ', t) + ' ' + vals
