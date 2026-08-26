@@ -22,6 +22,8 @@
      Inter、かなと漢字は Zen Old Mincho / Zen Kaku Gothic New で出る。
      一つの family 指定で二つの言語を組み分けられる（追補5）。 */
   --display: "Playfair Display", "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  /* 社名専用。旧サイトから使っている書体に戻した */
+  --brand:   "Cormorant Garamond", "Zen Old Mincho", "Hiragino Mincho ProN", serif;
   --sans: "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
@@ -108,8 +110,10 @@ p:last-child { margin-bottom: 0; }
   border-bottom: 1px solid var(--line-soft);
 }
 .hdr__in { display: flex; align-items: center; gap: var(--s3); min-height: 68px; }
+/* 社名は旧サイトから使っている Cormorant Garamond。見出しの Playfair
+   より線が細く字幅が広いので、同じ px だと小さく見える。1〜2段上げる。 */
 .brand {
-  font-family: var(--display); font-weight: 600; font-size: 19px;
+  font-family: var(--brand); font-weight: 600; font-size: 21px;
   text-decoration: none; color: var(--ink); margin-right: auto; line-height: 1.25;
   /* 社名もリンク＝押せる要素。44px を確保する（追補4 §167-B、型4）。 */
   display: flex; flex-direction: column; justify-content: center; min-height: 44px;
@@ -121,8 +125,8 @@ p:last-child { margin-bottom: 0; }
 /* 社名は折り返さない。ただし `nowrap` だけだと狭い画面でハンバーガーを
    画面外へ押し出すので、段階的に縮める（追補4 §167-B、型2）。 */
 .brand { white-space: nowrap; }
-@media (min-width: 400px) { .brand { font-size: 21px; } }
-@media (min-width: 560px) { .brand { font-size: 23px; } }
+@media (min-width: 400px) { .brand { font-size: 23px; } }
+@media (min-width: 560px) { .brand { font-size: 25px; } }
 
 .hdr__nav { display: none; gap: var(--s4); }
 .hdr__nav a {
@@ -195,8 +199,14 @@ section.alt { background: var(--paper-warm); }
 
 .sec-head { display: grid; gap: var(--s3); margin-bottom: var(--s6); }
 @media (min-width: 900px) {
-  .sec-head { grid-template-columns: 1.1fr .9fr; gap: var(--s7); align-items: end; }
+  /* gap は縦にも効く。段落が2つあると縦にも --s7 空いて離れすぎる。
+     横だけ広く、縦は段落間の間隔にする。 */
+  .sec-head { grid-template-columns: 1.1fr .9fr; column-gap: var(--s7); row-gap: var(--s3); align-items: end; }
   .sec-head--solo { grid-template-columns: 1fr; }
+  /* 前書きが2段落あると、2つ目が左の列（見出しの下）へ落ちて
+     卓上に大きな空白ができていた。前書きは何段落でも右の列に積む。 */
+  .sec-head > .lede { grid-column: 2; }
+  .sec-head > div:first-child { grid-row: 1 / -1; align-self: end; }
 }
 .sec-num {
   display: block; font-family: var(--display); font-size: 13px; color: var(--stone-deep);
@@ -365,7 +375,7 @@ section.alt { background: var(--paper-warm); }
 .ftr { background: var(--deep); color: var(--stone-light); padding: var(--s7) 0 var(--s5); }
 .ftr__grid { display: grid; gap: var(--s5); }
 @media (min-width: 760px) { .ftr__grid { grid-template-columns: 1.4fr 1fr 1fr; gap: var(--s6); } }
-.ftr__brand { font-family: var(--display); font-weight: 600; font-size: 24px; color: #fff; margin-bottom: var(--s1); }
+.ftr__brand { font-family: var(--brand); font-weight: 600; font-size: 26px; color: #fff; margin-bottom: var(--s1); }
 .ftr .small { color: var(--stone-light); }
 .ftr__k { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; color: var(--stone-deep); margin-bottom: var(--s2); }
 .ftr a, .ftr nav a { display: block; color: var(--stone-light); text-decoration: none; min-height: 44px; display: flex; align-items: center; }
@@ -390,13 +400,45 @@ section.alt { background: var(--paper-warm); }
 .page-head .lede { max-width: 40em; }
 
 /* ---------- 言い切りの一文 ---------- */
+/* 前は明朝（--display）の 20px で組んでいたが、携帯で二つ壊れていた。
+   ① 一文の中に欧文（Harmony Horizon = Playfair）と和文（Zen Old Mincho）が
+      混ざり、線の太さも字面も揃わず、貼り合わせたように見えた。
+   ② 20px は本文 17px より大きく、明朝で4行に折り返して塊になった。
+   本文と同じゴシックにして、寸法を1段だけ上げる。強調は太字ではなく
+   色でつける（追補5 §175：和文で太字は使わない）。 */
 .statement {
-  font-family: var(--display); font-size: 20px; line-height: 1.75;
-  max-width: 26em; margin: 0; padding-left: var(--s3);
+  font-family: var(--sans); font-size: 18px; line-height: 1.95;
+  letter-spacing: .02em; color: var(--ink);
+  max-width: 24em; margin: 0; padding-left: var(--s3);
   border-left: 2px solid var(--bronze);
 }
-@media (min-width: 700px) { .statement { font-size: 24px; padding-left: var(--s4); } }
-.statement strong { font-weight: 600; }
+@media (min-width: 700px) { .statement { font-size: 20px; padding-left: var(--s4); } }
+.statement strong { font-weight: inherit; color: var(--bronze); }
+
+/* ---------- 顔写真 ----------
+   ヒーローと張り合わせない。携帯では幅を 240px で止め、
+   「人物紹介」の大きさに留める。角は落とさない（サイト全体が直角）。 */
+.about__grid { display: grid; gap: var(--s5); }
+@media (min-width: 820px) {
+  .about__grid { grid-template-columns: minmax(0, 300px) 1fr; gap: var(--s6); align-items: center; }
+}
+.portrait { margin: 0; max-width: 240px; }
+@media (min-width: 820px) { .portrait { max-width: none; } }
+.portrait img {
+  width: 100%; height: auto; display: block;
+  aspect-ratio: 4 / 5; object-fit: cover;
+  border: 1px solid var(--line-soft);
+}
+/* 銅の縦罫は「言い切りの一文」の印。すぐ下にもう1本引くと印にならない。
+   ここは罫を使わず、字だけで示す。 */
+.portrait figcaption {
+  font-family: var(--sans); font-size: 13px; color: var(--ink);
+  margin-top: var(--s2); letter-spacing: .04em;
+}
+.portrait figcaption span {
+  display: block; font-size: 11px; letter-spacing: .1em;
+  color: var(--stone-deep); margin-top: 3px;
+}
 
 /* ---------- 大きな1枚（レッスン紹介） ---------- */
 .feature {

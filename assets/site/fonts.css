@@ -26,6 +26,21 @@
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
+/* --- 欧文：Cormorant Garamond（社名だけ） ---
+   旧サイトから使っている社名の書体。ここに戻す。
+   使うのは「Harmony Horizon」の一語だけなので、その字だけに絞ってある
+   （15文字ぶん = 1.5 KB）。社名の文字列を変えたら作り直すこと。 */
+@font-face {
+  font-family: "Cormorant Garamond";
+  src: url("/assets/site/fonts/cormorant-garamond-600-latin.woff2") format("woff2");
+  font-weight: 600; font-style: normal; font-display: swap;
+  /* 「Harmony Horizon」に出てくる字だけ。書体側もこの字しか持っていない。
+     ここに書き漏らすと、その字だけ既定の書体で出る（例：i を落とすと
+     Horizon の i だけ形が変わる）。 */
+  unicode-range: U+0020, U+0048, U+0061, U+0069, U+006D, U+006E, U+006F,
+    U+0072, U+0079, U+007A;
+}
+
 /* --- 欧文：Inter（本文・操作部） --- */
 @font-face {
   font-family: "Inter";
