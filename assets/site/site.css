@@ -203,55 +203,27 @@ section.alt { background: var(--paper-warm); }
   letter-spacing: .1em; margin-bottom: var(--s2);
 }
 
-/* ---------- ヒーロー ---------- */
-.hero { position: relative; background: var(--deep); color: var(--paper); }
-.hero__media { overflow: hidden; }
-/* 携帯では写真と文字を重ねない。
-   明るい写真の上に白文字を置くと、実測でコントラストが 1.5〜2:1 しか出ず
-   AA（4.5:1）に遠く届かなかった。届かせるだけ覆いを濃くすると、今度は
-   写真が真っ黒になって置いた意味がなくなる。
-   狭い画面では**写真を上に置き、文字はその下の無地に置く**。
-   写真は明るいまま、文字は確実に読める。両方を諦めない。 */
-.hero__media { position: relative; aspect-ratio: 4 / 3; }
-.hero__media::after {
-  content: ""; position: absolute; inset: 0;
-  /* 下端だけを暗くして、下の無地へ自然につなぐ */
-  background: linear-gradient(180deg, rgba(22,17,12,0) 62%, rgba(31,27,23,1) 100%);
-}
+/* ---------- ヒーロー ----------
+   文字を写真に重ねない。重ねると覆いが要り、覆いは写真を暗くする。
+   明るい写真を明るいまま見せ、文字は隣の無地に置く。
+   携帯では写真が上、文字が下。卓上では左右に並べる。 */
+.hero { background: var(--paper); color: var(--ink); display: grid; }
+.hero__text { padding: var(--s6) var(--pad) var(--s7); order: 2; }
+.hero__media { order: 1; overflow: hidden; }
+.hero__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero__media { aspect-ratio: 4 / 3; }
+.hero h1 { max-width: 12em; margin-bottom: var(--s3); }
+.hero .lede { max-width: 30em; }
+
 @media (min-width: 900px) {
-  /* 卓上は文字を写真に重ねる。左下だけを濃くし、中央は薄く保つ（§154）。
-     数値は実測で決めた（h1 10.0:1、導入文 10.3:1）。 */
-  .hero__media { position: absolute; inset: 0; aspect-ratio: auto; }
-  .hero__media::after {
-    background:
-      linear-gradient(180deg, rgba(26,19,13,.40) 0%, rgba(26,19,13,.24) 26%, rgba(22,17,12,.92) 100%),
-      linear-gradient(90deg,  rgba(22,17,12,.90) 0%, rgba(22,17,12,.70) 42%, rgba(22,17,12,.36) 76%, rgba(22,17,12,.50) 100%);
+  .hero { grid-template-columns: 1fr 1.05fr; align-items: stretch; min-height: 78vh; }
+  .hero__text {
+    order: 1; display: flex; align-items: center;
+    padding: var(--s8) var(--s6) var(--s8) max(var(--pad), calc((100vw - var(--container)) / 2 + var(--pad)));
   }
+  .hero__media { order: 2; aspect-ratio: auto; }
 }
-/* 写真が入ったときの受け皿。枠の padding / border が写真に当たると
-   画像が内側に縮んで地色が見える（§154）。 */
-.hero__img {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  object-fit: cover; padding: 0; border: 0;
-  /* 携帯は 16:9 を縦長に切るので、卓上とは見える場所が違う。
-     文字は下半分に来るため、写真は**上寄り**に置いて主役を上に逃がす。
-     実測：文字は縦 29〜74%、横はほぼ全幅を占める。 */
-  object-position: 72% 22%;
-}
-@media (min-width: 900px) {
-  /* 卓上は左半分に文字が乗る（実測：横 5〜48%、縦 36〜73%）。
-     写真は右に寄せて、主役を文字から外す。 */
-  .hero__img { object-position: 68% 45%; }
-}
-/* 縦だけを指定する。`padding: X 0 Y` は .wrap の左右余白を消す（§167-B）。 */
-.hero__in { position: relative; padding-block: var(--s5) var(--s7); }
-@media (min-width: 900px) {
-  .hero__in { padding-block: 150px var(--s8); min-height: 76vh; display: flex; align-items: flex-end; }
-}
-.hero__grid { width: 100%; }
-.hero h1 { color: #fff; max-width: 14em; }
-.hero .lede { color: rgba(251,249,246,.9); max-width: 30em; margin-top: var(--s3); }
-.hero .eyebrow { color: var(--bronze-lit); }
+@media (min-width: 1400px) { .hero__text { padding-right: var(--s8); } }
 
 /* ---------- 事実の帯（太字は使わない。§159） ---------- */
 .trust { background: var(--paper-warm); border-block: 1px solid var(--line-soft); padding: var(--s5) 0; }
@@ -344,10 +316,9 @@ section.alt { background: var(--paper-warm); }
 .faq strong { font-weight: 500; color: var(--ink); }
 
 /* ---------- 最後の一押し ---------- */
-.cta { background: var(--deep); color: var(--paper); }
-.cta h2 { color: #fff; }
-.cta .lede { color: rgba(251,249,246,.86); }
-.cta .eyebrow { color: var(--bronze-lit); }
+/* 最後の一押しは明るいまま。暗い塊をページに何度も置くと重くなる。
+   暗いのは脚注の1か所だけでよい。 */
+.cta { background: var(--paper-warm); border-top: 1px solid var(--line-soft); }
 .cta__in { max-width: 40em; }
 .cta .btn { margin-top: var(--s4); }
 
