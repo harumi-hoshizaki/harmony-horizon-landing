@@ -232,7 +232,9 @@ section.alt { background: var(--paper-warm); }
    **導入文の途中で画面が終わり、ボタンが一度も見えない。**
    文字塊は実測 322px。svh（バーが出ている時の高さ）から引く。 */
 .hero {
-  --hero-text: 396px;                 /* 文字塊 322 + ヘッダー 69 + 余裕 */
+  /* ボタンの下端 = 帯 + 375px（実測。文字塊 322 + ヘッダー 69 − 重ね 96
+     ＋ 余白）。式で導くより、実測して定数を置くほうが間違えない。 */
+  --hero-text: 384px;
   --hero-band: min(
     calc(100vw * 1.25),               /* 幅に対して縦長になりすぎない */
     max(180px, calc(100svh - var(--hero-text))),
@@ -450,6 +452,23 @@ section.alt { background: var(--paper-warm); }
   margin-top: var(--s2); letter-spacing: .04em;
 }
 
+/* ---------- 場面の1枚（横に広い帯） ----------
+   縦横比は 4:3 で揃える。同じ役割の画像で比率を混ぜると、
+   携帯で並んだ時に片方だけ切れて見える（追補4 §167-B）。 */
+.band { margin: var(--s6) 0 0; }
+.band img {
+  width: 100%; height: auto; display: block;
+  aspect-ratio: 4 / 3; object-fit: cover;
+}
+.band figcaption {
+  font-family: var(--sans); font-size: 13px; line-height: 1.8;
+  color: var(--stone-deep); margin-top: var(--s2);
+}
+@media (min-width: 700px) {
+  .band img { aspect-ratio: 16 / 9; }
+  .band figcaption { font-size: 14px; }
+}
+
 /* ---------- 大きな1枚（レッスン紹介） ---------- */
 .feature {
   display: grid; text-decoration: none; background: var(--paper);
@@ -464,6 +483,9 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 .feature__body h3 { margin: 0; }
 .feature__body > p { color: var(--ink-soft); font-size: 16px; margin: 0; }
 .feature--static { cursor: default; }
+/* 写真の無い版。卓上の2列は画像が前提なので1列に戻す。
+   意味の合わない写真を埋めるくらいなら、置かないほうがよい。 */
+.feature--notext { grid-template-columns: 1fr; }
 
 /* ---------- 箇条（チェック） ---------- */
 .ticks { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s3); }
@@ -602,31 +624,6 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 /* 相談の道具がナビを隠さない（追補4 §169）。 */
 #drawer[data-open="true"] ~ .revtoggle { opacity: 0; pointer-events: none; }
 
-/* ---------- 携帯の固定CTA（V2.0 §48） ----------
-   縦に長いページでは、少し進んだ時点でヘッダーが視界から消える。
-   相談への入口を常に画面内に残す。卓上はヘッダーがあるので出さない。 */
-.sticky {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 35;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: var(--stone); border-top: 1px solid var(--line);
-  padding-bottom: env(safe-area-inset-bottom);
-}
-.sticky a {
-  background: var(--deep); color: var(--paper); text-align: center;
-  padding: 15px 8px; min-height: 52px; font-size: 14px; letter-spacing: .06em;
-  text-decoration: none; display: flex; align-items: center; justify-content: center;
-}
-.sticky a:hover { background: var(--bronze); }
-.sticky--one { grid-template-columns: 1fr; }
-/* ヒーローに同じ行き先のボタンが出ている間は、固定バーを出さない。
-   同じ誘導が二重になるうえ、一番狭い最初の画面で 58px を食う。
-   JS が動かない時は出したままにする（.js が付いた時だけ隠す）。 */
-.js .sticky[hidden] { display: none; }
-@media (min-width: 1000px) { .sticky { display: none; } }
-/* バーの高さは文言の折り返しで変わる。実測して --sticky-h に入れる */
-/* 問い合わせページには固定バーがない。:has で「ある時だけ」空ける。
-   JS 側の実測に頼ると、JS が無い時に余白だけ残る。 */
-@media (max-width: 999px) { body:has(.sticky) { padding-bottom: var(--sticky-h, 84px); } }
 
 /* ---------- 出現 ---------- */
 .js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease), transform .8s var(--ease); }

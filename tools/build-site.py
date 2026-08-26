@@ -90,18 +90,10 @@ SHELL = '''<!DOCTYPE html>
   </div>
 </footer>
 
-{sticky}
-
 <script src="/assets/site/site.js" defer></script>
 </body>
 </html>
 '''
-
-# 固定バーは「まだ問い合わせていない人」への近道。問い合わせページでは
-# フォームそのものが目的地なので、置くと同じ場所へ二度誘うことになる。
-STICKY = '''<nav class="sticky sticky--one" aria-label="相談する">
-  <a href="/contact.html">無料で相談する</a>
-</nav>'''
 
 def build():
     for slug, out, name, title, desc in PAGES:
@@ -115,7 +107,6 @@ def build():
         html = SHELL.format(
             title=title, desc=desc, canon='' if out == 'index.html' else out,
             nav=links('      '), dnav=links('    '), fnav=links('        '),
-            sticky=STICKY if out != 'contact.html' else '',
             body=body)
         (ROOT / out).write_text(html, encoding='utf-8')
         print(f'  {out}')

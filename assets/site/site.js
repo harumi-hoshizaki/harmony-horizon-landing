@@ -60,31 +60,6 @@
   }
 
   /* 出現アニメーション */
-  /* 固定バーの実際の高さ。文言が2行に折り返すと伸びるので、決め打ちに
-     すると脚注の最終行がバーの裏に隠れる（追補4 §167-B、型10）。 */
-  var sticky = document.querySelector('.sticky');
-  if (sticky) {
-    var setStickyH = function () {
-      var h = Math.round(sticky.getBoundingClientRect().height);
-      document.documentElement.style.setProperty('--sticky-h', (h + 8) + 'px');
-    };
-    setStickyH();
-    window.addEventListener('resize', setStickyH);
-    window.addEventListener('orientationchange', setStickyH);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(setStickyH);
-
-    /* ヒーローに同じ行き先のボタンが出ている間は、固定バーを出さない。
-       同じ誘導が二重になるうえ、一番狭い最初の画面で 58px を食う。
-       IntersectionObserver が無い環境では出したまま（隠さない）。 */
-    var heroCta = document.querySelector('.hero .row');
-    if (heroCta && 'IntersectionObserver' in window) {
-      sticky.hidden = true;
-      new IntersectionObserver(function (es) {
-        sticky.hidden = es[0].isIntersecting;
-      }, { threshold: 0 }).observe(heroCta);
-    }
-  }
-
   var items = document.querySelectorAll('[data-reveal]');
   if (!items.length) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
