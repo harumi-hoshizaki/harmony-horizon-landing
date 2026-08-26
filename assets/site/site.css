@@ -208,25 +208,33 @@ section.alt { background: var(--paper-warm); }
    階調を最後まで透明（alpha 0）に落とすのが肝心で、ここを 0.3 などで
    止めると写真全体が沈む（前の版の失敗）。写真の主役側は素のまま。 */
 .hero { position: relative; background: var(--deep); color: var(--paper); overflow: hidden; }
-.hero__media { position: absolute; inset: 0; }
-.hero__img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: 58% 26%; }
 
-/* 携帯：文字は下半分。縦の階調で、上は素のまま・下だけ暗く */
+/* 携帯：横長の1枚を縦長の枠で切らない。**別トリミングの画像を持たせる。**
+   2048x1152 を 393 幅の縦長で cover すると、見えるのは原寸で横 544px 分。
+   58% では x=1416 で切れ、口（x≈1470）が画面の外に出ていた。
+   耳（x≈1350）だけが写り、「耳から、声へ」の声のほうが消える。
+   携帯には 4:5 に切り直した hero-mobile を出し（<picture> の media）、
+   枠いっぱいにせず**帯**として置く（追補4 §154-B）。 */
+.hero { --hero-band: min(calc(100vw * 1.25), 620px); }
+.hero__media {
+  position: absolute; top: 0; left: 0; right: 0;
+  height: var(--hero-band);
+}
+.hero__img, .hero__media picture { width: 100%; height: 100%; display: block; }
+.hero__img { object-fit: cover; object-position: 50% 45%; }
+
+/* 階調は帯の中だけ。**下端で地色（--deep）に到達させる**のが肝心で、
+   途中で止めると帯の切れ目が線になって見える。上は素のまま。 */
 .hero__media::after {
   content: ""; position: absolute; inset: 0;
   background: linear-gradient(180deg,
-    rgba(22,17,12,0) 0%, rgba(22,17,12,.06) 18%, rgba(22,17,12,.74) 36%,
-    rgba(22,17,12,.94) 52%, rgba(22,17,12,.96) 100%);
+    rgba(31,27,23,0) 0%, rgba(31,27,23,.03) 42%, rgba(31,27,23,.20) 56%,
+    rgba(31,27,23,.66) 67%, rgba(31,27,23,.93) 80%, rgba(31,27,23,1) 92%);
 }
-/* 上の余白は写真を見せるためのもの。ただし青天井にすると、大きな端末で
-   ボタンが固定バーの下に押し出される。320px 上限で頭打ちにする。 */
-.hero__in { position: relative; padding-block: min(40vh, 320px) var(--s6); }
-/* 画面の短い端末（iPhone SE など）。40vh のままだと導入文の1行目しか
-   出ず、残りが固定バーの下に隠れる。写真の見える量を少し譲って、
-   文字の頭を上げる。判断は vh ではなく**高さ**で切る。 */
-@media (max-height: 700px) {
-  .hero__in { padding-block: 200px var(--s5); }
-}
+/* 文字の頭は帯の下端から 168px 上。重なるのはソファの部分だけで、
+   顔・耳・口には一切かからない。帯と別々の値を書くとずれるので
+   同じ --hero-band から引く。 */
+.hero__in { position: relative; padding-block: calc(var(--hero-band) - 168px) var(--s6); }
 .hero h1 { color: #fff; max-width: 12em; margin-bottom: var(--s3); }
 .hero .lede { color: rgba(251,249,246,.94); max-width: 30em; }
 /* 前書きは11pxの小さい文字なので 4.5:1 が要る。銅（#C98A5C）だと
@@ -235,6 +243,9 @@ section.alt { background: var(--paper-warm); }
 .hero .eyebrow { color: #E9B98C; }
 
 @media (min-width: 900px) {
+  /* 卓上：横幅があるので全面で構わない。帯の指定を戻す */
+  .hero__media { inset: 0; height: auto; }
+  .hero__img { object-position: 68% 34%; }
   /* 卓上：文字は左。横の階調で、左だけ暗く、右は完全に透明 */
   .hero__img { object-position: 68% 34%; }
   .hero__media::after {

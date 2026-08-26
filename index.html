@@ -46,9 +46,12 @@
 <main id="main">
   <section class="hero">
     <div class="hero__media">
-      <img class="hero__img" src="/assets/site/hero.webp" alt=""
-        width="2048" height="1152" fetchpriority="high" decoding="async"
-        onerror="this.remove()">
+      <picture>
+        <source media="(max-width: 899px)" srcset="/assets/site/hero-mobile.webp" width="800" height="1000">
+        <img class="hero__img" src="/assets/site/hero.webp" alt=""
+          width="2048" height="1152" fetchpriority="high" decoding="async"
+          onerror="this.remove()">
+      </picture>
     </div>
     <div class="wrap hero__in">
       <div data-reveal>
@@ -63,16 +66,6 @@
     </div>
   </section>
 
-  <div class="trust">
-    <div class="wrap">
-      <dl class="trust__grid">
-        <div><dt>指導形式</dt><dd>マンツーマン</dd></div>
-        <div><dt>拠点</dt><dd>カナダ・モントリオール</dd></div>
-        <div><dt>初回のご連絡</dt><dd>申し込みではありません</dd></div>
-      </dl>
-    </div>
-  </div>
-
   <section id="about">
     <div class="wrap">
       <div class="sec-head" data-reveal>
@@ -81,8 +74,8 @@
           <p class="eyebrow">HARU について</p>
           <h2>フランスに1年、カナダに25年以上。</h2>
         </div>
-        <p class="lede">文法は完璧なのに、話せない。相手の英語が速すぎて、聞き取れない。間違えるのが怖くて、声が出ない。</p>
-        <p class="lede">そんな悩みを、誰よりも理解しています。フランス語、英語、スペイン語。海外で暮らしながら、自分自身がいくつもの言語を学んできたから。</p>
+        <p class="lede">その悩みを、誰よりも理解しています。フランス語、英語、スペイン語。海外で暮らしながら、自分自身がいくつもの言語を学んできたから。</p>
+        <p class="lede">教わる側として、つまずく場所も、そこを抜けたときの感じも知っています。</p>
       </div>
       <p class="statement" data-reveal>Harmony Horizon は、<strong>「知っている英語」を「使える英語」に変える</strong>ためのマンツーマンレッスンです。</p>
     </div>
