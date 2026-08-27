@@ -35,8 +35,12 @@ LEGAL = [
      '通信販売にあたり、特定商取引法で表示が求められている事項です。'),
 ]
 
+# 2026-08-27: 販売LP2枚（/eatout/ /immigration/）はどこからも辿れず、
+# URL を知っている人しか見られなかった。トップページの「練習アプリ」の節へ
+# 案内を足す。節への錨なので、どのページからでも同じ場所に着く。
 NAV = [('index.html', '考え方'), ('programs.html', 'レッスン'),
-       ('student-voices.html', '受講者の声'), ('contact.html', 'お問い合わせ')]
+       ('student-voices.html', '受講者の声'), ('#apps', '練習アプリ'),
+       ('contact.html', 'お問い合わせ')]
 
 SHELL = '''<!DOCTYPE html>
 <html lang="ja">
@@ -97,6 +101,8 @@ SHELL = '''<!DOCTYPE html>
     </div>
     <div class="ftr__legal">
       <span>© <span class="yr">2026</span> Harmony Horizon</span>
+      <a href="/eatout/">飲食店の英会話</a>
+      <a href="/immigration/">入国審査</a>
       <a href="/legal/privacy/">プライバシーポリシー</a>
       <a href="/legal/terms/">利用規約</a>
       <a href="/legal/tokushoho/">特定商取引法に基づく表記</a>
@@ -113,8 +119,11 @@ def render(src_dir, slug, out, title, desc, body_class=''):
     def links(indent):
         rows = []
         for href, label in NAV:
+            # 節への錨（#apps）はトップページの中を指す。他のページからでも
+            # 同じ場所に着くよう、必ず / から書く。
+            target = '/' + href
             cur = ' aria-current="page"' if href == out else ''
-            rows.append(f'{indent}<a href="/{href}"{cur}>{label}</a>')
+            rows.append(f'{indent}<a href="{target}"{cur}>{label}</a>')
         return '\n'.join(rows)
     body = (src_dir / f'{slug}.html').read_text(encoding='utf-8').rstrip()
     if body_class:

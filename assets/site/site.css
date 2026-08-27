@@ -351,6 +351,8 @@ section.alt { background: var(--paper-warm); }
 .cards { display: grid; gap: var(--s4); }
 @media (min-width: 900px) { .cards { grid-template-columns: repeat(3, 1fr); gap: var(--s4); } }
 @media (min-width: 1200px) { .cards { gap: var(--s5); } }
+/* 2枚だけの並び。3列のままだと右に1枚分の空きができる。 */
+@media (min-width: 900px) { .cards--2 { grid-template-columns: repeat(2, 1fr); } }
 .card {
   display: flex; flex-direction: column; text-decoration: none; background: var(--paper);
   border: 1px solid var(--line-soft); transition: border-color .3s var(--ease), transform .3s var(--ease);
