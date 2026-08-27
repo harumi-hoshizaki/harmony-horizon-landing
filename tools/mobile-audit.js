@@ -75,6 +75,25 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           .filter(e => { const [l, rt, wd] = edge(e); return wd > 40 && (l < pad - 2 || rt > vw - pad + 2); })
           .slice(0, 3).map(e => e.tagName + ' "' + (e.textContent || '').trim().slice(0, 16) + '"');
 
+        /* 読む文章の最小寸法。
+           50代の読者から「小さすぎて読めない」と指摘を受けた。
+           印（ラベル・番号・イニシャル）は小さくてよいが、
+           **文章として読むもの**は 16px を下回らせない。
+           判定は見た目ではなく「文の長さ」で機械的に行う：
+           15文字以上、または句点を含むなら、それは文章。 */
+        const tiny = [...document.querySelectorAll('p, li, dd, blockquote, figcaption, label, .lede, .small, .notice p')]
+          .filter(e => e.offsetParent !== null)
+          .filter(e => {
+            const own = [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('').trim();
+            if (!own) return false;
+            /* 句点だけで判定すると「K.A.」のような署名を拾う。長さで切る。 */
+            return own.length >= 15;
+          })
+          .filter(e => parseFloat(getComputedStyle(e).fontSize) < 16)
+          .slice(0, 5)
+          .map(e => Math.round(parseFloat(getComputedStyle(e).fontSize)) + 'px "'
+                 + (e.textContent || '').trim().slice(0, 16) + '"');
+
         /* 和文で欧文の書体が出ていないか（部分集合の抜けを検出） */
         const jpFallback = [];
         const chk = (k, v) => v == null ? null : (v >= SPEC[k][0] && v <= SPEC[k][1]);
@@ -83,7 +102,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           vw, overflow: de.scrollWidth - vw, over, pad, flush, type: t, jpFallback,
           typeOk: { h1: chk('h1', t.h1), h2: chk('h2', t.h2), h3: chk('h3', t.h3), body: chk('body', t.body) },
           third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin)).map(x => x.name),
-          small: small.slice(0, 5), smallN: small.length
+          small: small.slice(0, 5), smallN: small.length, tiny
         };
       }, spec);
 
@@ -94,6 +113,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       for (const k of Object.keys(r.typeOk)) {
         if (r.typeOk[k] === false) bad.push(`${k} ${r.type[k]}px は範囲 ${spec[k].join('–')} の外`);
       }
+      if (r.tiny.length) bad.push(`読む文章が 16px 未満 ×${r.tiny.length} ${JSON.stringify(r.tiny)}`);
       if (r.third.length) bad.push(`第三者への通信 ${JSON.stringify(r.third)}`);
       if (errs.length) bad.push(errs.join(' / '));
 
@@ -104,7 +124,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
     await ctx.close();
   }
   await b.close();
-  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・活字は追補5の範囲内・第三者通信ゼロ・エラーなし');
+  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・第三者通信ゼロ・エラーなし');
   if (waiting.size) {
     console.log(`\n未入手の素材 ${waiting.size} 件（不具合ではありません）:`);
     waiting.forEach(x => console.log('   ・' + x));

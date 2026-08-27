@@ -18,7 +18,7 @@ PAGES = [
     ('programs', 'programs.html', 'Programs', 'レッスンについて — Harmony Horizon',
      'あなただけの目標に合わせた、完全個別のマンツーマン指導。個別カウンセリングから始まるオーダーメイド設計です。'),
     ('student-voices', 'student-voices.html', 'Student Voices', '受講者の声 — Harmony Horizon',
-     '数字や評価ではなく、ひとりひとりの変化の物語を。レッスンで学ぶ方たちの言葉です。'),
+     '点数や評価では見えないものがあります。レッスンを受けた方が、ご自身の言葉で書いた感想です。'),
     ('contact', 'contact.html', 'Contact', 'お問い合わせ — Harmony Horizon',
      '初回のご連絡は、レッスンの申し込みではありません。今の悩みや目標をお聞かせください。24〜48時間以内にご返信します。'),
 ]

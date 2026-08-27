@@ -89,10 +89,10 @@ p:last-child { margin-bottom: 0; }
 
 /* 小さなラベル。欧文は大文字＋字間、和文は大文字化しないので字間だけ。 */
 .eyebrow {
-  font-family: var(--sans); font-size: 11px; font-weight: 500;
-  letter-spacing: .18em; color: var(--bronze); margin: 0 0 var(--s2);
+  font-family: var(--sans); font-size: 13px; font-weight: 500;
+  letter-spacing: .16em; color: var(--bronze); margin: 0 0 var(--s2);
 }
-.small { font-size: 14px; color: var(--ink-soft); }
+.small { font-size: 16px; line-height: 1.9; color: var(--ink-soft); }
 
 /* ---------- 要確認マーカー ---------- */
 .need {
@@ -119,8 +119,8 @@ p:last-child { margin-bottom: 0; }
   display: flex; flex-direction: column; justify-content: center; min-height: 44px;
 }
 .brand span {
-  display: block; font-family: var(--sans); font-weight: 400; font-size: 10px;
-  letter-spacing: .22em; color: var(--stone-deep); margin-top: 3px;
+  display: block; font-family: var(--sans); font-weight: 400; font-size: 12px;
+  letter-spacing: .18em; color: var(--stone-deep); margin-top: 3px;
 }
 /* 社名は折り返さない。ただし `nowrap` だけだと狭い画面でハンバーガーを
    画面外へ押し出すので、段階的に縮める（追補4 §167-B、型2）。 */
@@ -130,7 +130,7 @@ p:last-child { margin-bottom: 0; }
 
 .hdr__nav { display: none; gap: var(--s4); }
 .hdr__nav a {
-  text-decoration: none; font-size: 15px; color: var(--ink);
+  text-decoration: none; font-size: 16px; color: var(--ink);
   display: inline-flex; align-items: center; min-height: 44px;
   border-bottom: 1px solid transparent; transition: border-color .3s var(--ease);
 }
@@ -176,7 +176,7 @@ p:last-child { margin-bottom: 0; }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 48px; padding: 12px 26px; text-decoration: none;
-  font-family: var(--sans); font-size: 14px; font-weight: 500; letter-spacing: .06em;
+  font-family: var(--sans); font-size: 16px; font-weight: 500; letter-spacing: .04em;
   background: var(--deep); color: var(--paper);
   border: 1px solid var(--deep); transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
 }
@@ -209,7 +209,7 @@ section.alt { background: var(--paper-warm); }
   .sec-head > div:first-child { grid-row: 1 / -1; align-self: end; }
 }
 .sec-num {
-  display: block; font-family: var(--display); font-size: 13px; color: var(--stone-deep);
+  display: block; font-family: var(--display); font-size: 14px; color: var(--stone-deep);
   letter-spacing: .1em; margin-bottom: var(--s2);
 }
 
@@ -232,9 +232,11 @@ section.alt { background: var(--paper-warm); }
    **導入文の途中で画面が終わり、ボタンが一度も見えない。**
    文字塊は実測 322px。svh（バーが出ている時の高さ）から引く。 */
 .hero {
-  /* ボタンの下端 = 帯 + 375px（実測。文字塊 322 + ヘッダー 69 − 重ね 96
-     ＋ 余白）。式で導くより、実測して定数を置くほうが間違えない。 */
-  --hero-text: 384px;
+  /* ボタンの下端 = 帯 + 383px（実測）。式で導くより、実測して定数を
+     置くほうが間違えない。**活字の寸法を変えたら必ず測り直す。**
+     前書き 11→13px、ボタン 14→16px にしただけで 8px 増え、
+     余白が 1px まで詰まった。 */
+  --hero-text: 392px;
   --hero-band: min(
     calc(100vw * 1.25),               /* 幅に対して縦長になりすぎない */
     max(180px, calc(100svh - var(--hero-text))),
@@ -306,7 +308,7 @@ section.alt { background: var(--paper-warm); }
 @media (min-width: 1100px) { .steps { grid-template-columns: repeat(4, 1fr); } }
 .steps li { padding-top: var(--s3); border-top: 1px solid var(--line); }
 .steps__n {
-  display: block; font-family: var(--display); font-size: 13px; letter-spacing: .1em;
+  display: block; font-family: var(--display); font-size: 14px; letter-spacing: .1em;
   color: var(--bronze); margin-bottom: var(--s2);
 }
 .steps h3 { margin-bottom: var(--s1); }
@@ -334,14 +336,16 @@ section.alt { background: var(--paper-warm); }
 .card__img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; flex: none; }
 .card .slot--4x3 { flex: none; }
 .card__body { padding: var(--s3); display: flex; flex-direction: column; gap: var(--s1); flex: 1; }
+/* 「Personalized English Lessons」のような長い英文のラベル。
+   11px に字間を広く取ると、日本語話者には一続きに読めない。 */
 .card__k {
-  font-family: var(--sans); font-size: 11px; letter-spacing: .14em;
-  color: var(--stone-deep); margin: 0;
+  font-family: var(--sans); font-size: 14px; letter-spacing: .08em;
+  line-height: 1.6; color: var(--stone-deep); margin: 0;
 }
 .card h3 { margin: 0; }
-.card__body p { color: var(--ink-soft); font-size: 15px; margin: 0; }
+.card__body p { color: var(--ink-soft); font-size: 16px; margin: 0; }
 .card__go {
-  margin-top: auto; padding-top: var(--s2); font-size: 13px; letter-spacing: .08em;
+  margin-top: auto; padding-top: var(--s2); font-size: 16px; letter-spacing: .04em;
   color: var(--bronze); display: inline-flex; align-items: center; gap: 6px; min-height: 32px;
 }
 .card__go::after { content: ""; width: 14px; height: 1px; background: var(--bronze); }
@@ -393,7 +397,7 @@ section.alt { background: var(--paper-warm); }
 @media (min-width: 760px) { .ftr__grid { grid-template-columns: 1.4fr 1fr 1fr; gap: var(--s6); } }
 .ftr__brand { font-family: var(--brand); font-weight: 600; font-size: 26px; color: #fff; margin-bottom: var(--s1); }
 .ftr .small { color: var(--stone-light); }
-.ftr__k { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; color: var(--stone-deep); margin-bottom: var(--s2); }
+.ftr__k { font-family: var(--sans); font-size: 13px; letter-spacing: .14em; color: var(--stone-deep); margin-bottom: var(--s2); }
 .ftr a, .ftr nav a { display: block; color: var(--stone-light); text-decoration: none; min-height: 44px; display: flex; align-items: center; }
 .ftr a:hover { color: #fff; }
 .ftr__note {
@@ -403,7 +407,7 @@ section.alt { background: var(--paper-warm); }
 .ftr__note a { display: inline; min-height: 0; text-decoration: underline; }
 .ftr__legal {
   margin-top: var(--s3); display: flex; flex-wrap: wrap; align-items: center;
-  gap: var(--s2) var(--s4); font-size: 13px;
+  gap: var(--s2) var(--s4); font-size: 14px;
 }
 .ftr__legal > span, .ftr__legal > a { display: inline-flex; align-items: center; min-height: 44px; }
 .ftr__legal > a { text-decoration: none; }
@@ -448,7 +452,7 @@ section.alt { background: var(--paper-warm); }
 /* 銅の縦罫は「言い切りの一文」の印。すぐ下にもう1本引くと印にならない。
    ここは罫を使わず、字だけで示す。 */
 .portrait figcaption {
-  font-family: var(--sans); font-size: 13px; color: var(--ink);
+  font-family: var(--sans); font-size: 15px; color: var(--ink);
   margin-top: var(--s2); letter-spacing: .04em;
 }
 
@@ -461,12 +465,12 @@ section.alt { background: var(--paper-warm); }
   aspect-ratio: 4 / 3; object-fit: cover;
 }
 .band figcaption {
-  font-family: var(--sans); font-size: 13px; line-height: 1.8;
-  color: var(--stone-deep); margin-top: var(--s2);
+  font-family: var(--sans); font-size: 16px; line-height: 1.9;
+  color: var(--ink-soft); margin-top: var(--s2);
 }
 @media (min-width: 700px) {
   .band img { aspect-ratio: 16 / 9; }
-  .band figcaption { font-size: 14px; }
+  .band figcaption { font-size: 16px; }
 }
 
 /* ---------- 大きな1枚（レッスン紹介） ---------- */
@@ -504,22 +508,27 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 .quotes--full { gap: var(--s5); }
 @media (min-width: 760px) { .quotes--full { gap: var(--s6) var(--s5); } }
 .quote { margin: 0; padding-top: var(--s3); border-top: 1px solid var(--line); }
+/* これはラベルではなく**一つの文**。12px の字間広めゴシックでは読めない
+   （50代の読者から「小さすぎる」と指摘を受けた）。旧サイトと同じ
+   斜体の明朝に戻し、寸法も本文並みに上げる。追補5 §181。 */
 .quote__k {
-  font-family: var(--sans); font-size: 12px; letter-spacing: .08em;
+  font-family: var(--brand); font-style: italic; font-weight: 500; font-size: 18px;
+  letter-spacing: 0; line-height: 1.5;
   color: var(--bronze); margin-bottom: var(--s2);
 }
+@media (min-width: 700px) { .quote__k { font-size: 20px; } }
 .quote blockquote { margin: 0; }
 .quote blockquote p {
   font-family: var(--display); font-size: 18px; line-height: 1.85; color: var(--ink); margin: 0;
 }
 @media (min-width: 700px) { .quote blockquote p { font-size: 19px; } }
 .quote figcaption {
-  margin-top: var(--s2); font-size: 13px; letter-spacing: .1em; color: var(--stone-deep);
+  margin-top: var(--s2); font-size: 14px; letter-spacing: .1em; color: var(--stone-deep);
 }
 .more { margin-top: var(--s5); }
 .more a {
   display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
-  font-size: 15px; color: var(--bronze); text-decoration: none;
+  font-size: 16px; color: var(--bronze); text-decoration: none;
 }
 .more a::after { content: ""; width: 16px; height: 1px; background: var(--bronze); }
 
@@ -531,9 +540,9 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 @media (min-width: 900px) { .form-layout { grid-template-columns: 1fr 1fr; gap: var(--s7); align-items: start; } }
 .form { display: grid; gap: var(--s3); }
 .field { margin: 0; display: grid; gap: 6px; }
-.field label { font-size: 14px; color: var(--ink-soft); display: flex; align-items: center; gap: 8px; }
+.field label { font-size: 16px; color: var(--ink); display: flex; align-items: center; gap: 8px; }
 .req {
-  font-family: var(--sans); font-size: 11px; letter-spacing: .08em;
+  font-family: var(--sans); font-size: 12px; letter-spacing: .06em;
   color: var(--bronze); border: 1px solid var(--bronze); padding: 1px 6px;
 }
 .form input, .form select, .form textarea {
@@ -556,13 +565,13 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
   background: var(--paper-warm); border-left: 2px solid var(--bronze);
 }
 .notice h3 { font-size: 16px; margin: 0 0 var(--s1); }
-.notice p { font-size: 15px; line-height: 1.9; color: var(--ink-soft); margin: 0 0 var(--s1); }
+.notice p { font-size: 16px; line-height: 1.9; color: var(--ink-soft); margin: 0 0 var(--s1); }
 .notice p:last-child { margin-bottom: 0; }
 .notice strong { color: var(--ink); font-weight: 500; }
 
 /* ---------- 脚注のメール ---------- */
 .ftr__mail {
-  display: inline-flex; align-items: center; min-height: 44px;
+  display: inline-flex; align-items: center; min-height: 44px; font-size: 16px;
   text-decoration: none; word-break: break-all;
 }
 .ftr .ftr__mail { color: var(--stone-light); }
@@ -607,7 +616,7 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 .page-legal .mail:hover { border-bottom-color: var(--bronze); }
 .page-legal .back {
   display: inline-flex; align-items: center; min-height: 44px;
-  margin-top: var(--s6); font-size: 15px; color: var(--bronze); text-decoration: none;
+  margin-top: var(--s6); font-size: 16px; color: var(--bronze); text-decoration: none;
 }
 
 /* ---------- 要確認マーカーの切替 ---------- */
