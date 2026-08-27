@@ -262,6 +262,14 @@
   .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
   .foot-copy { font-size: 12.5px; color: var(--ink-soft); opacity: 0.85; }
   .foot-copy a { font-weight: 700; color: var(--navy); }
+  /* 販売しているページからは、特定商取引法の表記へ必ず辿れるようにする。
+     法律上の要請であり、探させてはいけない（追補2 §126）。 */
+  .foot-legal { display: flex; flex-wrap: wrap; justify-content: center;
+    gap: 10px 22px; margin-top: 18px; font-size: 15px; }
+  .foot-legal a { color: var(--ink-soft); text-decoration: none;
+    border-bottom: 1px solid rgba(0,0,0,0.18);
+    display: inline-flex; align-items: center; min-height: 44px; }
+  .foot-legal a:hover { color: var(--navy); }
 
   /* ---------------- Reveal ---------------- */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
@@ -509,6 +517,11 @@
   <div class="container">
     <div class="foot-tag">Train your ears. Find your voice.</div>
     <div class="foot-copy">© 2026 Harmony Horizon ・ <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> ・ <a href="https://www.harmonyhorizon.space">harmonyhorizon.space</a></div>
+    <div class="foot-legal">
+      <a href="/legal/tokushoho/">特定商取引法に基づく表記</a>
+      <a href="/legal/terms/">利用規約</a>
+      <a href="/legal/privacy/">プライバシーポリシー</a>
+    </div>
   </div>
 </footer>
 

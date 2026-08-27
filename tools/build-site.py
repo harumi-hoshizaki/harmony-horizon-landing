@@ -23,6 +23,18 @@ PAGES = [
      '初回のご連絡は、レッスンの申し込みではありません。今の悩みや目標をお聞かせください。24〜48時間以内にご返信します。'),
 ]
 
+# 法務3ページ。ナビには入れないが、**脚注から必ず辿れる**ようにする。
+# 販売しているのはこのドメインなので、特定商取引法の表記は
+# 購入ページから辿れなければならない（追補2 §126）。
+LEGAL = [
+    ('privacy',   'legal/privacy/index.html',   'プライバシーポリシー',
+     'Harmony Horizon の各アプリが、どの情報をどこに保存し、どこへ送るかを書いています。'),
+    ('terms',     'legal/terms/index.html',     '利用規約',
+     'Harmony Horizon の各アプリをお使いいただくうえでの取り決めです。'),
+    ('tokushoho', 'legal/tokushoho/index.html', '特定商取引法に基づく表記',
+     '通信販売にあたり、特定商取引法で表示が求められている事項です。'),
+]
+
 NAV = [('index.html', '考え方'), ('programs.html', 'レッスン'),
        ('student-voices.html', '受講者の声'), ('contact.html', 'お問い合わせ')]
 
@@ -85,6 +97,9 @@ SHELL = '''<!DOCTYPE html>
     </div>
     <div class="ftr__legal">
       <span>© <span class="yr">2026</span> Harmony Horizon</span>
+      <a href="/legal/privacy/">プライバシーポリシー</a>
+      <a href="/legal/terms/">利用規約</a>
+      <a href="/legal/tokushoho/">特定商取引法に基づく表記</a>
     </div>
   </div>
 </footer>
@@ -94,22 +109,40 @@ SHELL = '''<!DOCTYPE html>
 </html>
 '''
 
+def render(src_dir, slug, out, title, desc, body_class=''):
+    def links(indent):
+        rows = []
+        for href, label in NAV:
+            cur = ' aria-current="page"' if href == out else ''
+            rows.append(f'{indent}<a href="/{href}"{cur}>{label}</a>')
+        return '\n'.join(rows)
+    body = (src_dir / f'{slug}.html').read_text(encoding='utf-8').rstrip()
+    if body_class:
+        # 法務の本文は素の HTML なので、ここで節と余白のコンテナに包む。
+        # 4ページの本文は自前で <section><div class="wrap"> を持っている。
+        body = (f'<section class="{body_class}">\n  <div class="wrap wrap--narrow">\n'
+                f'{body}\n  </div>\n</section>')
+    html = SHELL.format(
+        # index.html は省く。/legal/x/index.html は /legal/x/ にする
+        title=title, desc=desc,
+        canon='' if out == 'index.html' else out.replace('index.html', ''),
+        nav=links('      '), dnav=links('    '), fnav=links('        '),
+        body=body)
+    dest = ROOT / out
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    dest.write_text(html, encoding='utf-8')
+    print(f'  {out}')
+
+
 def build():
     for slug, out, name, title, desc in PAGES:
-        def links(indent, current_aware=True):
-            rows = []
-            for href, label in NAV:
-                cur = ' aria-current="page"' if current_aware and href == out else ''
-                rows.append(f'{indent}<a href="/{href}"{cur}>{label}</a>')
-            return '\n'.join(rows)
-        body = (SRC / f'{slug}.html').read_text(encoding='utf-8').rstrip()
-        html = SHELL.format(
-            title=title, desc=desc, canon='' if out == 'index.html' else out,
-            nav=links('      '), dnav=links('    '), fnav=links('        '),
-            body=body)
-        (ROOT / out).write_text(html, encoding='utf-8')
-        print(f'  {out}')
+        render(SRC, slug, out, title, desc)
+    # 法務ページは本文が長い。追補3 §152 のとおり寸法を落とすので、
+    # 目印のクラスを付けて CSS 側で切り替える。
+    for slug, out, name, desc in LEGAL:
+        render(ROOT / 'content/legal', slug, out,
+               f'{name} — Harmony Horizon', desc, body_class='page-legal')
 
 if __name__ == '__main__':
-    print('4ページを組み立てる')
+    print('ページを組み立てる')
     build()

@@ -30,7 +30,9 @@ def strip_code_comments(text, suffix):
         text = re.sub(r'^\s*//.*$', '', text, flags=re.M)
     return text
 
-for f in sorted(glob.glob('content/pages/*.html')) + ['tools/build-site.py', 'assets/site/site.js']:
+# 法務ページも対象。ここを忘れると法務ページだけ字が欠ける（追補5 §171）。
+for f in (sorted(glob.glob('content/pages/*.html')) + sorted(glob.glob('content/legal/*.html'))
+          + ['tools/build-site.py', 'assets/site/site.js']):
     h = strip_code_comments(open(f, encoding='utf-8').read(), pathlib.Path(f).suffix)
     t = re.sub(r'<script.*?</script>|<style.*?</style>', '', h, flags=re.S)
     vals = ' '.join(re.findall(r'(?:aria-label|data-on|data-off|content|title|placeholder)="([^"]*)"', t))

@@ -8,7 +8,10 @@ const { chromium } = require(require('child_process').execSync('npm root -g').to
 const SPEC = { h1: [30, 36], h2: [24, 28], h3: [17, 20], body: [16, 18] };
 /* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
 const SPEC_LEGAL = { h1: [24, 34], h2: [17, 22], h3: [15, 18], body: [16, 18] };
-const PAGES = ['/', '/programs.html', '/student-voices.html', '/contact.html'];
+const PAGES = ['/', '/programs.html', '/student-voices.html', '/contact.html',
+               '/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
+/* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
+const LEGAL = ['/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
 const BASE = 'http://localhost:8105';
 
 /* まだ入手していない素材。404 でも不合格にはせず「未入手」として別に数える。
@@ -34,7 +37,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       });
       await pg.goto(BASE + p, { waitUntil: 'networkidle' });
       await pg.waitForTimeout(300);
-      const spec = SPEC;
+      const spec = LEGAL.includes(p) ? SPEC_LEGAL : SPEC;
       const r = await pg.evaluate((SPEC) => {
         const de = document.documentElement, vw = de.clientWidth;
         const px = s => { const e = document.querySelector(s); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize)) : null; };

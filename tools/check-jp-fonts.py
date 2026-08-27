@@ -14,7 +14,9 @@ from fontTools.ttLib import TTFont
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONTS = ['zen-old-mincho-600-jp', 'zen-old-mincho-400-jp',
          'zen-kaku-400-jp', 'zen-kaku-500-jp']
-PAGES = sorted((pathlib.Path(__file__).resolve().parent.parent / 'content/pages').glob('*.html'))
+_R = pathlib.Path(__file__).resolve().parent.parent
+# 法務ページも対象。絞る側と同じ集合にすること（追補5 §171）。
+PAGES = sorted((_R / 'content/pages').glob('*.html')) + sorted((_R / 'content/legal').glob('*.html'))
 
 def strip_code_comments(text, suffix):
     """注釈の日本語を拾わない。
