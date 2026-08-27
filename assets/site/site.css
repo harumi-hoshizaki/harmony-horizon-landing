@@ -54,6 +54,23 @@ a { color: inherit; }
 /* 和文は語中で折り返してよいが、約物は行頭に来させない。
    欧文向けの overflow-wrap: anywhere は和文では使わない。 */
 p, li, dd, h1, h2, h3, summary { line-break: strict; word-break: normal; }
+/* 和文の見出しは、最後の1〜3文字だけが次の行に落ちやすい
+   （「ひとつの道を、一緒／に。」）。一字だけの行は素人っぽく見える。
+
+   ここで**使ってはいけないもの**を先に書く。両方この案件で試して、
+   前より悪くなった。
+
+   ✕ `text-wrap: balance` — 行の長さは揃うが和文の文節を理解しない。
+     読点を無視して「ひとつの道／を、一緒に。」「目指すのは、聞き／
+     取れて」のように語の途中で切る。
+   ✕ `word-break: keep-all` — 和文では折り返せる場所が減りすぎて、
+     見出しが枠から溢れた（監査が「端の余白なし」を3件出した）。
+
+   ○ **読点の位置を自分で決める。** 見出しの最後の文節を `.nw` で
+     包むと、そこでだけ改行される。CLAUDE.md のキャプション規則と
+     同じ考え方。**包んだ塊は中で折り返さないので、320/393/430 で
+     溢れないことを必ず実測する。** */
+.nw { display: inline-block; }
 
 .wrap { max-width: var(--container); margin: 0 auto; padding: 0 var(--pad); }
 .wrap--narrow { max-width: 760px; }
@@ -118,10 +135,14 @@ p:last-child { margin-bottom: 0; }
   /* 社名もリンク＝押せる要素。44px を確保する（追補4 §167-B、型4）。 */
   display: flex; flex-direction: column; justify-content: center; min-height: 44px;
 }
+/* 社名の下の一行。10px → 12px と上げたが、字間 .18em で薄い灰だと
+   まだ読めなかった。字間を詰め、寸法を上げ、色も一段濃くする。
+   ここは「印」だが、**読める印**でなければ置く意味がない。 */
 .brand span {
-  display: block; font-family: var(--sans); font-weight: 400; font-size: 12px;
-  letter-spacing: .18em; color: var(--stone-deep); margin-top: 3px;
+  display: block; font-family: var(--sans); font-weight: 400; font-size: 14px;
+  letter-spacing: .1em; color: var(--ink-soft); margin-top: 4px;
 }
+@media (min-width: 400px) { .brand span { font-size: 15px; } }
 /* 社名は折り返さない。ただし `nowrap` だけだと狭い画面でハンバーガーを
    画面外へ押し出すので、段階的に縮める（追補4 §167-B、型2）。 */
 .brand { white-space: nowrap; }
@@ -386,7 +407,11 @@ section.alt { background: var(--paper-warm); }
 }
 .faq details[open] summary::after { transform: rotate(-135deg) translateY(-3px); }
 .faq p { color: var(--ink-soft); font-size: 16px; padding-bottom: var(--s3); margin: 0; max-width: 44em; }
-.faq strong { font-weight: 500; color: var(--ink); }
+/* 和文で太字は使わない（追補5 §175）。強調は**色**でつける。
+   ゴシックの 500 は 400 との差が小さく、太った字に見えるだけで
+   目立たない。banner 以外の全ての strong をここで一括して決める。 */
+strong { font-weight: inherit; color: var(--bronze); }
+.faq strong { color: var(--ink); }
 
 /* ---------- 最後の一押し ---------- */
 /* 最後の一押しは明るいまま。暗い塊をページに何度も置くと重くなる。
@@ -437,7 +462,7 @@ section.alt { background: var(--paper-warm); }
   border-left: 2px solid var(--bronze);
 }
 @media (min-width: 700px) { .statement { font-size: 20px; padding-left: var(--s4); } }
-.statement strong { font-weight: inherit; color: var(--bronze); }
+/* strong の既定（上）に従う。個別指定は要らない */
 
 /* ---------- 顔写真 ----------
    ヒーローと張り合わせない。携帯では幅を 240px で止め、
@@ -571,7 +596,7 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 .notice h3 { font-size: 16px; margin: 0 0 var(--s1); }
 .notice p { font-size: 16px; line-height: 1.9; color: var(--ink-soft); margin: 0 0 var(--s1); }
 .notice p:last-child { margin-bottom: 0; }
-.notice strong { color: var(--ink); font-weight: 500; }
+.notice strong { color: var(--ink); }
 
 /* ---------- 脚注のメール ---------- */
 .ftr__mail {

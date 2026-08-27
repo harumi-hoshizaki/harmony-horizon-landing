@@ -53,7 +53,6 @@ SHELL = '''<!DOCTYPE html>
     <nav class="hdr__nav" aria-label="主要ナビゲーション">
 {nav}
     </nav>
-    <a class="btn hdr__cta" href="/contact.html">相談する</a>
     <button class="burger" type="button" aria-expanded="false" aria-controls="drawer" aria-label="メニュー"><i></i><i></i><i></i></button>
   </div>
 </header>
