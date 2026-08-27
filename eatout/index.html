@@ -107,12 +107,27 @@
      ここを忘れると、暗い地に暗いボタンで見えなくなる。 */
   .on-dark .btn-gold,
   .site-header .btn-gold { background: var(--paper); color: var(--deep); box-shadow: 0 14px 34px -14px rgba(0,0,0,0.5); }
-  .on-dark .btn-gold:hover,
-  .site-header .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
+  /* 指で触るとホバーが貼り付く（iOS）。ホバーできる装置だけに当てる。 */
+  @media (hover: hover) {
+    .on-dark .btn-gold:hover,
+    .site-header .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
+  }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
   .btn-small { padding: 12px 22px; font-size: 16px; border-radius: 12px; }
+  /* 狭い画面ではボタンの左右の余白を詰める。字は詰めない（16px を守る）。 */
+  @media (max-width: 460px) { .btn-small { padding: 12px 15px; } }
+  /* ロゴの側も少し詰める。ただし「耳から、声へ」は 13px のまま。
+     ここは以前「小さい」と指摘を受けて上げた寸法なので下げない。 */
+  @media (max-width: 400px) {
+    .site-header .brand { gap: 10px; }
+    .site-header .brand-mark { width: 28px; height: 28px; }
+    .site-header .brand-word { font-size: 15.5px; }
+  }
+  /* さらに狭い画面では「で始める」を落とし、価格だけにする。
+     ボタン全体が押せるので、動詞が無くても意味は通る。 */
+  @media (max-width: 380px) { .site-header .cta-verb { display: none; } }
 
   /* ---------------- Nav ---------------- */
   /* 2026-08-08: 明るくした本文とのコントラストを出すため、ヘッダーだけ濃色に(Harumi指示) */
@@ -121,7 +136,13 @@
     background: var(--navy-deep);
     border-bottom: 1px solid var(--line-light);
   }
-  .site-header .container { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; padding-bottom: 10px; }
+  /* 2026-08-27: ロゴとボタンが触れていた（実測 320/360px で間隔 0、
+     393px でも 10px）。space-between だけでは、中身が入りきらない時に
+     詰まって触れる。**gap を必ず持たせる。** */
+  .site-header .container {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding-top: 10px; padding-bottom: 10px;
+  }
   .brand { display: flex; align-items: center; gap: 12px;  min-height: 44px; }
   .brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
   /* 3つのLPで同じロックアップ: EAR TO VOICE / 耳から、声へ */
@@ -516,7 +537,7 @@
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold btn-small">¥1,980で始める</a>
+    <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold btn-small"><span>¥1,980<span class="cta-verb">で始める</span></span></a>
   </div>
 </header>
 
