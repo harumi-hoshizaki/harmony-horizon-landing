@@ -1,3 +1,6 @@
+// URL を引数で受ける。トップページだけでなく、写真を重ねる全ページで測る。
+//   node tools/hero-contrast.js http://127.0.0.1:8802/eatout/index.html
+const URL = process.argv[2] || 'http://localhost:8105/';
 const { chromium } = require(require('child_process').execSync('npm root -g').toString().trim() + '/playwright');
 const lin = c => { c/=255; return c<=0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4); };
 const L = ([r,g,b]) => 0.2126*lin(r)+0.7152*lin(g)+0.0722*lin(b);
@@ -9,7 +12,7 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
   for (const [w,h,n] of [[1440,900,'卓上'],[393,852,'携帯'],[393,659,'携帯(バー有)'],[430,690,'大(バー有)'],[320,568,'小']]) {
     const ctx = await b.newContext({ viewport:{width:w,height:h}, deviceScaleFactor:1, reducedMotion:'reduce' });
     const pg = await ctx.newPage();
-    await pg.goto('http://localhost:8105/', { waitUntil:'networkidle' });
+    await pg.goto(URL, { waitUntil:'networkidle' });
     await pg.waitForTimeout(800);
     // 文字を消して、その真下の地色を採る（最も明るい点＝最悪ケース）
     const boxes = await pg.evaluate(() => {
@@ -27,12 +30,14 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
         const X2=Math.min(innerWidth,Math.round(x2)), Y2=Math.min(innerHeight,Math.round(y2));
         if (X2<=X || Y2<=Y) return null;
         return {x:X,y:Y,w:X2-X,h:Y2-Y}; };
-      return { h1:g('.hero h1'), lede:g('.hero .lede'), eyebrow:g('.hero .eyebrow') };
+      // 見出しの中の強調（em）も別に測る。ここに濃い色を置くと、
+      // 見出し全体は通っているのに強調部分だけ 1.4:1 になる。
+      return { h1:g('.hero h1'), em:g('.hero h1 em'), lede:g('.hero .lede'), eyebrow:g('.hero .eyebrow') };
     });
     // 文字を消す。合わせて**手前に浮くもの**も消す。固定バーは石色で、
     // 文字範囲に重なると地色として拾われ、1.18 のような偽の値になる。
     await pg.evaluate(() => {
-      document.querySelectorAll('.hero h1, .hero .lede, .hero .eyebrow, .hero .row')
+      document.querySelectorAll('.hero__in, .hero h1, .hero .lede, .hero .eyebrow, .hero .row, .hero-note')
         .forEach(e => e.style.visibility = 'hidden');
       document.querySelectorAll('body *').forEach(e => {
         const p = getComputedStyle(e).position;
@@ -60,10 +65,16 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
         }
         return best;
       };
-      return { h1:worst(boxes.h1), lede:worst(boxes.lede), eyebrow:worst(boxes.eyebrow) };
+      return { h1:worst(boxes.h1), em:worst(boxes.em), lede:worst(boxes.lede), eyebrow:worst(boxes.eyebrow) };
     }, { b64, boxes });
+    const emc = await pg.evaluate(() => {
+      const e = document.querySelector('.hero h1 em');
+      return e ? getComputedStyle(e).color : null;
+    });
+    const rgb = c => c.match(/[\d.]+/g).slice(0,3).map(Number);
     console.log(n,
       'h1(白)', cr([255,255,255], out.h1),
+      '| 強調' + (emc ? ' ' + emc : ''), out.em && emc ? cr(rgb(emc), out.em) : '—',
       '| 導入文(rgba .9→近似 #E9E6E1)', cr([233,230,225], out.lede),
       '| 前書き(#E9B98C)', cr([233,185,140], out.eyebrow));
     await ctx.close();

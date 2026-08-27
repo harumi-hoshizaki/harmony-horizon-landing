@@ -67,6 +67,16 @@
   一言で答えられないなら置かない**
 - 意味の合わない場所に無理に残さない。合う場所へ移すか、
   その枠を文字だけの版にする
+- **ヒーローの写真は、画面幅で「帯」と「全面」を切り替える。**
+  `height: min(100vw*0.62, 260px)` のように px で上限を固定すると、
+  卓上（1440px）で 5.5:1 の細長い隙間になり、人物の頭が切れる。
+  `@media (min-width: 900px)` で `inset: 0; height: auto` に戻し、
+  覆いも縦の階調（携帯）から横の階調（卓上）へ切り替える
+- **主役が「文字を置きたい側」に写っていたら、まず左右反転を試す。**
+  `transform: scaleX(-1)`。ただし看板や商品名が読める写真は反転しない
+- **写真に重ねる文字は、必ず写真の上で実測する**（`tools/hero-contrast.js`）。
+  見出しの中の強調に濃い色（`--gold` #9C5C33）を使うと 1.4:1 しか出ない。
+  写真の上では明るいほう（`--gold-pale` #E9B98C）を使う
 
 ## 公開前に必ず流す
 
@@ -75,7 +85,9 @@ python3 tools/build-site.py
 bash    tools/subset-jp-fonts.sh    # 文言を変えたら必ず
 python3 tools/check-jp-fonts.py     # 和文書体の抜け
 node    tools/mobile-audit.js       # 横溢れ・44px・16px・第三者通信
-node    tools/hero-contrast.js      # 写真の上の文字の対比
+node    tools/hero-contrast.js      # 写真の上の文字の対比（トップページ）
+node    tools/hero-contrast.js http://127.0.0.1:8802/eatout/index.html
+node    tools/hero-contrast.js http://127.0.0.1:8802/immigration/index.html
 ```
 
 **目視で終わらせない。** ここに挙げた失敗は全部、

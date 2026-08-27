@@ -39,7 +39,9 @@
     --display: "Playfair Display", "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
     --sans:    "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
     --brand:   "Cormorant Garamond", "Zen Old Mincho", "Hiragino Mincho ProN", serif;
-    --font-display: var(--display);
+    /* 販売LPの見出しは当初どおりゴシック。明朝に替えたが、
+       売り文句の押しが弱くなるため戻した（Harumi 2026-08-27）。 */
+    --font-display: var(--sans);
     --font-body:    var(--sans);
 
     --max-w: 1120px;
@@ -128,35 +130,92 @@
      10px では老眼鏡でも読めない。 */
   .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 600; line-height: 1.4; }
 
-  /* ---------------- Hero ---------------- */
-  /* 写真の帯。トップページと同じ組み方（追補4 §154-B）。
-     高さは幅から決めて上限を置く。ヘッダーが固定で
-     「¥1,980で始める」が常に見えているので、ヒーロー内のボタンは
-     折り返しの下でよい。 */
-  .hero__media {
-    height: min(calc(100vw * 0.62), 260px);
-    margin-bottom: clamp(24px, 4vw, 40px);
-    overflow: hidden;
+  /* ---------------- Hero ----------------
+     www のトップページと同じ組み方に揃える（追補4 §154-B）。
+     文字を写真の上に載せ、**暗くするのは文字が乗る側だけ**にする。
+     階調は必ず alpha 0 まで落としきる。途中（0.3 など）で止めると
+     写真全体が沈んで、ただ暗いだけの絵になる。
+
+     2026-08-27: それ以前は画面幅によらず高さ 260px の帯にしていた。
+     卓上（1440px）では 1440:260 ＝ 5.5:1 の細い隙間になり、人物の頭も
+     上で切れていた。「プロだったらこう設定しない」（Harumi）。
+     幅が広い時は帯をやめて全面に敷き、横の階調で左だけ暗くする。 */
+  .hero {
+    position: relative; overflow: hidden;
+    background: var(--deep); color: var(--cream);
+    padding: 0 !important; text-align: left;
+
+    /* 携帯：帯の高さは「画面の幅」ではなく「残っている高さ」から決める。
+       実機の Safari は下に操作バーが出るので、iPhone 14 で見えているのは
+       852px ではなく 659px。文字塊の実測値を svh から引く。
+       **活字の寸法を変えたら、必ずここを測り直す。** */
+    --hero-text: 404px;
+    --hero-band: min(calc(100vw * 1.15), max(180px, calc(100svh - var(--hero-text))), 520px);
   }
+  .hero__media {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: var(--hero-band); margin: 0;
+  }
+  .hero__media picture { display: block; width: 100%; height: 100%; }
   .hero__media img {
     width: 100%; height: 100%; object-fit: cover; display: block;
-    object-position: 50% 40%;
+    object-position: 58% 30%;
   }
-  .hero {
-    padding-top: 0 !important;
-    background:
-      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.16), transparent 65%),
-      linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
-    color: var(--ink); text-align: center;
-    padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(40px, 6vw, 72px);
+  /* 階調は帯の中だけ。**下端で地色に到達させる**のが肝心で、
+     途中で止めると帯の切れ目が一本の線になって見える。 */
+  .hero__media::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg,
+      rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 34%, rgba(31,27,23,.26) 48%,
+      rgba(31,27,23,.70) 60%, rgba(31,27,23,.93) 72%, rgba(31,27,23,1) 84%);
   }
-  .hero .eyebrow { justify-content: center; color: var(--gold); }
-  .hero .eyebrow::before, .hero .eyebrow::after { content: ''; width: 22px; height: 1px; background: var(--gold); }
-  .hero .eyebrow { gap: 10px; }
-  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.4; color: var(--navy-deep); max-width: 780px; margin: 0 auto 22px; }
-  .hero .lede { max-width: 560px; margin: 0 auto 34px; font-size: 1.0625rem; color: var(--ink-soft); }
-  .hero-note { font-size: 15px; color: var(--ink-soft); margin-top: 16px; }
-  .hero-phone-wrap { display: flex; justify-content: center; margin-top: 40px; }
+  /* 文字の頭は帯の下端から 88px 上。帯が短い端末で上げすぎると顔にかかる。 */
+  .hero__in { position: relative; padding-block: max(112px, calc(var(--hero-band) - 88px)) clamp(40px, 6vw, 64px); }
+  /* 前書きは小さい文字なので 4.5:1 が要る。濃い銅（--gold）だと写真の上で
+     3:1 も出ない。同じ色相の明るいほうへ振る（追補4 §169）。 */
+  .hero .eyebrow { color: var(--gold-pale); gap: 10px; justify-content: flex-start; }
+  .hero .eyebrow::before { background: var(--gold-pale); }
+  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
+  /* 見出しの中の強調。濃い銅（--gold）は写真の上で 1.4:1 しか出ず、
+     大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
+  .hero h1 em { color: var(--gold-pale); }
+  .hero .lede { max-width: 30em; margin: 0 0 34px; font-size: 1.0625rem; color: rgba(251,249,246,0.92); }
+  .hero-note { font-size: 15px; color: rgba(251,249,246,0.74); margin-top: 16px; }
+  /* 暗い地に濃いボタンでは見えない。ヘッダーと同じく反転させる。 */
+  .hero .btn-gold { background: var(--cream); color: var(--deep); }
+  .hero .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
+
+  @media (min-width: 900px) {
+    /* 卓上：横幅があるので帯をやめて全面に敷く。
+       文字は左に置き、横の階調で左だけ暗くして右は完全に透明にする。 */
+    .hero__media { inset: 0; height: auto; }
+    .hero__media img { object-position: 50% 46%; }
+    .hero__media::after {
+      background:
+        linear-gradient(90deg,
+          rgba(22,17,12,.94) 0%, rgba(22,17,12,.92) 30%, rgba(22,17,12,.74) 46%,
+          rgba(22,17,12,.34) 60%, rgba(22,17,12,0) 74%),
+        linear-gradient(180deg, rgba(22,17,12,.20) 0%, rgba(22,17,12,0) 26%);
+    }
+    .hero__in {
+      padding-block: clamp(96px, 10vw, 140px); min-height: 78vh;
+      display: flex; align-items: center;
+    }
+    /* flex の子は margin:auto で中央に寄る。文字は左に置きたいので
+       幅を張らせる。ここを忘れると文字が階調の薄い側にはみ出す。 */
+    .hero__in > .container { width: 100%; }
+    /* 文字は階調が濃い範囲に収める。はみ出すと読めなくなる。 */
+    .hero h1 { max-width: 13em; }
+    .hero .lede { max-width: 27em; }
+  }
+
+  /* 端末の作例はヒーローから出して、明るい面に置く。
+     写真の上に重ねると、写真も端末も両方読めなくなる。 */
+  .phone-sec {
+    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
+    padding: clamp(48px, 7vw, 84px) 0;
+  }
+  .hero-phone-wrap { display: flex; justify-content: center; margin: 0; }
 
   /* ---------------- Phone mockup ---------------- */
   .phone {
@@ -456,14 +515,19 @@
         fetchpriority="high" decoding="async">
     </picture>
   </div>
-  <div class="container reveal rd1">
-    <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-    <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を減らす。</h1>
-    <p class="lede">英語を読む練習ではなく、実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、旅行前に何度でも練習できます。</p>
-    <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
-    <div class="hero-note">登録不要 ・ 30秒で終わります</div>
+  <div class="hero__in">
+    <div class="container reveal rd1">
+      <span class="eyebrow eyebrow-product">飲食店の英会話</span>
+      <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を減らす。</h1>
+      <p class="lede">英語を読む練習ではなく、<br>実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、<br>旅行前に何度でも練習できます。</p>
+      <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
+      <div class="hero-note">登録不要 ・ 30秒で終わります</div>
+    </div>
   </div>
+</section>
 
+<!-- 端末の作例 -->
+<section class="phone-sec">
   <div class="hero-phone-wrap reveal rd3">
     <div class="phone">
       <div class="phone-screen">
