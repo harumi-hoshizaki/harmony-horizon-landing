@@ -129,7 +129,21 @@
   .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 600; line-height: 1.4; }
 
   /* ---------------- Hero ---------------- */
+  /* 写真の帯。トップページと同じ組み方（追補4 §154-B）。
+     高さは幅から決めて上限を置く。ヘッダーが固定で
+     「¥1,980で始める」が常に見えているので、ヒーロー内のボタンは
+     折り返しの下でよい。 */
+  .hero__media {
+    height: min(calc(100vw * 0.62), 260px);
+    margin-bottom: clamp(24px, 4vw, 40px);
+    overflow: hidden;
+  }
+  .hero__media img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    object-position: 50% 40%;
+  }
   .hero {
+    padding-top: 0 !important;
     background:
       radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.16), transparent 65%),
       linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
@@ -435,6 +449,13 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero__media">
+    <picture>
+      <source srcset="/assets/site/scene-order.webp" type="image/webp">
+      <img src="/assets/site/scene-order.jpg" alt="" width="1200" height="896"
+        fetchpriority="high" decoding="async">
+    </picture>
+  </div>
   <div class="container reveal rd1">
     <span class="eyebrow eyebrow-product">飲食店の英会話</span>
     <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を減らす。</h1>

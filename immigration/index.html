@@ -121,7 +121,21 @@
   .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 600; line-height: 1.4; }
 
   /* ---------------- Hero ---------------- */
+  /* 写真の帯。トップページと同じ組み方（追補4 §154-B）。
+     高さは幅から決めるが上限を置き、見出しと導入文が最初の画面に
+     残るようにする。ヘッダーが固定で「¥1,980で始める」が常に
+     見えているので、ヒーロー内のボタンは折り返しの下でよい。 */
+  .hero__media {
+    height: min(calc(100vw * 0.62), 260px);
+    margin-bottom: clamp(24px, 4vw, 40px);
+    overflow: hidden;
+  }
+  .hero__media img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    object-position: 50% 44%;
+  }
   .hero {
+    padding-top: 0 !important;
     background:
       radial-gradient(ellipse 800px 360px at 50% 0%, rgba(192,143,62,0.16), transparent 65%),
       linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
@@ -340,6 +354,13 @@
 
 <!-- HERO -->
 <section class="hero">
+  <div class="hero__media">
+    <picture>
+      <source srcset="/assets/site/scene-airport.webp" type="image/webp">
+      <img src="/assets/site/scene-airport.jpg" alt="" width="1200" height="896"
+        fetchpriority="high" decoding="async">
+    </picture>
+  </div>
   <div class="container reveal rd1">
     <span class="eyebrow eyebrow-product">Immigration ｜入国審査</span>
     <h1>何回でも、<em>聞き直せる</em>。</h1>
