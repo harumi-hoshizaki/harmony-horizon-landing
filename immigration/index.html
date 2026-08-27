@@ -333,7 +333,13 @@
   .faq-item .a { padding: 0 22px 20px; font-size: 17px; color: var(--ink-soft); line-height: 1.85; }
 
   /* ---------------- CTA band ---------------- */
-  .cta-band { text-align: center; }
+  /* 2026-08-27: 読む文章の中央揃えをやめる。
+     日本語の本文を中央に置くと、左右どちらの端もそろわず、のこぎり状に
+     なる。折り返しは端末の幅で変わるので、「ん。」「れない。」のような
+     1〜3文字の行が必ず出る。www のトップページは全部左揃えで、
+     だから上品に見えている（追補4 §170-B）。
+     中央に置いてよいのは、**折り返さない短いもの**だけ。 */
+  .cta-band { text-align: left; }
   .cta-band .lede { max-width: 480px; margin-left: auto; margin-right: auto; }
   /* 2026-08-08: 「暗すぎる」の指摘を受けhero含め全体を明るくしたが、
      引き締めの一箇所として最後のCTAだけ濃色に戻す(Harumi了承)。 */
@@ -392,6 +398,14 @@
     .faq-item summary { font-size: 17px; }
     .faq-item .a { font-size: 17px; }
     .foot-copy { font-size: 13.5px; }
+  }
+
+  /* 320px の端末では、見出しをもう一段下げる。
+     28px のままだと1行に 9.7 文字しか入らず、どこで切っても
+     1〜2文字の行が出る（実測 tools/mobile-audit.js の孤立行検査）。 */
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.375rem; }
   }
 </style>
 </head>
@@ -483,12 +497,12 @@
 <section style="background:var(--cream-soft);">
   <div class="container" style="max-width:740px;">
     <span class="eyebrow">Problem</span>
-    <h2>入国審査、緊張しませんか?</h2>
+    <h2>入国審査、<br>緊張しませんか?</h2>
     <p class="lede">英語の勉強はしてきた。でも、</p>
     <div class="card-list">
-      <div class="item"><span class="dot"></span><p>審査官の質問が早口で、何を聞かれているか分からない</p></div>
-      <div class="item"><span class="dot"></span><p>単語は知っているのに、いざとなると声が出ない</p></div>
-      <div class="item"><span class="dot"></span><p>練習する機会がないまま、本番を迎えてしまう</p></div>
+      <div class="item"><span class="dot"></span><p>審査官の質問が早口で、<br>何を聞かれているか分からない</p></div>
+      <div class="item"><span class="dot"></span><p>単語は知っているのに、<br>いざとなると声が出ない</p></div>
+      <div class="item"><span class="dot"></span><p>練習する機会がないまま、<br>本番を迎えてしまう</p></div>
     </div>
     <p class="lede">そんな不安を抱えたまま、旅立ちたくないですよね。<br><br>入国審査で聞かれる質問は、実はある程度決まっています。<br><strong style="color:var(--ink);">「聞き取る力」と「答える練習」</strong>があれば、落ち着いて対応できます。</p>
   </div>
@@ -499,7 +513,7 @@
   <div class="container">
     <span class="eyebrow">How It Works</span>
     <h2>聞く。話す。<br>本番同様に、確かめる。</h2>
-    <p class="lede">1つの質問パターンを、4つのステップで練習します。<br>北米英語の音のつながりや発音のクセを、耳と声で身につけます。</p>
+    <p class="lede">1つの質問パターンを、<br>4つのステップで練習します。<br>北米英語の音のつながりや発音のクセを、<br>耳と声で身につけます。</p>
     <div class="method-steps">
       <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、審査官の質問を聞く。声・速度も選べます。</span></div>
       <div class="row"><span class="n">02</span><span class="t">SPEAK ・ 声に出す</span><span class="d">聞き取った質問に、自分の声で英語で答えてみる。</span></div>
@@ -534,7 +548,7 @@
         <div class="trio-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
-        <h3>本番同様のシミュレーション</h3>
+        <h3>本番同様の<br>シミュレーション</h3>
         <p>審査官の質問を聞き取り、声に出して回答。すべての質問を通過すればゴールという、模擬体験形式です。</p>
       </div>
     </div>
@@ -545,22 +559,22 @@
 <section style="background:var(--cream-soft);">
   <div class="container">
     <span class="eyebrow">Who Is This For</span>
-    <h2>こんな方におすすめです。</h2>
+    <h2>こんな方に<br>おすすめです。</h2>
     <div class="who-list">
-      <div class="who-item"><span class="mark">01</span><p>海外旅行を控えていて、入国審査が不安な方</p></div>
+      <div class="who-item"><span class="mark">01</span><p>海外旅行を控えていて、<br>入国審査が不安な方</p></div>
       <div class="who-item"><span class="mark">02</span><p>英語での会話にまだ自信がない方</p></div>
-      <div class="who-item"><span class="mark">03</span><p>何度も聞き返さず、落ち着いて対応したい方</p></div>
-      <div class="who-item"><span class="mark">04</span><p>スキマ時間で効率よく準備したい方</p></div>
+      <div class="who-item"><span class="mark">03</span><p>何度も聞き返さず、<br>落ち着いて対応したい方</p></div>
+      <div class="who-item"><span class="mark">04</span><p>スキマ時間で、<br>効率よく準備したい方</p></div>
     </div>
   </div>
 </section>
 
 <!-- PRICE -->
 <section id="price">
-  <div class="container" style="text-align:center;">
-    <span class="eyebrow" style="justify-content:center;">Price</span>
-    <h2>今日から、備えを始める。</h2>
-    <p class="lede" style="max-width:480px;margin-left:auto;margin-right:auto;">海外旅行の前に、耳と口を慣らしておきましょう。</p>
+  <div class="container">>
+    <span class="eyebrow">Price</span>
+    <h2>今日から、<br>備えを始める。</h2>
+    <p class="lede" style="max-width:32em;">海外旅行の前に、<br>耳と口を慣らしておきましょう。</p>
 
     <div class="price-card">
       <div class="label">EAR TO VOICE</div>
@@ -607,9 +621,9 @@
 <!-- FINAL CTA -->
 <section class="cta-band on-dark">
   <div class="container">
-    <span class="eyebrow" style="justify-content:center;">Before You Fly</span>
+    <span class="eyebrow">Before You Fly</span>
     <h2>海外旅行を、<br>安心して迎えるために。</h2>
-    <p class="lede">入国審査での「聞こえない」「言えない」を、今日から少しずつ減らしていきましょう。</p>
+    <p class="lede">入国審査での「聞こえない」「言えない」を、<br>今日から少しずつ減らしていきましょう。</p>
     <a href="https://buy.stripe.com/14A00j9z02Vaafe9kCeEo0a?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold">¥1,980で体験する →</a>
   </div>
 </section>

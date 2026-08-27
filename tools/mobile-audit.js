@@ -6,9 +6,16 @@ const { chromium } = require(require('child_process').execSync('npm root -g').to
 /* 和文の寸法。欧文の §31 より小さいのは、同じ px でも和文のほうが
    大きく見えるため（追補5）。 */
 const SPEC = { h1: [30, 36], h2: [24, 28], h3: [17, 20], body: [16, 18] };
+/* 320px の端末では見出しを一段下げる。30px のままだと1行に 9 文字しか入らず、
+   どこで切っても1〜2文字の行が出る。**本文の 16px は下げない**（追補5）。 */
+const SPEC_NARROW = { h1: [26, 36], h2: [21, 28], h3: [16, 20], body: [16, 18] };
 /* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
 const SPEC_LEGAL = { h1: [24, 34], h2: [17, 22], h3: [15, 18], body: [16, 18] };
+/* 2026-08-27: 販売LP2枚がこの一覧に入っていなかった。**売っているページを
+   一度も測っていなかった。** 「すべて合格」と出ていたのに、実機では
+   中央揃えののこぎり状で読みにくい状態だった（HARU様の指摘）。 */
 const PAGES = ['/', '/programs.html', '/student-voices.html', '/contact.html',
+               '/eatout/', '/immigration/',
                '/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
 /* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
 const LEGAL = ['/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
@@ -37,7 +44,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       });
       await pg.goto(BASE + p, { waitUntil: 'networkidle' });
       await pg.waitForTimeout(300);
-      const spec = LEGAL.includes(p) ? SPEC_LEGAL : SPEC;
+      const spec = LEGAL.includes(p) ? SPEC_LEGAL : (w <= 360 ? SPEC_NARROW : SPEC);
       const r = await pg.evaluate((SPEC) => {
         const de = document.documentElement, vw = de.clientWidth;
         const px = s => { const e = document.querySelector(s); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize)) : null; };
@@ -68,7 +75,10 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           .filter(x => x.h > 0 && x.h < 44);
 
         /* texte collé au bord : on mesure le bord du *contenu*, pas de la boîte */
-        const pad = parseFloat(getComputedStyle(document.querySelector('.wrap')).paddingLeft) || 24;
+        /* 版面の枠はページによって .wrap / .container と名前が違う。
+           無いページで querySelector が null を返し、監査ごと落ちていた。 */
+        const wrapEl = document.querySelector('.wrap, .container');
+        const pad = (wrapEl && parseFloat(getComputedStyle(wrapEl).paddingLeft)) || 24;
         const edge = e => {
           const rc = e.getBoundingClientRect(), cs = getComputedStyle(e);
           return [rc.left + (parseFloat(cs.paddingLeft) || 0), rc.right - (parseFloat(cs.paddingRight) || 0), rc.width];
@@ -97,6 +107,45 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           .map(e => Math.round(parseFloat(getComputedStyle(e).fontSize)) + 'px "'
                  + (e.textContent || '').trim().slice(0, 16) + '"');
 
+        /* 孤立行（行末に1〜3文字だけ残る行）。
+           日本語の本文でこれが並ぶと「ぐちゃぐちゃ」に見える。
+           **箱ではなく行ごとの矩形**で測る。y でまとめないと、
+           1行が複数の矩形に分かれて偽の短い行を拾う。 */
+        const orphans = [];
+        for (const e of document.querySelectorAll('p, h1, h2, h3, li, figcaption, dd, .a')) {
+          if (!e.textContent.trim() || e.offsetParent === null) continue;
+          if (e.closest('.phone, .slot')) continue;       /* 端末の作例は別物 */
+          /* 中に別の塊（見出し＋本文など）を抱える要素は、行ではなく
+             子要素の境目を拾ってしまう。**行だけでできた要素**に限る。 */
+          if ([...e.children].some(c => getComputedStyle(c).display !== 'inline')) continue;
+          if (e.textContent.trim().length < 20) continue;  /* 短い札は対象外 */
+          const rg = document.createRange(); rg.selectNodeContents(e);
+          const rs = [...rg.getClientRects()].filter(r => r.width > 0.5 && r.height > 4);
+          const L = [];
+          for (const r of rs) { const l = L.find(l => Math.abs(l.y - r.top) < 3); l ? (l.w += r.width) : L.push({ y: r.top, w: r.width }); }
+          /* 5行以上の長い段落で末尾が短いのは、書籍でも普通に起きる。
+             問題になるのは**短い塊**（見出し・1〜2文のリード）で起きる時。 */
+          if (L.length < 2 || L.length > 4) continue;
+          const max = Math.max(...L.map(l => l.w));
+          const fs = parseFloat(getComputedStyle(e).fontSize);
+          for (const l of L) {
+            /* 3.2文字分より短い行を孤立行とする。書籍でも2文字の行は出るが、
+               それが**見出しや短い段落**で起きると目立つ。 */
+            if (l.w < Math.min(max * 0.30, fs * 3.2)) {
+              orphans.push(Math.round(l.w / fs * 10) / 10 + '文字 "' + e.textContent.trim().slice(0, 18) + '"');
+              break;
+            }
+          }
+        }
+
+        /* 読む文章の中央揃え。日本語を中央に置くと左右どちらの端もそろわず、
+           のこぎり状になる。中央に置いてよいのは折り返さない短いものだけ。 */
+        const centered = [...document.querySelectorAll('p, li, dd, .a')]
+          .filter(e => e.offsetParent !== null && (e.textContent || '').trim().length >= 24)
+          .filter(e => getComputedStyle(e).textAlign === 'center')
+          .slice(0, 5)
+          .map(e => '"' + (e.textContent || '').trim().slice(0, 18) + '"');
+
         /* 和文で欧文の書体が出ていないか（部分集合の抜けを検出） */
         const jpFallback = [];
         const chk = (k, v) => v == null ? null : (v >= SPEC[k][0] && v <= SPEC[k][1]);
@@ -105,7 +154,8 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           vw, overflow: de.scrollWidth - vw, over, pad, flush, type: t, jpFallback,
           typeOk: { h1: chk('h1', t.h1), h2: chk('h2', t.h2), h3: chk('h3', t.h3), body: chk('body', t.body) },
           third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin)).map(x => x.name),
-          small: small.slice(0, 5), smallN: small.length, tiny
+          small: small.slice(0, 5), smallN: small.length, tiny,
+          orphans: orphans.slice(0, 6), orphanN: orphans.length, centered
         };
       }, spec);
 
@@ -117,6 +167,8 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
         if (r.typeOk[k] === false) bad.push(`${k} ${r.type[k]}px は範囲 ${spec[k].join('–')} の外`);
       }
       if (r.tiny.length) bad.push(`読む文章が 16px 未満 ×${r.tiny.length} ${JSON.stringify(r.tiny)}`);
+      if (r.centered.length) bad.push(`読む文章が中央揃え ×${r.centered.length} ${JSON.stringify(r.centered)}`);
+      if (r.orphanN > 3) bad.push(`孤立行 ×${r.orphanN} ${JSON.stringify(r.orphans)}`);
       if (r.third.length) bad.push(`第三者への通信 ${JSON.stringify(r.third)}`);
       if (errs.length) bad.push(errs.join(' / '));
 
@@ -127,7 +179,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
     await ctx.close();
   }
   await b.close();
-  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・第三者通信ゼロ・エラーなし');
+  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・読む文章の中央揃えなし・孤立行なし・第三者通信ゼロ・エラーなし');
   if (waiting.size) {
     console.log(`\n未入手の素材 ${waiting.size} 件（不具合ではありません）:`);
     waiting.forEach(x => console.log('   ・' + x));

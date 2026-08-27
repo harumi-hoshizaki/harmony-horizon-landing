@@ -273,24 +273,30 @@
   .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: 17px; line-height: 1.6; }
   .chat-row.staff .chat-bubble { background: #FFFFFF; border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-soft); }
   .chat-row.you .chat-bubble { background: var(--navy-deep); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
-  .confession { text-align: center; margin-top: 36px; }
+  /* 2026-08-27: 読む文章の中央揃えをやめる。
+     日本語の本文を中央に置くと、左右どちらの端もそろわず、のこぎり状に
+     なる。折り返しは端末の幅で変わるので、「ん。」「れない。」のような
+     1〜3文字の行が必ず出る。www のトップページは全部左揃えで、
+     だから上品に見えている（追補4 §170-B）。
+     中央に置いてよいのは、**折り返さない短いもの**だけ。 */
+  .confession { margin-top: 36px; }
   .confession .highlight { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 2.6vw, 1.7rem); color: var(--navy-deep); margin-top: 20px; line-height: 1.6; }
 
   /* ---------------- Flow diagram ---------------- */
-  .flow-steps { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 6px; margin: 40px 0 0; }
+  .flow-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; margin: 40px 0 0; }
   .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 600; font-size: 14.5px; color: var(--navy-deep); box-shadow: var(--shadow-soft); white-space: nowrap; }
   .flow-steps .arrow { color: var(--gold); font-size: 16px; font-weight: 600; }
 
   /* ---------------- Coverage chips (13場面) ---------------- */
-  .coverage-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin: 36px 0 22px; }
+  .coverage-chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 36px 0 22px; }
   .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 600; color: var(--navy-deep); box-shadow: var(--shadow-soft); }
-  .coverage-count { text-align: center; font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; color: var(--gold); }
+  .coverage-count { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; color: var(--gold); }
 
   /* ---------------- Big statement ---------------- */
-  .big-statement { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.375rem, 2.8vw, 1.9rem); color: var(--navy-deep); text-align: center; margin: 44px auto 0; line-height: 1.6; max-width: 620px; }
+  .big-statement { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.375rem, 2.8vw, 1.9rem); color: var(--navy-deep); margin: 44px 0 0; line-height: 1.6; max-width: 20em; }
 
   /* ---------------- Trial widget ---------------- */
-  .trial-card { max-width: 480px; margin: 36px auto 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); text-align: center; }
+  .trial-card { max-width: 480px; margin: 36px 0 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); }
   .trial-tag { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 16px; }
   .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; margin-bottom: 18px; }
   .trial-speaker:hover { transform: scale(1.06); }
@@ -392,8 +398,7 @@
   .faq-item .a { padding: 0 22px 20px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; }
 
   /* ---------------- CTA band ---------------- */
-  .cta-band { text-align: center; }
-  .cta-band .lede { max-width: 480px; margin-left: auto; margin-right: auto; }
+  .cta-band .lede { max-width: 32em; }
   /* 2026-08-08: 「暗すぎる」の指摘を受けhero含め全体を明るくしたが、
      引き締めの一箇所として最後のCTAだけ濃色に戻す(Harumi了承)。 */
   .cta-band.on-dark {
@@ -445,9 +450,9 @@
      .nw で包んだ塊の中では折り返さないので、間に入れた <br> の位置でだけ折れる。 */
   /* 一拍おく。空行（<br><br>）では間隔を作らない。行の高さに引きずられて
      端末ごとに変わるうえ、読み上げにも空の行が出る。余白で作る。 */
-  .big-statement .turn { display: block; margin-bottom: 14px; }
-  .nowrap-quote { display: block; margin-top: 14px; color: var(--gold); }
-  .nowrap-quote .nw { display: inline-block; }
+  /* 一つの段落に大きさ違いを3つ入れると、読む前に「がちゃがちゃ」に見える。
+     大きさは1つに揃え、色だけで結びを立てる（2026-08-27）。 */
+  .big-statement .q { display: block; margin-top: 14px; color: var(--gold); font-style: normal; }
 
   /* ---------------- Mobile readability ---------------- */
   /* 2026-08-09: 「携帯だと文字が小さく感じる」の指摘(Harumi)。
@@ -484,6 +489,15 @@
     .trial-toggle-btn { font-size: 16px; }
     .cta-lede-pre { font-size: 16px; }
   }
+
+  /* 320px の端末では、見出しをもう一段下げる。
+     28px のままだと1行に 9.7 文字しか入らず、どこで切っても
+     1〜2文字の行が出る（実測 tools/mobile-audit.js の孤立行検査）。 */
+  @media (max-width: 380px) {
+    .hero h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.375rem; }
+    .big-statement { font-size: 1.2rem; }
+  }
 </style>
 </head>
 <body>
@@ -518,7 +532,7 @@
   <div class="hero__in">
     <div class="container reveal rd1">
       <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-      <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を減らす。</h1>
+      <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を<br class="br-mobile-only">減らす。</h1>
       <p class="lede">英語を読む練習ではなく、<br>実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、<br>旅行前に何度でも練習できます。</p>
       <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
       <div class="hero-note">登録不要 ・ 30秒で終わります</div>
@@ -573,8 +587,8 @@
 
 <!-- SOUND FAMILIAR (あるある) -->
 <section style="background:var(--cream-soft);">
-  <div class="container" style="max-width:620px;text-align:center;">
-    <span class="eyebrow" style="justify-content:center;">Sound Familiar?</span>
+  <div class="container" style="max-width:620px;">
+    <span class="eyebrow">Sound Familiar?</span>
     <h2>こんな経験、<br>ありませんか?</h2>
 
     <div class="chat-mock">
@@ -589,18 +603,18 @@
     </div>
 
     <div class="confession">
-      <p class="lede">知っている単語なのに、会話になると聞き取れない。<br>そして、<br>「Sorry?」<br>「Could you say that again?」<br>と聞き返す。</p>
-      <p class="big-statement" style="margin-top:20px;"><span class="turn">でも本当に怖いのは、</span>英語を知らないことでは<br>ありません。<span class="nowrap-quote"><span class="nw">「次に何を聞かれるか</span><span class="nw">分からないこと」。</span></span></p>
+      <p class="lede">知っている単語なのに、<br>会話になると聞き取れない。<br>そして「Sorry?」<br>「Could you say that again?」と聞き返す。</p>
+      <p class="big-statement" style="margin-top:20px;">でも本当に怖いのは、<br>英語を知らないことでは<br>ありません。<em class="q">「次に何を聞かれるか<br>分からないこと」。</em></p>
     </div>
   </div>
 </section>
 
 <!-- THE TRUTH (解決策+flow) -->
 <section>
-  <div class="container" style="max-width:740px;text-align:center;">
-    <span class="eyebrow" style="justify-content:center;">The Truth</span>
-    <h2>実は、飲食店で聞かれることは<br>「ある程度<br class="br-mobile-only">決まっています」。</h2>
-    <p class="lede">旅行中に起こる場面を、先回りして練習できます。</p>
+  <div class="container" style="max-width:740px;">
+    <span class="eyebrow">The Truth</span>
+    <h2>飲食店で聞かれることは、<br>ある程度決まっています。</h2>
+    <p class="lede">旅行中に起こる場面を、<br>先回りして練習できます。</p>
     <div class="flow-steps">
       <span class="step">入店</span><span class="arrow">→</span>
       <span class="step">注文</span><span class="arrow">→</span>
@@ -615,10 +629,10 @@
 
 <!-- FREE TRIAL -->
 <section id="try" style="background:var(--cream-soft);">
-  <div class="container" style="max-width:520px;text-align:center;">
-    <span class="eyebrow" style="justify-content:center;">Free Trial</span>
+  <div class="container" style="max-width:520px;">
+    <span class="eyebrow">Free Trial</span>
     <h2>あなたなら、<br>どう答える?</h2>
-    <p class="lede">実際にお店で聞かれるフレーズで、少しだけ体験してみましょう。</p>
+    <p class="lede">実際にお店で聞かれるフレーズで、<br>少しだけ体験してみましょう。</p>
 
     <div class="trial-card">
       <div class="trial-tag">☕ Café Challenge</div>
@@ -665,7 +679,7 @@
       <div class="trial-result" id="trialResult">
         <div class="nice" id="trialResultHeadline">Nice! 🎉</div>
         <p class="trial-heard" id="trialHeard"></p>
-        <p class="lede" style="margin-bottom:0;">実際の海外旅行では、こうしたやり取りが次々に出てきます。</p>
+        <p class="lede" style="margin-bottom:0;">実際の海外旅行では、<br>こうしたやり取りが次々に出てきます。</p>
         <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:22px;width:100%;justify-content:center;">もっと練習してみる →</a>
         <div class="trial-cta-note">¥1,980 ・ 買い切り</div>
       </div>
@@ -680,7 +694,7 @@
   <div class="container">
     <span class="eyebrow">How It Works</span>
     <h2>本番と同じ順番で<br>練習する。</h2>
-    <p class="lede">実際の会話の流れそのままに、聞く → 考える → 話す → 確認、の順で<br class="br-mobile-only">練習します。</p>
+    <p class="lede">実際の会話の流れそのままに、<br>聞く → 考える → 話す → 確認。<br>この順で練習します。</p>
     <div class="method-steps">
       <div class="row"><span class="n">01</span><span class="t">👂 聞く</span><span class="d">店員さんの英語を聞く。</span></div>
       <div class="row"><span class="n">02</span><span class="t">🧠 考える</span><span class="d">「何を聞かれた?」— 意味を確認する。</span></div>
@@ -693,8 +707,8 @@
 
 <!-- COVERAGE (13場面) -->
 <section style="background:var(--cream-soft);">
-  <div class="container" style="text-align:center;">
-    <span class="eyebrow" style="justify-content:center;">What's Inside</span>
+  <div class="container">>
+    <span class="eyebrow">What's Inside</span>
     <h2>これだけ練習して<br class="br-mobile-only">おけば<br>安心。</h2>
     <div class="coverage-chips">
       <span class="chip">☕ カフェ</span>
@@ -712,7 +726,7 @@
      発音＋マイク判定まで付けて持っていること。場面の数で言えば
      「少ない」ではなく「その場面を丸ごと」と読める。
      フレーズの数はもう出さない(増減のたびに嘘になるため)。 -->
-    <div class="coverage-count">入店から退店まで、13場面のリアルな質問・返答</div>
+    <div class="coverage-count">入店から退店まで、<br>13場面のリアルな質問・返答</div>
   </div>
 </section>
 
@@ -721,7 +735,7 @@
   <div class="container">
     <span class="eyebrow">What You Get</span>
     <h2>声も速さも、選べる。</h2>
-    <p class="lede">同じ意味でも、聞かれ方は何通りもあります。「聞き取るべきフレーズ」と「言えるべきフレーズ」に分けて、効率よく練習できます。</p>
+    <p class="lede">同じ意味でも、聞かれ方は何通りもあります。<br>「聞き取るべきフレーズ」と「言えるべきフレーズ」に分けて、効率よく練習できます。</p>
     <div class="trio">
       <div class="trio-card">
         <div class="trio-icon">
@@ -735,7 +749,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
         <h3>発音Tips・基本文法</h3>
-        <p>つながる音・リンキングのコツと基本文法をあわせて解説。意味確認クイズでその場で理解度をチェックできます。</p>
+        <p>つながる音・リンキングのコツと基本文法をあわせて解説。意味確認クイズで、その場で理解度をチェックできます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
@@ -755,21 +769,21 @@
     <h2>こんな方に<br>おすすめです。</h2>
     <div class="who-list">
       <div class="who-item"><span class="mark">✓</span><p>海外旅行で注文するとき緊張する</p></div>
-      <div class="who-item"><span class="mark">✓</span><p>店員さんの英語が早いと聞き取れない</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>店員さんの英語が早いと、<br>聞き取れない</p></div>
       <div class="who-item"><span class="mark">✓</span><p>「Sorry?」を何度も言うのが嫌</p></div>
-      <div class="who-item"><span class="mark">✓</span><p>英語を勉強しているのに、会話になると声が出ない</p></div>
-      <div class="who-item"><span class="mark">✓</span><p>旅行前に最低限の英語だけ準備したい</p></div>
-      <div class="who-item"><span class="mark">✓</span><p>カフェやレストランくらいは自信を持って利用したい</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>英語を勉強しているのに、<br>会話になると声が出ない</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>旅行前に、<br>最低限の英語だけ準備したい</p></div>
+      <div class="who-item"><span class="mark">✓</span><p>カフェやレストランくらいは、<br>自信を持って利用したい</p></div>
     </div>
   </div>
 </section>
 
 <!-- PRICE -->
 <section id="price">
-  <div class="container" style="text-align:center;">
-    <span class="eyebrow" style="justify-content:center;">Price</span>
+  <div class="container">>
+    <span class="eyebrow">Price</span>
     <h2>今日から、<br>備えを始める。</h2>
-    <p class="lede" style="max-width:480px;margin-left:auto;margin-right:auto;">海外旅行の前に、耳と口を慣らしておきましょう。</p>
+    <p class="lede" style="max-width:32em;">海外旅行の前に、<br>耳と口を慣らしておきましょう。</p>
 
     <div class="price-card">
       <div class="label">EAR TO VOICE</div>
@@ -816,9 +830,9 @@
 <!-- FINAL CTA -->
 <section class="cta-band on-dark">
   <div class="container">
-    <span class="eyebrow" style="justify-content:center;">Before You Order</span>
-    <p class="cta-lede-pre">旅行当日になってから、練習することはできません。<br>今日、1つ聞いてみる。1つ答えてみる。<br>その積み重ねが、本番の安心につながります。</p>
-    <h2>海外での外食を、<br>安心して<br class="br-mobile-only">楽しむために。</h2>
+    <span class="eyebrow">Before You Order</span>
+    <p class="cta-lede-pre">旅行当日になってから、<br>練習することはできません。<br>今日、1つ聞いてみる。1つ答えてみる。<br>その積み重ねが、本番の安心につながります。</p>
+    <h2>海外での外食を、<br>安心して楽しむために。</h2>
     <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
     <div class="cta-price-note">¥1,980 ・ 買い切り</div>
   </div>
