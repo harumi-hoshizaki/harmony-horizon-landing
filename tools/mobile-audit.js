@@ -121,8 +121,17 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           if (e.textContent.trim().length < 20) continue;  /* 短い札は対象外 */
           const rg = document.createRange(); rg.selectNodeContents(e);
           const rs = [...rg.getClientRects()].filter(r => r.width > 0.5 && r.height > 4);
+          /* 行の幅は矩形の**足し算では出ない**。<em> のような入れ子が
+             あると、親の分と子の分が二重に数えられ、箱より広い行幅に
+             なる（実測 320px の枠に 444px の行が出た）。
+             1行の幅は「左端の最小」と「右端の最大」の差で取る。 */
           const L = [];
-          for (const r of rs) { const l = L.find(l => Math.abs(l.y - r.top) < 3); l ? (l.w += r.width) : L.push({ y: r.top, w: r.width }); }
+          for (const r of rs) {
+            const l = L.find(l => Math.abs(l.y - r.top) < 3);
+            if (l) { l.a = Math.min(l.a, r.left); l.b = Math.max(l.b, r.right); }
+            else L.push({ y: r.top, a: r.left, b: r.right });
+          }
+          L.forEach(l => { l.w = l.b - l.a; });
           /* 5行以上の長い段落で末尾が短いのは、書籍でも普通に起きる。
              問題になるのは**短い塊**（見出し・1〜2文のリード）で起きる時。 */
           if (L.length < 2 || L.length > 4) continue;

@@ -196,7 +196,13 @@
      3:1 も出ない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero .eyebrow { color: var(--gold-pale); gap: 10px; justify-content: flex-start; }
   .hero .eyebrow::before { background: var(--gold-pale); }
-  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
+  /* 下限は 2rem（32px）ではなく 1.875rem（30px）。
+     「何回でも、聞き直せる。」は11文字。32px だと 393px の画面で
+     幅 348px となり、使える 353px との差が 5px しかない。
+     実機の Safari は字送りの丸めが少し違うので、そこで折り返して
+     「る。」だけの行が出ていた（HARU様の指摘 2026-08-27）。
+     30px なら 330px で、23px の余裕ができる。 */
+  .hero h1 { font-size: clamp(1.875rem, 4.5vw, 2.75rem); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
   /* 見出しの中の強調。濃い銅（--gold）は写真の上で 1.4:1 しか出ず、
      大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero h1 em { color: var(--gold-pale); }

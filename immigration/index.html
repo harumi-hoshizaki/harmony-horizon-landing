@@ -120,6 +120,10 @@
   /* さらに狭い画面では「で始める」を落とし、価格だけにする。
      ボタン全体が押せるので、動詞が無くても意味は通る。 */
   @media (max-width: 380px) { .site-header .cta-verb { display: none; } }
+  /* 320px 級。28px でも11文字は1行に入らないので、意味の切れ目で折る。
+     機械任せにすると「る。」だけの行になる。 */
+  .br-narrow { display: none; }
+  @media (max-width: 344px) { .br-narrow { display: inline; } }
 
   /* ---------------- Nav ---------------- */
   /* 2026-08-08: 明るくした本文とのコントラストを出すため、ヘッダーだけ濃色に(Harumi指示) */
@@ -191,7 +195,13 @@
      3:1 も出ない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero .eyebrow { color: var(--gold-pale); gap: 10px; justify-content: flex-start; }
   .hero .eyebrow::before { background: var(--gold-pale); }
-  .hero h1 { font-size: clamp(2rem, 4.5vw, 2.75rem); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
+  /* 下限は 2rem（32px）ではなく 1.875rem（30px）。
+     「何回でも、聞き直せる。」は11文字。32px だと 393px の画面で
+     幅 348px となり、使える 353px との差が 5px しかない。
+     実機の Safari は字送りの丸めが少し違うので、そこで折り返して
+     「る。」だけの行が出ていた（HARU様の指摘 2026-08-27）。
+     30px なら 330px で、23px の余裕ができる。 */
+  .hero h1 { font-size: clamp(1.875rem, 4.5vw, 2.75rem); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
   /* 見出しの中の強調。濃い銅（--gold）は写真の上で 1.4:1 しか出ず、
      大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero h1 em { color: var(--gold-pale); }
@@ -462,7 +472,7 @@
   <div class="hero__in">
     <div class="container reveal rd1">
       <span class="eyebrow eyebrow-product">Immigration ｜入国審査</span>
-      <h1>何回でも、<em>聞き直せる</em>。</h1>
+      <h1>何回でも、<br class="br-narrow"><em>聞き直せる</em>。</h1>
       <p class="lede">入国審査で聞かれることは、<br>だいたい決まっています。<br>耳で聞き取り、声に出して、<br>自分のペースで備えましょう。</p>
       <div class="hero-chips">
         <span>聞く</span><span>声に出す</span><span>文字を見る</span><span>質問に答える</span>
