@@ -84,6 +84,21 @@
 - 白いカードの上は紙の上より対比が下がる。`--stone-deep` は
   **白の上で 4.5:1** になる濃さにする（#6E675A）
 
+## 和文書体の抜け検査は、単体の index.html を持つページも見る（2026-08-28 必須ルール）
+
+`subset-jp-fonts.sh` と `check-jp-fonts.py` は元々 `content/pages/` と
+`content/legal/` しか見ていなかった。**販売LP（`/eatout/` `/immigration/`
+`/speakup/` — build-site.py を通さず単体の index.html を持つページ）が
+検査対象から漏れていた。** 「和文の書体に抜けなし」が出続けていたのは、
+見ていなかっただけ。新しく単体のページを足したら、両方のスクリプトの
+対象一覧に glob を足すこと（片方だけ直すと二つの結果がずれる）。
+
+あわせて、絵文字を「和文書体に無ければ抜け」と誤検出する不具合も直した。
+`ord(c) > 0x2000` という判定は絵文字（☕🎤 など）まで拾ってしまう。
+絵文字は Zen Kaku/Mincho に収録されておらず、そもそも絵文字フォントで
+描かれるので、和文書体の抜け検査の対象外にする（CJKの明示的な範囲だけを
+拾う `is_jp_char()` を両スクリプトに追加）。
+
 ## 揃え方（2026-08-27 必須ルール）
 
 - **読む文章（2行以上になりうるもの）は必ず左揃え。**
@@ -153,6 +168,7 @@ node    tools/mobile-audit.js       # 横溢れ・44px・16px・中央揃え・�
 node    tools/hero-contrast.js      # 写真の上の文字の対比（トップページ）
 node    tools/hero-contrast.js http://127.0.0.1:8802/eatout/index.html
 node    tools/hero-contrast.js http://127.0.0.1:8802/immigration/index.html
+node    tools/hero-contrast.js http://127.0.0.1:8802/speakup/index.html
 ```
 
 **目視で終わらせない。** ここに挙げた失敗は全部、

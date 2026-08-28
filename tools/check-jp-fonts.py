@@ -13,10 +13,14 @@ from fontTools.ttLib import TTFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 FONTS = ['zen-old-mincho-600-jp', 'zen-old-mincho-400-jp',
-         'zen-kaku-400-jp', 'zen-kaku-500-jp']
+         'zen-kaku-400-jp', 'zen-kaku-500-jp', 'zen-kaku-700-jp']
 _R = pathlib.Path(__file__).resolve().parent.parent
 # 法務ページも対象。絞る側と同じ集合にすること（追補5 §171）。
-PAGES = sorted((_R / 'content/pages').glob('*.html')) + sorted((_R / 'content/legal').glob('*.html'))
+# 2026-08-28: 販売LP（eatout/immigration/speakup）が漏れていた。同じ
+# 抜けを両方のスクリプトで直す（片方だけ直すとずれる。§171 と同じ罠）。
+PAGES = (sorted((_R / 'content/pages').glob('*.html')) + sorted((_R / 'content/legal').glob('*.html'))
+         + sorted((_R / 'eatout').glob('*.html')) + sorted((_R / 'immigration').glob('*.html'))
+         + sorted((_R / 'speakup').glob('*.html')))
 
 def strip_code_comments(text, suffix):
     """注釈の日本語を拾わない。
@@ -33,13 +37,34 @@ def strip_code_comments(text, suffix):
         text = re.sub(r'^\s*//.*$', '', text, flags=re.M)
     return text
 
+def is_jp_char(c):
+    """和文の書体で描く必要がある字か。
+
+    `ord(c) > 0x2000` だけで判定すると、絵文字（U+1F300 以降など）や
+    記号（✓ など）まで「和文書体に無ければ抜け」と誤判定する。
+    絵文字はどのみち絵文字フォントで描かれ、Zen Kaku/Mincho には
+    そもそも収録されていない。2026-08-28、販売LPを検査対象に加えた
+    直後にこれで誤検出した（☕🎤🎧😳 など14字）。
+    実際に和文書体が要る範囲だけを明示する。
+    """
+    o = ord(c)
+    return (
+        0x3000 <= o <= 0x303F or   # CJK の記号・句読点（。、「」など）
+        0x3040 <= o <= 0x30FF or   # ひらがな・カタカナ
+        0x31F0 <= o <= 0x31FF or   # カタカナ拡張
+        0x3400 <= o <= 0x4DBF or   # CJK拡張A
+        0x4E00 <= o <= 0x9FFF or   # CJK統合漢字
+        0xF900 <= o <= 0xFAFF or   # CJK互換漢字
+        0xFF00 <= o <= 0xFFEF      # 全角英数・半角カナ
+    )
+
 body = ''
 for f in PAGES + [ROOT / 'tools/build-site.py', ROOT / 'assets/site/site.js']:
     h = strip_code_comments(f.read_text(encoding='utf-8'), f.suffix)
     t = re.sub(r'<script.*?</script>|<style.*?</style>', '', h, flags=re.S)
     vals = ' '.join(re.findall(r'(?:aria-label|data-on|data-off|content|title|placeholder)="([^"]*)"', t))
     body += re.sub(r'<[^>]+>', ' ', t) + ' ' + vals
-need = {c for c in body if ord(c) > 0x2000}
+need = {c for c in body if is_jp_char(c)}
 
 fail = 0
 for name in FONTS:

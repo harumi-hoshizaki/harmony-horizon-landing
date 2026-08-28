@@ -15,7 +15,7 @@ const SPEC_LEGAL = { h1: [24, 34], h2: [17, 22], h3: [15, 18], body: [16, 18] };
    一度も測っていなかった。** 「すべて合格」と出ていたのに、実機では
    中央揃えののこぎり状で読みにくい状態だった（HARU様の指摘）。 */
 const PAGES = ['/', '/programs.html', '/student-voices.html', '/contact.html',
-               '/eatout/', '/immigration/',
+               '/eatout/', '/immigration/', '/speakup/',
                '/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
 /* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
 const LEGAL = ['/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
