@@ -330,6 +330,9 @@
   /* ---------------- Trial widget ---------------- */
   .trial-card { max-width: 480px; margin: 36px 0 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); }
   .trial-tag { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone-deep); font-weight: 500; margin-bottom: 16px; }
+  /* 読む文章は左揃えにしたが、丸い再生ボタンは「文章」ではなく部品。
+     カードの中で左に寄ると、置き忘れたように見える。部品だけ中央に置く。 */
+  .trial-speaker-wrap, .trial-mic-wrap { display: flex; justify-content: center; }
   .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; margin-bottom: 18px; }
   .trial-speaker:hover { transform: scale(1.06); }
   .trial-hint { font-size: 13.5px; font-weight: 500; color: var(--ink-soft); margin-bottom: 6px; }
@@ -669,13 +672,15 @@
     <div class="trial-card">
       <div class="trial-tag">☕ Café Challenge</div>
 
-      <button type="button" id="trialSpeak" class="trial-speaker" aria-label="音声を聞く">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
-          <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
-        </svg>
-      </button>
-      <div class="trial-hint">🎧 タップして音声を聞く</div>
+      <div class="trial-speaker-wrap">
+        <button type="button" id="trialSpeak" class="trial-speaker" aria-label="音声を聞く">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
+            <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+          </svg>
+        </button>
+      </div>
+      <div class="trial-hint" style="text-align:center;">🎧 タップして音声を聞く</div>
 
       <div class="trial-toggles" role="group" aria-label="声と速度の設定">
         <div class="trial-toggle">
@@ -702,9 +707,11 @@
         <p style="margin-bottom:0;">次は、あなたの番です。<br>声に出して、こう答えてみましょう。</p>
         <div class="trial-prompt-bubble">“To go, please.”</div>
         <div class="trial-prompt-jp">（持ち帰りでお願いします）</div>
-        <button type="button" id="trialMicBtn" class="trial-mic-btn">
-          🎤 マイクで答えてみる
-        </button>
+        <div class="trial-mic-wrap">
+          <button type="button" id="trialMicBtn" class="trial-mic-btn">
+            🎤 マイクで答えてみる
+          </button>
+        </div>
         <div class="trial-mic-note" id="trialMicNote"></div>
       </div>
 
@@ -739,9 +746,9 @@
 
 <!-- COVERAGE (13場面) -->
 <section style="background:var(--cream-soft);">
-  <div class="container">>
+  <div class="container">
     <span class="eyebrow">What's Inside</span>
-    <h2>これだけ練習して<br class="br-mobile-only">おけば<br>安心。</h2>
+    <h2>これだけ練習しておけば、<br>安心。</h2>
     <div class="coverage-chips">
       <span class="chip">☕ カフェ</span>
       <span class="chip">🍔 レストラン</span>
@@ -812,7 +819,7 @@
 
 <!-- PRICE -->
 <section id="price">
-  <div class="container">>
+  <div class="container">
     <span class="eyebrow">Price</span>
     <h2>今日から、<br>備えを始める。</h2>
     <p class="lede" style="max-width:32em;">海外旅行の前に、<br>耳と口を慣らしておきましょう。</p>

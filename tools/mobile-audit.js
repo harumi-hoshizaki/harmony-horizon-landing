@@ -147,6 +147,22 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           }
         }
 
+        /* 印付けの取りこぼし。`<div class="x">>` のように、置換の残りの
+           「>」が本文として画面に出ることがある。小さいので目視では
+           見落とすが、読み手には意味不明の記号が見える。
+           **それだけで1つの文字になっている text node** を拾う。 */
+        const strays = [];
+        {
+          const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+          for (let n = w.nextNode(); n; n = w.nextNode()) {
+            const t = (n.textContent || '').trim();
+            if (t === '>' || t === '<' || t === '&gt;' || t === '&lt;') {
+              const p = n.parentElement;
+              if (p && p.offsetParent !== null) strays.push((p.className || p.tagName).toString().slice(0, 24));
+            }
+          }
+        }
+
         /* 読む文章の中央揃え。日本語を中央に置くと左右どちらの端もそろわず、
            のこぎり状になる。中央に置いてよいのは折り返さない短いものだけ。 */
         const centered = [...document.querySelectorAll('p, li, dd, .a')]
@@ -205,7 +221,8 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin)).map(x => x.name),
           small: small.slice(0, 5), smallN: small.length, tiny,
           orphans: orphans.slice(0, 6), orphanN: orphans.length, centered,
-          fake: fake.slice(0, 5), fakeN: fake.length
+          fake: fake.slice(0, 5), fakeN: fake.length,
+          strays: strays.slice(0, 5), strayN: strays.length
         };
       }, spec);
 
@@ -219,6 +236,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       if (r.tiny.length) bad.push(`読む文章が 16px 未満 ×${r.tiny.length} ${JSON.stringify(r.tiny)}`);
       if (r.centered.length) bad.push(`読む文章が中央揃え ×${r.centered.length} ${JSON.stringify(r.centered)}`);
       if (r.fakeN) bad.push(`合成太字（自前ホストに無い太さ）×${r.fakeN} ${JSON.stringify(r.fake)}`);
+      if (r.strayN) bad.push(`印付けの残り「>」が本文に出ている ×${r.strayN} ${JSON.stringify(r.strays)}`);
       /* 左揃えの和文で末尾が2文字になるのは、書籍でも起きる。1つ2つで
          落とすと、直すたびに別の幅で新しいものが出る「もぐら叩き」になる
          （実測：320px を直したら 393px に移った）。**数が多い時だけ**
@@ -234,7 +252,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
     await ctx.close();
   }
   await b.close();
-  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・合成太字なし・読む文章の中央揃えなし・孤立行なし・第三者通信ゼロ・エラーなし');
+  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・合成太字なし・印付けの残りなし・読む文章の中央揃えなし・孤立行なし・第三者通信ゼロ・エラーなし');
   if (waiting.size) {
     console.log(`\n未入手の素材 ${waiting.size} 件（不具合ではありません）:`);
     waiting.forEach(x => console.log('   ・' + x));
