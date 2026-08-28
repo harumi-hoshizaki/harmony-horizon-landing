@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>外国人に話しかける — Ear to Voice | Harmony Horizon</title>
-<meta name="description" content="道で困っている外国人の旅行者に、自分から声をかけられるように備える Ear to Voice。よくある場面をネイティブ音声で練習し、AIとの自由な会話シミュレーションで自信をつけます。">
+<meta name="description" content="道で困っている外国人の旅行者に、自分から声をかけられるように備える Ear to Voice。よくある場面をネイティブ音声で練習し、台本のない会話シミュレーションで自信をつけます。">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%2316233A'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%236C5A3B' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23B4883C' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23B4883C'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/assets/site/fonts.css">
 <style>
@@ -237,12 +237,20 @@
     /* 卓上：横幅があるので帯をやめて全面に敷く。
        文字は左に置き、横の階調で左だけ暗くして右は完全に透明にする。 */
     .hero__media { inset: 0; height: auto; }
+    /* 2026-08-28: この写真だけ主役の顔が左寄り(57〜80%)にあり、
+       他の2枚と同じ階調（74%でようやく透明）だと顔の後半が暗さの
+       中に入ってしまう。主役を右へ逃がし、階調も早く透明に戻す。 */
+    /* 2026-08-28: 前半（0〜32%）は文字の対比を守るため元の強さのまま。
+       ここを弱めると、彼女の顔だけでなく文字も読みにくくなった
+       （実測で h1 2〜4:1 まで落ちた）。
+       尻尾だけを引き締め、彼女の顔（実測：眉59%・目63%・鼻67%）に
+       かかる前、62%で完全な透明に落とす（HARU様の指摘）。 */
     .hero__media img { object-position: 38% 30%; }
     .hero__media::after {
       background:
         linear-gradient(90deg,
-          rgba(22,17,12,.94) 0%, rgba(22,17,12,.92) 30%, rgba(22,17,12,.74) 46%,
-          rgba(22,17,12,.34) 60%, rgba(22,17,12,0) 74%),
+          rgba(22,17,12,.94) 0%, rgba(22,17,12,.92) 32%, rgba(22,17,12,.76) 48%,
+          rgba(22,17,12,.14) 58%, rgba(22,17,12,0) 62%),
         linear-gradient(180deg, rgba(22,17,12,.20) 0%, rgba(22,17,12,0) 26%);
     }
     .hero__in {
@@ -515,7 +523,7 @@
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede">駅のホーム、コンビニの前、券売機の前。<br>困っている旅行者を見かけた時、<br>自分から声をかけられるように、<br>よくある場面を練習しておきます。</p>
       <div class="hero-chips">
-        <span>聞く</span><span>話しかける</span><span>AIと話す</span><span>直しを見る</span>
+        <span>聞く</span><span>話しかける</span><span>会話してみる</span><span>直しを見る</span>
       </div>
       <a href="https://buy.stripe.com/00w9AT26yfHW5YYcwOeEo0c?client_reference_id=speakup" target="_blank" rel="noopener" class="btn btn-gold">¥1,980で体験する →</a>
       <div class="hero-note">買い切り ・ 追加料金なし</div>
@@ -529,7 +537,7 @@
     <div class="phone">
       <div class="phone-screen">
         <div class="ph-row">
-          <span class="ph-eyebrow">AI CONVERSATION</span>
+          <span class="ph-eyebrow">CONVERSATION</span>
           <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">SCENE 1 / 20</span>
         </div>
         <div class="ph-row">
@@ -579,12 +587,12 @@
 <section>
   <div class="container">
     <span class="eyebrow">How It Works</span>
-    <h2>聞く。話す。<br>AIと、確かめる。</h2>
-    <p class="lede">よくある場面を、<br>4つのステップで練習します。<br>AIとの自由な会話で、<br>とっさの一言を鍛えます。</p>
+    <h2>聞く。話す。<br>その場で、確かめる。</h2>
+    <p class="lede">よくある場面を、<br>4つのステップで練習します。<br>台本のない会話で、<br>とっさの一言を鍛えます。</p>
     <div class="method-steps">
       <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、よくある場面の会話を聞く。声・速度も選べます。</span></div>
       <div class="row"><span class="n">02</span><span class="t">SPEAK ・ 話しかける</span><span class="d">聞き取った内容に、自分の声で実際に話しかけてみる。</span></div>
-      <div class="row"><span class="n">03</span><span class="t">SIMULATE ・ AIと話す</span><span class="d">AIが相手役になり、あなたの言葉に合わせて返事が変わる会話を練習。</span></div>
+      <div class="row"><span class="n">03</span><span class="t">SIMULATE ・ 会話してみる</span><span class="d">相手役の返事が、あなたの言葉に合わせて変わる。台本のない会話を練習(相手役はAI)。</span></div>
       <div class="row"><span class="n">04</span><span class="t">REVIEW ・ 直しを見る</span><span class="d">会話が終わったあとに「こう言うと自然です」を確認。</span></div>
     </div>
   </div>
@@ -601,8 +609,8 @@
         <div class="trio-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
         </div>
-        <h3>AIとの自由な会話</h3>
-        <p>決まった正解ではなく、あなたの言葉に合わせてAIの返事が変わります。20回分のシミュレーションつき。</p>
+        <h3>その場で変わる会話</h3>
+        <p>決まった正解を読み上げるのではなく、あなたの言葉に合わせて相手の返事が変わります(相手役はAI)。20回分のシミュレーションつき。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
@@ -651,7 +659,7 @@
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>よくある場面のネイティブ音声(駅・コンビニ・券売機 ほか)</div>
-        <div><span class="ck">✓</span>AIとの自由な会話シミュレーション(20回分)</div>
+        <div><span class="ck">✓</span>その場で返事が変わる会話シミュレーション(20回分)</div>
         <div><span class="ck">✓</span>会話ごとの「自然な言い方」の直し</div>
         <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
         <div><span class="ck">✓</span>発音Tips(つながる音・リンキングのコツ)</div>
