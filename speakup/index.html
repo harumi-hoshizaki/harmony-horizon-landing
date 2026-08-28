@@ -107,6 +107,21 @@
   @media (hover: hover) {
     .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
   }
+  /* まだ製作中の商品。1,980円で売っているように見せない。
+     リンクではなく span にして、押せる見た目自体を消す
+     （押せそうで押せないボタンより、最初から押せないほうが誠実）。 */
+  .btn-soon {
+    display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 14px;
+    font-size: 16px; letter-spacing: 0.02em; font-weight: 500;
+    background: var(--paper-warm); color: var(--stone-deep);
+    border: 1.5px dashed var(--line); box-shadow: none; cursor: default;
+  }
+  .hero .btn-soon, .on-dark .btn-soon {
+    background: rgba(251,249,246,0.10); color: rgba(251,249,246,0.85);
+    border-color: rgba(251,249,246,0.35);
+  }
+  .btn-soon.btn-small { padding: 12px 22px; font-size: 16px; border-radius: 12px; }
+  @media (max-width: 460px) { .btn-soon.btn-small { padding: 12px 15px; } }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
@@ -504,7 +519,7 @@
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/00w9AT26yfHW5YYcwOeEo0c?client_reference_id=speakup" target="_blank" rel="noopener" class="btn btn-gold btn-small"><span>¥1,980<span class="cta-verb">で始める</span></span></a>
+    <span class="btn btn-soon btn-small">準備中</span>
   </div>
 </header>
 
@@ -525,8 +540,8 @@
       <div class="hero-chips">
         <span>聞く</span><span>話しかける</span><span>会話してみる</span><span>直しを見る</span>
       </div>
-      <a href="https://buy.stripe.com/00w9AT26yfHW5YYcwOeEo0c?client_reference_id=speakup" target="_blank" rel="noopener" class="btn btn-gold">¥1,980で体験する →</a>
-      <div class="hero-note">買い切り ・ 追加料金なし</div>
+      <span class="btn btn-soon">ただいま準備中です</span>
+      <div class="hero-note">公開まで、今しばらくお待ちください</div>
     </div>
   </div>
 </section>
@@ -655,7 +670,7 @@
       <div class="label">EAR TO VOICE</div>
       <div class="product">外国人に話しかける</div>
       <div class="amount">¥1,980</div>
-      <div class="note">買い切り ・ 追加料金なし</div>
+      <div class="note">準備中 ・ ¥1,980は予定価格です</div>
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>よくある場面のネイティブ音声(駅・コンビニ・券売機 ほか)</div>
@@ -666,7 +681,7 @@
         <div><span class="ck">✓</span>基本文法の解説</div>
         <div><span class="ck">✓</span>意味確認クイズ</div>
       </div>
-      <a href="https://buy.stripe.com/00w9AT26yfHW5YYcwOeEo0c?client_reference_id=speakup" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
+      <span class="btn btn-soon" style="width:100%;justify-content:center;">準備中</span>
     </div>
   </div>
 </section>
@@ -698,8 +713,8 @@
   <div class="container">
     <span class="eyebrow">One Step Forward</span>
     <h2>困っている誰かに、<br>自分から動けるように。</h2>
-    <p class="lede">「話しかけられなかった」を、<br>今日から少しずつ減らしていきましょう。</p>
-    <a href="https://buy.stripe.com/00w9AT26yfHW5YYcwOeEo0c?client_reference_id=speakup" target="_blank" rel="noopener" class="btn btn-gold">¥1,980で体験する →</a>
+    <p class="lede">ただいま準備を進めています。<br>公開まで、今しばらくお待ちください。</p>
+    <span class="btn btn-soon">準備中</span>
   </div>
 </section>
 
