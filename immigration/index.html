@@ -102,12 +102,10 @@
      暗い面では反転させる（追補4 §169）。 */
   .btn-gold { background: var(--deep); color: var(--paper); box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45); }
   .on-dark .btn-gold,
-  .site-header .btn-gold { background: var(--paper); color: var(--deep); box-shadow: 0 14px 34px -14px rgba(0,0,0,0.5); }
   .btn-gold:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(31,27,23,0.5); }
   /* 指で触るとホバーが貼り付く（iOS）。ホバーできる装置だけに当てる。 */
   @media (hover: hover) {
-    .on-dark .btn-gold:hover,
-    .site-header .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
+    .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
   }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
@@ -131,11 +129,18 @@
   @media (max-width: 344px) { .br-narrow { display: inline; } }
 
   /* ---------------- Nav ---------------- */
-  /* 2026-08-08: 明るくした本文とのコントラストを出すため、ヘッダーだけ濃色に(Harumi指示) */
+  /* 2026-08-27: 濃色のヘッダーをやめる。
+     ページ全体では暗いのは15%だが、**最初の一画面 938px は全部暗く**、
+     そのうえ黒いヘッダーが最後までついてくる。実機では
+     「真っ黒のウェブサイト」に見えていた（HARU様の指摘）。
+     www のトップページと同じ、紙色の薄い帯にする。
+     半透明＋ぼかしで、下の写真や地色がうっすら透ける。 */
   .site-header {
     position: sticky; top: 0; z-index: 40;
-    background: var(--navy-deep);
-    border-bottom: 1px solid var(--line-light);
+    background: rgba(251, 249, 246, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
   }
   /* 2026-08-27: ロゴとボタンが触れていた（実測 320/360px で間隔 0、
      393px でも 10px）。space-between だけでは、中身が入りきらない時に
@@ -147,10 +152,10 @@
   .brand { display: flex; align-items: center; gap: 12px;  min-height: 44px; }
   .brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
   /* 3つのLPで同じロックアップ: EAR TO VOICE / 耳から、声へ */
-  .brand-word { font-family: var(--brand); font-weight: 500; font-size: 17px; letter-spacing: 0.06em; color: var(--cream); line-height: 1.15; }
+  .brand-word { font-family: var(--brand); font-weight: 500; font-size: 17px; letter-spacing: 0.06em; color: var(--ink); line-height: 1.15; }
   /* 「耳から、声へ」は日本語。英字の全大文字用の字間をかけると崩れるし、
      10px では老眼鏡でも読めない。 */
-  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 500; line-height: 1.4; }
+  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold); font-weight: 500; line-height: 1.4; }
 
   /* ---------------- Hero ----------------
      www のトップページと同じ組み方に揃える（追補4 §154-B）。
