@@ -146,6 +146,13 @@
      全幅で強制的に2行へ割る。 */
   .br-narrow { display: none; }
   @media (max-width: 429px) { .br-narrow { display: inline; } }
+  /* 2026-08-28: 卓上でも2行に割る。この写真は横幅いっぱいに
+     写っていて object-position で寄せられる幅が乏しく（cover が
+     高さ基準で決まるため、横のクロップ余地が172pxほどしか無い）、
+     一行のまま（幅566px＝画面の54%）だと見出しの右端が彼女の
+     額にかぶり、実測で対比が 3.8:1 まで落ちた。2行に割って
+     右端を早く終わらせ、顔の上に文字が乗らないようにする。 */
+  @media (min-width: 900px) { .hero h1 .br-narrow { display: inline; } }
 
   /* ---------------- Nav ---------------- */
   /* 2026-08-27: 濃色のヘッダーをやめる。
@@ -205,11 +212,10 @@
   .hero__media picture { display: block; width: 100%; height: 100%; }
   .hero__media img {
     width: 100%; height: 100%; object-fit: cover; display: block;
-    /* Card-Speakup の素材は男性が左・女性が右に写っている。文字を
-       乗せる左側が男性（脇役）、明るい右側に女性（この商品の主役、
-       実際に声をかける人）が残るよう、書き出しの時点で左右反転済み
-       （counter-flip と同じやり方。追補4 §154）。 */
-    object-position: 62% 22%;
+    /* 2026-08-28: 写真を新しいもの（hero-speakup.png）に差し替え。
+       この素材はもとから男性が左・女性が右に写っている構図なので、
+       前の素材のような左右反転は不要（HARU様が2枚を見比べて選定）。 */
+    object-position: 50% 22%;
   }
   /* 階調は帯の中だけ。**下端で地色に到達させる**のが肝心で、
      途中で止めると帯の切れ目が一本の線になって見える。 */
@@ -252,15 +258,12 @@
     /* 卓上：横幅があるので帯をやめて全面に敷く。
        文字は左に置き、横の階調で左だけ暗くして右は完全に透明にする。 */
     .hero__media { inset: 0; height: auto; }
-    /* 2026-08-28: この写真だけ主役の顔が左寄り(57〜80%)にあり、
-       他の2枚と同じ階調（74%でようやく透明）だと顔の後半が暗さの
-       中に入ってしまう。主役を右へ逃がし、階調も早く透明に戻す。 */
-    /* 2026-08-28: 前半（0〜32%）は文字の対比を守るため元の強さのまま。
-       ここを弱めると、彼女の顔だけでなく文字も読みにくくなった
-       （実測で h1 2〜4:1 まで落ちた）。
-       尻尾だけを引き締め、彼女の顔（実測：眉59%・目63%・鼻67%）に
-       かかる前、62%で完全な透明に落とす（HARU様の指摘）。 */
-    .hero__media img { object-position: 38% 30%; }
+    /* 2026-08-28: 写真を新しいもの（hero-speakup.png）に差し替え。
+       もとの構図で男性が左・女性が右に写っており、暗くする左側に
+       自然に男性（脇役）が入る。前の素材のときのような、階調の尻尾を
+       引き締める調整（彼女の顔にかかる前に透明に戻す）は、この写真では
+       彼女の顔が十分右寄りにあるため恐らく不要。実測してから詰める。 */
+    .hero__media img { object-position: 50% 30%; }
     .hero__media::after {
       background:
         linear-gradient(90deg,
@@ -527,8 +530,8 @@
 <section class="hero">
   <div class="hero__media">
     <picture>
-      <source srcset="/assets/site/scene-visitor.webp" type="image/webp">
-      <img src="/assets/site/scene-visitor.jpg" alt="" width="2048" height="1529"
+      <source srcset="/assets/site/scene-directions.webp" type="image/webp">
+      <img src="/assets/site/scene-directions.jpg" alt="" width="2048" height="1143"
         fetchpriority="high" decoding="async">
     </picture>
   </div>
