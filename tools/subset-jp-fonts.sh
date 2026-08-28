@@ -66,10 +66,16 @@ sub "$TMP/m400.ttf" zen-old-mincho-400-jp.woff2
 sub "$TMP/m600.ttf" zen-old-mincho-600-jp.woff2
 
 echo "→ Zen Kaku Gothic New"
-mapfile -t K < <(fetch "Zen+Kaku+Gothic+New:wght@400;500")
+# Zen Kaku Gothic New に 600 は無い（300/400/500/700/900）。
+# 600 を指定すると合成太字（偽ボールド）で描かれ、和文は輪郭が
+# つぶれて安っぽく見える。実測で 61 か所が合成太字になっていた。
+# 見出し用に本物の 700 を持たせる。
+mapfile -t K < <(fetch "Zen+Kaku+Gothic+New:wght@400;500;700")
 curl -sS --max-time 90 -o "$TMP/k400.ttf" "${K[0]}"
 curl -sS --max-time 90 -o "$TMP/k500.ttf" "${K[1]}"
+curl -sS --max-time 90 -o "$TMP/k700.ttf" "${K[2]}"
 sub "$TMP/k400.ttf" zen-kaku-400-jp.woff2
 sub "$TMP/k500.ttf" zen-kaku-500-jp.woff2
+sub "$TMP/k700.ttf" zen-kaku-700-jp.woff2
 
 echo "完了。合計 $(du -sh "$OUT" | cut -f1)"

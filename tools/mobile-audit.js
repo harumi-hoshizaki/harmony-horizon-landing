@@ -155,6 +155,46 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           .slice(0, 5)
           .map(e => '"' + (e.textContent || '').trim().slice(0, 18) + '"');
 
+        /* 合成太字（偽ボールド）の検出。
+           Zen Kaku Gothic New に 600 は無い（300/400/500/700/900）。
+           600 を指定すると、ブラウザが 500 の輪郭を太らせて描く。
+           和文は画数が多いので、これをやると線がつぶれて安っぽく見える。
+           2026-08-27 の実測では、販売LPの和文 102 か所のうち 61 か所が
+           合成太字だった。HARU様の「素人っぽい」の一番の正体。 */
+        const fake = [];
+        {
+          /* 可変書体は 1 つの @font-face が「100 900」のような幅を持つ。
+             集合で持つと範囲が判定できないので、区間の配列で持つ。 */
+          const have = {};
+          for (const f of document.fonts) {
+            const fam = f.family.replace(/^["']|["']$/g, '');
+            const [lo, hi] = String(f.weight).trim().split(/\s+/).map(Number);
+            (have[fam] = have[fam] || []).push([lo, hi === undefined ? lo : hi]);
+          }
+          const covers = (fam, w) => have[fam].some(([lo, hi]) => w >= lo && w <= hi);
+          for (const e of document.querySelectorAll('body *')) {
+            if (e.offsetParent === null) continue;
+            const own = [...e.childNodes].filter(n => n.nodeType === 3).map(n => n.textContent).join('');
+            if (!own.trim()) continue;
+            const cs = getComputedStyle(e);
+            const stack = cs.fontFamily.split(',')
+              .map(x => x.trim().replace(/^["']|["']$/g, ''));
+            const w = parseInt(cs.fontWeight, 10);
+            const JP = /Zen|Hiragino|Noto Sans JP|Yu |游/;
+            /* 和文と欧文は別の書体で描かれる。文字の種類ごとに、
+               **実際にその字を描く書体**まで指定の並びを進んで見る。
+               先頭（欧文）だけ見ると「Inter に 700 が無い」という
+               見当違いの指摘になる。 */
+            const targets = [];
+            if (/[\u3040-\u30FF\u4E00-\u9FFF]/.test(own)) targets.push(stack.find(x => have[x] && JP.test(x)));
+            if (/[A-Za-z0-9¥$]/.test(own)) targets.push(stack.find(x => have[x] && !JP.test(x)));
+            for (const fam of targets) {
+              if (!fam || covers(fam, w)) continue;
+              fake.push(fam + ' ' + w + ' "' + own.trim().slice(0, 14) + '"');
+            }
+          }
+        }
+
         /* 和文で欧文の書体が出ていないか（部分集合の抜けを検出） */
         const jpFallback = [];
         const chk = (k, v) => v == null ? null : (v >= SPEC[k][0] && v <= SPEC[k][1]);
@@ -164,7 +204,8 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
           typeOk: { h1: chk('h1', t.h1), h2: chk('h2', t.h2), h3: chk('h3', t.h3), body: chk('body', t.body) },
           third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin)).map(x => x.name),
           small: small.slice(0, 5), smallN: small.length, tiny,
-          orphans: orphans.slice(0, 6), orphanN: orphans.length, centered
+          orphans: orphans.slice(0, 6), orphanN: orphans.length, centered,
+          fake: fake.slice(0, 5), fakeN: fake.length
         };
       }, spec);
 
@@ -177,6 +218,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       }
       if (r.tiny.length) bad.push(`読む文章が 16px 未満 ×${r.tiny.length} ${JSON.stringify(r.tiny)}`);
       if (r.centered.length) bad.push(`読む文章が中央揃え ×${r.centered.length} ${JSON.stringify(r.centered)}`);
+      if (r.fakeN) bad.push(`合成太字（自前ホストに無い太さ）×${r.fakeN} ${JSON.stringify(r.fake)}`);
       /* 左揃えの和文で末尾が2文字になるのは、書籍でも起きる。1つ2つで
          落とすと、直すたびに別の幅で新しいものが出る「もぐら叩き」になる
          （実測：320px を直したら 393px に移った）。**数が多い時だけ**
@@ -192,7 +234,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
     await ctx.close();
   }
   await b.close();
-  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・読む文章の中央揃えなし・孤立行なし・第三者通信ゼロ・エラーなし');
+  console.log(fails ? `\n${fails} 件の問題` : '\nすべて合格: 横溢れなし・端の余白あり・タップ領域44px以上・読む文章は16px以上・活字は追補5の範囲内・合成太字なし・読む文章の中央揃えなし・孤立行なし・第三者通信ゼロ・エラーなし');
   if (waiting.size) {
     console.log(`\n未入手の素材 ${waiting.size} 件（不具合ではありません）:`);
     waiting.forEach(x => console.log('   ・' + x));

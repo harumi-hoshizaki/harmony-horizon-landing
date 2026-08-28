@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>飲食店の英会話 — Ear to Voice | Harmony Horizon</title>
-<meta name="description" content="海外のカフェ・レストランで「え？今なんて言った？」を減らす Ear to Voice。よく聞かれる質問を耳で聞き取り、声に出して、旅行前に何度でも練習できます。">
+<meta name="description" content="海外のカフェ・レストランで「え？今なんて？」を減らす Ear to Voice。よく聞かれる質問を耳で聞き取り、声に出して、旅行前に何度でも練習できます。">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%232B2018'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%236B5636' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23A3782D' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23A3782D'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/assets/site/fonts.css">
 <style>
@@ -28,6 +28,11 @@
     --gold-bright:#C98A5C;
     --gold-pale:  #E9B98C;
     --ink:        #221E19;
+    /* 静かな札のための灰。これが無いと、番号・チェック・矢印まで
+       全部が銅色になる。実測で銅は 40 か所（トップページは 16 か所）。
+       差し色を本文の代わりに使うと、それだけで素人っぽく見える。 */
+    --stone-deep: #6E675A;   /* 白いカードの上でも 4.5:1（紙の上は 5.4:1）*/
+    --stone-light:#A9A296;
     --ink-soft:   #4A443B;
     --line:       rgba(34, 30, 25, 0.13);
     --line-light: rgba(251, 249, 246, 0.18);
@@ -78,13 +83,13 @@
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
     font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--gold); font-weight: 600; margin: 0 0 16px;
+    color: var(--gold); font-weight: 500; margin: 0 0 16px;
   }
   /* 商品名の行は大文字化しない(名前の綴りを保つ) */
   .eyebrow-product { text-transform: none; letter-spacing: 0.08em; font-size: 13px; }
   .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--gold); }
 
-  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; color: var(--navy-deep); margin: 0 0 0.5em; letter-spacing: -0.01em; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--ink); margin: 0 0 0.5em; letter-spacing: -0.01em; }
   h2 { font-size: clamp(1.75rem, 3.4vw, 2.5rem); line-height: 1.35; }
   .on-dark h1, .on-dark h2, .on-dark h3 { color: var(--cream); }
 
@@ -95,7 +100,7 @@
   /* ---------------- Buttons ---------------- */
   .btn {
     display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 14px;
-    font-size: 16px; letter-spacing: 0.02em; font-weight: 600; cursor: pointer; border: none;
+    font-size: 16px; letter-spacing: 0.02em; font-weight: 500; cursor: pointer; border: none;
     transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
   }
   /* サイト共通のボタン。明るい面では濃い炭に紙色の文字、
@@ -112,7 +117,7 @@
     .on-dark .btn-gold:hover,
     .site-header .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
   }
-  .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--navy-deep); }
+  .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
   .btn-small { padding: 12px 22px; font-size: 16px; border-radius: 12px; }
@@ -146,10 +151,10 @@
   .brand { display: flex; align-items: center; gap: 12px;  min-height: 44px; }
   .brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
   /* 3つのLPで同じロックアップ: EAR TO VOICE / 耳から、声へ */
-  .brand-word { font-family: var(--brand); font-weight: 600; font-size: 17px; letter-spacing: 0.06em; color: var(--cream); line-height: 1.15; }
+  .brand-word { font-family: var(--brand); font-weight: 500; font-size: 17px; letter-spacing: 0.06em; color: var(--cream); line-height: 1.15; }
   /* 「耳から、声へ」は日本語。英字の全大文字用の字間をかけると崩れるし、
      10px では老眼鏡でも読めない。 */
-  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 600; line-height: 1.4; }
+  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold-bright); font-weight: 500; line-height: 1.4; }
 
   /* ---------------- Hero ----------------
      www のトップページと同じ組み方に揃える（追補4 §154-B）。
@@ -255,9 +260,9 @@
     width: 90px; height: 22px; background: var(--navy-deep); border-radius: 0 0 16px 16px; z-index: 2;
   }
   .phone-screen { padding: 34px 18px 22px; }
-  .ph-eyebrow { font-size: 9.5px; letter-spacing: 0.14em; color: var(--gold); font-weight: 600; }
+  .ph-eyebrow { font-size: 9.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
   .ph-row { display: flex; align-items: baseline; justify-content: space-between; }
-  .ph-title { font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--navy-deep); }
+  .ph-title { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); }
   .ph-back { font-size: 10.5px; color: var(--ink-soft); }
   .ph-hr { height: 1px; background: var(--line); margin: 10px 0 18px; }
   .ph-step-bar {
@@ -268,10 +273,10 @@
     width: 22px; height: 22px; border-radius: 50%; background: rgba(250,243,230,0.14); color: var(--cream);
     display: inline-flex; align-items: center; justify-content: center; font-size: 11px; margin-right: 8px;
   }
-  .ph-step-bar .ph-step-label { font-size: 9px; letter-spacing: 0.12em; color: var(--gold-bright); font-weight: 600; }
-  .ph-step-bar .ph-step-title { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; }
+  .ph-step-bar .ph-step-label { font-size: 9px; letter-spacing: 0.12em; color: var(--gold-bright); font-weight: 500; }
+  .ph-step-bar .ph-step-title { font-family: var(--font-display); font-weight: 500; font-size: 13.5px; }
   .ph-step-bar .ph-step-count { font-size: 12px; color: var(--cream); opacity: 0.85; }
-  .ph-tap { text-align: center; font-size: 11px; font-weight: 600; color: var(--gold); margin-bottom: 14px; }
+  .ph-tap { text-align: center; font-size: 11px; font-weight: 500; color: var(--gold); margin-bottom: 14px; }
   .ph-speaker-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
   .ph-speaker {
     width: 74px; height: 74px; border-radius: 50%; background: var(--navy-deep);
@@ -279,9 +284,9 @@
   }
   .ph-toggles { display: flex; gap: 8px; margin-bottom: 18px; }
   .ph-toggle { flex: 1; display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
-  .ph-toggle span { flex: 1; text-align: center; padding: 8px 6px; font-size: 10px; font-weight: 600; color: var(--ink-soft); }
+  .ph-toggle span { flex: 1; text-align: center; padding: 8px 6px; font-size: 10px; font-weight: 500; color: var(--ink-soft); }
   .ph-toggle span.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
-  .ph-q { font-family: var(--font-display); font-weight: 600; font-size: 13.5px; color: var(--navy-deep); margin-bottom: 10px; }
+  .ph-q { font-family: var(--font-display); font-weight: 500; font-size: 13.5px; color: var(--ink); margin-bottom: 10px; }
   .ph-options { display: flex; flex-direction: column; gap: 8px; }
   .ph-opt {
     display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid var(--line);
@@ -296,7 +301,7 @@
   .chat-row { display: flex; flex-direction: column; gap: 6px; }
   .chat-row.you { align-items: flex-end; }
   .chat-row.staff { align-items: flex-start; }
-  .chat-label { font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
+  .chat-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
   .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: 17px; line-height: 1.6; }
   .chat-row.staff .chat-bubble { background: #FFFFFF; border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-soft); }
   .chat-row.you .chat-bubble { background: var(--navy-deep); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
@@ -307,54 +312,54 @@
      だから上品に見えている（追補4 §170-B）。
      中央に置いてよいのは、**折り返さない短いもの**だけ。 */
   .confession { margin-top: 36px; }
-  .confession .highlight { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 2.6vw, 1.7rem); color: var(--navy-deep); margin-top: 20px; line-height: 1.6; }
+  .confession .highlight { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 2.6vw, 1.7rem); color: var(--ink); margin-top: 20px; line-height: 1.6; }
 
   /* ---------------- Flow diagram ---------------- */
   .flow-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 6px; margin: 40px 0 0; }
-  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 600; font-size: 14.5px; color: var(--navy-deep); box-shadow: var(--shadow-soft); white-space: nowrap; }
-  .flow-steps .arrow { color: var(--gold); font-size: 16px; font-weight: 600; }
+  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 500; font-size: 14.5px; color: var(--ink); box-shadow: var(--shadow-soft); white-space: nowrap; }
+  .flow-steps .arrow { color: var(--stone-deep); font-size: 16px; font-weight: 500; }
 
   /* ---------------- Coverage chips (13場面) ---------------- */
   .coverage-chips { display: flex; flex-wrap: wrap; gap: 12px; margin: 36px 0 22px; }
-  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 600; color: var(--navy-deep); box-shadow: var(--shadow-soft); }
-  .coverage-count { font-family: var(--font-display); font-weight: 600; font-size: 1.0625rem; color: var(--gold); }
+  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 500; color: var(--ink); box-shadow: var(--shadow-soft); }
+  .coverage-count { font-family: var(--font-display); font-weight: 500; font-size: 1.0625rem; color: var(--stone-deep); }
 
   /* ---------------- Big statement ---------------- */
-  .big-statement { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.375rem, 2.8vw, 1.9rem); color: var(--navy-deep); margin: 44px 0 0; line-height: 1.6; max-width: 20em; }
+  .big-statement { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.375rem, 2.8vw, 1.9rem); color: var(--ink); margin: 44px 0 0; line-height: 1.6; max-width: 20em; }
 
   /* ---------------- Trial widget ---------------- */
   .trial-card { max-width: 480px; margin: 36px 0 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); }
-  .trial-tag { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 16px; }
+  .trial-tag { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone-deep); font-weight: 500; margin-bottom: 16px; }
   .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; margin-bottom: 18px; }
   .trial-speaker:hover { transform: scale(1.06); }
-  .trial-hint { font-size: 13.5px; font-weight: 600; color: var(--ink-soft); margin-bottom: 6px; }
+  .trial-hint { font-size: 13.5px; font-weight: 500; color: var(--ink-soft); margin-bottom: 6px; }
   .trial-toggles { display: flex; flex-direction: column; gap: 10px; margin: 18px 0 4px; }
   .trial-toggle { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
-  .trial-toggle-btn { flex: 1; border: none; background: transparent; padding: 13px 8px; min-height: 44px; font-family: var(--font-body); font-size: 17px; font-weight: 600; color: var(--ink-soft); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
+  .trial-toggle-btn { flex: 1; border: none; background: transparent; padding: 13px 8px; min-height: 44px; font-family: var(--font-body); font-size: 17px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
   .trial-toggle-btn.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
   .trial-q { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-q.show { display: block; }
-  .trial-q-title { font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--navy-deep); margin-bottom: 16px; }
+  .trial-q-title { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); margin-bottom: 16px; }
   .trial-options { display: flex; flex-direction: column; gap: 10px; }
   .trial-opt { display: block; width: 100%; text-align: left; background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: var(--font-body); color: var(--ink); cursor: pointer; transition: 0.2s ease; }
   .trial-opt:hover:not(:disabled) { border-color: var(--gold); }
   .trial-opt.correct { background: #EFF7EE; border-color: #6FA46A; }
   .trial-opt.wrong { background: #FBEAEA; border-color: #D98888; }
   .trial-opt:disabled { cursor: default; }
-  .trial-feedback { margin-top: 16px; font-weight: 600; color: var(--gold); font-size: 15.5px; display: none; }
+  .trial-feedback { margin-top: 16px; font-weight: 500; color: var(--gold); font-size: 15.5px; display: none; }
   .trial-feedback.show { display: block; }
   .trial-step2 { display: none; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-step2.show { display: block; }
-  .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 600; margin: 12px 0 6px; font-style: italic; }
+  .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 500; margin: 12px 0 6px; font-style: italic; }
   .trial-prompt-jp { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 20px; }
-  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy-deep); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 16px; font-weight: 600; cursor: pointer; transition: transform 0.25s ease; }
+  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy-deep); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
   .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
   .trial-mic-note { font-size: 13.5px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
   .trial-heard { font-size: 15px; color: var(--ink); background: var(--cream-soft); border-radius: 10px; padding: 10px 16px; margin: 4px 0 14px; }
   .trial-result { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-result.show { display: block; }
-  .trial-result .nice { font-family: var(--font-display); font-weight: 600; font-size: 1.75rem; color: var(--gold); margin-bottom: 10px; }
+  .trial-result .nice { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; color: var(--gold); margin-bottom: 10px; }
   .trial-cta-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
 
   /* ---------------- Problem card list (legacy, still used sparingly) ---------------- */
@@ -363,7 +368,7 @@
     display: flex; gap: 14px; align-items: flex-start; background: #FFFFFF; border-radius: 14px;
     padding: 18px 22px; box-shadow: 0 2px 12px -7px rgba(29,22,16,0.14);
   }
-  .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-top: 9px; }
+  .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-deep); margin-top: 9px; }
   .card-list p { margin: 0; font-size: 15.5px; line-height: 1.8; }
 
   /* ---------------- Method (steps) ---------------- */
@@ -375,8 +380,8 @@
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
     padding: 16px clamp(18px, 2.5vw, 24px); box-shadow: var(--shadow-soft);
   }
-  .method-steps .n { font-family: var(--font-display); font-weight: 600; font-size: 20px; color: var(--gold); }
-  .method-steps .t { font-family: var(--font-display); font-weight: 600; font-size: 16px; min-width: 150px; color: var(--navy-deep); }
+  .method-steps .n { font-family: var(--font-display); font-weight: 500; font-size: 20px; color: var(--stone-deep); }
+  .method-steps .t { font-family: var(--font-display); font-weight: 500; font-size: 16px; min-width: 150px; color: var(--ink); }
   .method-steps .d { flex: 1 1 220px; font-size: 17px; color: var(--ink-soft); }
 
   /* ---------------- Feature trio ---------------- */
@@ -395,7 +400,7 @@
   .who-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 40px; margin-top: 36px; }
   @media (max-width: 700px) { .who-list { grid-template-columns: 1fr; } }
   .who-item { display: flex; gap: 14px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 16px; }
-  .who-item .mark { font-family: var(--font-display); font-weight: 600; color: var(--gold); font-size: 1.125rem; min-width: 22px; }
+  .who-item .mark { font-family: var(--font-display); font-weight: 500; color: var(--stone-deep); font-size: 1.125rem; min-width: 22px; }
   .who-item p { margin: 0; font-size: 15px; }
 
   /* ---------------- Price ---------------- */
@@ -403,24 +408,24 @@
     max-width: 460px; margin: 40px auto 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px;
     padding: clamp(32px, 5vw, 44px); text-align: center; box-shadow: var(--shadow-card);
   }
-  .price-card .label { font-size: 14px; letter-spacing: 0.14em; color: var(--gold); font-weight: 600; margin-bottom: 6px; }
-  .price-card .product { font-family: var(--font-display); font-weight: 600; font-size: 17px; color: var(--navy-deep); margin-bottom: 18px; }
-  .price-card .amount { font-family: var(--font-display); font-weight: 600; font-size: 2.75rem; color: var(--navy-deep); line-height: 1; }
+  .price-card .label { font-size: 14px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; margin-bottom: 6px; }
+  .price-card .product { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); margin-bottom: 18px; }
+  .price-card .amount { font-family: var(--font-display); font-weight: 700; font-size: 2.75rem; color: var(--ink); line-height: 1; }
   .price-card .note { font-size: 15.5px; color: var(--ink-soft); margin: 8px 0 26px; }
   .price-card hr { border: none; height: 1px; background: var(--line); margin-bottom: 24px; }
   .price-card .includes { text-align: left; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
   .price-card .includes div { display: flex; gap: 10px; font-size: 15.5px; }
-  .price-card .includes .ck { color: var(--gold); font-weight: 600; }
+  .price-card .includes .ck { color: var(--stone-deep); font-weight: 500; }
 
   /* ---------------- FAQ ---------------- */
   .faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: 36px; }
   .faq-item { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
   .faq-item summary {
     list-style: none; cursor: pointer; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;
-    font-weight: 600; font-size: 16px; color: var(--navy-deep);
+    font-weight: 500; font-size: 16px; color: var(--ink);
   }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary .sign { color: var(--gold); font-size: 18px; font-weight: 400; transition: transform 0.25s ease; }
+  .faq-item summary .sign { color: var(--stone-deep); font-size: 18px; font-weight: 400; transition: transform 0.25s ease; }
   .faq-item[open] summary .sign { transform: rotate(45deg); }
   .faq-item .a { padding: 0 22px 20px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; }
 
@@ -443,7 +448,7 @@
   .on-dark footer { border-top-color: var(--line-light); }
   .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
   .foot-copy { font-size: 12.5px; color: var(--ink-soft); opacity: 0.85; }
-  .foot-copy a { font-weight: 600; color: var(--navy); }
+  .foot-copy a { font-weight: 500; color: var(--ink); }
   /* 販売しているページからは、特定商取引法の表記へ必ず辿れるようにする。
      法律上の要請であり、探させてはいけない（追補2 §126）。 */
   .foot-legal { display: flex; flex-wrap: wrap; justify-content: center;
@@ -451,7 +456,7 @@
   .foot-legal a { color: var(--ink-soft); text-decoration: none;
     border-bottom: 1px solid rgba(0,0,0,0.18);
     display: inline-flex; align-items: center; min-height: 44px; }
-  .foot-legal a:hover { color: var(--navy); }
+  .foot-legal a:hover { color: var(--ink); }
 
   /* ---------------- Reveal ---------------- */
   @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
@@ -506,10 +511,10 @@
     .foot-copy { font-size: 13.5px; }
     .chat-bubble { font-size: 17px; }
     .chat-row.you .chat-bubble { font-size: 22px; }
-    .confession .highlight { font-size: 1.3rem; }
+    .confession .highlight { font-size: 1.1875rem; }
     .flow-steps .step { font-size: 16px; }
     .coverage-chips .chip { font-size: 16px; }
-    .big-statement { font-size: 1.375rem; }
+    .big-statement { font-size: 1.1875rem; }
     .trial-q-title { font-size: 17px; }
     .trial-opt { font-size: 16px; }
     .trial-prompt-bubble { font-size: 18px; }
@@ -559,7 +564,7 @@
   <div class="hero__in">
     <div class="container reveal rd1">
       <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-      <h1>海外のカフェで、<br><em>「え？今なんて<br class="br-mobile-only">言った？」</em>を<br class="br-mobile-only">減らす。</h1>
+      <h1>海外のカフェで、<br><em>「え？今なんて？」</em>を<br class="br-mobile-only">減らす。</h1>
       <p class="lede">英語を読む練習ではなく、<br>実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、<br>旅行前に何度でも練習できます。</p>
       <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
       <div class="hero-note">登録不要 ・ 30秒で終わります</div>
@@ -816,7 +821,7 @@
       <div class="label">EAR TO VOICE</div>
       <div class="product">飲食店の英会話</div>
       <div class="amount">¥1,980</div>
-      <div class="note">買い切り ・ 月額なし ・ 追加料金なし</div>
+      <div class="note">買い切り ・ 追加料金なし</div>
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>カフェ・レストランの13場面(入店から退店まで)</div>
