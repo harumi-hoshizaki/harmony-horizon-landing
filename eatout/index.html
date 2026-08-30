@@ -486,6 +486,14 @@
   @media (max-width: 640px) {
     .br-mobile-only { display: inline; }
   }
+  /* 2026-08-29: 卓上幅（1440px等）で、見出しの自然な折り返しが
+     「を減ら／す。」と動詞の途中で割れていた（HARU様の指摘）。
+     卓上だけ「」のあとで改行し、「を減らす。」をひとまとまりで
+     3行目に落とす。 */
+  .br-desktop-only { display: none; }
+  @media (min-width: 900px) {
+    .br-desktop-only { display: inline; }
+  }
 
   /* 核心の一文。**1行に収めるために縮小しない。**
      以前は携帯で font-size: 4.4vw に縮めており、393px で 17.3px と、
@@ -577,7 +585,7 @@
   <div class="hero__in">
     <div class="container reveal rd1">
       <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-      <h1>海外のカフェで、<br><em>「え？今なんて？」</em>を<br class="br-mobile-only">減らす。</h1>
+      <h1>海外のカフェで、<br><em>「え？今なんて？」</em><br class="br-desktop-only">を<br class="br-mobile-only">減らす。</h1>
       <p class="lede">英語を読む練習ではなく、<br>実際に聞いて、答える。<br>カフェ・レストランでよく聞かれる英語を、<br>旅行前に何度でも練習できます。</p>
       <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
       <div class="hero-note">登録不要 ・ 30秒で終わります</div>
