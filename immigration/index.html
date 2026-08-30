@@ -246,7 +246,12 @@
     }
     /* flex の子は margin:auto で中央に寄る。文字は左に置きたいので
        幅を張らせる。ここを忘れると文字が階調の薄い側にはみ出す。 */
-    .hero__in > .container { width: 100%; }
+    /* 2026-08-29: .container が他の節と同じ max-width:1120px の
+       中央寄せを引き継いでいたため、広い画面（1920px等）では左に
+       大きな空白ができ、見出しが中央寄りに見えていた（speakup と
+       同じ問題、HARU様の指摘）。ヒーローだけ中央寄せをやめ、
+       左端からの固定余白にする。 */
+    .hero__in > .container { width: 100%; max-width: none; margin: 0; padding-left: clamp(24px, 5vw, 96px); }
     /* 文字は階調が濃い範囲に収める。はみ出すと読めなくなる。 */
     .hero h1 { max-width: 13em; }
     .hero .lede { max-width: 27em; }
