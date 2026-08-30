@@ -277,8 +277,14 @@
        2026-08-29: 最初 scaleY だけを掛けたため、縦だけ22%伸びて
        人物が不自然に歪んで見えていた（HARU様の指摘）。scaleX/scaleY
        を必ず同じ倍率にする scale() へ直した（歪まない代わり、
-       頭頂の余白はわずかに戻る）。 */
-    .hero__media img { object-position: 50% 30%; transform: scaleX(-1) scale(1.22); transform-origin: 50% 100%; }
+       頭頂の余白はわずかに戻る）。
+       2026-08-29: scale(1.22) にした結果、彼女の顔の左側に階調の
+       境目がかかり、頬が暗く見えていた（HARU様の指摘）。
+       object-position の横を 50%→58% にして、階調が薄い側へ
+       彼女をずらした（1920px 以上は cover の横クロップ余地がほぼ
+       無いためこの値でも動かないが、その幅では元々顔は暗くなって
+       いない）。 */
+    .hero__media img { object-position: 58% 30%; transform: scaleX(-1) scale(1.22); transform-origin: 50% 100%; }
     .hero__media::after {
       background:
         linear-gradient(90deg,
