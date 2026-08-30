@@ -280,16 +280,18 @@
        頭頂の余白はわずかに戻る）。
        2026-08-29: scale(1.22) にした結果、彼女の顔の左側に階調の
        境目がかかり、頬が暗く見えていた（HARU様の指摘）。
-       object-position の横を 50%→58% にして、階調が薄い側へ
-       彼女をずらした（1920px 以上は cover の横クロップ余地がほぼ
-       無いためこの値でも動かないが、その幅では元々顔は暗くなって
-       いない）。 */
-    .hero__media img { object-position: 58% 30%; transform: scaleX(-1) scale(1.22); transform-origin: 50% 100%; }
+       object-position の横を 50%→58%→65% と動かし、階調の尻尾も
+       46/52%→42/46%へ引き締めて、もっと明るく見せた
+       （HARU様の指摘「もっと明るくできますか」）。見出しは実測
+       14.4〜38.6%にしか無いので、42%からの薄まりでも文字にはかからない。
+       1920px以上は cover の横クロップ余地がほぼ無いためobject-position
+       を動かしても変わらないが、その幅では元々顔は暗くなっていない。 */
+    .hero__media img { object-position: 65% 30%; transform: scaleX(-1) scale(1.22); transform-origin: 50% 100%; }
     .hero__media::after {
       background:
         linear-gradient(90deg,
           rgba(22,17,12,.94) 0%, rgba(22,17,12,.92) 30%, rgba(22,17,12,.72) 40%,
-          rgba(22,17,12,.26) 46%, rgba(22,17,12,0) 52%),
+          rgba(22,17,12,.26) 42%, rgba(22,17,12,0) 46%),
         linear-gradient(180deg, rgba(22,17,12,.20) 0%, rgba(22,17,12,0) 26%);
     }
     .hero__in {
