@@ -28,18 +28,18 @@ PAGES = [
 # 購入ページから辿れなければならない（追補2 §126）。
 LEGAL = [
     ('privacy',   'legal/privacy/index.html',   'プライバシーポリシー',
-     'Harmony Horizon の各アプリが、どの情報をどこに保存し、どこへ送るかを書いています。'),
+     'Harmony Horizon の各コースが、どの情報をどこに保存し、どこへ送るかを書いています。'),
     ('terms',     'legal/terms/index.html',     '利用規約',
-     'Harmony Horizon の各アプリをお使いいただくうえでの取り決めです。'),
+     'Harmony Horizon の各コースをお使いいただくうえでの取り決めです。'),
     ('tokushoho', 'legal/tokushoho/index.html', '特定商取引法に基づく表記',
      '通信販売にあたり、特定商取引法で表示が求められている事項です。'),
 ]
 
 # 2026-08-27: 販売LP2枚（/eatout/ /immigration/）はどこからも辿れず、
-# URL を知っている人しか見られなかった。トップページの「練習アプリ」の節へ
+# URL を知っている人しか見られなかった。トップページの「練習コース」の節へ
 # 案内を足す。節への錨なので、どのページからでも同じ場所に着く。
 NAV = [('index.html', '考え方'), ('programs.html', 'レッスン'),
-       ('student-voices.html', '受講者の声'), ('#apps', '練習アプリ'),
+       ('student-voices.html', '受講者の声'), ('#apps', '練習コース'),
        ('contact.html', 'お問い合わせ')]
 
 SHELL = '''<!DOCTYPE html>
