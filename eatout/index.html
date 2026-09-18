@@ -278,41 +278,58 @@
     width: 90px; height: 22px; background: var(--navy-deep); border-radius: 0 0 16px 16px; z-index: 2;
   }
   .phone-screen { padding: 34px 18px 22px; }
-  .ph-eyebrow { font-size: 9.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
-  .ph-row { display: flex; align-items: baseline; justify-content: space-between; }
-  .ph-title { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); }
-  .ph-back { font-size: 10.5px; color: var(--ink-soft); }
   .ph-hr { height: 1px; background: var(--line); margin: 10px 0 18px; }
-  .ph-step-bar {
-    display: flex; align-items: center; justify-content: space-between; background: var(--navy-deep); color: var(--cream);
-    border-radius: 12px; padding: 10px 14px; margin-bottom: 16px;
+  /* ★2026-09-18 濃い「STEP 01」の帯は、本体では2026-09-10に**廃止**されて
+     いた(.mode-bar)。いまは「どの練習か」はヘッダーの札へ、「何問目か」は
+     ヘッダー右の数字へ移っている。写しもそれに合わせる。 */
+  .ph-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .ph-cat { display: flex; align-items: center; gap: 6px; }
+  .ph-cat svg { width: 15px; height: 15px; flex: none; display: block; }
+  .ph-cat-name { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+  .ph-progress { font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: var(--stone-deep); flex: none; }
+  /* 練習の種類の札。ここだけ丸いのは本体と同じ ——
+     これはボタンではなく札なので、角ゼロの決まりの外にある。 */
+  .ph-kind {
+    display: inline-block; margin: 3px 0 0 21px; padding: 2px 9px; border-radius: 999px;
+    background: #F9F1E4; color: #694D11; font-size: 10px; font-weight: 700;
   }
-  .ph-step-bar .ph-q-icon {
-    width: 22px; height: 22px; border-radius: 50%; background: rgba(250,243,230,0.14); color: var(--cream);
-    display: inline-flex; align-items: center; justify-content: center; font-size: 11px; margin-right: 8px;
+  .ph-play {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    width: 100%; min-height: 34px; margin-bottom: 10px;
+    background: #F9F1E4; border: 1px solid rgba(34,29,24,0.14); border-radius: 0;
+    font-size: 11.5px; font-weight: 700; color: var(--ink);
   }
-  .ph-step-bar .ph-step-label { font-size: 9px; letter-spacing: 0.12em; color: var(--gold-bright); font-weight: 500; }
-  .ph-step-bar .ph-step-title { font-family: var(--font-display); font-weight: 500; font-size: 13.5px; }
-  .ph-step-bar .ph-step-count { font-size: 12px; color: var(--cream); opacity: 0.85; }
-  .ph-tap { text-align: center; font-size: 11px; font-weight: 500; color: var(--gold); margin-bottom: 14px; }
-  .ph-speaker-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
-  .ph-speaker {
-    width: 74px; height: 74px; border-radius: 50%; background: var(--navy-deep);
-    display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5);
+  .ph-settings {
+    display: inline-flex; align-items: center; gap: 6px; margin: 0 auto 14px;
+    border: 1px solid var(--line); background: #FFFFFF; border-radius: 0;
+    padding: 6px 10px; font-size: 10px; font-weight: 700; color: var(--ink-soft);
   }
-  .ph-toggles { display: flex; gap: 8px; margin-bottom: 18px; }
-  .ph-toggle { flex: 1; display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
-  .ph-toggle span { flex: 1; text-align: center; padding: 8px 6px; font-size: 10px; font-weight: 500; color: var(--ink-soft); }
-  .ph-toggle span.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
+  .ph-settings-wrap { display: flex; justify-content: center; }
   .ph-q { font-family: var(--font-display); font-weight: 500; font-size: 13.5px; color: var(--ink); margin-bottom: 10px; }
-  .ph-options { display: flex; flex-direction: column; gap: 8px; }
+  .ph-options { display: flex; flex-direction: column; gap: 2px; }
   .ph-opt {
-    display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid var(--line);
-    border-radius: 12px; padding: 12px 14px; font-size: 11.5px; line-height: 1.5; color: var(--ink);
+    display: flex; align-items: flex-start; gap: 10px; background: #FFFFFF;
+    border: 1px solid var(--line); border-radius: 0;
+    padding: 12px 14px; font-size: 11.5px; line-height: 1.5; color: var(--ink);
   }
-  .ph-opt .box { width: 18px; height: 18px; border: 1.5px solid var(--line); border-radius: 5px; flex-shrink: 0; }
-  .ph-opt.correct { background: #EFF7EE; border-color: #6FA46A; }
-  .ph-opt.correct .box { background: #4E9349; border-color: #4E9349; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .ph-opt .box { width: 15px; height: 15px; border: 1.5px solid #A69C8C; border-radius: 0; flex-shrink: 0; margin-top: 2px; }
+  .ph-opt.correct { background: #EAF7EC; border-color: #1D8A3C; color: #14562A; font-weight: 700; }
+  .ph-opt.correct .box { background: #1D8A3C; border-color: #1D8A3C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; }
+
+  /* まだ開いていない物に付ける札。値打ちを消さずに、いま在る物と分ける。 */
+  .soon {
+    /* 2語で1つの札なので、途中で折らない。行に入らない時は
+       .soon-block を付けて自分の行へ落とす(下)。 */
+    white-space: nowrap;
+    display: inline-block; margin-left: 8px; padding: 2px 8px;
+    border: 1px solid var(--gold); border-radius: 0;
+    /* 「印」の下限は12px(CLAUDE.md「活字の下限」)。11pxで組みかけて戻した。 */
+    font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+    color: var(--gold); background: var(--cream-soft); vertical-align: 1px;
+  }
+  .method-steps .row .soon { margin-left: 6px; }
+  /* 含まれるものの一覧は幅が狭いので、札は名前の次の行に置く。 */
+  .includes .soon { margin-left: 0; margin-top: 5px; }
 
   /* ---------------- Chat mockup (あるある) ---------------- */
   .chat-mock { display: flex; flex-direction: column; gap: 16px; max-width: 480px; margin: 36px auto 0; }
@@ -432,10 +449,13 @@
   .price-card .label { font-size: 14px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; margin-bottom: 6px; }
   .price-card .product { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); margin-bottom: 18px; }
   .price-card .amount { font-family: var(--font-display); font-weight: 700; font-size: 2.75rem; color: var(--ink); line-height: 1; }
-  .price-card .note { font-size: 15.5px; color: var(--ink-soft); margin: 8px 0 26px; }
+  .price-card .note { font-size: 16px; color: var(--ink-soft); margin: 8px 0 26px; }
   .price-card hr { border: none; height: 1px; background: var(--line); margin-bottom: 24px; }
   .price-card .includes { text-align: left; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
-  .price-card .includes div { display: flex; gap: 10px; font-size: 15.5px; }
+  /* ★2026-09-18 15.5px は「読む文章」の下限16pxを割っていた
+     (CLAUDE.md「活字の下限」)。このカードは**買う直前に読む所**なので、
+     いちばん割ってはいけない場所だった。 */
+  .price-card .includes div { display: flex; gap: 10px; font-size: 16px; }
   .price-card .includes .ck { color: var(--stone-deep); font-weight: 500; }
 
   /* ---------------- FAQ ---------------- */
@@ -606,40 +626,39 @@
   <div class="hero-phone-wrap reveal rd3">
     <div class="phone">
       <div class="phone-screen">
-        <div class="ph-row">
-          <span class="ph-eyebrow">WALKING IN</span>
-          <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">1 / 3</span>
-        </div>
-        <div class="ph-row">
-          <span class="ph-title">入店のあいさつ</span>
-          <span class="ph-back">← 一覧に戻る</span>
-        </div>
-        <div class="ph-hr"></div>
-        <div class="ph-step-bar">
-          <span><span class="ph-q-icon">?</span></span>
-          <span style="flex:1;">
-            <span class="ph-step-label">STEP 01</span><br>
-            <span class="ph-step-title">聞き取り練習</span>
-          </span>
-          <span class="ph-step-count">1 / 3</span>
-        </div>
-        <div class="ph-tap">タップして音声を聞きましょう</div>
-        <div class="ph-speaker-wrap">
-          <div class="ph-speaker" style="background:var(--gold-bright);">
-            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
-              <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+        <div class="ph-head">
+          <span class="ph-cat">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="16" fill="#221D18"/>
+              <circle cx="16" cy="16" r="2.7" fill="#E2A33D"/>
+              <circle cx="16" cy="16" r="7.2" fill="none" stroke="#E2A33D" stroke-width="2"/>
+              <circle cx="16" cy="16" r="11.8" fill="none" stroke="#E2A33D" stroke-width="1.6" opacity="0.55"/>
             </svg>
-          </div>
+            <span class="ph-cat-name">入店のあいさつ</span>
+          </span>
+          <span class="ph-progress">1 / 3</span>
         </div>
-        <div class="ph-toggles">
-          <div class="ph-toggle"><span class="on">女性の声</span><span>男性の声</span></div>
-          <div class="ph-toggle"><span class="on">ふつう 1.0x</span><span>ゆっくり 0.7x</span></div>
+        <span class="ph-kind">リスニング</span>
+        <div class="ph-hr"></div>
+        <div class="ph-play">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          音声を聞く
+        </div>
+        <div class="ph-settings-wrap">
+          <span class="ph-settings">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/>
+              <line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/>
+            </svg>
+            声・速さ
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
         </div>
         <div class="ph-q">いま、何と言われましたか?</div>
         <div class="ph-options">
           <div class="ph-opt"><span class="box"></span>ミルクは何にしますか?</div>
-          <div class="ph-opt correct"><span class="box">✓</span>「こんにちは、元気ですか?」— いちばんよく聞くあいさつ</div>
+          <div class="ph-opt correct"><span class="box">✓</span>こんにちは、元気ですか?</div>
+          <div class="ph-opt"><span class="box"></span>ご注文はお決まりですか?</div>
         </div>
       </div>
     </div>
@@ -765,7 +784,14 @@
       <div class="row"><span class="n">02</span><span class="t">考える</span><span class="d">「何を聞かれた?」— 意味を確認する。</span></div>
       <div class="row"><span class="n">03</span><span class="t">答える</span><span class="d">自分なら、どう答える?</span></div>
       <div class="row"><span class="n">04</span><span class="t">声をチェック</span><span class="d">実際に自分の声で言ってみる。お手本と見比べる。</span></div>
-      <div class="row"><span class="n">05</span><span class="t">AIと会話</span><span class="d">仕上げに、AIを相手に自由に会話練習。</span></div>
+      <!-- ★2026-09-18 文言を直した。前は「AIを相手に自由に会話練習」。
+           「自由に会話」は**無料のAIと同じこと**を言っていて、それが
+           売り文句ならChatGPTで足ります。このコースの値打ちは「自由」の
+           逆で、本物の店で起きる困りごとが決まっていて、それを自分の
+           言葉で解決するところにあります(2026-09-17 HARU様のご指摘を
+           app側 aiConversationEl に書き残したものと同じ理由)。
+           文言はアプリの中の同じ行から採った。 -->
+      <div class="row"><span class="n">05</span><span class="t">AI英会話チャレンジ<span class="soon">Coming soon</span></span><span class="d">台本なし。店で困ったことを、英語で解決する。</span></div>
     </div>
     <p class="big-statement">読むだけでは、<em>本番で<br class="br-mobile-only">聞き取れない。</em></p>
   </div>
@@ -858,14 +884,23 @@
       <div class="note">買い切り ・ 追加料金なし</div>
       <hr>
       <div class="includes">
-        <div><span class="ck">✓</span>カフェ・レストランの13場面(入店から退店まで)</div>
-        <div><span class="ck">✓</span>ネイティブ音声(男性・女性選択可)</div>
+        <div><span class="ck">✓</span>入店から退店まで、カフェ・レストランの13場面</div>
+        <div><span class="ck">✓</span>ネイティブ音声（男性・女性）</div>
         <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
-        <div><span class="ck">✓</span>発音Tips(つながる音・リンキングのコツ)</div>
+        <div><span class="ck">✓</span>つながる音・リンキングのコツ</div>
         <div><span class="ck">✓</span>基本文法の解説</div>
         <div><span class="ck">✓</span>意味確認クイズ</div>
         <div><span class="ck">✓</span>マイクで発音を確かめる練習</div>
-        <div><span class="ck">✓</span>AIとの英会話練習(実践パート)</div>
+        <!-- ★2026-09-18 ここは「✓ AIとの英会話練習(実践パート)」でした。
+             アプリの中では AI英会話チャレンジ は**まだ開けません** ——
+             ホームの行は押せない状態で、HARU様のご決定で「Coming soon」の
+             札が付いています(app側 eatout/listening/index.html の
+             aiConversationEl: row.disabled = true)。
+             まだ使えないものを「含まれるもの」の ✓ に並べると、買った日に
+             開けないものを売ったことになります。札を付けて、いま在るものと
+             分けて見せます。
+             ★開いた日に、この2行を1行の ✓ に戻してください。 -->
+        <div><span class="ck">✓</span><span>AI英会話チャレンジ<br><span class="soon">Coming soon</span></span></div>
       </div>
       <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
     </div>
@@ -887,8 +922,8 @@
         <div class="a">スキマ時間で進められる設計です。移動時間や空き時間に、少しずつ練習を積み重ねられます。目安は30日間ですが、ペースは自由です。まとめて数日分を1日で進めても構いません。</div>
       </details>
       <details class="faq-item">
-        <summary>AIとの英会話練習とは何ですか?<span class="sign">+</span></summary>
-        <div class="a">聞き取り・発音の練習を終えたあと、AIを相手に自由に会話する実践パートです。決まった台本ではなく、その場でのやり取りを通して、覚えたフレーズを実際に使う練習ができます。</div>
+        <summary>AI英会話チャレンジとは何ですか?<span class="sign">+</span></summary>
+        <div class="a">フレーズの練習を終えたあと、AIを相手に話す仕上げのパートです。台本はありません。「注文したものと違う料理が来た」のように、実際のお店で起きる困りごとが出されるので、それを自分の英語で解決します。<br><br><b>このパートは現在準備中です（Coming soon）。</b>今お使いいただけるのは、聞き取り・意味の確認・自分の声で返す練習・マイクでの発音チェックまでです。公開時期が決まりましたらお知らせします。</div>
       </details>
       <details class="faq-item">
         <summary>実際のお店と同じ質問が出ますか?<span class="sign">+</span></summary>
