@@ -126,7 +126,7 @@
   @media (max-width: 400px) {
     .site-header .brand { gap: 10px; }
     .site-header .brand-mark { width: 28px; height: 28px; }
-    .site-header .brand-word { font-size: 15.5px; }
+    .site-header .brand-word { font-size: 16px; }
   }
   /* さらに狭い画面では「で始める」を落とし、価格だけにする。
      ボタン全体が押せるので、動詞が無くても意味は通る。 */
@@ -217,7 +217,7 @@
      大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero h1 em { color: var(--gold-pale); }
   .hero .lede { max-width: 30em; margin: 0 0 34px; font-size: 1.0625rem; color: rgba(251,249,246,0.92); }
-  .hero-note { font-size: 15px; color: rgba(251,249,246,0.74); margin-top: 16px; }
+  .hero-note { font-size: 16px; color: rgba(251,249,246,0.74); margin-top: 16px; }
   /* 暗い地に濃いボタンでは見えない。ヘッダーと同じく反転させる。 */
   .hero .btn-gold { background: var(--cream); color: var(--deep); }
   .hero .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
@@ -336,7 +336,7 @@
   .chat-row { display: flex; flex-direction: column; gap: 6px; }
   .chat-row.you { align-items: flex-end; }
   .chat-row.staff { align-items: flex-start; }
-  .chat-label { font-size: 11.5px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
+  .chat-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
   .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: 17px; line-height: 1.6; }
   .chat-row.staff .chat-bubble { background: #FFFFFF; border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-soft); }
   .chat-row.you .chat-bubble { background: var(--navy-deep); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
@@ -351,12 +351,12 @@
 
   /* ---------------- Flow diagram ---------------- */
   .flow-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 8px; margin: 48px 0 0; }
-  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 500; font-size: 14.5px; color: var(--ink); box-shadow: var(--shadow-soft); white-space: nowrap; }
+  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 500; font-size: 16px; color: var(--ink); box-shadow: var(--shadow-soft); white-space: nowrap; }
   .flow-steps .arrow { color: var(--stone-deep); font-size: 16px; font-weight: 500; }
 
   /* ---------------- Coverage chips (13場面) ---------------- */
   .coverage-chips { display: flex; flex-wrap: wrap; gap: 14px; margin: 44px 0 26px; }
-  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 15.5px; font-weight: 500; color: var(--ink); box-shadow: var(--shadow-soft); }
+  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 16px; font-weight: 500; color: var(--ink); box-shadow: var(--shadow-soft); }
   .coverage-count { font-family: var(--font-display); font-weight: 500; font-size: 1.0625rem; color: var(--stone-deep); }
 
   /* ---------------- Big statement ---------------- */
@@ -367,38 +367,81 @@
   .trial-tag { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone-deep); font-weight: 500; margin-bottom: 16px; }
   /* 読む文章は左揃えにしたが、丸い再生ボタンは「文章」ではなく部品。
      カードの中で左に寄ると、置き忘れたように見える。部品だけ中央に置く。 */
-  .trial-speaker-wrap, .trial-mic-wrap { display: flex; justify-content: center; }
-  .trial-speaker { width: 74px; height: 74px; border-radius: 50%; background: var(--gold-bright); display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(29,22,16,0.5); cursor: pointer; border: none; transition: transform 0.25s ease; margin-bottom: 18px; }
-  .trial-speaker:hover { transform: scale(1.06); }
-  .trial-hint { font-size: 13.5px; font-weight: 500; color: var(--ink-soft); margin-bottom: 6px; }
-  .trial-toggles { display: flex; flex-direction: column; gap: 10px; margin: 18px 0 4px; }
-  .trial-toggle { display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
-  .trial-toggle-btn { flex: 1; border: none; background: transparent; padding: 13px 8px; min-height: 44px; font-family: var(--font-body); font-size: 17px; font-weight: 500; color: var(--ink-soft); cursor: pointer; transition: background 0.15s ease, color 0.15s ease; }
-  .trial-toggle-btn.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
+  /* ★2026-09-18 ここもコースの画面の写しなので、本体(app側
+     eatout/listening/index.html)に合わせて直した。上の .phone と同じ理由 ——
+     買う前に触る体験が、買った後の画面と違っていた。
+       ・丸い再生ボタン → 横長の帯(.play-big)
+       ・常時出ている丸い札 → 畳んだ「声・速さ」+ 四角いセグメント
+       ・角丸 → ゼロ
+     JSは data-voice / data-rate / .on しか見ていないので、
+     クラス名と印は1つも変えずに、見た目だけ合わせてある。 */
+  .trial-mic-wrap { display: flex; justify-content: center; }
+  .trial-speaker {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; min-height: 54px; margin-bottom: 8px;
+    background: #F9F1E4; color: var(--ink);
+    border: 1.5px solid rgba(34,29,24,0.14); border-radius: 0;
+    font-family: var(--font-body); font-size: 17px; font-weight: 700;
+    cursor: pointer; -webkit-tap-highlight-color: transparent;
+  }
+  .trial-speaker:active { transform: scale(0.98); }
+  .trial-speaker svg { width: 24px; height: 24px; flex: none; }
+  /* 畳んだ「声・速さ」。毎回使う物ではなく「必要な人だけ調整する設定」。 */
+  .trial-settings-wrap { display: flex; justify-content: center; margin-top: 14px; }
+  .trial-settings {
+    display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
+    border: 1.5px solid var(--line); background: #FFFFFF; border-radius: 0;
+    padding: 8px 14px; font-family: var(--font-body); font-size: 16px;
+    font-weight: 700; color: var(--ink-soft); cursor: pointer;
+  }
+  .trial-settings[aria-expanded="true"] { border-color: var(--gold); color: var(--gold); background: var(--cream-soft); }
+  .trial-settings svg { width: 16px; height: 16px; flex: none; }
+  .trial-settings[aria-expanded="true"] .trial-chev { transform: rotate(180deg); }
+  .trial-toggles { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 12px 0 4px; }
+  .trial-toggles[hidden] { display: none; }
+  .trial-toggle {
+    display: grid; grid-template-columns: 1fr 1fr; flex: 1 1 150px; max-width: 210px;
+    border: 1.5px solid var(--line); border-radius: 0; background: #FFFFFF;
+    padding: 2px; gap: 2px;
+  }
+  .trial-toggle-btn {
+    border: none; background: transparent; border-radius: 0; padding: 8px 4px;
+    min-height: 44px; font-family: var(--font-body); font-size: 16px;
+    color: var(--ink-soft); cursor: pointer; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; line-height: 1.35; min-width: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* ラベルと数字は別の行。数字は小さく薄い(本体の .seg-sub と同じ)。 */
+  .trial-toggle-sub { font-size: 15px; letter-spacing: 0.08em; opacity: 0.75; }
+  .trial-toggle-btn.on { background: #F3E4C6; color: var(--ink); font-weight: 700; border-radius: 0; }
   .trial-q { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-q.show { display: block; }
   .trial-q-title { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); margin-bottom: 16px; }
-  .trial-options { display: flex; flex-direction: column; gap: 10px; }
-  .trial-opt { display: block; width: 100%; text-align: left; background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: var(--font-body); color: var(--ink); cursor: pointer; transition: 0.2s ease; }
+  .trial-options { display: flex; flex-direction: column; gap: 2px; }
+  .trial-opt { display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left; background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 0; padding: 16px; min-height: 56px; font-size: 16px; line-height: 1.6; font-family: var(--font-body); color: var(--ink); cursor: pointer; transition: 0.2s ease; }
+  .trial-opt .box { flex: none; width: 22px; height: 22px; margin-top: 2px; border: 1.5px solid #A69C8C; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; }
   .trial-opt:hover:not(:disabled) { border-color: var(--gold); }
-  .trial-opt.correct { background: #EFF7EE; border-color: #6FA46A; }
-  .trial-opt.wrong { background: #FBEAEA; border-color: #D98888; }
+  /* 本体と同じ色(#EAF7EC / #1D8A3C、#FBEDEA / #C0392B)。 */
+  .trial-opt.correct { background: #EAF7EC; border-color: #1D8A3C; color: #14562A; font-weight: 700; }
+  .trial-opt.correct .box { background: #1D8A3C; border-color: #1D8A3C; }
+  .trial-opt.wrong { background: #FBEDEA; border-color: #C0392B; color: #7C2418; font-weight: 700; }
+  .trial-opt.wrong .box { background: #C0392B; border-color: #C0392B; }
   .trial-opt:disabled { cursor: default; }
-  .trial-feedback { margin-top: 16px; font-weight: 500; color: var(--gold); font-size: 15.5px; display: none; }
+  .trial-feedback { margin-top: 16px; font-weight: 500; color: var(--gold); font-size: 16px; display: none; }
   .trial-feedback.show { display: block; }
   .trial-step2 { display: none; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-step2.show { display: block; }
   .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 500; margin: 12px 0 6px; font-style: italic; }
-  .trial-prompt-jp { font-size: 13.5px; color: var(--ink-soft); margin-bottom: 20px; }
+  .trial-prompt-jp { font-size: 16px; color: var(--ink-soft); margin-bottom: 20px; }
   .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy-deep); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
   .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
-  .trial-mic-note { font-size: 13.5px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
-  .trial-heard { font-size: 15px; color: var(--ink); background: var(--cream-soft); border-radius: 10px; padding: 10px 16px; margin: 4px 0 14px; }
+  .trial-mic-note { font-size: 16px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
+  .trial-heard { font-size: 16px; color: var(--ink); background: var(--cream-soft); border-radius: 10px; padding: 10px 16px; margin: 4px 0 14px; }
   .trial-result { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-result.show { display: block; }
   .trial-result .nice { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; color: var(--gold); margin-bottom: 10px; }
-  .trial-cta-note { font-size: 13px; color: var(--ink-soft); margin-top: 10px; }
+  .trial-cta-note { font-size: 16px; color: var(--ink-soft); margin-top: 10px; }
 
   /* ---------------- Problem card list (legacy, still used sparingly) ---------------- */
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
@@ -407,7 +450,7 @@
     padding: 18px 22px; box-shadow: 0 2px 12px -7px rgba(29,22,16,0.14);
   }
   .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-deep); margin-top: 9px; }
-  .card-list p { margin: 0; font-size: 15.5px; line-height: 1.8; }
+  .card-list p { margin: 0; font-size: 16px; line-height: 1.8; }
 
   /* ---------------- Method (steps) ---------------- */
   /* 2026-08-08 Harumi指摘: 暗い背景のセクションが多すぎた(hero/method/
@@ -432,14 +475,14 @@
   }
   .trio-icon svg { width: 20px; height: 20px; }
   .trio-card h3 { font-size: 18px; margin-bottom: 8px; }
-  .trio-card p { font-size: 15.5px; color: var(--ink-soft); margin: 0; }
+  .trio-card p { font-size: 16px; color: var(--ink-soft); margin: 0; }
 
   /* ---------------- Who list ---------------- */
   .who-list { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; margin-top: 44px; }
   @media (max-width: 700px) { .who-list { grid-template-columns: 1fr; } }
   .who-item { display: flex; gap: 14px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 16px; }
   .who-item .mark { font-family: var(--font-display); font-weight: 500; color: var(--stone-deep); font-size: 1.125rem; min-width: 22px; }
-  .who-item p { margin: 0; font-size: 15px; }
+  .who-item p { margin: 0; font-size: 16px; }
 
   /* ---------------- Price ---------------- */
   .price-card {
@@ -468,7 +511,7 @@
   .faq-item summary::-webkit-details-marker { display: none; }
   .faq-item summary .sign { color: var(--stone-deep); font-size: 18px; font-weight: 400; transition: transform 0.25s ease; }
   .faq-item[open] summary .sign { transform: rotate(45deg); }
-  .faq-item .a { padding: 0 22px 20px; font-size: 15.5px; color: var(--ink-soft); line-height: 1.85; }
+  .faq-item .a { padding: 0 22px 20px; font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
 
   /* ---------------- CTA band ---------------- */
   .cta-band .lede { max-width: 32em; }
@@ -481,19 +524,24 @@
   }
   .cta-band.on-dark .eyebrow { color: var(--gold-bright); }
   .cta-band.on-dark .eyebrow::before { background: var(--gold-bright); }
-  .cta-lede-pre { font-size: 15.5px; color: rgba(250,243,230,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
-  .cta-price-note { font-size: 13.5px; color: rgba(250,243,230,0.65); margin-top: 14px; }
+  .cta-lede-pre { font-size: 16px; color: rgba(250,243,230,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
+  .cta-price-note { font-size: 16px; color: rgba(250,243,230,0.65); margin-top: 14px; }
 
   /* ---------------- Footer ---------------- */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
   .on-dark footer { border-top-color: var(--line-light); }
-  .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
+  .foot-tag { font-family: var(--font-display); font-style: italic; font-size: 16px; color: var(--ink-soft); margin-bottom: 8px; }
   .foot-copy { font-size: 12.5px; color: var(--ink-soft); opacity: 0.85; }
-  .foot-copy a { font-weight: 500; color: var(--ink); }
+  /* ★2026-09-18 メールとサイトのリンクが13.5pxだった。CLAUDE.md
+     「活字の下限」は**メールを名指しで**「押すもの」に入れていて、下限は
+     16px。著作権表示そのもの(© 2026 Harmony Horizon)は「印」なので
+     12.5pxのままでよいが、**押す所だけ**は16pxに上げる。
+     「タップ領域44pxを確保しても、字が14pxでは押す前に読めない」。 */
+  .foot-copy a { font-weight: 500; color: var(--ink); font-size: 16px; }
   /* 販売しているページからは、特定商取引法の表記へ必ず辿れるようにする。
      法律上の要請であり、探させてはいけない（追補2 §126）。 */
   .foot-legal { display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 10px 22px; margin-top: 18px; font-size: 15px; }
+    gap: 10px 22px; margin-top: 18px; font-size: 16px; }
   .foot-legal a { color: var(--ink-soft); text-decoration: none;
     border-bottom: 1px solid rgba(0,0,0,0.18);
     display: inline-flex; align-items: center; min-height: 44px; }
@@ -717,33 +765,38 @@
     <div class="trial-card">
       <div class="trial-tag">Café Challenge</div>
 
-      <div class="trial-speaker-wrap">
-        <button type="button" id="trialSpeak" class="trial-speaker" aria-label="音声を聞く">
-          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
-            <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
+      <button type="button" id="trialSpeak" class="trial-speaker">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        音声を聞く
+      </button>
+
+      <div class="trial-settings-wrap">
+        <button type="button" class="trial-settings" id="trialSettings" aria-expanded="false" aria-controls="trialToggles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/>
+            <line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/>
           </svg>
+          声・速さ
+          <svg class="trial-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
       </div>
-      <div class="trial-hint" style="text-align:center;">🎧 タップして音声を聞く</div>
-
-      <div class="trial-toggles" role="group" aria-label="声と速度の設定">
+      <div class="trial-toggles" id="trialToggles" role="group" aria-label="声と速さの設定" hidden>
         <div class="trial-toggle">
           <button type="button" class="trial-toggle-btn on" data-voice="f">女性の声</button>
           <button type="button" class="trial-toggle-btn" data-voice="m">男性の声</button>
         </div>
         <div class="trial-toggle">
-          <button type="button" class="trial-toggle-btn on" data-rate="1">ふつう 1.0x</button>
-          <button type="button" class="trial-toggle-btn" data-rate="0.7">ゆっくり 0.7x</button>
+          <button type="button" class="trial-toggle-btn on" data-rate="1">ふつう<span class="trial-toggle-sub">1.0x</span></button>
+          <button type="button" class="trial-toggle-btn" data-rate="0.7">ゆっくり<span class="trial-toggle-sub">0.7x</span></button>
         </div>
       </div>
 
       <div class="trial-q" id="trialQ">
         <div class="trial-q-title">今、何と言われましたか?</div>
         <div class="trial-options">
-          <button type="button" class="trial-opt" data-correct="false">A. 何を注文しますか?</button>
-          <button type="button" class="trial-opt" data-correct="true">B. 店内ですか?お持ち帰りですか?</button>
-          <button type="button" class="trial-opt" data-correct="false">C. お飲み物はいかがですか?</button>
+          <button type="button" class="trial-opt" data-correct="false"><span class="box"></span><span>何を注文しますか?</span></button>
+          <button type="button" class="trial-opt" data-correct="true"><span class="box"></span><span>店内ですか?お持ち帰りですか?</span></button>
+          <button type="button" class="trial-opt" data-correct="false"><span class="box"></span><span>お飲み物はいかがですか?</span></button>
         </div>
         <div class="trial-feedback" id="trialFeedback"></div>
       </div>
@@ -1040,13 +1093,30 @@
     });
   }
 
+  /* 「声・速さ」の開閉。本体と同じく、既定は畳んである。 */
+  var setBtn = document.getElementById('trialSettings');
+  var setPanel = document.getElementById('trialToggles');
+  if (setBtn && setPanel) {
+    setBtn.addEventListener('click', function () {
+      var open = setBtn.getAttribute('aria-expanded') === 'true';
+      setBtn.setAttribute('aria-expanded', String(!open));
+      setPanel.hidden = open;
+    });
+  }
+
   opts.forEach(function (opt) {
     opt.addEventListener('click', function () {
       opts.forEach(function (o) { o.disabled = true; });
       var isCorrect = opt.dataset.correct === 'true';
-      if (!isCorrect) opt.classList.add('wrong');
+      if (!isCorrect) {
+        opt.classList.add('wrong');
+        var xb = opt.querySelector('.box'); if (xb) xb.textContent = '✕';
+      }
       opts.forEach(function (o) {
-        if (o.dataset.correct === 'true') o.classList.add('correct');
+        if (o.dataset.correct === 'true') {
+          o.classList.add('correct');
+          var cb = o.querySelector('.box'); if (cb) cb.textContent = '✓';
+        }
       });
       if (isCorrect) playClip(SE_CORRECT_SRC, 1);
       feedback.textContent = isCorrect
