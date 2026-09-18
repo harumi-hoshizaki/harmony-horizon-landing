@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>レストランで、これ聞かれたら答えられる？ — 1問だけの無料体験</title>
+<meta name="description" content="海外のレストランで実際に言われる英語を1問だけ。字幕なしで聞いて、何と言ったか答えてみてください。無料・登録なし・30秒。">
+<meta name="robots" content="noindex">
+<meta property="og:title" content="レストランで、これ聞かれたら答えられる？">
+<meta property="og:description" content="字幕なしで1問だけ。30秒で終わります。無料。">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=EB+Garamond:wght@600&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   Eat Out — Instagram リールからの着地専用「1問だけ」ページ
+   /eatout/tryout        2026-09-18
+
+   すでにある2つとの役割の違い:
+     /eatout/       … 商品を調べに来た人向けの販売LP
+     /eatout/quiz/  … 広告から来た人向けの全6問クイズ
+     このページ      … リールの勢いのまま来た人向け。**1問だけ**で30秒
+
+   6問は、リールを見た直後の人には長い。ここは
+   「聞く → 何と言ったか書く → 正解を見る → 買う」だけに絞る。
+   /eatout/quiz/ は1文字も触っていないので、今までの導線はそのまま動く。
+
+   配色・書体・部品は /eatout/quiz/ の :root をそのまま写している。
+   別物に見えると「これは何の体験だったのか」が伝わらないため。
+
+   音声は HTMLAudio で鳴らす。「ゆっくり」に playbackRate は使わない。
+   アプリ側で ffmpeg(atempo)で作った _slow.mp3 を鳴らす。
+   playbackRate は音程がずれるうえ、iOSで無音になる個体がある。
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --navy-deep:  #1D1610;
+  --navy:       #2B2018;
+  --cream:      #FAF3E6;
+  --cream-soft: #F1E4CC;
+  --gold:       #A3782D;
+  --gold-bright:#E2A33D;
+  --ink:        #241F1A;
+  --ink-soft:   #6B5F4E;
+  --line:       rgba(43, 32, 24, 0.13);
+  --shadow-card:0 30px 70px -24px rgba(29, 22, 16, 0.22);
+  --ok:#2E6B45; --ok-line:#6FA46A; --ok-bg:#EFF7EE;
+  --ng:#8E3B2C; --ng-line:#D98888; --ng-bg:#FBEAEA;
+  --hold:#8C651F;
+  --font-display:'Zen Kaku Gothic New', sans-serif;
+  --font-body:   'Zen Kaku Gothic New', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--font-body);
+  font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;min-height:100svh}
+main{max-width:520px;margin:0 auto;
+  padding:max(18px,env(safe-area-inset-top)) 22px calc(48px + env(safe-area-inset-bottom))}
+.screen{display:none} .screen.on{display:block}
+.center{text-align:center}
+
+.eyebrow{display:inline-flex;align-items:center;gap:10px;font-size:12.5px;
+  font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--hold)}
+.eyebrow::before{content:'';width:22px;height:1px;background:var(--gold)}
+h1{font-family:var(--font-display);font-weight:900;color:var(--navy-deep);
+  font-size:clamp(1.66rem,7.2vw,2.15rem);line-height:1.44;letter-spacing:.01em}
+h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
+  font-size:1.34rem;line-height:1.5}
+.lede{font-size:1.06rem;color:var(--ink-soft);margin-top:14px;line-height:1.85}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  min-height:64px;border:none;border-radius:999px;cursor:pointer;text-decoration:none;
+  background:var(--gold-bright);color:var(--navy-deep);
+  box-shadow:0 14px 34px -12px rgba(226,163,61,.55);
+  font-family:var(--font-body);font-size:1.16rem;font-weight:700;letter-spacing:.02em;
+  transition:transform .08s ease;-webkit-tap-highlight-color:transparent}
+.btn:active{transform:scale(.98)}
+.btn-quiet{background:#FFFFFF;color:var(--ink);border:1.5px solid var(--line);
+  box-shadow:none;min-height:58px;font-size:1.06rem}
+.tlink{display:inline-block;font-size:1rem;color:var(--hold);text-decoration:underline;
+  text-underline-offset:4px;cursor:pointer;background:none;border:none;
+  font-family:var(--font-body)}
+
+/* ── ファーストビュー ──
+   iPhone 14 の実機 Safari で見えているのは 852px ではなく 659px
+   (CLAUDE.md「最初の一画面」)。開始ボタンが一画面目に入るよう、
+   上の余白は 10vh を上限にして、絵文字・見出し・ボタンだけを置く。 */
+.hero{padding-top:clamp(26px,7svh,58px);text-align:center}
+.hero h1{margin-top:12px}
+.hero .sub{margin-top:18px;font-size:1.1rem;color:var(--ink-soft)}
+.hero .btn{margin-top:26px}
+/* 「1問だけ」「30秒」「無料」は性質の違う3つの事実。狭い画面で
+   途中で折り返すと素人っぽく見えるので、区切りごとに自分で改行を
+   決める(CLAUDE.md「キャプション文言の改行」)。pre-line が無いと
+   \n はただの空白として無視される。 */
+.hero .fine{margin-top:14px;font-size:1rem;letter-spacing:.04em;color:var(--ink-soft);
+  white-space:pre-line;line-height:1.7}
+.cup{font-size:2.4rem;line-height:1}
+
+/* ── 音声 ── */
+.card{background:#FFFFFF;border:1px solid var(--line);border-radius:22px;
+  padding:clamp(24px,5vw,32px) clamp(20px,4vw,26px);box-shadow:var(--shadow-card)}
+.tag{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--hold);font-weight:700;text-align:center}
+.scene-lead{margin-top:12px;font-size:1.02rem;color:var(--ink-soft);text-align:center;
+  line-height:1.7}
+.speaker{width:104px;height:104px;border-radius:50%;border:none;cursor:pointer;
+  background:var(--gold-bright);display:flex;align-items:center;justify-content:center;
+  margin:18px auto 0;box-shadow:0 16px 34px -12px rgba(29,22,16,.5);
+  transition:transform .1s ease;-webkit-tap-highlight-color:transparent}
+.speaker:active{transform:scale(.95)}
+.speaker svg{width:40px;height:40px}
+.speaker.playing{animation:ring 1.1s ease-out infinite}
+@keyframes ring{0%{box-shadow:0 16px 34px -12px rgba(29,22,16,.5),0 0 0 0 rgba(226,163,61,.5)}
+  100%{box-shadow:0 16px 34px -12px rgba(29,22,16,.5),0 0 0 20px rgba(226,163,61,0)}}
+@media (prefers-reduced-motion:reduce){.speaker.playing{animation:none}}
+.hint{margin-top:14px;font-size:1rem;font-weight:700;color:var(--ink-soft);
+  text-align:center;white-space:pre-line;line-height:1.7}
+/* 再生時間。数字が動いても行が揺れないよう、高さを固定して中央に置く */
+.time{margin-top:8px;height:22px;font-size:.95rem;letter-spacing:.08em;
+  color:var(--ink-soft);text-align:center;font-variant-numeric:tabular-nums}
+/* 再生の進み具合。時間の数字だけだと、音が鳴っているか分かりにくい */
+.seek{margin:8px auto 0;max-width:230px;height:4px;border-radius:999px;
+  background:var(--line);overflow:hidden}
+.seek i{display:block;height:100%;width:0;background:var(--gold-bright)}
+
+.toggles{display:flex;flex-direction:column;gap:10px;margin:18px 0 0}
+.toggle{display:flex;border:1px solid var(--line);border-radius:999px;
+  overflow:hidden;background:#FFFFFF}
+.toggle button{flex:1;border:none;background:transparent;padding:12px 8px;
+  font-family:var(--font-body);font-size:1rem;font-weight:700;color:var(--ink-soft);
+  cursor:pointer;transition:background .15s ease,color .15s ease;
+  -webkit-tap-highlight-color:transparent}
+.toggle button.on{background:var(--navy-deep);color:var(--cream);border-radius:999px}
+
+/* ── 答えを書く ── */
+.ask{margin-top:26px;padding-top:24px;border-top:1px solid var(--line);
+  font-family:var(--font-display);font-weight:700;font-size:1.18rem;
+  color:var(--navy-deep);text-align:center;line-height:1.55}
+/* 「英語でも日本語でも」と「空欄でもよい」は別の話なので、行を分ける
+   (CLAUDE.md「キャプション文言の改行」)。 */
+.ask-sub{margin-top:8px;font-size:1rem;color:var(--ink-soft);text-align:center;
+  white-space:pre-line;line-height:1.7}
+#guess{display:block;width:100%;margin-top:14px;padding:15px 16px;
+  font-family:var(--font-body);font-size:1.06rem;line-height:1.7;color:var(--ink);
+  background:#FFFFFF;border:1.5px solid var(--line);border-radius:14px;
+  resize:vertical;min-height:98px}
+#guess:focus{border-color:var(--gold);outline:none}
+#guess::placeholder{color:#9B8E7C}
+.card .btn{margin-top:18px}
+
+/* ── 正解 ── */
+.fb{margin-top:20px;border-radius:18px;padding:20px;border:1.5px solid}
+.fb.ok{background:var(--ok-bg);border-color:var(--ok-line)}
+.fb.ng{background:var(--ng-bg);border-color:var(--ng-line)}
+.fb .verdict{display:flex;align-items:center;gap:10px;
+  font-family:var(--font-display);font-size:1.24rem;font-weight:900}
+.fb.ok .verdict{color:var(--ok)} .fb.ng .verdict{color:var(--ng)}
+.fb .verdict svg{width:23px;height:23px;stroke:currentColor;stroke-width:2.6;fill:none;
+  stroke-linecap:round;stroke-linejoin:round;flex:none}
+.fb .verdict-note{margin-top:10px;font-size:1rem;line-height:1.8;color:var(--ink)}
+.yours{margin-top:14px;background:#FFFFFF;border:1px solid var(--line);
+  border-radius:14px;padding:13px 15px}
+.yours h4{font-size:12.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--hold);margin-bottom:6px}
+.yours p{font-size:1.04rem;color:var(--ink);word-break:break-word;line-height:1.7}
+.fb .en{margin-top:16px;font-size:1.34rem;font-weight:700;color:var(--navy-deep);
+  line-height:1.55}
+.fb .en u{text-decoration:none;background:linear-gradient(transparent 58%,#F5DFA8 58%);
+  padding:0 1px}
+.fb .ja{margin-top:4px;font-size:1.04rem;color:var(--ink-soft)}
+.fb .ja u{text-decoration:none;background:linear-gradient(transparent 58%,#F5DFA8 58%);
+  padding:0 1px}
+.tips{margin-top:14px;background:#FFFFFF;border:1px solid var(--line);
+  border-radius:14px;padding:14px 16px}
+.tips h4{font-size:12.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold);margin-bottom:8px}
+.tips p{font-size:1rem;line-height:1.8;color:var(--ink)}
+.tips p + p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.tips b{color:var(--navy-deep);font-weight:700}
+.kana{font-family:var(--font-display);font-size:1.5rem;font-weight:700;
+  color:var(--navy-deep);letter-spacing:.02em;line-height:1.5}
+
+/* 返し方。アプリ本体と同じく、英文は先にぼかしておく。
+   「思い出そうとしてから見る」のと「最初から見える」のとでは
+   残り方がまるで違う。ぼかしは本体と同じ9px(弱くすると透けて読める)。 */
+.rv{margin-top:14px;background:#FFFFFF;border:1.5px dashed var(--line);
+  border-radius:16px;padding:18px;text-align:center;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;transition:border-color .2s ease}
+.rv.open{border-style:solid;border-color:var(--gold)}
+.rv + .rv{margin-top:10px}
+.rv-label{font-size:12.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--hold);margin-bottom:8px}
+.rv-ja{font-size:1.04rem;color:var(--ink-soft)}
+.rv-en{margin-top:4px;font-family:var(--font-display);font-size:1.3rem;font-weight:700;
+  color:var(--navy-deep);line-height:1.5}
+.rv-en.blurred{filter:blur(9px);user-select:none;-webkit-user-select:none}
+.rv-cap{margin-top:12px;font-size:1rem;font-weight:700;color:var(--hold);
+  white-space:pre-line;line-height:1.6}
+.rv-listen-row{display:flex;justify-content:center;gap:9px;margin-top:13px}
+.rv-play,.rv-slow{display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  min-height:50px;padding:0 22px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  font-family:var(--font-body);font-size:1.02rem;font-weight:700;
+  -webkit-tap-highlight-color:transparent;transition:transform .08s ease}
+.rv-play{background:var(--navy-deep);color:var(--cream);border:none}
+.rv-slow{background:#FFFFFF;color:var(--ink);border:1.5px solid var(--line)}
+.rv-play:active,.rv-slow:active{transform:scale(.97)}
+.rv-play svg{width:21px;height:21px;flex:none}
+
+/* ── 販売 ── */
+.sell{margin-top:34px;padding-top:30px;border-top:1px solid var(--line)}
+.sell ul{list-style:none;margin-top:18px;display:flex;flex-direction:column;gap:11px}
+.sell li{display:flex;gap:11px;font-size:1.02rem;color:var(--ink);line-height:1.6}
+.sell li svg{width:19px;height:19px;flex:none;margin-top:5px;stroke:var(--gold);
+  stroke-width:2.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.price{margin-top:24px;display:flex;align-items:baseline;gap:12px}
+.price b{font-family:var(--font-display);font-size:2.1rem;font-weight:900;
+  color:var(--navy-deep)}
+.price span{font-size:1rem;letter-spacing:.04em;color:var(--ink-soft)}
+.foot{margin-top:38px;text-align:center;font-size:1rem;color:var(--ink-soft);
+  line-height:1.8}
+.foot a{color:var(--ink-soft)}
+.nowrap{white-space:nowrap}
+</style>
+</head>
+<body>
+<main>
+
+<!-- ══════════ 1. ファーストビュー ══════════ -->
+<section class="screen on" id="s-intro">
+  <div class="hero">
+    <p class="cup">🍽️</p>
+    <h1>レストランで、<br>これ聞かれたら<br>答えられる？</h1>
+    <p class="sub">字幕はありません。<br>北米のお店で実際に言われている、そのままの速さです。</p>
+    <button class="btn" id="start" type="button">1問だけ、聞いてみる</button>
+    <p class="fine">1問だけ ・ 30秒
+無料・登録もメールアドレスも要りません</p>
+  </div>
+</section>
+
+<!-- ══════════ 2. 問題 ══════════ -->
+<section class="screen" id="s-quiz">
+  <div class="card">
+    <p class="tag">🧾 Restaurant Challenge</p>
+    <p class="scene-lead">食事が終わって、店員さんが伝票を持ってきました。<br>そして、こう聞かれます。</p>
+
+    <button class="speaker" id="play" type="button" aria-label="音声を聞く">
+      <svg id="playicon" viewBox="0 0 24 24" fill="var(--navy-deep)" aria-hidden="true">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+    <p class="hint" id="hint">タップして聞く</p>
+    <p class="time" id="time"></p>
+    <div class="seek" aria-hidden="true"><i id="seekfill"></i></div>
+
+    <div class="toggles">
+      <div class="toggle">
+        <button type="button" id="v-f" class="on">女性の声</button>
+        <button type="button" id="v-m">男性の声</button>
+      </div>
+      <div class="toggle">
+        <button type="button" id="sp-normal" class="on">ふつう 1.0x</button>
+        <button type="button" id="sp-slow">ゆっくり 0.8x</button>
+      </div>
+    </div>
+
+    <p class="ask">何と言ったと思いますか？</p>
+    <p class="ask-sub">聞こえたとおりに、英語でも日本語でも構いません。
+わからなければ、空欄のままでも大丈夫です。</p>
+    <label for="guess" class="eyebrow" style="display:none">あなたの答え</label>
+    <textarea id="guess" rows="3" placeholder="例：一緒ですか、別々ですか？ / together..."></textarea>
+
+    <button class="btn" id="submit" type="button">送信して、答えを見る</button>
+  </div>
+</section>
+
+<!-- ══════════ 3. 正解 + 販売 ══════════ -->
+<section class="screen" id="s-done">
+  <div class="fb ng" id="fb">
+    <p class="verdict" id="verdict"></p>
+    <p class="verdict-note" id="verdict-note"></p>
+
+    <div class="yours" id="yours" hidden>
+      <h4>あなたの答え</h4>
+      <p id="yourstext"></p>
+    </div>
+
+    <p class="en"><u>Together or</u> separate?</p>
+    <p class="ja"><u>一緒ですか</u>、別々ですか？<br>（お会計を1つにまとめますか、分けますか）</p>
+
+    <div class="tips">
+      <h4>こう聞こえる</h4>
+      <p class="kana">Tげtheror</p>
+    </div>
+
+    <div class="tips">
+      <h4>なぜ聞き取れないのか</h4>
+      <p><b>【母音ドッキング】</b>"Together or" はつながって「Tげtheror」のように一息で聞こえます。3語が1つの塊になるので、文字で見た形とは別物に聞こえます。</p>
+      <p><b>【語尾の上がり】</b>とても短い形なので、語尾が上がる音の動きだけが「質問された」という合図です。</p>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <p class="tag">あなたなら、何と返しますか？</p>
+    <p class="scene-lead">先に自分の口から出してから、タップして答え合わせをしてください。</p>
+
+    <div class="rv" id="rv1">
+      <p class="rv-label">いちばん普通の返し方</p>
+      <p class="rv-ja">別々でお願いします。</p>
+      <p class="rv-en blurred" id="rv1en">Separate checks, please.</p>
+      <p class="rv-cap" id="rv1cap">まず声に出してから、
+タップして答え合わせ</p>
+      <div class="rv-listen-row">
+        <button class="rv-play" type="button" data-audio="audio/a_check_separate.mp3">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>
+          ふつう
+        </button>
+        <button class="rv-slow" type="button" data-audio="audio/a_check_separate_slow.mp3">ゆっくり</button>
+      </div>
+    </div>
+
+    <div class="rv" id="rv2">
+      <p class="rv-label">一緒に払うとき</p>
+      <p class="rv-ja">一緒でお願いします。</p>
+      <p class="rv-en blurred" id="rv2en">Together, please.</p>
+      <p class="rv-cap" id="rv2cap">まず声に出してから、
+タップして答え合わせ</p>
+      <div class="rv-listen-row">
+        <button class="rv-play" type="button" data-audio="audio/a_check_together.mp3">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>
+          ふつう
+        </button>
+        <button class="rv-slow" type="button" data-audio="audio/a_check_together_slow.mp3">ゆっくり</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="sell">
+    <p class="eyebrow">Ear to Voice</p>
+    <h2 style="margin-top:10px">聞き取れるようになる<br>「つながる音」のコツを、<br>知りたいなら。</h2>
+    <p class="lede">いま聞いた1文は、飲食店英会話コースの中の1つです。同じように「こう聞こえる」と「なぜ」が、全部の質問に付いています。</p>
+    <ul>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>カフェ・ファストフード・レストランの<span class="nowrap">全13場面・67の質問</span></span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>女性・男性の声、ふつうとゆっくりの<span class="nowrap">4通りの音声</span></span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>聞くだけで終わらせない。<span class="nowrap">自分の声で返す練習つき</span></span></li>
+      <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>買い切り。月々の支払いはありません</span></li>
+    </ul>
+    <div class="price"><b>¥1,980</b><span>買い切り ・ 追加料金なし</span></div>
+    <a class="btn" style="margin-top:22px" id="buy"
+       href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout_tryout"
+       target="_blank" rel="noopener">Ear to Voice を購入する</a>
+    <a class="btn btn-quiet" style="margin-top:12px" href="/eatout/">まず、詳しい内容を見る</a>
+    <p class="center" style="margin-top:20px">
+      <button class="tlink" id="again" type="button">もう一度、音を聞く</button></p>
+  </div>
+
+  <p class="foot">
+    Ear to Voice — 飲食店英会話<br>
+    この1問の音声・解説は、すべて<span class="nowrap">コース本体と同じもの</span>です。
+  </p>
+</section>
+
+</main>
+
+<script src="/eatout/src-tag.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   ★HARU様へ: 設定するのはここ1か所だけです
+   ══════════════════════════════════════════════════════════════
+
+   Zapier の Webhook(Catch Hook)の URL を貼ってください。
+   Zapier で「Webhooks by Zapier → Catch Hook」を作ると URL がもらえます。
+   その次に「Google Sheets → Create Spreadsheet Row」をつなげてください。
+
+   空のままでも、ページは普通に動きます(記録だけ行われません)。
+   個人に結びつく情報は送りません。送るのは下の5つだけです:
+     date           … いつ(例 2026-09-18T04:12:33.000Z)
+     completionTime … ページを開いてから「送信」までの秒数
+     referrer       … どこから来たか(instagram / direct など)
+     priceChosen    … 見ていた値段(1980の一本だけ)
+     event          … 何が起きたか(visit / start / complete / buy_click)
+   ══════════════════════════════════════════════════════════════ */
+var ZAPIER_HOOK = '';
+
+/* ── 音声。コース本体と同じファイルをそのまま鳴らしている ── */
+var Q_AUDIO = {
+  f:     'audio/q_check_02_f.mp3',
+  fSlow: 'audio/q_check_02_f_slow.mp3',
+  m:     'audio/q_check_02_m.mp3',
+  mSlow: 'audio/q_check_02_m_slow.mp3'
+};
+/* 答え合わせに使う言葉。どれか1つでも入っていれば「拾えた」とみなす。
+   自由に書いてもらう欄なので、厳密な採点はしない(できない)。
+   「拾えた/落とした」で人を分けるのが目的ではなく、正解を見る前に
+   一度自分の頭から出してもらうための欄なので、これで足りる。 */
+var HIT_WORDS = ['together','separate','セパレート','トゥギャザー','一緒','いっしょ',
+                 '別々','別べつ','べつべつ','わけ','分け','まとめ'];
+
+/* ══════════ ここから下は触らなくて大丈夫です ══════════ */
+var $ = function (id) { return document.getElementById(id); };
+var startedAt = Date.now();      /* ページを開いた時刻。完了までの秒数を測る */
+var voice = Math.random() < 0.5 ? 'f' : 'm';   /* 開くたび女性/男性をランダムで */
+var slow = false;
+var sent = false;                /* 「完了」は1回だけ送る */
+
+/* ── どこから来たか ──
+   referrer は空になることも多い(Instagramのアプリ内ブラウザなど)。
+   そのため、リールに付ける ?v=〇〇 の印も手がかりに使う。 */
+function referrerLabel() {
+  var r = '', q = '';
+  try { r = document.referrer || ''; } catch (e) {}
+  try { q = window.location.search || ''; } catch (e) {}
+  var hay = (r + ' ' + q).toLowerCase();
+  if (hay.indexOf('instagram') >= 0 || hay.indexOf('utm_source=ig') >= 0) return 'instagram';
+  if (hay.indexOf('threads') >= 0) return 'threads';
+  if (hay.indexOf('facebook') >= 0 || hay.indexOf('fb.') >= 0) return 'facebook';
+  if (hay.indexOf('youtube') >= 0) return 'youtube';
+  if (hay.indexOf('line.me') >= 0) return 'line';
+  if (hay.indexOf('google.') >= 0 || hay.indexOf('bing.') >= 0) return 'search';
+  /* referrer が空で、リールの印(?v=)だけある人。リールの
+     アプリ内ブラウザはここに落ちることが多いので instagram 扱いにする。 */
+  if (!r && /[?&]v=/.test(q)) return 'instagram';
+  if (!r) return 'direct';
+  return r;
+}
+var REFERRER = referrerLabel();
+
+/* ── Zapier へ送る ──
+   no-cors で投げるので返事は読めない(読む必要もない)。
+   購入ボタンのようにページを離れる瞬間でも消えないよう、
+   使える時は sendBeacon を使う。 */
+function track(event, extra) {
+  if (!ZAPIER_HOOK) return;
+  var body = {
+    event: event,
+    date: new Date().toISOString(),
+    completionTime: Math.round((Date.now() - startedAt) / 1000),
+    referrer: REFERRER,
+    priceChosen: 1980,
+    reelTag: (window.eatoutSrc || ''),   /* どのリールから来たか(?v=) */
+    page: 'eatout-tryout'
+  };
+  if (extra) for (var k in extra) if (extra.hasOwnProperty(k)) body[k] = extra[k];
+  var json = JSON.stringify(body);
+  /* text/plain で送るのは、ブラウザに事前確認(preflight)をさせないため。
+     Zapier の Catch Hook は本文が JSON なら中身を読んでくれる。 */
+  try {
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(ZAPIER_HOOK, new Blob([json], { type: 'text/plain;charset=UTF-8' }));
+      return;
+    }
+  } catch (e) {}
+  try {
+    fetch(ZAPIER_HOOK, { method: 'POST', mode: 'no-cors',
+                         headers: { 'Content-Type': 'text/plain' }, body: json });
+  } catch (e) {}
+}
+track('visit');
+
+/* ── 音 ── */
+var audio = new Audio();   /* 1つを使い回す。iOSは最初の再生が指の操作から始まる必要がある */
+var playBtn = $('play'), hint = $('hint'), timeEl = $('time'), seekFill = $('seekfill');
+var ICON_PLAY  = '<path d="M8 5v14l11-7z"/>';
+var ICON_PAUSE = '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>';
+
+function mmss(s) {
+  if (!isFinite(s) || s < 0) s = 0;
+  var m = Math.floor(s / 60), r = Math.floor(s % 60);
+  return m + ':' + (r < 10 ? '0' : '') + r;
+}
+function paintTime() {
+  timeEl.textContent = mmss(audio.currentTime) + ' / ' + mmss(audio.duration);
+  var w = (isFinite(audio.duration) && audio.duration > 0)
+    ? (audio.currentTime / audio.duration * 100) : 0;
+  seekFill.style.width = w + '%';
+}
+function stopLook(cap) {
+  playBtn.classList.remove('playing');
+  $('playicon').innerHTML = ICON_PLAY;
+  hint.textContent = cap;
+}
+audio.addEventListener('loadedmetadata', paintTime);
+audio.addEventListener('timeupdate', paintTime);
+audio.addEventListener('ended', function () { stopLook('もう一度聞く'); paintTime(); });
+audio.addEventListener('error', function () {
+  stopLook('音が出ないときは、\n音量とマナーモードを確認してください');
+});
+
+function playSrc(src) {
+  try { audio.pause(); } catch (e) {}
+  audio.src = src;
+  audio.currentTime = 0;
+  playBtn.classList.add('playing');
+  $('playicon').innerHTML = ICON_PAUSE;
+  hint.textContent = '再生中…';
+  var p = audio.play();
+  if (p && p.catch) p.catch(function () { stopLook('もう一度タップしてください'); });
+}
+function currentSrc() { return Q_AUDIO[voice + (slow ? 'Slow' : '')]; }
+
+playBtn.addEventListener('click', function () {
+  if (audio.src && !audio.paused) {   /* 再生中のタップは止める */
+    try { audio.pause(); } catch (e) {}
+    stopLook('もう一度聞く');
+    return;
+  }
+  playSrc(currentSrc());
+});
+
+function paintToggles() {
+  $('v-f').className = voice === 'f' ? 'on' : '';
+  $('v-m').className = voice === 'm' ? 'on' : '';
+  $('sp-normal').className = slow ? '' : 'on';
+  $('sp-slow').className = slow ? 'on' : '';
+}
+$('v-f').addEventListener('click', function () { voice = 'f'; paintToggles(); playSrc(currentSrc()); });
+$('v-m').addEventListener('click', function () { voice = 'm'; paintToggles(); playSrc(currentSrc()); });
+$('sp-normal').addEventListener('click', function () { slow = false; paintToggles(); playSrc(currentSrc()); });
+$('sp-slow').addEventListener('click', function () { slow = true; paintToggles(); playSrc(currentSrc()); });
+
+/* 正解の中の「ふつう / ゆっくり」で、返し方のお手本を鳴らす */
+var rvBtns = document.querySelectorAll('.rv-play,.rv-slow');
+for (var b = 0; b < rvBtns.length; b++) {
+  (function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();   /* 枠ごとタップすると英文が出てしまうので止める */
+      playSrc(btn.getAttribute('data-audio'));
+    });
+  })(rvBtns[b]);
+}
+
+/* 返し方の英文を、タップで出したり隠したりする */
+var PEEK_HIDE = 'まず声に出してから、\nタップして答え合わせ';
+var PEEK_SHOW = 'タップで隠す';
+['1', '2'].forEach(function (n) {
+  var box = $('rv' + n), en = $('rv' + n + 'en'), cap = $('rv' + n + 'cap');
+  box.setAttribute('role', 'button');
+  box.setAttribute('tabindex', '0');
+  function toggle() {
+    var hidden = en.classList.toggle('blurred');
+    cap.textContent = hidden ? PEEK_HIDE : PEEK_SHOW;
+    box.className = hidden ? 'rv' : 'rv open';
+  }
+  box.addEventListener('click', toggle);
+  box.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+  });
+});
+
+/* ── 画面の行き来 ── */
+function show(id) {
+  var all = document.querySelectorAll('.screen');
+  for (var i = 0; i < all.length; i++) all[i].className = 'screen';
+  $(id).className = 'screen on';
+  try { window.scrollTo(0, 0); } catch (e) {}
+}
+
+$('start').addEventListener('click', function () {
+  show('s-quiz');
+  paintToggles();
+  track('start');
+  playSrc(currentSrc());   /* 指の操作から始まるので、iOSでもここで鳴る */
+});
+
+$('submit').addEventListener('click', function () {
+  try { audio.pause(); } catch (e) {}
+  stopLook('もう一度聞く');
+
+  var text = ($('guess').value || '').trim();
+  var low = text.toLowerCase();
+  var hit = false;
+  for (var n = 0; n < HIT_WORDS.length; n++) {
+    if (low.indexOf(HIT_WORDS[n]) >= 0) { hit = true; break; }
+  }
+
+  if (text) {
+    $('yours').hidden = false;
+    $('yourstext').textContent = text;
+  } else {
+    $('yours').hidden = true;
+  }
+
+  var OK_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>';
+  var NG_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16.2v.1"/></svg>';
+  $('fb').className = hit ? 'fb ok' : 'fb ng';
+  $('verdict').innerHTML = (hit ? OK_ICON : NG_ICON) +
+    '<span>' + (hit ? '聞き取れています。' : 'ここが、耳の落とし穴です。') + '</span>';
+  $('verdict-note').textContent = hit
+    ? 'この速さで拾えていれば、お店で通用します。あとは「返す言葉が、考えなくても口から出てくるか」だけです。'
+    : '知らない単語は1つもありません。聞き取れないのは語彙のせいではなく、音のつながり方を知らないだけです。';
+
+  show('s-done');
+  /* 音を止めたので、再生の見た目も初期に戻しておく */
+  try { audio.currentTime = 0; } catch (e) {}
+
+  if (!sent) {
+    sent = true;
+    track('complete', { answerGiven: text ? 'yes' : 'no', gotIt: hit ? 'yes' : 'no' });
+  }
+});
+
+$('again').addEventListener('click', function () {
+  show('s-quiz');
+  playSrc(currentSrc());
+});
+
+$('buy').addEventListener('click', function () { track('buy_click'); });
+
+/* リールの印(?v=)を、購入リンクと /eatout/ へのリンクに付け直す。
+   src-tag.js の読み込みが終わったあとに、この画面の分をもう一度。 */
+if (window.eatoutStampBuyLinks) window.eatoutStampBuyLinks();
+if (window.eatoutCarrySrc) window.eatoutCarrySrc();
+</script>
+</body>
+</html>
