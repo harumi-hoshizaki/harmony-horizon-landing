@@ -177,7 +177,7 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
   text-transform:uppercase;color:var(--hold);margin-bottom:8px}
 .tips p{font-size:1rem;line-height:1.8;color:var(--ink)}
 .tips p + p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
-.tips b{color:var(--navy-deep);font-weight:700}
+.tips b{color:var(--navy-deep);font-weght:700}
 .kana{font-family:var(--font-display);font-size:1.5rem;font-weight:700;
   color:var(--navy-deep);letter-spacing:.02em;line-height:1.5}
 
@@ -531,7 +531,7 @@ for (var b = 0; b < rvBtns.length; b++) {
 
 /* 返し方の英文を、タップで出したり隠したりする */
 var PEEK_HIDE = 'まず声に出してから、\nタップして答え合わせ';
-var PEEK_SHOW = 'タップで隠す';
+var PEEK_SHOW = 'タップで隠す';var ZAPIER_HOOK = 'https://hooks.zapier.com/hooks/catch/12ZrVs3CfWveb5BHWbhOS2bzgfWOlxzaK5w6US0ErBkY/';
 ['1', '2'].forEach(function (n) {
   var box = $('rv' + n), en = $('rv' + n + 'en'), cap = $('rv' + n + 'cap');
   box.setAttribute('role', 'button');
