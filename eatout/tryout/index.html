@@ -17,306 +17,389 @@
    Eat Out — Instagram リールからの着地専用「1問だけ」ページ
    /eatout/tryout        2026-09-18
 
-   ★2026-09-18 HARU様「見た目がアプリと違う。やり直して」。
-   最初は /eatout/quiz/ の作り(丸みの強い広告用)を写していたが、
-   このページを開いた人が次に見るのはコース本体の画面なので、
-   そこと地続きに見えないと「これは何の体験だったのか」が伝わらない。
-   配色・書体・部品は **コース本体(app側 eatout/listening と
-   eatout/try)の :root をそのまま写した**。角は4px、地はクリーム、
-   金は差し色、見出しの印は EB Garamond。丸ボタンは使わない。
+   ★2026-09-18 HARU様「アプリでは丸ボタン使ってませんし、声の調整の
+     ボタンの書き方も違います。しっかりチェックして。」
+
+   一度目は /eatout/quiz/(広告用)を、二度目は app側の eatout/try
+   (体験ページ)を写していた。**どちらもコース本体ではない。**
+   本体は app側の eatout/listening/index.html。そこを直接読んで、
+   下記を実測で取り直した(原典の行番号ではなく、値そのものを写す):
+
+     色      :root をそのまま。--accent-fill は #EFEDE9(HARU様の
+             「黄色ゼロ」で金を外した後の値)。#E2A33D で面を塗らない。
+     角      --radius-btn は **0**。押すボタンに丸みは付けない
+             (2026-09-09 Phase 3 でSpeak Upに統一した決定)。
+     再生    丸ボタンではなく **横長の帯(.play-big)**。
+             2026-08-30「①②③のタップ丸ボタンは廃止済み」の決定で、
+             Speak Up も Eatout も丸から離れている。
+     声・速さ 既定は**畳んである**(.settings-collapsible)。
+             開くと2列のセグメント(.seg)。ラベルと数字は**別の行**で、
+             数字は小さく薄い(.seg-sub)。
+     速さ    「ゆっくり」は **0.7x**。0.8x ではない ——
+             音声は `席の音声を作る.command` の ffmpeg atempo=0.7 で
+             焼いてあるので、0.8x と書くのは事実と違う。
+     英文    明朝(EB Garamond)ではなく **ゴシック**。--fs-h1(22px)。
+     3択     .quiz-option。四角い印(22px)が左に付き、正解は緑に ✓、
+             外した方は赤。すき間は2px(3つで1セットに見せるため)。
 
    すでにある2つとの役割の違い:
      /eatout/       … 商品を調べに来た人向けの販売LP
      /eatout/quiz/  … 広告から来た人向けの全6問クイズ
      このページ      … リールの勢いのまま来た人向け。**1問だけ**で30秒
-
-   音声は HTMLAudio で鳴らす。「ゆっくり」に playbackRate は使わない。
-   コース本体の側で ffmpeg(atempo)で作った _slow.mp3 を鳴らす。
-   playbackRate は音程がずれるうえ、iOSで無音になる個体がある。
    ══════════════════════════════════════════════════════════════ */
 :root{
-  --ink:#2B2018; --paper:#FAF7F2; --surface:#FFFFFF;
-  --accent-fill:#E2A33D; --accent-line:#A3782D; --accent-text:#694D11;
+  /* ---- 色。コース本体(eatout/listening)の :root の実測値 ---- */
+  --ink:        #221D18;
+  --ink-light:  #5A514B;
+  --paper:      #FDFCFA;
+  --surface:    #FFFFFF;
+  --accent-fill:#EFEDE9;
+  --accent-line:#A3782D;
+  --accent-text:#694D11;
   --accent-wash:#F3E4C6;
-  --muted:#5A5049; --neutral:#9A9089; --line:#EDE8E1;
-  --ok:#3F6B4A; --ok-wash:#EAF2EC;
-  --display:'Zen Kaku Gothic New',sans-serif;
-  --gothic:'Zen Kaku Gothic New',sans-serif;
-  --mono:'JetBrains Mono',monospace;
-  --serif:'EB Garamond',serif;
+  --accent-tint:#F9F1E4;
+  --muted:      #5C5548;
+  --neutral:    #A69C8C;
+  --line:       #E8E1D4;
+  --ink-hair:   rgba(34, 29, 24, 0.14);
+  --brand-gold: #E2A33D;   /* ブランドの印(◎)専用。面は塗らない */
+  --ok:#1D8A3C; --ok-bg:#EAF7EC; --ok-ink:#14562A;
+  --ng:#C0392B; --ng-bg:#FBEDEA; --ng-ink:#7C2418;
+  /* ---- 文字 ---- */
+  --fs-display:24px; --fs-h1:22px; --fs-h2:19px;
+  --fs-body:17px; --fs-sub:15px; --fs-label:13px;
+  --gothic:'Inter','Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sans-serif;
+  --mono:var(--gothic);
+  --serif:'EB Garamond',serif;   /* ブランド名の表記だけに使う */
+  /* ---- 寸法 ---- */
+  --radius-btn:0; --radius-xs:4px; --radius-sm:6px; --radius:10px;
+  --radius-pill:999px;
+  --btn-pad-y:13px; --btn-pad-y2:15px; --btn-pad-x:20px;
+  --space-hair:2px; --space-1:4px; --space-2:8px; --space-3:12px;
+  --space-4:16px; --space-5:24px; --space-6:32px; --space-7:48px;
+  --shadow-card:0 10px 26px rgba(34,29,24,.07);
+  --shadow-raise:0 3px 8px rgba(34,29,24,.28);
+  --shadow-raise-press:0 2px 6px rgba(34,29,24,.22);
+  --hl-top:inset 0 1px 0 rgba(255,255,255,.10);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
   background:var(--paper); color:var(--ink);
-  font-family:var(--gothic); font-weight:400; line-height:1.85;
-  font-size:18px; -webkit-font-smoothing:antialiased;
-  padding:0 20px calc(64px + env(safe-area-inset-bottom));
+  font-family:var(--gothic); font-weight:400; line-height:1.9;
+  font-size:var(--fs-body); -webkit-font-smoothing:antialiased;
+  padding:0 var(--space-5) calc(var(--space-7) + env(safe-area-inset-bottom));
 }
 .wrap{max-width:560px; margin:0 auto}
 .hidden{display:none !important}
 
-/* ---- ブランドの印(◎) ---- コース本体の brand-lockup と同じ形 */
-.brand{display:flex; align-items:center; gap:13px; padding-top:34px}
+/* ---- ブランドの印(◎) ---- */
+.brand{display:flex; align-items:center; gap:var(--space-3); padding-top:var(--space-6)}
 .brand-mark{flex:none; width:46px; height:46px}
 .brand-text{display:flex; flex-direction:column; gap:2px}
 .brand-word{
   font-family:var(--serif); font-weight:600; font-size:25px;
   letter-spacing:.02em; line-height:1.1; color:var(--ink);
 }
-.brand-tagline{font-size:13.5px; color:var(--muted); letter-spacing:.06em; line-height:1.4}
+.brand-tagline{font-size:var(--fs-label); color:var(--muted); letter-spacing:.06em; line-height:1.4}
 
 /* ---- 導入 ---- */
 .lead-title{
-  font-weight:900; font-size:clamp(27px,7.2vw,36px); line-height:1.38;
-  margin-top:24px; letter-spacing:.01em;
+  font-family:var(--gothic); font-weight:700;
+  font-size:clamp(var(--fs-h1),6.6vw,28px); line-height:1.6; letter-spacing:.04em;
+  margin-top:var(--space-5);
 }
 .lead-title em{font-style:normal; color:var(--accent-text)}
-.lead-body{margin-top:18px; color:var(--muted); font-size:18px}
-.lead-body + .lead-body{margin-top:12px}
-.facts{list-style:none; margin-top:24px; border-top:1px solid var(--line)}
+.lead-body{margin-top:var(--space-4); color:var(--muted); font-size:var(--fs-body)}
+.facts{list-style:none; margin-top:var(--space-5); border-top:1px solid var(--line)}
 .facts li{
-  border-bottom:1px solid var(--line); padding:13px 2px;
-  display:flex; gap:14px; align-items:baseline; font-size:17.5px;
+  border-bottom:1px solid var(--line); padding:var(--space-3) 0;
+  display:flex; gap:var(--space-4); align-items:baseline; font-size:var(--fs-body);
 }
 .facts b{
-  font-family:var(--mono); font-size:13px; letter-spacing:.08em;
-  color:var(--accent-text); flex:none; width:68px;
+  font-family:var(--mono); font-size:var(--fs-label); letter-spacing:.08em;
+  color:var(--accent-text); flex:none; width:72px; font-weight:700;
 }
 .note-sound{
-  margin-top:22px; background:var(--accent-wash); border-radius:4px;
-  padding:14px 16px; font-size:16.5px; line-height:1.75; color:var(--ink);
+  margin-top:var(--space-4); background:var(--accent-tint);
+  border:1px solid var(--line); border-radius:var(--radius-xs);
+  padding:var(--space-3) var(--space-4); font-size:var(--fs-sub); color:var(--ink);
 }
 
-/* ---- ボタン ---- */
-.btn-main{
-  display:block; width:100%; margin-top:26px; padding:19px 20px;
-  background:var(--ink); color:var(--paper); border:none; border-radius:4px;
-  font-family:var(--display); font-weight:700; font-size:18px; letter-spacing:.03em;
-  cursor:pointer; text-align:center; text-decoration:none;
-  -webkit-tap-highlight-color:transparent;
+/* ---- ボタン。角は落とす(--radius-btn:0) ---- */
+.btn-primary{
+  display:flex; align-items:center; justify-content:center; gap:var(--space-2);
+  width:100%; font-family:var(--gothic); font-size:var(--fs-h2); font-weight:700;
+  line-height:1.9; color:var(--paper);
+  background:linear-gradient(180deg, var(--ink-light) 0%, var(--ink) 100%);
+  box-shadow:var(--shadow-raise), var(--hl-top);
+  border:none; border-radius:var(--radius-btn);
+  padding:var(--btn-pad-y) var(--btn-pad-x);
+  margin-top:var(--space-3); cursor:pointer; min-height:48px;
+  text-decoration:none; -webkit-tap-highlight-color:transparent;
+  transition:transform .12s ease, box-shadow .12s ease;
 }
-.btn-main:active{opacity:.85}
+.btn-primary:active{transform:translateY(1px); box-shadow:var(--shadow-raise-press)}
 .btn-outline{
-  display:block; width:100%; margin-top:12px; padding:18px 20px;
-  background:transparent; color:var(--ink);
-  border:1.5px solid var(--line); border-radius:4px;
-  font-family:var(--display); font-weight:700; font-size:17.5px;
-  letter-spacing:.03em; cursor:pointer; text-align:center; text-decoration:none;
+  display:flex; align-items:center; justify-content:center; gap:var(--space-2);
+  width:100%; font-family:var(--gothic); font-size:var(--fs-body); font-weight:700;
+  line-height:1.9; color:var(--ink); background:transparent;
+  border:1.5px solid var(--ink-hair); border-radius:var(--radius-btn);
+  padding:var(--btn-pad-y2) var(--btn-pad-x); margin-top:var(--space-3);
+  cursor:pointer; min-height:54px; text-decoration:none;
   -webkit-tap-highlight-color:transparent;
 }
-.btn-outline:active{background:var(--line)}
-.btn-main:focus-visible,.btn-outline:focus-visible,.play:focus-visible,
-.mini:focus-visible,.choice:focus-visible,.spk:focus-visible,.peek:focus-visible{
+.btn-outline:active{background:var(--accent-wash)}
+.btn-primary:focus-visible,.btn-outline:focus-visible,
+.play-big:focus-visible,.quiz-option:focus-visible,.peek:focus-visible,.spk:focus-visible{
   outline:3px solid var(--accent-line); outline-offset:3px;
 }
-.mini{
-  background:transparent; border:1px solid var(--line); border-radius:999px;
-  color:var(--muted); font-family:var(--gothic); font-size:14.5px; font-weight:500;
-  padding:9px 18px; cursor:pointer; -webkit-tap-highlight-color:transparent;
-}
-.mini:active{background:var(--line)}
-.mini.on{border-color:var(--accent-line); color:var(--accent-text); background:var(--accent-wash)}
 
 /* ---- 場面の札 ---- */
 .scene{
-  margin-top:32px; display:inline-block; font-size:13.5px; font-weight:700;
-  letter-spacing:.06em; color:var(--accent-text);
-  background:var(--accent-wash); border-radius:999px; padding:5px 15px;
+  margin-top:var(--space-6); display:inline-block;
+  font-size:var(--fs-label); font-weight:700; letter-spacing:.06em;
+  color:var(--accent-text); background:var(--accent-tint);
+  border:1px solid var(--line); border-radius:var(--radius-xs);
+  padding:var(--space-1) var(--space-3);
 }
-.scene-lead{margin-top:14px; font-size:17.5px; color:var(--muted); line-height:1.8}
+.scene-lead{margin-top:var(--space-3); font-size:var(--fs-body); color:var(--muted)}
 
-/* ---- 再生 ---- */
-.play{
-  display:block; margin:26px auto 0; width:128px; height:128px; border-radius:50%;
-  background:var(--ink); border:none; cursor:pointer; color:var(--paper);
+/* ---- 再生(.play-big) ----
+   コース本体と同じ横長の帯。丸ボタンは使わない。 */
+.play-big{
+  width:100%; min-height:54px; border-radius:var(--radius-btn);
+  background:var(--accent-tint); color:var(--ink);
+  border:1.5px solid var(--ink-hair);
+  line-height:1.9; margin:var(--space-5) auto 0;
+  display:flex; align-items:center; justify-content:center; gap:var(--space-2);
+  padding:var(--btn-pad-y2) var(--btn-pad-x);
+  cursor:pointer; box-shadow:none; transition:transform .12s ease;
+  -webkit-tap-highlight-color:transparent;
+  font-family:var(--gothic); font-size:var(--fs-body); font-weight:700;
+}
+.play-big:active{transform:scale(.98)}
+.play-big.playing{background:var(--accent-wash)}
+.play-big svg{width:26px; height:26px; flex:none}
+/* 再生時間。本体には無いが、リールから来た人に「何秒の音か」を先に
+   見せたいので足した(飾りではなく手がかりなので --fs-sub)。
+   数字が動いても行が揺れないよう高さを固定する。 */
+.play-time{
+  margin-top:var(--space-2); height:22px; text-align:center;
+  font-family:var(--mono); font-size:var(--fs-sub); letter-spacing:.08em;
+  color:var(--muted);
+}
+.seek{margin:var(--space-1) auto 0; max-width:220px; height:3px;
+  background:var(--line); overflow:hidden}
+.seek i{display:block; height:100%; width:0; background:var(--accent-line)}
+/* 意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
+   pre-line が無いと \n はただの空白として無視される。 */
+.play-note{
+  margin-top:var(--space-2); text-align:center; font-size:var(--fs-sub);
+  color:var(--muted); white-space:pre-line; line-height:1.7;
+}
+
+/* ---- 畳んだ「声・速さ」 ----
+   コース本体の .settings-collapsible をそのまま写した。
+   毎回使う物ではなく「必要な人だけ調整する設定」なので既定は畳む。 */
+.settings-collapsible{
+  display:flex; flex-direction:column; align-items:center; margin-top:var(--space-5);
+}
+.settings-toggle{
+  display:inline-flex; align-items:center; gap:var(--space-2);
+  border:1.5px solid var(--line); background:#fff; border-radius:var(--radius-btn);
+  padding:var(--space-2) var(--space-3);
+  font-family:var(--gothic); font-size:var(--fs-sub); font-weight:700;
+  color:var(--muted); cursor:pointer; min-height:44px;
+  -webkit-tap-highlight-color:transparent;
+  transition:border-color .15s ease, color .15s ease, background .15s ease;
+}
+.settings-toggle[aria-expanded="true"]{
+  border-color:var(--accent-line); color:var(--accent-text); background:var(--accent-fill);
+}
+.settings-toggle-icon,.settings-toggle-chevron{width:16px; height:16px; flex:none; display:block}
+.settings-toggle-chevron{transition:transform .15s ease}
+.settings-toggle[aria-expanded="true"] .settings-toggle-chevron{transform:rotate(180deg)}
+.settings-panel{width:100%}
+.settings-panel .controls-row{margin-top:var(--space-3)}
+
+/* ---- セグメント(声・速さ) ---- */
+.controls-row{display:flex; flex-wrap:wrap; justify-content:center; gap:var(--space-2)}
+.seg{
+  display:grid; grid-template-columns:1fr 1fr;
+  width:auto; flex:1 1 150px; max-width:210px;
+  background:#fff; border:1.5px solid var(--line); border-radius:var(--radius-btn);
+  padding:var(--space-hair); gap:var(--space-hair);
+}
+.seg-btn{
+  border:none; background:none; border-radius:var(--radius-btn);
+  padding:var(--space-2) var(--space-1);
+  font-family:var(--gothic); font-size:var(--fs-sub); color:var(--muted);
+  cursor:pointer; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; line-height:1.35; min-width:0;
   -webkit-tap-highlight-color:transparent;
 }
-.play:active{transform:scale(.97)}
-.play svg{width:50px; height:50px; display:block; margin:0 auto}
-.play.playing{background:var(--accent-line)}
-/* 意味の切れ目で自分で改行を決めるため(CLAUDE.md「キャプション文言の改行」)。
-   pre-line が無いと \n はただの空白として無視される。 */
-.play-cap{
-  text-align:center; margin-top:14px; font-size:14.5px; color:var(--accent-text);
-  font-weight:500; white-space:pre-line; line-height:1.7;
-}
-/* 再生時間。数字が動いても行が揺れないよう高さを固定する */
-.time{
-  margin-top:8px; height:20px; text-align:center;
-  font-family:var(--mono); font-size:13px; letter-spacing:.08em; color:var(--muted);
-}
-.seek{margin:8px auto 0; max-width:220px; height:3px; background:var(--line);
-  border-radius:2px; overflow:hidden}
-.seek i{display:block; height:100%; width:0; background:var(--accent-fill)}
-.voice,.speed{display:flex; justify-content:center; gap:10px; margin-top:16px}
+.seg-btn[aria-checked="true"]{background:var(--accent-wash); color:var(--ink); font-weight:700}
+.seg-btn:focus-visible{outline:2px solid var(--accent-line); outline-offset:2px}
+/* ラベルと数字は別の行。数字は小さく薄い。 */
+.seg-label{font-size:var(--fs-body); white-space:nowrap}
+.seg-sub{font-family:var(--mono); font-size:var(--fs-sub); letter-spacing:.08em;
+  opacity:.75; white-space:nowrap}
 
-/* ---- 選択肢 ---- */
-.ask{text-align:center; margin-top:30px; font-weight:700; font-size:18px}
-.ask-sub{
-  text-align:center; margin-top:6px; font-size:15.5px; color:var(--muted);
+/* ---- 3択 ---- */
+.clar-heading{
+  font-family:var(--gothic); font-size:var(--fs-h1); font-weight:700;
+  line-height:1.6; letter-spacing:.04em; color:var(--ink);
+  margin-top:var(--space-6); white-space:pre-line;
+}
+.clar-sub{
+  margin-top:var(--space-2); font-size:var(--fs-sub); color:var(--muted);
   white-space:pre-line; line-height:1.7;
 }
-.choices{margin-top:16px; display:flex; flex-direction:column; gap:10px}
-.choice{
-  width:100%; text-align:left; background:var(--surface);
-  border:1.5px solid var(--line); border-radius:4px; padding:16px 18px;
-  font-family:var(--gothic); font-size:18px; line-height:1.7; color:var(--ink);
-  cursor:pointer; -webkit-tap-highlight-color:transparent;
+.quiz-options{
+  margin-top:var(--space-4); display:flex; flex-direction:column;
+  gap:var(--space-hair); text-align:left;
 }
-.choice:active{background:var(--accent-wash)}
-.choice[disabled]{cursor:default; opacity:.55}
-.choice.right{border-color:var(--ok); background:var(--ok-wash); opacity:1}
-.choice.wrong{border-color:#B4553F; background:#F7EBE7; opacity:1}
+.quiz-option{
+  display:flex; align-items:flex-start; gap:var(--space-3); width:100%;
+  font-family:var(--gothic); font-weight:400; font-size:var(--fs-body);
+  line-height:1.6; letter-spacing:.03em; text-align:left; color:var(--ink);
+  background:#fff; border:1.5px solid var(--line); border-radius:var(--radius-btn);
+  padding:var(--space-4); cursor:pointer; min-height:56px;
+  -webkit-tap-highlight-color:transparent;
+}
+.quiz-option-box{
+  flex:none; width:22px; height:22px; margin-top:var(--space-hair);
+  border:1.5px solid var(--neutral); border-radius:var(--radius-btn);
+  display:flex; align-items:center; justify-content:center;
+  color:#fff; font-size:var(--fs-sub);
+}
+.quiz-option-label{flex:1; min-width:0}
+.quiz-option.correct{background:var(--ok-bg); border-color:var(--ok); color:var(--ok-ink); font-weight:700}
+.quiz-option.correct .quiz-option-box{background:var(--ok); border-color:var(--ok)}
+.quiz-option.wrong{background:var(--ng-bg); border-color:var(--ng); color:var(--ng-ink); font-weight:700}
+.quiz-option.wrong .quiz-option-box{background:var(--ng); border-color:var(--ng)}
+.quiz-option:disabled{cursor:default}
 
 /* ---- 答え合わせ ---- */
-.reveal{margin-top:26px; border-top:2px solid var(--accent-line); padding-top:22px}
-.verdict{font-weight:900; font-size:19px}
-.verdict.o{color:var(--ok)}
+.reveal{margin-top:var(--space-6)}
+.verdict{font-size:var(--fs-h2); font-weight:700; line-height:1.6}
+.verdict.o{color:var(--ok-ink)}
 .verdict.x{color:var(--ink)}
-.verdict small{display:block; font-weight:400; font-size:16.5px; color:var(--muted); margin-top:4px}
-.en{
-  font-family:var(--serif); font-size:clamp(26px,6.6vw,32px); font-weight:600;
-  line-height:1.35; margin-top:18px; letter-spacing:.01em;
+.verdict small{
+  display:block; font-weight:400; font-size:var(--fs-body);
+  color:var(--muted); margin-top:var(--space-1); line-height:1.9;
 }
-.en-ja{color:var(--muted); font-size:17px; margin-top:6px}
-.block{margin-top:22px}
-.block h3{
-  font-family:var(--mono); font-size:13px; letter-spacing:.12em;
-  color:var(--muted); font-weight:500; text-transform:uppercase;
+/* 英文は明朝ではなくゴシック。コース本体の .answer-en と同じ。 */
+.answer-en{
+  font-family:var(--gothic); font-weight:700; font-size:var(--fs-h1);
+  letter-spacing:.02em; line-height:1.8; margin-top:var(--space-4);
+}
+.answer-ja{color:var(--muted); font-size:var(--fs-body); margin-top:var(--space-1)}
+.card{
+  background:#fff; border:1px solid var(--line); border-radius:var(--radius);
+  padding:var(--space-5); margin-top:var(--space-4); box-shadow:var(--shadow-card);
+}
+.card h3{
+  font-family:var(--gothic); font-size:var(--fs-label); font-weight:700;
+  letter-spacing:.1em; color:var(--accent-text); text-transform:uppercase;
+  margin-bottom:var(--space-2);
 }
 .kana{
-  margin-top:8px; display:inline-block; background:var(--accent-wash);
-  border:1px solid var(--accent-line); border-radius:6px; padding:9px 18px;
-  font-size:22px; font-weight:700; color:var(--ink); letter-spacing:.02em;
+  display:inline-block; background:var(--accent-tint);
+  border:1px solid var(--accent-line); border-radius:var(--radius-xs);
+  padding:var(--space-2) var(--space-4);
+  font-size:var(--fs-h1); font-weight:700; color:var(--ink); letter-spacing:.02em;
 }
-.why{list-style:none; margin-top:10px}
-.why li{
-  font-size:17px; line-height:1.8; color:var(--muted);
-  padding-left:16px; position:relative; margin-top:9px;
-}
-.why li::before{
-  content:''; position:absolute; left:0; top:.75em;
-  width:6px; height:2px; background:var(--accent-line);
-}
-.reply{
-  margin-top:10px; background:var(--surface); border:1px solid var(--line);
-  border-left:3px solid var(--accent-fill); border-radius:0 4px 4px 0;
-  padding:16px 18px;
-}
-.alt-reply{margin-top:12px}
+.why{list-style:none}
+.why li{font-size:var(--fs-body); line-height:1.9; color:var(--ink)}
+.why li + li{margin-top:var(--space-3); padding-top:var(--space-3); border-top:1px solid var(--line)}
+.why b{font-weight:700}
+.reply + .reply{margin-top:var(--space-4); padding-top:var(--space-4); border-top:1px solid var(--line)}
 .alt-label{
-  font-family:var(--mono); font-size:12.5px; letter-spacing:.06em;
-  color:var(--muted); font-weight:500; margin-bottom:6px;
+  font-family:var(--mono); font-size:var(--fs-label); letter-spacing:.06em;
+  color:var(--muted); font-weight:700; margin-bottom:var(--space-1);
 }
-.reply-ja{font-size:18px; color:var(--ink); font-weight:500; line-height:1.7}
-/* 英文はぼかしておき、タップで見せる。コース本体の .blurred と同じ作り。
+.reply-ja{font-size:var(--fs-body); color:var(--muted)}
+/* 英文はぼかしておき、タップで見せる。コース本体と同じ作り。
    ぼかしは要素の外側までにじむので、当たり判定は文字そのものではなく
    親の .peek に持たせる(本体で一度直した所)。 */
-.peek{cursor:pointer; -webkit-tap-highlight-color:transparent; padding:10px 0 2px; margin-top:4px}
+.peek{cursor:pointer; -webkit-tap-highlight-color:transparent; padding:var(--space-2) 0}
 .reply-en{
-  font-family:var(--serif); font-size:23px; font-weight:600;
-  line-height:1.35; color:var(--ink);
+  font-family:var(--gothic); font-weight:700; font-size:var(--fs-h1);
+  letter-spacing:.02em; line-height:1.8; color:var(--ink);
 }
 .reply-en.blurred{filter:blur(9px); user-select:none; -webkit-user-select:none}
 .peek-cap{
-  color:var(--accent-text); font-size:13.5px; font-weight:500; margin-top:9px;
-  white-space:pre-line; line-height:1.6;
+  color:var(--accent-text); font-size:var(--fs-sub); font-weight:700;
+  margin-top:var(--space-2); white-space:pre-line; line-height:1.6;
 }
+.spk-row{display:flex; gap:var(--space-2); margin-top:var(--space-3); flex-wrap:wrap}
 .spk{
-  margin-top:13px; display:inline-flex; align-items:center; gap:9px;
-  border:1.5px solid var(--accent-line); border-radius:999px;
-  background:var(--surface); cursor:pointer; color:var(--accent-text);
-  font-family:var(--gothic); font-size:14.5px; font-weight:700;
-  padding:9px 18px 9px 15px; -webkit-tap-highlight-color:transparent;
+  display:inline-flex; align-items:center; justify-content:center; gap:var(--space-2);
+  min-height:44px; padding:var(--space-2) var(--space-4);
+  border:1.5px solid var(--ink-hair); border-radius:var(--radius-btn);
+  background:var(--accent-tint); cursor:pointer; color:var(--ink);
+  font-family:var(--gothic); font-size:var(--fs-sub); font-weight:700;
+  -webkit-tap-highlight-color:transparent;
 }
-.spk svg{width:19px; height:19px; flex:none}
 .spk:active{background:var(--accent-wash)}
-.spk + .spk{margin-left:8px}
+.spk svg{width:18px; height:18px; flex:none}
 
 /* ---- 購入 ---- */
 .pull{
-  margin-top:28px; border-left:3px solid var(--accent-fill);
-  background:var(--accent-wash); border-radius:0 4px 4px 0; padding:18px 20px;
+  margin-top:var(--space-6); background:var(--accent-tint);
+  border:1px solid var(--line); border-radius:var(--radius);
+  padding:var(--space-4) var(--space-5);
 }
-.pull p{font-size:18px; line-height:1.8}
-.pull p + p{margin-top:10px}
-.pull b{font-weight:900}
-.next-box{
-  margin-top:26px; border:1px solid var(--line); background:var(--surface);
-  border-radius:4px; padding:20px;
+.pull p{font-size:var(--fs-body); line-height:1.9}
+.pull p + p{margin-top:var(--space-2)}
+.pull b{font-weight:700}
+.cta-box{
+  margin-top:var(--space-5); border:1.5px solid var(--accent-line);
+  background:#fff; border-radius:var(--radius); padding:var(--space-5);
+  box-shadow:var(--shadow-card);
 }
-.next-box h3{font-size:17.5px; font-weight:900; margin-bottom:8px}
-.next-box p{font-size:17px; color:var(--muted); line-height:1.8}
-.cta-box{border-color:var(--accent-line); background:var(--accent-wash)}
-.cta-box .price-line{margin-top:14px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
-.cta-box .price-now{font-family:var(--mono); font-size:28px; font-weight:700; color:var(--ink)}
-.cta-box .price-cap{font-size:14.5px; color:var(--muted)}
-/* .next-box の中のリンク色より .btn-main を勝たせる(本体で一度直した所)。 */
-.cta-box a.btn-main{margin-top:16px; text-decoration:none; text-align:center; color:var(--paper)}
-.sell{list-style:none; margin-top:14px}
+.cta-box h3{font-family:var(--gothic); font-size:var(--fs-h2); font-weight:700; line-height:1.6}
+.cta-box > p{margin-top:var(--space-3); font-size:var(--fs-body); color:var(--muted)}
+.sell{list-style:none; margin-top:var(--space-3)}
 .sell li{
-  font-size:16.5px; line-height:1.75; color:var(--ink);
-  padding-left:20px; position:relative; margin-top:9px;
+  font-size:var(--fs-body); line-height:1.8; color:var(--ink);
+  padding-left:var(--space-5); position:relative; margin-top:var(--space-2);
 }
 .sell li::before{
-  content:''; position:absolute; left:0; top:.62em; width:9px; height:9px;
-  border-radius:50%; border:2px solid var(--accent-line);
+  content:''; position:absolute; left:0; top:.65em; width:10px; height:10px;
+  border:1.5px solid var(--accent-line);
 }
+.price-line{margin-top:var(--space-4); display:flex; align-items:baseline;
+  gap:var(--space-3); flex-wrap:wrap}
+.price-now{font-family:var(--mono); font-size:28px; font-weight:700; color:var(--ink)}
+.price-cap{font-size:var(--fs-sub); color:var(--muted)}
 .foot{
-  margin-top:40px; padding-top:20px; border-top:1px solid var(--line);
-  font-size:13.5px; color:var(--neutral); line-height:1.8;
+  margin-top:var(--space-7); padding-top:var(--space-4);
+  border-top:1px solid var(--line);
+  font-size:var(--fs-sub); color:var(--muted); line-height:1.8;
 }
-/* 活用語尾や短い語が行末で割れるのを防ぐ。 */
 .nt{white-space:nowrap}
 
 /* ══════════════════════════════════════════════════════════════
    画面が広い時は、文字と幅をまとめて大きくする。
    ★HARU様「ZoomでWebサイトをシェアして読みやすい大きさですか？
-     60代の方が多いです」。コース本体と同じ引き上げ方をそのまま使う。
+     60代の方が多いです」。
    ══════════════════════════════════════════════════════════════ */
 @media (min-width:900px){
-  body{font-size:21px}
+  :root{
+    --fs-display:29px; --fs-h1:27px; --fs-h2:23px;
+    --fs-body:21px; --fs-sub:18px; --fs-label:15px;
+  }
   .wrap{max-width:720px}
   .brand-mark{width:56px; height:56px}
   .brand-word{font-size:30px}
-  .brand-tagline{font-size:15px}
-  .lead-title{font-size:44px}
-  .lead-body{font-size:20px}
-  .facts li{font-size:19.5px}
-  .facts b{font-size:15px; width:82px}
-  .note-sound{font-size:18px; padding:17px 20px}
-  .btn-main,.btn-outline{font-size:21px; padding:21px 22px}
-  .mini{font-size:17px; padding:11px 22px}
-  .scene{font-size:16px; padding:6px 18px}
-  .scene-lead{font-size:20px}
-  .play{width:150px; height:150px}
-  .play svg{width:58px; height:58px}
-  .play-cap{font-size:18px}
-  .time{font-size:15px; height:24px}
-  .ask{font-size:21px}
-  .ask-sub{font-size:18px}
-  .choice{font-size:20px; padding:19px 22px}
-  .verdict{font-size:23px}
-  .verdict small{font-size:18px}
-  .en{font-size:40px}
-  .en-ja{font-size:19px}
-  .block h3{font-size:15px}
-  .kana{font-size:28px; padding:11px 22px}
-  .why li{font-size:19px}
-  .reply{padding:19px 22px}
-  .reply-ja{font-size:20px}
-  .reply-en{font-size:28px}
-  .peek-cap{font-size:17px}
-  .spk{font-size:18px; padding:11px 22px 11px 18px}
-  .spk svg{width:22px; height:22px}
-  .pull{padding:21px 24px}
-  .pull p{font-size:20px}
-  .next-box{padding:23px}
-  .next-box h3{font-size:19px}
-  .next-box p{font-size:19px}
-  .sell li{font-size:19px}
-  .foot{font-size:16px}
+  .lead-title{font-size:34px}
+  .facts b{width:86px}
+  .play-big{min-height:64px}
+  .play-big svg{width:30px; height:30px}
+  .price-now{font-size:34px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none !important}}
 </style>
@@ -328,7 +411,7 @@ body{
   <section id="intro">
     <div class="brand">
       <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="16" fill="#2B2018"/>
+        <circle cx="16" cy="16" r="16" fill="#221D18"/>
         <circle cx="16" cy="16" r="2.7" fill="#E2A33D"/>
         <circle cx="16" cy="16" r="7.2" fill="none" stroke="#E2A33D" stroke-width="2"/>
         <circle cx="16" cy="16" r="11.8" fill="none" stroke="#E2A33D" stroke-width="1.6" opacity="0.55"/>
@@ -344,10 +427,9 @@ body{
 
     <!-- ★ボタンは「最初の一画面」に必ず入れる(CLAUDE.md「最初の一画面」)。
          iPhone 14 の実機 Safari で見えているのは 852px ではなく 659px。
-         はじめは説明を全部ボタンの上に積んでいて、880px の位置に
-         ボタンがあった。リールから来た人はスクロールせずに押せないと
-         そこで離れるので、説明はボタンの下へ回した。 -->
-    <button class="btn-main" type="button" id="start">1問だけ、聞いてみる</button>
+         リールから来た人はスクロールせずに押せないとそこで離れるので、
+         説明はボタンの下へ回してある。 -->
+    <button class="btn-primary" type="button" id="start">1問だけ、聞いてみる</button>
 
     <p class="lead-body">知らない単語は1つも出てきません。それでも聞き取れないなら、原因は語彙ではなく<b>音のつながり方</b>です。北米のお店で実際に言われている、そのままの速さの音を1つだけ用意しました。</p>
 
@@ -363,36 +445,62 @@ body{
   <!-- ══════════ 問題 ══════════ -->
   <section id="quiz" class="hidden">
     <p class="scene">会計</p>
-    <p class="scene-lead">食事が終わって、店員さんが伝票を持ってきました。<br>そして、こう聞かれます。</p>
+    <p class="scene-lead">食事が終わって、店員さんが伝票を持ってきました。そして、こう聞かれます。</p>
 
-    <button class="play" type="button" id="play" aria-label="音声を再生する">
-      <svg id="playicon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
+    <button class="play-big" type="button" id="play">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      <span class="play-big-label" id="playlabel">音声を聞く</span>
     </button>
-    <p class="play-cap" id="playcap">タップして聞く</p>
-    <p class="time" id="time"></p>
+    <p class="play-time" id="time"></p>
     <div class="seek" aria-hidden="true"><i id="seekfill"></i></div>
+    <p class="play-note" id="playnote"></p>
 
-    <div class="voice">
-      <button class="mini on" type="button" id="v-f">女性の声</button>
-      <button class="mini" type="button" id="v-m">男性の声</button>
-    </div>
-    <div class="speed">
-      <button class="mini on" type="button" id="sp-normal">ふつう 1.0x</button>
-      <button class="mini" type="button" id="sp-slow">ゆっくり 0.8x</button>
+    <!-- 声・速さ。毎回使う物ではなく「必要な人だけ調整する設定」なので
+         既定は畳んである(コース本体と同じ)。 -->
+    <div class="settings-collapsible">
+      <button class="settings-toggle" type="button" id="settoggle" aria-expanded="false" aria-controls="setpanel">
+        <span class="settings-toggle-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/>
+            <line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span class="settings-toggle-label">声・速さ</span>
+        <span class="settings-toggle-chevron">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </span>
+      </button>
+      <div class="settings-panel" id="setpanel" hidden>
+        <div class="controls-row">
+          <div class="seg" role="radiogroup" aria-label="声">
+            <button class="seg-btn" type="button" role="radio" id="v-f" aria-checked="true">
+              <span class="seg-label">女性の声</span>
+            </button>
+            <button class="seg-btn" type="button" role="radio" id="v-m" aria-checked="false">
+              <span class="seg-label">男性の声</span>
+            </button>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="速さ">
+            <button class="seg-btn" type="button" role="radio" id="sp-normal" aria-checked="true">
+              <span class="seg-label">ふつう</span><span class="seg-sub">1.0x</span>
+            </button>
+            <button class="seg-btn" type="button" role="radio" id="sp-slow" aria-checked="false">
+              <span class="seg-label">ゆっくり</span><span class="seg-sub">0.7x</span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <p class="ask">何と言ったと思いますか？</p>
-    <!-- ★意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
-         2行目を「外しても大丈夫です。そこが聞き取りの山場です。」にしていたら、
-         393pxで「山場で / す。」と活用語尾の途中で割れた。短くして1行に収める。 -->
-    <p class="ask-sub">3つの中から選んでください。
+    <h2 class="clar-heading">何と言ったと思いますか？</h2>
+    <p class="clar-sub">3つの中から選んでください。
 外しても大丈夫です。</p>
-    <div class="choices" id="choices"></div>
+    <div class="quiz-options" id="choices"></div>
 
     <div id="reveal" class="reveal hidden"></div>
-    <button class="btn-main hidden" type="button" id="tocta">この先を見る</button>
+    <button class="btn-primary hidden" type="button" id="tocta">この先を見る</button>
   </section>
 
   <!-- ══════════ 購入 ══════════ -->
@@ -405,7 +513,7 @@ body{
       <p>聞いて終わりではなく、<b>口から出せて、<span class="nt">はじめて</span>自分のものになります。</b></p>
     </div>
 
-    <div class="next-box cta-box">
+    <div class="cta-box">
       <h3>今日の1問は、コースの一部です</h3>
       <p>いま聞いた1文は、コース<span class="nt">「飲食店英会話」</span>の中の1つです。同じ<span class="nt">「こう聞こえる」</span>と<span class="nt">「なぜ」</span>が、すべての質問に付いています。</p>
       <ul class="sell">
@@ -418,7 +526,7 @@ body{
         <span class="price-now">¥1,980</span>
         <span class="price-cap">買い切り ・ 追加料金なし</span>
       </p>
-      <a class="btn-main" id="buy"
+      <a class="btn-primary" id="buy"
          href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout_tryout"
          target="_blank" rel="noopener">Ear to Voice を購入する</a>
     </div>
@@ -439,18 +547,9 @@ body{
 /* ══════════════════════════════════════════════════════════════
    ★HARU様へ: 設定するのはここ1か所だけです
    ══════════════════════════════════════════════════════════════
-
-   Zapier の Webhook(Catch Hook)の URL を貼ってください。
-   Zapier で「Webhooks by Zapier → Catch Hook」を作ると URL がもらえます。
-   その次に「Google Sheets → Create Spreadsheet Row」をつなげてください。
-
-   空のままでも、ページは普通に動きます(記録だけ行われません)。
-   個人に結びつく情報は送りません。送るのは下の5つだけです:
-     date           … いつ(例 2026-09-18T04:12:33.000Z)
-     completionTime … ページを開いてから答えるまでの秒数
-     referrer       … どこから来たか(instagram / direct など)
-     priceChosen    … 見ていた値段(1980の一本だけ)
-     event          … 何が起きたか(visit / start / complete / buy_click)
+   Zapier の Webhook(Catch Hook)の URL。空のままでもページは普通に
+   動きます(記録だけ行われません)。個人に結びつく情報は送りません。
+   送るのは日時・秒数・どこから来たか・値段・何が起きたかの5つだけです。
    ══════════════════════════════════════════════════════════════ */
 var ZAPIER_HOOK = 'https://hooks.zapier.com/hooks/catch/12ZrVs3CfWveb5BHWbhOS2bzgfWOlxzaK5w6US0ErBkY/';
 
@@ -462,11 +561,8 @@ var Q = {
   kana: 'Tげtheror',
   /* ★2026-09-18 HARU様からいただいた3つ。並びは毎回入れ替える。
      正解は ja と同じ文字列で見分けるので、ここを直す時は ja も一緒に。 */
-  choices: [
-    '一緒に進もうよ。',
-    '一緒、それとも別々？',
-    '土下座せぃ、あっぱれ？'
-  ],
+  choices: ['一緒に進もうよ。', '一緒、それとも別々？', '土下座せぃ、あっぱれ？'],
+  /* 「ゆっくり」は ffmpeg の atempo=0.7 で焼いた音声。0.8倍ではない。 */
   audio: {
     f:     'audio/q_check_02_f.mp3',
     fSlow: 'audio/q_check_02_f_slow.mp3',
@@ -474,24 +570,25 @@ var Q = {
     mSlow: 'audio/q_check_02_m_slow.mp3'
   },
   why: [
-    '【母音ドッキング】"Together or" はつながって「Tげtheror」のように一息で聞こえます。3語が1つの塊になるので、文字で見た形とは別物に聞こえます。',
-    '【語尾の上がり】とても短い形なので、語尾が上がる音の動きだけが「質問された」という合図です。'
+    '<b>【母音ドッキング】</b>"Together or" はつながって「Tげtheror」のように一息で聞こえます。3語が1つの塊になるので、文字で見た形とは別物に聞こえます。',
+    '<b>【語尾の上がり】</b>とても短い形なので、語尾が上がる音の動きだけが「質問された」という合図です。'
   ],
   replies: [
-    { ja: '別々でお願いします。', en: 'Separate checks, please.',
-      label: '', audio: 'audio/a_check_separate.mp3', slow: 'audio/a_check_separate_slow.mp3' },
-    { ja: '一緒でお願いします。', en: 'Together, please.',
-      label: '一緒に払うとき', audio: 'audio/a_check_together.mp3', slow: 'audio/a_check_together_slow.mp3' }
+    { ja: '別々でお願いします。', en: 'Separate checks, please.', label: '',
+      audio: 'audio/a_check_separate.mp3', slow: 'audio/a_check_separate_slow.mp3' },
+    { ja: '一緒でお願いします。', en: 'Together, please.', label: '一緒に払うとき',
+      audio: 'audio/a_check_together.mp3', slow: 'audio/a_check_together_slow.mp3' }
   ]
 };
+var SE_CORRECT = 'audio/se_correct.mp3';   /* 正解の合図。コース本体と同じ音 */
 
 /* ══════════ ここから下は触らなくて大丈夫です ══════════ */
 var el = function (id) { return document.getElementById(id); };
-var startedAt = Date.now();      /* ページを開いた時刻。答えるまでの秒数を測る */
+var startedAt = Date.now();
 var voice = Math.random() < 0.5 ? 'f' : 'm';   /* 開くたび女性/男性をランダムで */
 var slow = false;
 var answered = false;
-var sent = false;                /* 「完了」は1回だけ送る */
+var sent = false;
 var PEEK_HIDE = 'まず声に出してから、\nタップして答え合わせ';
 var PEEK_SHOW = 'タップで隠す';
 
@@ -509,8 +606,6 @@ function referrerLabel() {
   if (hay.indexOf('youtube') >= 0) return 'youtube';
   if (hay.indexOf('line.me') >= 0) return 'line';
   if (hay.indexOf('google.') >= 0 || hay.indexOf('bing.') >= 0) return 'search';
-  /* referrer が空で、リールの印(?v=)だけある人。リールのアプリ内
-     ブラウザはここに落ちることが多いので instagram 扱いにする。 */
   if (!r && /[?&]v=/.test(q)) return 'instagram';
   if (!r) return 'direct';
   return r;
@@ -529,7 +624,7 @@ function track(event, extra) {
     completionTime: Math.round((Date.now() - startedAt) / 1000),
     referrer: REFERRER,
     priceChosen: 1980,
-    reelTag: (window.eatoutSrc || ''),   /* どのリールから来たか(?v=) */
+    reelTag: (window.eatoutSrc || ''),
     page: 'eatout-tryout'
   };
   if (extra) for (var k in extra) if (extra.hasOwnProperty(k)) body[k] = extra[k];
@@ -551,9 +646,9 @@ track('visit');
 
 /* ── 音 ── */
 var audio = new Audio();   /* 1つを使い回す。iOSは最初の再生が指の操作から始まる必要がある */
-var playBtn = el('play'), playCap = el('playcap'), timeEl = el('time'), seekFill = el('seekfill');
-var ICON_PLAY  = '<path d="M8 5v14l11-7z"/>';
-var ICON_PAUSE = '<path d="M7 5h4v14H7zm6 0h4v14h-4z"/>';
+var se = new Audio();      /* 効果音は別に持つ(質問の音を止めずに鳴らすため) */
+var playBtn = el('play'), playLabel = el('playlabel');
+var timeEl = el('time'), seekFill = el('seekfill'), playNote = el('playnote');
 /* 質問の音だけ、再生時間と進み具合を出す。返し方のお手本を鳴らした時に
    上の数字が動くと、どちらの音の話か分からなくなるため。 */
 var showingTime = true;
@@ -570,16 +665,18 @@ function paintTime() {
     ? (audio.currentTime / audio.duration * 100) : 0;
   seekFill.style.width = w + '%';
 }
-function stopLook(cap) {
+function stopLook(label) {
   playBtn.classList.remove('playing');
-  el('playicon').innerHTML = ICON_PLAY;
-  playCap.textContent = cap;
+  playLabel.textContent = label;
 }
 audio.addEventListener('loadedmetadata', paintTime);
 audio.addEventListener('timeupdate', paintTime);
-audio.addEventListener('ended', function () { stopLook('もう一度聞く'); paintTime(); });
+audio.addEventListener('ended', function () {
+  if (showingTime) { stopLook('もう一度聞く'); paintTime(); }
+});
 audio.addEventListener('error', function () {
-  stopLook('音が出ないときは、\n音量とマナーモードを確認してください');
+  stopLook('もう一度聞く');
+  playNote.textContent = '音が出ないときは、\n音量とマナーモードを確認してください';
 });
 
 function playSrc(src, isQuestion) {
@@ -587,11 +684,7 @@ function playSrc(src, isQuestion) {
   try { audio.pause(); } catch (e) {}
   audio.src = src;
   audio.currentTime = 0;
-  if (isQuestion) {
-    playBtn.classList.add('playing');
-    el('playicon').innerHTML = ICON_PAUSE;
-    playCap.textContent = '再生中…';
-  }
+  if (isQuestion) { playBtn.classList.add('playing'); playLabel.textContent = '再生中…'; }
   var p = audio.play();
   if (p && p.catch) p.catch(function () {
     if (isQuestion) stopLook('もう一度タップしてください');
@@ -609,18 +702,25 @@ playBtn.addEventListener('click', function () {
   playQuestion();
 });
 
-function paintOpts() {
-  el('v-f').className = voice === 'f' ? 'mini on' : 'mini';
-  el('v-m').className = voice === 'm' ? 'mini on' : 'mini';
-  el('sp-normal').className = slow ? 'mini' : 'mini on';
-  el('sp-slow').className = slow ? 'mini on' : 'mini';
+/* ── 声・速さ(畳み + セグメント) ── */
+var settoggle = el('settoggle'), setpanel = el('setpanel');
+settoggle.addEventListener('click', function () {
+  var open = settoggle.getAttribute('aria-expanded') === 'true';
+  settoggle.setAttribute('aria-expanded', String(!open));
+  setpanel.hidden = open;
+});
+function paintSegs() {
+  el('v-f').setAttribute('aria-checked', voice === 'f' ? 'true' : 'false');
+  el('v-m').setAttribute('aria-checked', voice === 'm' ? 'true' : 'false');
+  el('sp-normal').setAttribute('aria-checked', slow ? 'false' : 'true');
+  el('sp-slow').setAttribute('aria-checked', slow ? 'true' : 'false');
 }
-el('v-f').addEventListener('click', function () { voice = 'f'; paintOpts(); playQuestion(); });
-el('v-m').addEventListener('click', function () { voice = 'm'; paintOpts(); playQuestion(); });
-el('sp-normal').addEventListener('click', function () { slow = false; paintOpts(); playQuestion(); });
-el('sp-slow').addEventListener('click', function () { slow = true; paintOpts(); playQuestion(); });
+el('v-f').addEventListener('click', function () { voice = 'f'; paintSegs(); playQuestion(); });
+el('v-m').addEventListener('click', function () { voice = 'm'; paintSegs(); playQuestion(); });
+el('sp-normal').addEventListener('click', function () { slow = false; paintSegs(); playQuestion(); });
+el('sp-slow').addEventListener('click', function () { slow = true; paintSegs(); playQuestion(); });
 
-/* ── 選択肢 ── */
+/* ── 3択 ── */
 function shuffle(a) {
   for (var j = a.length - 1; j > 0; j--) {
     var k = Math.floor(Math.random() * (j + 1));
@@ -638,41 +738,58 @@ function renderChoices() {
   shuffle(Q.choices.slice()).forEach(function (text) {
     var b = document.createElement('button');
     b.type = 'button';
-    b.className = 'choice';
-    b.textContent = text;
-    b.addEventListener('click', function () { answer(text); });
+    b.className = 'quiz-option';
+    var mark = document.createElement('span');
+    mark.className = 'quiz-option-box';
+    var label = document.createElement('span');
+    label.className = 'quiz-option-label';
+    label.textContent = text;
+    b.appendChild(mark);
+    b.appendChild(label);
+    b.addEventListener('click', function () { answer(text, b, mark); });
     box.appendChild(b);
   });
 }
 
-function answer(text) {
+function answer(text, btn, mark) {
   if (answered) return;
   answered = true;
   try { audio.pause(); } catch (e) {}
   stopLook('もう一度聞く');
 
   var right = (text === Q.ja);
-  var all = el('choices').querySelectorAll('.choice');
+  var all = el('choices').querySelectorAll('.quiz-option');
   for (var n = 0; n < all.length; n++) {
     all[n].disabled = true;
-    if (all[n].textContent === Q.ja) all[n].className = 'choice right';
-    else if (all[n].textContent === text) all[n].className = 'choice wrong';
+    var lbl = all[n].querySelector('.quiz-option-label').textContent;
+    if (lbl === Q.ja) {
+      all[n].className = 'quiz-option correct';
+      all[n].querySelector('.quiz-option-box').textContent = '✓';
+    } else if (lbl === text) {
+      all[n].className = 'quiz-option wrong';
+      all[n].querySelector('.quiz-option-box').textContent = '✕';
+    }
   }
+  /* 正解の合図。コース本体と同じ音。質問の音とは別に持っているので、
+     この音で再生ボタンの見た目が動くことはない。 */
+  if (right) { try { se.src = SE_CORRECT; se.currentTime = 0; se.play(); } catch (e) {} }
 
-  var whys = Q.why.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('');
+  var whys = Q.why.map(function (w) { return '<li>' + w + '</li>'; }).join('');
   var replies = Q.replies.map(function (r, idx) {
-    return '<div class="reply' + (idx ? ' alt-reply' : '') + '">' +
+    return '<div class="reply">' +
       (r.label ? '<p class="alt-label">' + esc(r.label) + '</p>' : '') +
       '<p class="reply-ja">' + esc(r.ja) + '</p>' +
       '<div class="peek" id="peek' + idx + '" role="button" tabindex="0" aria-label="英文を表示する">' +
         '<p class="reply-en blurred" id="peeken' + idx + '">' + esc(r.en) + '</p>' +
         '<p class="peek-cap" id="peekcap' + idx + '">' + PEEK_HIDE + '</p>' +
       '</div>' +
-      '<button class="spk" type="button" data-audio="' + r.audio + '">' +
-        '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
-        '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>' +
-        'ふつう</button>' +
-      '<button class="spk" type="button" data-audio="' + r.slow + '">ゆっくり</button>' +
+      '<div class="spk-row">' +
+        '<button class="spk" type="button" data-audio="' + r.audio + '">' +
+          '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+          '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>' +
+          'ふつう</button>' +
+        '<button class="spk" type="button" data-audio="' + r.slow + '">ゆっくり 0.7x</button>' +
+      '</div>' +
     '</div>';
   }).join('');
 
@@ -684,20 +801,18 @@ function answer(text) {
         ? 'この速さで拾えていれば、お店で通用します。あとは「返す言葉が、考えなくても口から出てくるか」だけです。'
         : '知らない単語は1つもありません。聞き取れないのは語彙のせいではなく、音のつながり方を知らないだけです。') +
       '</small></p>' +
-    '<p class="en">' + esc(Q.en) + '</p>' +
-    '<p class="en-ja">' + esc(Q.jaFull) + '</p>' +
-    '<div class="block"><h3>こう聞こえる</h3><p class="kana">' + esc(Q.kana) + '</p></div>' +
-    '<div class="block"><h3>なぜ</h3><ul class="why">' + whys + '</ul></div>' +
-    '<div class="block"><h3>あなたなら、何と返しますか？</h3>' + replies + '</div>';
+    '<p class="answer-en">' + esc(Q.en) + '</p>' +
+    '<p class="answer-ja">' + esc(Q.jaFull) + '</p>' +
+    '<div class="card"><h3>こう聞こえる</h3><p class="kana">' + esc(Q.kana) + '</p></div>' +
+    '<div class="card"><h3>なぜ</h3><ul class="why">' + whys + '</ul></div>' +
+    '<div class="card"><h3>あなたなら、何と返しますか？</h3>' + replies + '</div>';
 
-  /* 返し方のお手本を鳴らす */
   var spks = el('reveal').querySelectorAll('.spk');
   for (var s = 0; s < spks.length; s++) {
     (function (b) {
       b.addEventListener('click', function () { playSrc(b.getAttribute('data-audio'), false); });
     })(spks[s]);
   }
-  /* 英文をタップで出したり隠したり */
   Q.replies.forEach(function (_, idx) {
     var peek = el('peek' + idx), en = el('peeken' + idx), cap = el('peekcap' + idx);
     function toggle() {
@@ -711,7 +826,7 @@ function answer(text) {
     });
   });
 
-  el('tocta').className = 'btn-main';
+  el('tocta').className = 'btn-primary';
 
   if (!sent) {
     sent = true;
@@ -725,7 +840,7 @@ function toTop() { try { window.scrollTo(0, 0); } catch (e) {} }
 el('start').addEventListener('click', function () {
   el('intro').className = 'hidden';
   el('quiz').className = '';
-  paintOpts();
+  paintSegs();
   renderChoices();
   toTop();
   track('start');
@@ -748,8 +863,7 @@ el('again').addEventListener('click', function () {
 
 el('buy').addEventListener('click', function () { track('buy_click'); });
 
-/* リールの印(?v=)を、購入リンクと /eatout/ へのリンクに付け直す。
-   src-tag.js の読み込みが終わったあとに、この画面の分をもう一度。 */
+/* リールの印(?v=)を、購入リンクと /eatout/ へのリンクに付け直す。 */
 if (window.eatoutStampBuyLinks) window.eatoutStampBuyLinks();
 if (window.eatoutCarrySrc) window.eatoutCarrySrc();
 </script>
