@@ -30,7 +30,7 @@
    別物に見えると「これは何の体験だったのか」が伝わらないため。
 
    音声は HTMLAudio で鳴らす。「ゆっくり」に playbackRate は使わない。
-   アプリ側で ffmpeg(atempo)で作った _slow.mp3 を鳴らす。
+   コース本体の側で ffmpeg(atempo)で作った _slow.mp3 を鳴らす。
    playbackRate は音程がずれるうえ、iOSで無音になる個体がある。
    ══════════════════════════════════════════════════════════════ */
 :root{
@@ -181,7 +181,7 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
 .kana{font-family:var(--font-display);font-size:1.5rem;font-weight:700;
   color:var(--navy-deep);letter-spacing:.02em;line-height:1.5}
 
-/* 返し方。アプリ本体と同じく、英文は先にぼかしておく。
+/* 返し方。コース本体と同じく、英文は先にぼかしておく。
    「思い出そうとしてから見る」のと「最初から見える」のとでは
    残り方がまるで違う。ぼかしは本体と同じ9px(弱くすると透けて読める)。 */
 .rv{margin-top:14px;background:#FFFFFF;border:1.5px dashed var(--line);
