@@ -876,7 +876,13 @@
     <span class="eyebrow">What's Inside</span>
     <h2>これだけ練習しておけば、<br>安心。</h2>
     <div class="coverage-chips">
+      <!-- ★2026-09-19 HARU様「ファーストフードのシーンも加えて」。
+           本体(app側)のお店の区分は VENUE_TAG_JA の実測どおり
+           { cafe: 'カフェ', ff: 'ファーストフード', restaurant: 'レストラン' }。
+           「ファストフード」ではなく**ファーストフード**(本体と同じ表記)。
+           並びは、お店の種類3つ → 場面3つ の順にそろえてある。 -->
       <span class="chip">カフェ</span>
+      <span class="chip">ファーストフード</span>
       <span class="chip">レストラン</span>
       <span class="chip">ドリンク</span>
       <span class="chip">お会計</span>
@@ -965,7 +971,9 @@
       <div class="note">買い切り</div>
       <hr>
       <div class="includes">
-        <div><span class="ck">✓</span>入店から退店まで、カフェ・レストランの13場面</div>
+        <!-- 意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
+             幅任せだと320pxで「ファーストフー／ド」「13／場面」と割れた。 -->
+        <div><span class="ck">✓</span><span><span class="nowrap">カフェ</span>・<span class="nowrap">ファーストフード</span>・<span class="nowrap">レストラン</span><br>入店から退店までの<span class="nowrap">13場面</span></span></div>
         <div><span class="ck">✓</span>ネイティブ音声（男性・女性）</div>
         <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
         <div><span class="ck">✓</span>つながる音・リンキングのコツ</div>
