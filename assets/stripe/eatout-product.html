@@ -26,8 +26,8 @@ body{width:1024px;height:1024px;font-family:var(--gothic);
 .island{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:106px;height:29px;
   background:#17161A;border-radius:999px;z-index:5}
 /* 状態バー */
-.status{display:flex;justify-content:space-between;align-items:center;
-  padding:17px 26px 0;font-size:14px;font-weight:700;color:var(--ink)}
+.status{display:flex;justify-content:space-between;align-items:center;flex:none;
+  background:#fff;padding:17px 26px 6px;font-size:14px;font-weight:700;color:var(--ink)}
 .status .right{display:flex;align-items:center;gap:5px}
 .bars{display:flex;align-items:flex-end;gap:2px;height:11px}
 .bars i{width:3px;background:var(--ink);border-radius:1px}
@@ -35,7 +35,13 @@ body{width:1024px;height:1024px;font-family:var(--gothic);
 .batt::after{content:'';position:absolute;right:-3.2px;top:3.4px;width:2px;height:4px;background:var(--ink);border-radius:0 1px 1px 0}
 .batt i{display:block;height:100%;width:78%;background:var(--ink);border-radius:1px}
 
-.body{padding:22px 22px 0;flex:1;display:flex;flex-direction:column}
+/* ★2026-09-19 HARU様からパスワードをいただいたので、**本物のコース画面**を
+   撮って差し替えた(assets/stripe/app-screen.png)。それまでは同じ値で
+   組み直した絵だった。撮り方は README を参照。
+   時刻の帯だけはこちらで描いている —— アプリの画面写真には入らないため。
+   帯の地を白にしてあるのは、アプリのヘッダー(.topbar)が白で、継ぎ目が
+   見えないようにするため(実測 rgb(255,255,255))。 */
+.shot{display:block;width:100%;flex:1;object-fit:cover;object-position:top}
 /* ヘッダー(◎ + 場面名 + 札 + 数字) */
 .head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
 .cat{display:flex;align-items:center;gap:8px}
@@ -95,46 +101,7 @@ body{width:1024px;height:1024px;font-family:var(--gothic);
         </span>
       </div>
 
-      <div class="body">
-        <div class="head">
-          <span class="cat">
-            <svg viewBox="0 0 32 32" aria-hidden="true">
-              <circle cx="16" cy="16" r="16" fill="#221D18"/>
-              <circle cx="16" cy="16" r="2.7" fill="#E2A33D"/>
-              <circle cx="16" cy="16" r="7.2" fill="none" stroke="#E2A33D" stroke-width="2"/>
-              <circle cx="16" cy="16" r="11.8" fill="none" stroke="#E2A33D" stroke-width="1.6" opacity=".55"/>
-            </svg>
-            <span class="cat-name">注文</span>
-          </span>
-          <span class="prog">2 / 11</span>
-        </div>
-        <span class="kind">リスニング</span>
-        <div class="hr"></div>
-
-        <div class="play">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-          音声を聞く
-        </div>
-
-        <div class="settings">
-          <span>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-              <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/>
-              <line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/>
-            </svg>
-            声・速さ
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </span>
-        </div>
-
-        <p class="q">いま、何と言われましたか?</p>
-        <div class="opts">
-          <div class="opt"><span class="box"></span><span>もう少しお時間いりますか?</span></div>
-          <div class="opt ok"><span class="box">✓</span><span>ご注文はお決まりですか?</span></div>
-          <div class="opt"><span class="box"></span><span>何になさいますか?</span></div>
-        </div>
-
-      </div>
+      <img class="shot" src="app-screen.png" alt="">
     </div>
   </div>
 
