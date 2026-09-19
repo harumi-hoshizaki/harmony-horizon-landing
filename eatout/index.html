@@ -120,8 +120,17 @@
   .on-dark .lede { color: rgba(251,249,246,0.78); }
 
   /* ---------------- Buttons ---------------- */
+  /* ★2026-09-19 HARU様「ボタンが丸っこい角になってますが、
+     このアプリは角があるはず」。そのとおりでした。
+     コース本体(app側 eatout/listening)の決まりは
+       --radius-btn: 0;   （実際に押すボタン・選択肢・セグメントだけ）
+     で、2026-09-09 の Phase 3 に「押すボタンなので角を落とす」と
+     書いてあります。このLPだけ 14px / 12px / 999px の丸のままでした。
+     ★カード(.trio-card / .price-card / .faq-item)と札(.chip)は
+       **丸のまま**です。本体もカードは10px、札は999pxで丸い ——
+       角ゼロは「押す物」だけの決まりです。 */
   .btn {
-    display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 14px;
+    display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 0;
     font-size: 16px; letter-spacing: 0.02em; font-weight: 500; cursor: pointer; border: none;
     transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
   }
@@ -160,7 +169,7 @@
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   .btn-outline:hover { background: var(--espresso); color: var(--cream); }
-  .btn-small { padding: 12px 22px; font-size: 16px; border-radius: 12px; }
+  .btn-small { padding: 12px 22px; font-size: 16px; border-radius: 0; }
   /* 狭い画面ではボタンの左右の余白を詰める。字は詰めない（16px を守る）。 */
   @media (max-width: 460px) { .btn-small { padding: 12px 15px; } }
   /* ロゴの側も少し詰める。ただし「耳から、声へ」は 13px のまま。
@@ -492,7 +501,7 @@
   .trial-step2.show { display: block; }
   .trial-prompt-bubble { display: inline-block; background: var(--espresso); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 500; margin: 12px 0 6px; font-style: italic; }
   .trial-prompt-jp { font-size: 16px; color: var(--ink-soft); margin-bottom: 20px; }
-  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--espresso); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
+  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--espresso); color: var(--cream); border: none; border-radius: 0; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
   .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
   .trial-mic-note { font-size: 16px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
