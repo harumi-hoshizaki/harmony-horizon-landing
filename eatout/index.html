@@ -13,15 +13,23 @@
      法務ページと別のサイトに見えていた。変数名はそのままに、
      中身を共通のトークンへ置き換えている（追補4 §153-B）。 */
   :root {
-    --paper:      #FBF9F6;
+    /* ★2026-09-19 名前を直しました。
+       ここの --navy-* は**1つも紺ではありません**。全部こげ茶です。
+       名前は style.css（サイトの他のページ）から写したもので、あちらの
+       --navy-deep は #0F1E2B ＝ 本物の紺。**名前だけ写して、値を茶色に
+       変えたまま**でした。触る人が「紺」だと思って使ってしまいます。
+       同じ値のトークンも2組ありました（片方だけ直した日にずれます）:
+         --paper / --cream     どちらも #FBF9F6
+         --deep  / --navy-deep どちらも #1F1B17
+         --navy  / --deep-lift どちらも #2C2620
+       1つの値に1つの名前だけ残します。
+       ★見た目は1ピクセルも変えていません（全要素の色を変更前後で
+         突き合わせて確認済み）。 */
     --paper-warm: #F4F0E9;
-    --deep:       #1F1B17;
-    --deep-lift:  #2C2620;
 
     /* 旧名を残したまま、共通の色を指す */
-    --navy-deep:  #1F1B17;
-    --navy:       #2C2620;
-    --navy-mid:   #3A342C;
+    --espresso:      #1F1B17;   /* いちばん濃いこげ茶。旧 --deep / --navy-deep */
+    --espresso-lift: #2C2620;   /* 一段明るいこげ茶。旧 --navy / --deep-lift */
     --cream:      #FBF9F6;
     --cream-soft: #F4F0E9;
     --gold:       #9C5C33;
@@ -95,7 +103,11 @@
 
   p { margin: 0 0 1em; }
   .lede { color: var(--ink-soft); font-size: 1.0625rem; line-height: 1.9; }
-  .on-dark .lede { color: rgba(250,243,230,0.78); }
+  /* ★2026-09-19 ここは #FBF9F6 でした。このページのクリームは
+     --cream(#FBF9F6)で、#FBF9F6 は**コース本体側の古い値**が
+     紛れ込んだものです（6か所）。目では見分けられない差ですが、
+     クリームを変える日に、ここだけ古いまま残ります。 */
+  .on-dark .lede { color: rgba(251,249,246,0.78); }
 
   /* ---------------- Buttons ---------------- */
   .btn {
@@ -106,7 +118,7 @@
   /* サイト共通のボタン。明るい面では濃い炭に紙色の文字、
      暗い面では反転させる。以前の淡い金は、レッスンのページや
      法務ページのボタンと別物に見えていた（追補4 §169）。 */
-  .btn-gold { background: var(--deep); color: var(--paper); box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45); }
+  .btn-gold { background: var(--espresso); color: var(--cream); box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45); }
   .btn-gold:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(31,27,23,0.5); }
   /* 暗い面（ヘッダー・締めの帯）では反転させる。
      ここを忘れると、暗い地に暗いボタンで見えなくなる。 */
@@ -122,14 +134,14 @@
      ボタンの形が見えていませんでした。
      上の注意書きが、まさにこの事故を予言していました。
      反転の中身は、同じく暗い面にある .hero .btn-gold に合わせています。 */
-  .on-dark .btn-gold { background: var(--cream); color: var(--deep); }
+  .on-dark .btn-gold { background: var(--cream); color: var(--espresso); }
   /* 指で触るとホバーが貼り付く（iOS）。ホバーできる装置だけに当てる。 */
   @media (hover: hover) {
-    .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
+    .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--espresso); }
   }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
-  .btn-outline:hover { background: var(--navy-deep); color: var(--cream); }
+  .btn-outline:hover { background: var(--espresso); color: var(--cream); }
   .btn-small { padding: 12px 22px; font-size: 16px; border-radius: 12px; }
   /* 狭い画面ではボタンの左右の余白を詰める。字は詰めない（16px を守る）。 */
   @media (max-width: 460px) { .btn-small { padding: 12px 15px; } }
@@ -185,7 +197,7 @@
      幅が広い時は帯をやめて全面に敷き、横の階調で左だけ暗くする。 */
   .hero {
     position: relative; overflow: hidden;
-    background: var(--deep); color: var(--cream);
+    background: var(--espresso); color: var(--cream);
     padding: 0 !important; text-align: left;
 
     /* 携帯：帯の高さは「画面の幅」ではなく「残っている高さ」から決める。
@@ -231,8 +243,8 @@
   .hero .lede { max-width: 30em; margin: 0 0 34px; font-size: 1.0625rem; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: 16px; color: rgba(251,249,246,0.74); margin-top: 16px; }
   /* 暗い地に濃いボタンでは見えない。ヘッダーと同じく反転させる。 */
-  .hero .btn-gold { background: var(--cream); color: var(--deep); }
-  .hero .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
+  .hero .btn-gold { background: var(--cream); color: var(--espresso); }
+  .hero .btn-gold:hover { background: var(--gold-pale); color: var(--espresso); }
 
   @media (min-width: 900px) {
     /* 卓上：横幅があるので帯をやめて全面に敷く。
@@ -281,13 +293,13 @@
 
   /* ---------------- Phone mockup ---------------- */
   .phone {
-    width: 280px; background: var(--cream); border-radius: 40px; border: 10px solid var(--navy-deep);
+    width: 280px; background: var(--cream); border-radius: 40px; border: 10px solid var(--espresso);
     box-shadow: var(--shadow-card); overflow: hidden; position: relative; text-align: left;
     font-family: var(--font-body); color: var(--ink);
   }
   .phone::before {
     content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 90px; height: 22px; background: var(--navy-deep); border-radius: 0 0 16px 16px; z-index: 2;
+    width: 90px; height: 22px; background: var(--espresso); border-radius: 0 0 16px 16px; z-index: 2;
   }
   .phone-screen { padding: 34px 18px 22px; }
   .ph-hr { height: 1px; background: var(--line); margin: 10px 0 18px; }
@@ -368,7 +380,7 @@
   .chat-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
   .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: 17px; line-height: 1.6; }
   .chat-row.staff .chat-bubble { background: #FFFFFF; border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-soft); }
-  .chat-row.you .chat-bubble { background: var(--navy-deep); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
+  .chat-row.you .chat-bubble { background: var(--espresso); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
   /* 2026-08-27: 読む文章の中央揃えをやめる。
      日本語の本文を中央に置くと、左右どちらの端もそろわず、のこぎり状に
      なる。折り返しは端末の幅で変わるので、「ん。」「れない。」のような
@@ -460,9 +472,9 @@
   .trial-feedback.show { display: block; }
   .trial-step2 { display: none; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-step2.show { display: block; }
-  .trial-prompt-bubble { display: inline-block; background: var(--navy-deep); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 500; margin: 12px 0 6px; font-style: italic; }
+  .trial-prompt-bubble { display: inline-block; background: var(--espresso); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 500; margin: 12px 0 6px; font-style: italic; }
   .trial-prompt-jp { font-size: 16px; color: var(--ink-soft); margin-bottom: 20px; }
-  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--navy-deep); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
+  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--espresso); color: var(--cream); border: none; border-radius: 999px; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
   .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
   .trial-mic-note { font-size: 16px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
@@ -499,7 +511,7 @@
   @media (max-width: 820px) { .trio { grid-template-columns: 1fr; } }
   .trio-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 18px; padding: 32px 28px; box-shadow: var(--shadow-soft); }
   .trio-icon {
-    width: 46px; height: 46px; border-radius: 50%; background: var(--navy-deep); display: flex; align-items: center;
+    width: 46px; height: 46px; border-radius: 50%; background: var(--espresso); display: flex; align-items: center;
     justify-content: center; margin-bottom: 20px;
   }
   .trio-icon svg { width: 20px; height: 20px; }
@@ -549,12 +561,12 @@
   .cta-band.on-dark {
     background:
       radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.2), transparent 65%),
-      linear-gradient(180deg, var(--navy) 0%, var(--navy-deep) 100%);
+      linear-gradient(180deg, var(--espresso-lift) 0%, var(--espresso) 100%);
   }
   .cta-band.on-dark .eyebrow { color: var(--gold-bright); }
   .cta-band.on-dark .eyebrow::before { background: var(--gold-bright); }
-  .cta-lede-pre { font-size: 16px; color: rgba(250,243,230,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
-  .cta-price-note { font-size: 16px; color: rgba(250,243,230,0.65); margin-top: 14px; }
+  .cta-lede-pre { font-size: 16px; color: rgba(251,249,246,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
+  .cta-price-note { font-size: 16px; color: rgba(251,249,246,0.65); margin-top: 14px; }
 
   /* ---------------- Footer ---------------- */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
@@ -935,21 +947,21 @@
     <div class="trio">
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF3E6" stroke="none"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FBF9F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FBF9F6" stroke="none"/></svg>
         </div>
         <h3>好みの声と速さで</h3>
         <p>男性・女性の声、ふつう/ゆっくりの速度を切り替えて、自分の耳のペースで聞き取り練習ができます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FBF9F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
         <h3>発音Tips・基本文法</h3>
         <p>つながる音・リンキングのコツと基本文法をあわせて解説。意味確認クイズで、その場で理解度をチェックできます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF3E6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FBF9F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <h3>マイクで発音チェック</h3>
         <p>お手本を聞いたあと、マイクに向かって言ってみます。聞こえたとおりの英語が文字で出るので、どこが違うかが目で分かります。</p>
