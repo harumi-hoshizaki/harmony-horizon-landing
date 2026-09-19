@@ -1,0 +1,181 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=EB+Garamond:wght@600&display=swap" rel="stylesheet">
+<style>
+/* コース本体(app側 eatout/listening/index.html)の :root 実測値。 */
+:root{
+  --ink:#221D18; --paper:#FDFCFA; --surface:#FFF;
+  --accent-line:#A3782D; --accent-text:#694D11;
+  --accent-wash:#F3E4C6; --accent-tint:#F9F1E4;
+  --muted:#5C5548; --neutral:#A69C8C; --line:#E8E1D4;
+  --ink-hair:rgba(34,29,24,.14);
+  --gothic:'Zen Kaku Gothic New','Hiragino Sans',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1024px;height:1024px;font-family:var(--gothic);
+  background:radial-gradient(120% 100% at 50% 0%, #FFFDF9 0%, #F6EEE1 58%, #EFE3D0 100%);
+  display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+/* 背景に、ごく淡いブランドの印。塗りつぶさない程度に。 */
+.bg-mark{position:absolute;right:-150px;bottom:-170px;width:620px;height:620px;opacity:.07}
+.stage{display:flex;flex-direction:column;align-items:center;gap:30px;position:relative;z-index:1}
+
+/* ---- 携帯 ---- */
+.phone{width:376px;height:762px;background:#17161A;border-radius:52px;padding:11px;
+  box-shadow:0 46px 90px -30px rgba(34,29,24,.45), 0 8px 20px rgba(34,29,24,.16);position:relative}
+.screen{width:100%;height:100%;background:var(--paper);border-radius:42px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column}
+.island{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:106px;height:29px;
+  background:#17161A;border-radius:999px;z-index:5}
+/* 状態バー */
+.status{display:flex;justify-content:space-between;align-items:center;
+  padding:17px 26px 0;font-size:14px;font-weight:700;color:var(--ink)}
+.status .right{display:flex;align-items:center;gap:5px}
+.bars{display:flex;align-items:flex-end;gap:2px;height:11px}
+.bars i{width:3px;background:var(--ink);border-radius:1px}
+.batt{width:23px;height:11.5px;border:1.4px solid var(--ink);border-radius:3px;position:relative;padding:1.4px}
+.batt::after{content:'';position:absolute;right:-3.2px;top:3.4px;width:2px;height:4px;background:var(--ink);border-radius:0 1px 1px 0}
+.batt i{display:block;height:100%;width:78%;background:var(--ink);border-radius:1px}
+
+.body{padding:22px 22px 26px;flex:1;display:flex;flex-direction:column}
+/* ヘッダー(◎ + 場面名 + 札 + 数字) */
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.cat{display:flex;align-items:center;gap:8px}
+.cat svg{width:22px;height:22px;flex:none;display:block}
+.cat-name{font-size:17px;font-weight:700;color:var(--ink)}
+.prog{font-size:15px;font-weight:700;letter-spacing:.04em;color:var(--muted);flex:none;padding-top:2px}
+.kind{align-self:flex-start;margin:4px 0 0 30px;padding:3px 10px;border-radius:999px;
+  background:var(--accent-tint);color:var(--accent-text);font-size:13px;font-weight:700}
+.hr{height:1px;background:var(--line);margin:15px 0 0}
+
+/* 再生は横長の帯(丸ボタンは使わない) */
+.play{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:56px;
+  margin-top:24px;background:var(--accent-tint);color:var(--ink);border:1.5px solid var(--ink-hair);
+  font-size:17px;font-weight:700}
+.play svg{width:26px;height:26px}
+/* 声・速さは畳んである */
+.settings{display:flex;justify-content:center;margin-top:20px}
+.settings span{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);
+  background:#fff;padding:9px 14px;font-size:15px;font-weight:700;color:var(--muted)}
+.settings svg{width:16px;height:16px}
+
+.q{margin-top:26px;font-size:22px;font-weight:700;line-height:1.6;letter-spacing:.04em;color:var(--ink)}
+.opts{margin-top:16px;display:flex;flex-direction:column;gap:2px}
+.opt{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1.5px solid var(--line);
+  padding:15px 16px;font-size:17px;line-height:1.6;letter-spacing:.03em;color:var(--ink);min-height:56px}
+.opt .box{flex:none;width:22px;height:22px;margin-top:2px;border:1.5px solid var(--neutral);
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.opt.ok{background:#EAF7EC;border-color:#1D8A3C;color:#14562A;font-weight:700}
+.opt.ok .box{background:#1D8A3C;border-color:#1D8A3C}
+
+/* ---- 携帯の下のブランド ---- */
+/* コツのたたみ(本体の .tip-acc)。白いカード+丸いアイコン+見出し+ >。
+   ★hintBtn(金の丸+2行)は本体では定義だけで一度も呼ばれていない部品
+     だったので使わない。買う人が実際に見る形だけを写す。 */
+.tip{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  margin-top:16px;margin-bottom:16px;background:#fff;border:1.5px solid var(--line);
+  padding:12px 16px;box-shadow:0 10px 26px rgba(34,29,24,.07)}
+.tip-l{display:flex;align-items:center;gap:12px;min-width:0}
+.tip-ic{flex:none;width:34px;height:34px;border-radius:50%;background:#F4F3F0;color:var(--accent-text);
+  display:flex;align-items:center;justify-content:center}
+.tip-ic svg{width:18px;height:18px}
+.tip b{font-size:17px;font-weight:700;color:var(--ink)}
+.tip-chev{flex:none;width:18px;height:18px;color:var(--accent-line)}
+/* 次へ(本体の .btn-primary)。角ゼロ・濃い地に紙色の字。 */
+.next{display:flex;align-items:center;justify-content:center;width:100%;margin-top:auto;padding-top:0;
+  min-height:50px;padding:13px 20px;color:var(--paper);
+  background:linear-gradient(180deg,#5A514B 0%,#221D18 100%);
+  box-shadow:0 3px 8px rgba(34,29,24,.28), inset 0 1px 0 rgba(255,255,255,.10);
+  font-size:19px;font-weight:700;line-height:1.9}
+.brand{display:flex;align-items:center;gap:13px}
+.brand svg{width:44px;height:44px;flex:none}
+.brand-t{display:flex;flex-direction:column;gap:2px}
+.brand-w{font-family:'EB Garamond',serif;font-weight:600;font-size:30px;letter-spacing:.02em;
+  line-height:1.05;color:var(--ink)}
+.brand-s{font-size:16px;color:var(--muted);letter-spacing:.1em}
+</style></head><body>
+
+<svg class="bg-mark" viewBox="0 0 32 32" aria-hidden="true">
+  <circle cx="16" cy="16" r="2.7" fill="#A3782D"/>
+  <circle cx="16" cy="16" r="7.2" fill="none" stroke="#A3782D" stroke-width="1.4"/>
+  <circle cx="16" cy="16" r="11.8" fill="none" stroke="#A3782D" stroke-width="1"/>
+  <circle cx="16" cy="16" r="15.4" fill="none" stroke="#A3782D" stroke-width=".7"/>
+</svg>
+
+<div class="stage">
+  <div class="phone">
+    <div class="island"></div>
+    <div class="screen">
+      <div class="status">
+        <span>9:41</span>
+        <span class="right">
+          <span class="bars"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8.5px"></i><i style="height:11px"></i></span>
+          <svg width="16" height="12" viewBox="0 0 16 12" fill="#221D18"><path d="M8 10.2 6.1 8.3a2.7 2.7 0 0 1 3.8 0L8 10.2Zm3.1-3.1a5.6 5.6 0 0 0-6.2 0L3.5 5.7a7.6 7.6 0 0 1 9 0L11.1 7.1ZM14 4.2a9.6 9.6 0 0 0-12 0L.6 2.8a11.6 11.6 0 0 1 14.8 0L14 4.2Z"/></svg>
+          <span class="batt"><i></i></span>
+        </span>
+      </div>
+
+      <div class="body">
+        <div class="head">
+          <span class="cat">
+            <svg viewBox="0 0 32 32" aria-hidden="true">
+              <circle cx="16" cy="16" r="16" fill="#221D18"/>
+              <circle cx="16" cy="16" r="2.7" fill="#E2A33D"/>
+              <circle cx="16" cy="16" r="7.2" fill="none" stroke="#E2A33D" stroke-width="2"/>
+              <circle cx="16" cy="16" r="11.8" fill="none" stroke="#E2A33D" stroke-width="1.6" opacity=".55"/>
+            </svg>
+            <span class="cat-name">入店のあいさつ</span>
+          </span>
+          <span class="prog">1 / 3</span>
+        </div>
+        <span class="kind">リスニング</span>
+        <div class="hr"></div>
+
+        <div class="play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+          音声を聞く
+        </div>
+
+        <div class="settings">
+          <span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/>
+              <line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/>
+            </svg>
+            声・速さ
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </span>
+        </div>
+
+        <p class="q">いま、何と言われましたか?</p>
+        <div class="opts">
+          <div class="opt"><span class="box"></span><span>ミルクは何にしますか?</span></div>
+          <div class="opt ok"><span class="box">✓</span><span>こんにちは、元気ですか?</span></div>
+          <div class="opt"><span class="box"></span><span>ご注文はお決まりですか?</span></div>
+        </div>
+
+        <div class="tip">
+          <span class="tip-l">
+            <span class="tip-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12c4-5 12-5 16 0"/><path d="M4 12c4 5 12 5 16 0"/></svg></span>
+            <b>つながる音Tips</b>
+          </span>
+          <svg class="tip-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"/></svg>
+        </div>
+
+        <div class="next">次へ</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="brand">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <circle cx="16" cy="16" r="16" fill="#221D18"/>
+      <circle cx="16" cy="16" r="2.7" fill="#E2A33D"/>
+      <circle cx="16" cy="16" r="7.2" fill="none" stroke="#E2A33D" stroke-width="2"/>
+      <circle cx="16" cy="16" r="11.8" fill="none" stroke="#E2A33D" stroke-width="1.6" opacity=".55"/>
+    </svg>
+    <span class="brand-t">
+      <span class="brand-w">Ear to Voice</span>
+      <span class="brand-s">飲食店英会話</span>
+    </span>
+  </div>
+</div>
+</body></html>
