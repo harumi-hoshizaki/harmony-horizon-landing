@@ -316,10 +316,14 @@
   .ph-opt.correct { background: #EAF7EC; border-color: #1D8A3C; color: #14562A; font-weight: 700; }
   .ph-opt.correct .box { background: #1D8A3C; border-color: #1D8A3C; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; }
 
-  /* ★2026-09-19 もとは「Coming soon」の札でした。app側が2026-09-18に
-     AI_ENABLED を true にして**公開済み**になったので、札の役目が変わりました。
-     いまは「本体の値段には入っていない(別売り)」を示す札です。
-     クラス名 .soon のままだと嘘になるので .extra に改名。 */
+  /* ★2026-09-19 この札は2度書き換えています。経緯を残します ——
+       ① 「Coming soon」… app側が同じ日に公開したので嘘になった
+       ② 「別売り」    … 私が FREE_SESSIONS = 0 を読み違えた。あれは
+                          「**買っていない人**に無料の回数は無い」の意味で、
+                          購入者は ¥1,980 で10回もらえる(verify.js)
+       ③ いま「10シーン付き」… 本当のところ。
+     ★数や扱いを変える時は、app側の verify.js(コースで入る回数)と
+       AI_PRICE_JA(追加の値段)を**読んでから**書くこと。推測で書かない。 */
   /* ★2026-09-19 このページは class="nowrap" を何か所かで使っているのに、
      **定義が無かった**（＝ずっと効いていなかった）。語や値段が行末で
      割れるのを止めるための印なので、ここで定義する。 */
@@ -857,7 +861,7 @@
            言葉で解決するところにあります(2026-09-17 HARU様のご指摘を
            app側 aiConversationEl に書き残したものと同じ理由)。
            文言はアプリの中の同じ行から採った。 -->
-      <div class="row"><span class="n">05</span><span class="t">AI英会話チャレンジ<span class="extra">別売り</span></span><span class="d">台本なし。店で困ったことを、英語で解決する。</span></div>
+      <div class="row"><span class="n">05</span><span class="t">AI英会話チャレンジ<span class="extra">10シーン付き</span></span><span class="d">台本なし。店で困ったことを、英語で解決する。</span></div>
     </div>
     <p class="big-statement">読むだけでは、<em>本番で<br class="br-mobile-only">聞き取れない。</em></p>
   </div>
@@ -965,23 +969,26 @@
         <div><span class="ck">✓</span>基本文法の解説</div>
         <div><span class="ck">✓</span>意味確認クイズ</div>
         <div><span class="ck">✓</span>マイクで発音を確かめる練習</div>
+        <div><span class="ck">✓</span>AI英会話チャレンジ 10シーン</div>
       </div>
 
-      <!-- ★2026-09-19 AI英会話チャレンジを「含まれるもの」の ✓ から外した。
-           app側(eatout/listening/index.html と api/eatout/ai-quota.js)を読むと:
-             AI_ENABLED = true       → **もう使える**(Coming soon ではない)
-             FREE_SESSIONS = 0       → ¥1,980 には**1回も含まれない**
-             SESSIONS_PER_PACK = 10
-             AI_PRICE_JA = '¥980'    → ¥980 で10シーンずつ買い足す
-           ✓ に並べると「¥1,980に入っている」と読めてしまうので、
-           別の行に分けて値段も書く。
-           ★この4つのうちどれかが変わったら、ここも直すこと。 -->
+      <!-- ★2026-09-19(2回目) 私の読み違いを直しました。
+           前の版で「¥1,980 には1回も含まれない」と書きましたが、**逆でした**。
+           api/eatout/verify.js にはっきり書いてあります ——
+             「コース本体(¥1,980) … 買うと10回が入る」
+           FREE_SESSIONS = 0 は「**買っていない人**に無料の回数は無い」と
+           いう意味で、購入者の話ではありませんでした。
+           いまの本当のところ:
+             ¥1,980 を買う      → AI英会話チャレンジが **10シーン** 付く
+             それ以上やりたい人 → アプリの中から ¥980 で10シーンずつ追加
+           (SESSIONS_PER_PACK = 10。コースでも追加でも入る数は同じ10。)
+           ★この数が変わったら、ここと下のFAQも直すこと。 -->
       <p class="addon">
-        <b>AI英会話チャレンジ</b><span class="nowrap">（別売り）</span><br>
-        <!-- ★意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
-             幅任せにすると393pxで「話しま／す。」と活用語尾の途中で割れた。 -->
-        台本なしで、<br>AIと英語で話します。<br>
-        <span class="nowrap">¥980 で10シーンずつ</span><br>追加できます。
+        <!-- 意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
+             幅任せだと320pxで「中か／ら」「追加できま／す」と割れた。 -->
+        11シーン目からは、<br>
+        <span class="nowrap">¥980 で10シーンずつ</span><br>
+        追加できます。
       </p>
       <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
     </div>
@@ -1004,7 +1011,7 @@
       </details>
       <details class="faq-item">
         <summary>AI英会話チャレンジとは何ですか?<span class="sign">+</span></summary>
-        <div class="a">フレーズの練習を終えたあと、AIを相手に話す仕上げのパートです。台本はありません。「注文したものと違う料理が来た」のように、実際のお店で起きる困りごとが出されるので、それを自分の英語で解決します。<br><br><b>このパートは別売りです。</b>コース本体（¥1,980）には含まれていません。お使いになる場合は、アプリの中から ¥980 で10シーンずつ追加できます。追加しなくても、聞き取り・意味の確認・自分の声で返す練習・マイクでの発音チェックは、すべてお使いいただけます。</div>
+        <div class="a">フレーズの練習を終えたあと、AIを相手に話す仕上げのパートです。台本はありません。「注文したものと違う料理が来た」のように、実際のお店で起きる困りごとが出されるので、それを自分の英語で解決します。<br><br><b>コースには10シーン分が含まれています。</b>もっと練習したい場合は、コースの中から ¥980 で10シーンずつ追加できます。<br><br>なお、聞き取り・意味の確認・自分の声で返す練習・マイクでの発音チェックは、AIの回数とは関係なく、すべて何度でもお使いいただけます。</div>
       </details>
       <details class="faq-item">
         <summary>実際のお店と同じ質問が出ますか?<span class="sign">+</span></summary>
