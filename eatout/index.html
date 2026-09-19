@@ -512,7 +512,9 @@
   .trio-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 18px; padding: 32px 28px; box-shadow: var(--shadow-soft); }
   .trio-icon {
     width: 46px; height: 46px; border-radius: 50%; background: var(--espresso); display: flex; align-items: center;
-    justify-content: center; margin-bottom: 20px;
+    /* ★2026-09-19 中の絵の色を、直書き(#FBF9F6)から currentColor に。
+       札を増やすたびに色を書き写すと、クリームを変えた日に取り残される。 */
+    justify-content: center; margin-bottom: 20px; color: var(--cream);
   }
   .trio-icon svg { width: 20px; height: 20px; }
   .trio-card h3 { font-size: 18px; margin-bottom: 8px; }
@@ -898,7 +900,12 @@
            言葉で解決するところにあります(2026-09-17 HARU様のご指摘を
            app側 aiConversationEl に書き残したものと同じ理由)。
            文言はアプリの中の同じ行から採った。 -->
-      <div class="row"><span class="n">05</span><span class="t">AI英会話チャレンジ<span class="extra">10シーン付き</span></span><span class="d">台本なし。店で困ったことを、英語で解決する。</span></div>
+      <!-- ★2026-09-19 04と05の間が抜けていました。コース本体は
+             「01 フレーズ練習 → 02 シーン・シミュレーション」の2段構えで、
+             1文ずつの練習のあとに**通しの会話**があります。
+             ここに無いと、フレーズ練習だけのコースに見えます。 -->
+      <div class="row"><span class="n">05</span><span class="t">通しで話す</span><span class="d">入店から退店まで、実際の1回の外食と同じ順番で。</span></div>
+      <div class="row"><span class="n">06</span><span class="t">AI英会話チャレンジ<span class="extra">10シーン付き</span></span><span class="d">台本なし。店で困ったことを、英語で解決する。</span></div>
     </div>
     <!-- ★2026-09-19 HARU様ご指定の文言と改行位置。「聞き取れない」だけでは
          このコースの半分しか言っていない(聞き取った次に、答える所まである)。
@@ -947,24 +954,53 @@
     <div class="trio">
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FBF9F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FBF9F6" stroke="none"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="currentColor" stroke="none"/></svg>
         </div>
         <h3>好みの声と速さで</h3>
         <p>男性・女性の声、ふつう/ゆっくりの速度を切り替えて、自分の耳のペースで聞き取り練習ができます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FBF9F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
         </div>
         <h3>発音Tips・基本文法</h3>
         <p>つながる音・リンキングのコツと基本文法をあわせて解説。意味確認クイズで、その場で理解度をチェックできます。</p>
       </div>
       <div class="trio-card">
         <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FBF9F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
         </div>
         <h3>マイクで発音チェック</h3>
         <p>お手本を聞いたあと、マイクに向かって言ってみます。聞こえたとおりの英語が文字で出るので、どこが違うかが目で分かります。</p>
+      </div>
+
+      <!-- ★2026-09-19 3つ→6つ。すでにコースに在るのに、このページに
+           一言も書いていなかった3つを足します（新機能としてではなく、
+           最初からそういうコースとして書く）。
+           ★.trio は3列なので、6つでちょうど2段に収まります。
+             4つや5つにすると、desktop で最後の段が欠けます。 -->
+      <div class="trio-card">
+        <div class="trio-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4.5" height="7" rx="2.2"/><rect x="16.5" y="13" width="4.5" height="7" rx="2.2"/></svg>
+        </div>
+        <h3>手が離せない時は、聞き流す</h3>
+        <p>移動中でも、料理をしながらでも。苦手なフレーズだけを選んで流せます。画面を閉じても鳴り続け、止めたい時はワンタップです。</p>
+      </div>
+
+      <div class="trio-card">
+        <div class="trio-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/><path d="M9 15l2 2 4-4"/></svg>
+        </div>
+        <h3>旅行の日から、逆算する</h3>
+        <p>出発の日を決めると、あと何日かが見えます。練習した日は連続日数として積み上がるので、続けている実感が残ります。</p>
+      </div>
+
+      <div class="trio-card">
+        <div class="trio-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        </div>
+        <h3>自分の言葉に置き換えられる</h3>
+        <p>アレルギーや「抜いてほしい物」は、ご自分のものに差し替えられます。覚えるのは、実際に使う一文だけです。</p>
       </div>
     </div>
   </div>
@@ -1059,11 +1095,17 @@
       </details>
       <details class="faq-item">
         <summary>AI英会話チャレンジとは何ですか?<span class="sign">+</span></summary>
-        <div class="a">フレーズの練習を終えたあと、AIを相手に話す仕上げのパートです。台本はありません。「注文したものと違う料理が来た」のように、実際のお店で起きる困りごとが出されるので、それを自分の英語で解決します。<br><br><b>コースには10シーン分が含まれています。</b>もっと練習したい場合は、コースの中から ¥980 で10シーンずつ追加できます。<br><br>なお、聞き取り・意味の確認・自分の声で返す練習・マイクでの発音チェックは、AIの回数とは関係なく、すべて何度でもお使いいただけます。</div>
+        <div class="a">フレーズの練習を終えたあと、AIを相手に話す仕上げのパートです。台本はありません。「注文したものと違う料理が来た」のように、実際のお店で起きる困りごとが出されるので、それを自分の英語で解決します。<br><br>話し終わると、AIが会話をふり返ります。よかった所、もっと良くなる所、そして<b>ご自分では聞き取れていなかった所</b>まで伝えてくれます。会話の全文と和訳も残るので、あとから読み返せます。<br><br><b>コースには10シーン分が含まれています。</b>もっと練習したい場合は、コースの中から ¥980 で10シーンずつ追加できます。<br><br>なお、聞き取り・意味の確認・自分の声で返す練習・マイクでの発音チェックは、AIの回数とは関係なく、すべて何度でもお使いいただけます。</div>
+      </details>
+      <!-- ★2026-09-19 「アプリストアで探したが無い」で止まる人が出ます。
+           コースはブラウザで開く形なので、先に言っておきます。 -->
+      <details class="faq-item">
+        <summary>スマホのアプリですか?<span class="sign">+</span></summary>
+        <div class="a">アプリストアからの入手は要りません。ブラウザで開いてお使いいただけます。「ホーム画面に追加」をしておくと、次からはアプリと同じように1タップで開けます。追加のしかたは、はじめの画面で写真つきでご案内します。</div>
       </details>
       <details class="faq-item">
         <summary>実際のお店と同じ質問が出ますか?<span class="sign">+</span></summary>
-        <div class="a">よく聞かれる質問パターンをもとに構成していますが、実際のお店やスタッフによって質問内容は異なります。あくまで「聞き取り」と「答え方」に慣れるための練習教材としてご利用ください。</div>
+        <div class="a">よく聞かれる質問パターンをもとに構成していますが、実際のお店やスタッフによって質問内容は異なります。あくまで「聞き取り」と「答え方」に慣れるための練習教材としてご利用ください。<br><br>なお、発音の解説は<b>北米英語を基準に</b>しています。</div>
       </details>
     </div>
   </div>
