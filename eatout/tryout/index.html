@@ -529,7 +529,15 @@ body{
       </ul>
       <p class="price-line">
         <span class="price-now">¥1,980</span>
-        <span class="price-cap">買い切り ・ 追加料金なし</span>
+        <!-- ★2026-09-19 HARU様「買い切り ・ 追加料金なし  嘘なので消して」。
+             AI英会話チャレンジが公開されると、10シーンごとに ¥980 の
+             追加パックがある(app側 eatout/listening の AI_PRICE_JA)。
+             「追加料金なし」は、その時点で嘘になる —— というより、
+             追加パックはもう作ってあるので、いま書いてはいけない。
+             「買い切り」(月々の支払いが無いこと)は本当なので残す。
+             ★AI英会話チャレンジが公開される日に、ここへ
+               「AIの追加パックは別料金」と書き足すか決めること。 -->
+        <span class="price-cap">買い切り</span>
       </p>
       <a class="btn-primary" id="buy"
          href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout_tryout"
