@@ -11,6 +11,21 @@ Stripe の商品に登録する画像。Checkout・領収書・購入履歴に�
 Stripe の決まり: 正方形、128×128px 以上、**2MB 以下**、PNG/JPEG/GIF/WEBP。
 どちらも2MB以内に収まっています。
 
+## 映っている場面
+
+**「注文」の場面**（コース本体の `## 注文 (Taking Your Order)` の2問目）。
+店員の `Are you ready to order?` を聞いて、3つから選ぶところです。
+選択肢の3つとも、コース本体に実際にある文です:
+
+| | |
+|---|---|
+| もう少しお時間いりますか? | `Do you need another minute?` |
+| **ご注文はお決まりですか?**（正解） | `Are you ready to order?` |
+| 何になさいますか? | `What would you like?` |
+
+文を変える時は、`scripts/dump-phrases.js`（app 側リポジトリ）で
+**本体に実際にある文**を確かめてから書くこと。作り話を並べない。
+
 ## 中身について
 
 携帯に映っているのは、**コース本体（app 側 `eatout/listening/index.html`）の
