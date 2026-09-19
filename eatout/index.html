@@ -29,6 +29,16 @@
 
     /* 旧名を残したまま、共通の色を指す */
     --espresso:      #1F1B17;   /* いちばん濃いこげ茶。旧 --deep / --navy-deep */
+    /* ★2026-09-19 HARU様「黒のアイコン・ボタンを、コースの中の
+       『¥980 で、10回 追加する』と同じ焦茶グラデーションに」。
+       べた塗りの #1F1B17 は、小さい丸や広いボタンだと黒に見えます。
+       コース本体は .btn-primary を上から下への焦茶のグラデで描いていて、
+       その上端が --ink-light #5A514B です（app側 eatout/listening の実測）。
+       同じ値をここにも置きます。
+       ★これは**グラデーションの上端専用**です。面をべた塗りしないこと
+         （紙の上で 7.36:1 ＝ 文字色としては使えますが、役目を混ぜると
+          また「同じ濃さが3つ」に戻ります）。 */
+    --espresso-light:#5A514B;   /* グラデの上端だけ。本体の --ink-light と同値 */
     --espresso-lift: #2C2620;   /* 一段明るいこげ茶。旧 --navy / --deep-lift */
     --cream:      #FBF9F6;
     --cream-soft: #F4F0E9;
@@ -118,7 +128,15 @@
   /* サイト共通のボタン。明るい面では濃い炭に紙色の文字、
      暗い面では反転させる。以前の淡い金は、レッスンのページや
      法務ページのボタンと別物に見えていた（追補4 §169）。 */
-  .btn-gold { background: var(--espresso); color: var(--cream); box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45); }
+  /* ★2026-09-19 べた塗り → 焦茶のグラデーション（本体の .btn-primary と同じ）。
+     内側の上端に細い白を1本入れると、面が起きて見えます。
+     ★暗い面（ヘッダー下の締めの帯・ヒーロー）は下で反転させているので、
+       ここは明るい面のボタンだけに効きます。 */
+  .btn-gold {
+    background: linear-gradient(180deg, var(--espresso-light) 0%, var(--espresso) 100%);
+    color: var(--cream);
+    box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+  }
   .btn-gold:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(31,27,23,0.5); }
   /* 暗い面（ヘッダー・締めの帯）では反転させる。
      ここを忘れると、暗い地に暗いボタンで見えなくなる。 */
@@ -511,7 +529,10 @@
   @media (max-width: 820px) { .trio { grid-template-columns: 1fr; } }
   .trio-card { background: #FFFFFF; border: 1px solid var(--line); border-radius: 18px; padding: 32px 28px; box-shadow: var(--shadow-soft); }
   .trio-icon {
-    width: 46px; height: 46px; border-radius: 50%; background: var(--espresso); display: flex; align-items: center;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: linear-gradient(180deg, var(--espresso-light) 0%, var(--espresso) 100%);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    display: flex; align-items: center;
     /* ★2026-09-19 中の絵の色を、直書き(#FBF9F6)から currentColor に。
        札を増やすたびに色を書き写すと、クリームを変えた日に取り残される。 */
     justify-content: center; margin-bottom: 20px; color: var(--cream);
