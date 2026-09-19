@@ -82,10 +82,13 @@ body{width:1024px;height:1024px;font-family:var(--gothic);
 </style></head><body>
 
 <svg class="bg-mark" viewBox="0 0 32 32" aria-hidden="true">
-  <circle cx="16" cy="16" r="2.7" fill="#A3782D"/>
-  <circle cx="16" cy="16" r="7.2" fill="none" stroke="#A3782D" stroke-width="1.4"/>
-  <circle cx="16" cy="16" r="11.8" fill="none" stroke="#A3782D" stroke-width="1"/>
-  <circle cx="16" cy="16" r="15.4" fill="none" stroke="#A3782D" stroke-width=".7"/>
+  <!-- ★2026-09-19 背景のごく薄い印。ここも罫線用の #A3782D を使っていたので、
+       ブランドの金 #E2A33D にそろえる(7%の薄さなので見た目はほぼ変わらないが、
+       「印に使う金は1つ」を守る)。 -->
+  <circle cx="16" cy="16" r="2.7" fill="#E2A33D"/>
+  <circle cx="16" cy="16" r="7.2" fill="none" stroke="#E2A33D" stroke-width="1.4"/>
+  <circle cx="16" cy="16" r="11.8" fill="none" stroke="#E2A33D" stroke-width="1"/>
+  <circle cx="16" cy="16" r="15.4" fill="none" stroke="#E2A33D" stroke-width=".7"/>
 </svg>
 
 <div class="stage">

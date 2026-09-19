@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>飲食店の英会話 — Ear to Voice | Harmony Horizon</title>
 <meta name="description" content="海外のカフェ・レストランで「え？今なんて？」を減らす Ear to Voice。よく聞かれる質問を耳で聞き取り、声に出して、旅行前に何度でも練習できます。">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%232B2018'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%236B5636' stroke-width='8'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23A3782D' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23A3782D'/%3E%3C/svg%3E">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%23221D18'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%23E2A33D' stroke-width='8' opacity='0.55'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23E2A33D' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23E2A33D'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="/assets/site/fonts.css">
 <style>
   /* 2026-08-27: サイト全体と同じ配色・書体に揃えた。
@@ -664,10 +664,23 @@
   <div class="container">
     <a href="#" class="brand">
       <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Ear to Voice">
-        <circle cx="100" cy="100" r="96" fill="#2B2018"/>
-        <circle cx="100" cy="100" r="69" fill="none" stroke="#6B5636" stroke-width="8"/>
-        <circle cx="100" cy="100" r="46" fill="none" stroke="#A3782D" stroke-width="12"/>
-        <circle cx="100" cy="100" r="16" fill="#A3782D"/>
+        <!-- ★2026-09-19 HARU様「ロゴの金を #E2A33D に（本体と同じにする）」。
+             ここは金に #A3782D を使っていました。あれは**罫線・輪郭用の
+             暗い金**で、印(ロゴ)に流用すると暗く沈みます。
+             コース本体は同じ間違いを2026-09-10に直しており、app側の
+             eatout/index.html にこう残っています ——
+               「ロゴの色もspeakup同じ色に」…「ここは --gold(#A3782D)を
+                 印にも流用していたので暗かった」
+             このLPだけ古いままでした。本体のブランド色に合わせます:
+               地の丸  #2B2018 → #221D18 (--brand-ink)
+               金      #A3782D → #E2A33D (--brand-gold)
+               中の輪  #6B5636 → #E2A33D の55%(本体の外輪と同じ見せ方)
+             ★#6B5636 は、このページ以外どこにも無い色でした。
+             ★罫線用の #A3782D(--gold)はそのまま。**印にだけ使わない。** -->
+        <circle cx="100" cy="100" r="96" fill="#221D18"/>
+        <circle cx="100" cy="100" r="69" fill="none" stroke="#E2A33D" stroke-width="8" opacity="0.55"/>
+        <circle cx="100" cy="100" r="46" fill="none" stroke="#E2A33D" stroke-width="12"/>
+        <circle cx="100" cy="100" r="16" fill="#E2A33D"/>
       </svg>
       <div>
         <div class="brand-word">EAR TO VOICE</div>
