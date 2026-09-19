@@ -36,11 +36,14 @@ Stripe の決まり: 正方形、128×128px 以上、**2MB 以下**、PNG/JPEG/G
 ```
 cd <harmony-horizon のある場所>
 python3 -m http.server 8241 &
-node scripts/shot-app-screen.js      # ← 下記のとおり置いてあります
+PASSWORD=〇〇 node scripts/shot-app-screen.js
 ```
 
-パスワードが要ります（HARU様にお尋ねください）。
-出来た `app-screen.png` を、このフォルダへコピーします。
+`〇〇` はコースのパスワード。**ファイルには書かない**ので、毎回ここで渡します。
+
+3択が画面の下で切れていたら、撮らずにその場で止まります（切れた絵が
+そのまま商品画像になるのを防ぐため）。出来た `app-screen.png` を、
+このフォルダへコピーしてください。
 
 ### ② 商品画像に組み直す（このリポジトリで）
 
