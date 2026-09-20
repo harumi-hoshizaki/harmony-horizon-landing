@@ -908,7 +908,7 @@
         <p class="trial-heard" id="trialHeard"></p>
         <p class="lede" style="margin-bottom:0;">実際の海外旅行では、<br>こうしたやり取りが次々に出てきます。</p>
         <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="margin-top:22px;width:100%;justify-content:center;">もっと練習してみる →</a>
-        <div class="trial-cta-note">¥1,980 ・ 買い切り</div>
+        <div class="trial-cta-note">¥1,980 ・ サブスクではありません</div>
       </div>
     </div>
   </div>
@@ -1075,7 +1075,7 @@
            「買い切り」(月々の支払いが無いこと)は本当なので残す。
            ★AI英会話チャレンジが公開される日に、ここへ
              「AIの追加パックは別料金」と書き足すか決めること。 -->
-      <div class="note">買い切り</div>
+      <div class="note">サブスクではありません</div>
       <hr>
       <div class="includes">
         <!-- 意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
@@ -1090,24 +1090,16 @@
         <div><span class="ck">✓</span>AI英会話チャレンジ 10シーン</div>
       </div>
 
-      <!-- ★2026-09-19(2回目) 私の読み違いを直しました。
-           前の版で「¥1,980 には1回も含まれない」と書きましたが、**逆でした**。
-           api/eatout/verify.js にはっきり書いてあります ——
-             「コース本体(¥1,980) … 買うと10回が入る」
-           FREE_SESSIONS = 0 は「**買っていない人**に無料の回数は無い」と
-           いう意味で、購入者の話ではありませんでした。
-           いまの本当のところ:
-             ¥1,980 を買う      → AI英会話チャレンジが **10シーン** 付く
-             それ以上やりたい人 → アプリの中から ¥980 で10シーンずつ追加
-           (SESSIONS_PER_PACK = 10。コースでも追加でも入る数は同じ10。)
-           ★この数が変わったら、ここと下のFAQも直すこと。 -->
-      <p class="addon">
-        <!-- 意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
-             幅任せだと320pxで「中か／ら」「追加できま／す」と割れた。 -->
-        11シーン目からは、<br>
-        <span class="nowrap">¥980 で10シーンずつ</span><br>
-        追加できます。
-      </p>
+      <!-- ★2026-09-20 HARU様ご指示でこの段落を削除。
+           「11シーン目からは、¥980で10シーンずつ追加できます。」
+           (10シーン付き・追加パックの事実そのものは変わっていない。
+           api/eatout/verify.js / SESSIONS_PER_PACK=10 のまま。
+           ここでは説明しない、という判断)。
+           あわせて「買い切り」→「サブスクではありません」に統一
+           (下の note・trial-cta-note・cta-price-note の3箇所)。
+           「買い切り」は「これで全部」に読めてしまうが、実際は
+           AI追加パックがある。「サブスクではありません」は
+           月々の支払いが無いことだけを言う、より狭く正しい主張。 -->
       <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
     </div>
   </div>
@@ -1152,7 +1144,7 @@
     <p class="cta-lede-pre">旅行当日になってから、<br>練習することはできません。<br>今日、1つ聞いてみる。1つ答えてみる。<br>その積み重ねが、本番の安心につながります。</p>
     <h2>海外での外食を、<br>安心して楽しむために。</h2>
     <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
-    <div class="cta-price-note">¥1,980 ・ 買い切り</div>
+    <div class="cta-price-note">¥1,980 ・ サブスクではありません</div>
   </div>
 </section>
 
