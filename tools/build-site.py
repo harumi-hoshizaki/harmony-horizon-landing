@@ -42,6 +42,8 @@ NAV = [('index.html', '考え方'), ('programs.html', 'レッスン'),
        ('student-voices.html', '受講者の声'), ('#apps', '練習コース'),
        ('contact.html', 'お問い合わせ')]
 
+JSONLD_HOME = '\n<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.harmonyhorizon.space/#website","url":"https://www.harmonyhorizon.space/","name":"Harmony Horizon","inLanguage":"ja","publisher":{"@id":"https://www.harmonyhorizon.space/#org"}},{"@type":"Organization","@id":"https://www.harmonyhorizon.space/#org","name":"Harmony Horizon","url":"https://www.harmonyhorizon.space/","email":"haru@harmonyhorizon.space","founder":{"@id":"https://www.harmonyhorizon.space/#haru"},"sameAs":["https://www.instagram.com/harmony_horizon_by_hh/","https://www.youtube.com/@HaruHoshizaki"]},{"@type":"Person","@id":"https://www.harmonyhorizon.space/#haru","name":"HARU","jobTitle":"英語コーチ","worksFor":{"@id":"https://www.harmonyhorizon.space/#org"},"homeLocation":{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":"Montréal","addressRegion":"QC","addressCountry":"CA"}},"knowsLanguage":["ja","en","fr"]},{"@type":"Service","@id":"https://www.harmonyhorizon.space/#lesson","name":"マンツーマン英語レッスン（オンライン）","serviceType":"英語レッスン","description":"聞く力を起点に、話せるようになるまでを一続きにする、HARU のマンツーマン英語レッスン。モントリオールからオンラインで。","provider":{"@id":"https://www.harmonyhorizon.space/#org"},"areaServed":"Worldwide","availableLanguage":["ja","en"],"url":"https://www.harmonyhorizon.space/programs.html"}]}</script>'
+
 SHELL = '''<!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -56,9 +58,13 @@ SHELL = '''<!DOCTYPE html>
 <meta property="og:url" content="https://www.harmonyhorizon.space/{canon}">
 <meta property="og:locale" content="ja_JP">
 <meta name="twitter:card" content="summary_large_image">
+<meta property="og:site_name" content="Harmony Horizon">
+<meta property="og:image" content="https://www.harmonyhorizon.space/assets/site/hero.jpg">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1152">
 <link rel="stylesheet" href="/assets/site/fonts.css">
 <link rel="stylesheet" href="/assets/site/site.css">
-<script>document.documentElement.className = "js";</script>
+<script>document.documentElement.className = "js";</script>{jsonld}
 </head>
 <body>
 <a class="skip" href="#main">本文へ移動</a>
@@ -137,7 +143,8 @@ def render(src_dir, slug, out, title, desc, body_class=''):
         title=title, desc=desc,
         canon='' if out == 'index.html' else out.replace('index.html', ''),
         nav=links('      '), dnav=links('    '), fnav=links('        '),
-        body=body)
+        body=body,
+        jsonld=JSONLD_HOME if out == 'index.html' else '')
     dest = ROOT / out
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(html, encoding='utf-8')
