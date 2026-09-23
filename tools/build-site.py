@@ -13,7 +13,7 @@ SRC = ROOT / 'content/pages'
 
 # slug, 出力先, ページ名, <title>, description
 PAGES = [
-    ('index', 'index.html', 'Home', 'Harmony Horizon — 耳から、声へ。',
+    ('index', 'index.html', 'Home', 'Harmony Horizon — 「耳から、声へ」の英会話',
      '完璧な英語は必要ありません。聞く力を起点に、話せるようになるまでを一続きにする、HARU のマンツーマン英語レッスン。モントリオールからオンラインで。'),
     ('programs', 'programs.html', 'Programs', 'レッスンについて — Harmony Horizon',
      'あなただけの目標に合わせた、完全個別のマンツーマン指導。個別カウンセリングから始まるオーダーメイド設計です。'),
