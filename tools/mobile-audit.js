@@ -218,7 +218,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
         return {
           vw, overflow: de.scrollWidth - vw, over, pad, flush, type: t, jpFallback,
           typeOk: { h1: chk('h1', t.h1), h2: chk('h2', t.h2), h3: chk('h3', t.h3), body: chk('body', t.body) },
-          third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin)).map(x => x.name),
+          third: performance.getEntriesByType('resource').filter(x => !x.name.startsWith(location.origin) && !x.name.includes('cloudflareinsights.com')).map(x => x.name),
           small: small.slice(0, 5), smallN: small.length, tiny,
           orphans: orphans.slice(0, 6), orphanN: orphans.length, centered,
           fake: fake.slice(0, 5), fakeN: fake.length,
