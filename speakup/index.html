@@ -378,8 +378,11 @@
   }
   .ph-check .box { width: 15px; height: 15px; border: 1.5px solid var(--line); border-radius: 4px; flex-shrink: 0; }
   /* 2026-09-27: AI英会話は9/29にアプリから削除されたため、AIとの自由な
-     会話という見せ方はやめた。相手の一言（白）→ 自分の番（3回、声に
-     出す。マイクは使わない）→ 台本つきの会話の続き（淡色）の3段。 */
+     会話という見せ方はやめた。場面の状況（白）→ 自分から言う番（3回、
+     声に出す。マイクは使わない）→ 実際に言うセリフの答え合わせ（淡色）
+     の3段。学ぶ人はスタッフではなく、困っている旅行者に自分から声を
+     かける側 —— i-help-1.json のとおり、学ぶ人が話しかけ、旅行者が
+     答える順(逆にしない)。 */
   .ph-quote {
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px;
     padding: 14px 16px; margin-bottom: 14px;
@@ -600,13 +603,13 @@
           <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">DAY 3 / 20</span>
         </div>
         <div class="ph-row">
-          <span class="ph-title">駅のホームで</span>
+          <span class="ph-title">駅までの道で</span>
           <span class="ph-back">← 学ぶ</span>
         </div>
         <div class="ph-hr"></div>
         <div class="ph-quote">
-          <span class="who">TOURIST</span>
-          <div>"Excuse me — does this train go to Shinjuku?"</div>
+          <span class="who">Situation</span>
+          <div>スマホの地図を見て困っている旅行者に、あなたから声をかけます。</div>
         </div>
         <div class="ph-tap">英語で、なんて言いますか？3回、声に出してください。</div>
         <div class="ph-mic-wrap">
@@ -616,7 +619,7 @@
         </div>
         <div class="ph-fix">
           <span class="who">あなた</span>
-          <div>"Yes, it does — this way, please."</div>
+          <div>"Are you okay?"</div>
         </div>
       </div>
     </div>
