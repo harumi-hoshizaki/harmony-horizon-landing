@@ -363,84 +363,17 @@
   }
   .hero-phone-wrap { display: flex; justify-content: center; margin: 0; }
 
-  /* ---------------- Phone mockup ---------------- */
+  /* ---------------- Phone mockup ----------------
+     枠(端末の縁)は装飾。中身は本物のスクリーンショット(.phone-shot)。 */
   .phone {
-    width: 280px; background: var(--cream); border-radius: 40px; border: 10px solid var(--navy-deep);
+    width: 300px; background: var(--cream); border-radius: 40px; border: 10px solid var(--navy-deep);
     box-shadow: var(--shadow-card); overflow: hidden; position: relative; text-align: left;
-    font-family: var(--font-body); color: var(--ink);
   }
   .phone::before {
     content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
     width: 90px; height: 22px; background: var(--navy-deep); border-radius: 0 0 16px 16px; z-index: 2;
   }
-  .phone-screen { padding: 34px 18px 22px; }
-  .ph-eyebrow { font-size: 9.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
-  .ph-row { display: flex; align-items: baseline; justify-content: space-between; }
-  .ph-title { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); }
-  .ph-back { font-size: 10.5px; color: var(--ink-soft); }
-  .ph-hr { height: 1px; background: var(--line); margin: 10px 0 18px; }
-  .ph-center { text-align: center; }
-  .ph-hint { font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
-  .ph-pattern { display: flex; gap: 6px; justify-content: center; margin-bottom: 16px; }
-  .ph-pattern span {
-    width: 34px; height: 34px; border-radius: 10px; display: flex; align-items: center; justify-content: center;
-    font-family: var(--font-display); font-weight: 500; font-size: 14px; background: #FFFFFF; border: 1px solid var(--line); color: var(--ink);
-  }
-  .ph-pattern span.on { background: var(--gold); color: var(--ink); border-color: var(--gold); }
-  .ph-howto {
-    display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border: 1px solid var(--line);
-    border-radius: 12px; padding: 10px 14px; font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 18px;
-  }
-  .ph-howto .q { width: 18px; height: 18px; border-radius: 50%; background: var(--navy-deep); color: var(--cream); display: inline-flex; align-items: center; justify-content: center; font-size: 10px; margin-right: 8px; }
-  .ph-tap { text-align: center; font-size: 11px; font-weight: 500; color: var(--gold); margin-bottom: 14px; }
-  .ph-speaker-wrap { display: flex; justify-content: center; margin-bottom: 16px; }
-  .ph-speaker {
-    width: 74px; height: 74px; border-radius: 50%; background: var(--navy-deep);
-    display: flex; align-items: center; justify-content: center; box-shadow: 0 12px 26px -10px rgba(13,27,39,0.5);
-  }
-  .ph-toggles { display: flex; gap: 8px; margin-bottom: 18px; }
-  .ph-toggle { flex: 1; display: flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; background: #FFFFFF; }
-  .ph-toggle span { flex: 1; text-align: center; padding: 8px 6px; font-size: 10px; font-weight: 500; color: var(--ink-soft); }
-  .ph-toggle span.on { background: var(--navy-deep); color: var(--cream); border-radius: 999px; }
-  .ph-q { font-family: var(--font-display); font-weight: 500; font-size: 13.5px; color: var(--ink); margin-bottom: 10px; }
-  .ph-check {
-    display: flex; align-items: center; gap: 10px; background: #FFFFFF; border: 1px solid var(--line);
-    border-radius: 12px; padding: 12px 14px; font-size: 14px; color: var(--ink);
-  }
-  .ph-check .box { width: 15px; height: 15px; border: 1.5px solid var(--line); border-radius: 4px; flex-shrink: 0; }
-  /* 2026-09-27: AI英会話は9/29にアプリから削除されたため、AIとの自由な
-     会話という見せ方はやめた。場面の状況（白）→ 自分から言う番（3回、
-     声に出す。マイクは使わない）→ 実際に言うセリフの答え合わせ（淡色）
-     の3段。学ぶ人はスタッフではなく、困っている旅行者に自分から声を
-     かける側 —— i-help-1.json のとおり、学ぶ人が話しかけ、旅行者が
-     答える順(逆にしない)。 */
-  .ph-quote {
-    background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px;
-    padding: 14px 16px; margin-bottom: 14px;
-  }
-  .ph-quote .who {
-    display: block; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--stone-deep); font-weight: 500; margin-bottom: 6px;
-  }
-  .ph-quote div { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink); font-style: italic; }
-  .ph-mic-wrap { display: flex; justify-content: center; margin: 4px 0 14px; }
-  /* アプリ本番の丸い再生ボタン(main.css .audio-btn-circle)と同じ
-     エスプレッソの立体グラデーションに揃えた(HARU様指摘)。 */
-  .ph-mic {
-    width: 60px; height: 60px; border-radius: 50%;
-    background: radial-gradient(circle at 34% 28%, #7a6e64 0%, #4a413a 38%, var(--ink) 72%, #120e0b 100%);
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 14px 28px rgba(34,29,24,0.32), 0 5px 10px rgba(34,29,24,0.28),
-      inset 0 2px 2px rgba(255,255,255,0.28), inset 0 -6px 12px rgba(0,0,0,0.38);
-  }
-  .ph-fix {
-    background: var(--paper-warm); border: 1px solid var(--line); border-radius: 12px;
-    padding: 12px 14px;
-  }
-  .ph-fix .who {
-    display: block; font-size: 10.5px; letter-spacing: 0.06em; color: var(--gold); font-weight: 500; margin-bottom: 5px;
-  }
-  .ph-fix div { margin: 0; font-size: 13.5px; line-height: 1.6; color: var(--ink); }
+  .phone-shot { display: block; width: 100%; height: auto; }
 
   /* ---------------- Problem ---------------- */
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
@@ -619,35 +552,19 @@
   </div>
 </section>
 
-<!-- 端末の作例 -->
+<!-- 端末の作例。2026-09-28まではCSSで手組みした架空のUIだった
+     (HARU様指摘「勝手に作った画像ですよね」)。実際にアプリを動かして
+     撮った本物のスクリーンショット(Day 3「駅までの道で」のSPEAKING画面)
+     に差し替えた。撮り方: harmonyhorizon.foreigners を
+     speakup/app/index.html からローカルで起動し、合言葉と
+     modulesCompleted(clar/aizuchi)だけlocalStorageに入れてこの場面まで
+     進め、Playwrightでスクリーンショット。文言・写真とも加工していない。 -->
 <section class="phone-sec">
   <div class="hero-phone-wrap reveal rd3">
     <div class="phone">
-      <div class="phone-screen">
-        <div class="ph-row">
-          <span class="ph-eyebrow">CONVERSATION</span>
-          <span class="ph-back" style="font-size:10px;color:var(--ink-soft);">DAY 3 / 20</span>
-        </div>
-        <div class="ph-row">
-          <span class="ph-title">駅までの道で</span>
-          <span class="ph-back">← 学ぶ</span>
-        </div>
-        <div class="ph-hr"></div>
-        <div class="ph-quote">
-          <span class="who">Situation</span>
-          <div>スマホの地図を見て困っている旅行者に、あなたから声をかけます。</div>
-        </div>
-        <div class="ph-tap">英語で、なんて言いますか？3回、声に出してください。</div>
-        <div class="ph-mic-wrap">
-          <div class="ph-mic">
-            <span style="color:#FAF6EC; font-size:15px; font-weight:600; letter-spacing:0.02em;">×3</span>
-          </div>
-        </div>
-        <div class="ph-fix">
-          <span class="who">あなた</span>
-          <div>"Are you okay?"</div>
-        </div>
-      </div>
+      <img class="phone-shot" src="/assets/site/speakup-app-screenshot.jpg"
+        width="1170" height="2530" loading="lazy" decoding="async"
+        alt="Speak Upアプリの実際の画面。「あなたなら、どう声をかけますか？」という問いに、英語で声に出す練習をしている所。">
     </div>
   </div>
 </section>
