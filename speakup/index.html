@@ -295,7 +295,9 @@
   /* 基本の .lede は line-height:1.9（長い地の文向け）。ここはHTML側の
      <br> で意味の切れ目ごとに短文へ分けているので、1.9のままだと
      短い行に長文用の行間が乗って一行ずつ浮いて見える。詰める。 */
-  .hero .lede { max-width: 30em; margin: 0 0 16px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
+  /* 2026-09-29 HARU様要望: 「駅のホーム〜しておきます」の上下に
+     もっと余白を。携帯だけ(卓上は900px以上のルールで元に戻す)。 */
+  .hero .lede { max-width: 30em; margin: 12px 0 28px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; }
   /* 4つの動きを表す札。暗い写真の上なので、白地に濃い文字のまま置くと
      一番よく読める。 */
@@ -341,7 +343,7 @@
     .hero__in > .container { width: 100%; max-width: none; margin: 0; padding-left: clamp(24px, 5vw, 96px); }
     /* 文字は階調が濃い範囲に収める。はみ出すと読めなくなる。 */
     .hero h1 { max-width: 13em; }
-    .hero .lede { max-width: 27em; }
+    .hero .lede { max-width: 27em; margin: 0 0 16px; }
   }
 
   /* 端末の作例はヒーローから出して、明るい面に置く。
@@ -455,6 +457,18 @@
   }
   .cta-band.on-dark .eyebrow { color: var(--gold-bright); }
   .cta-band.on-dark .eyebrow::before { background: var(--gold-bright); }
+  /* 2026-09-29 HARU様要望: 携帯だけ、最後のCTA(価格ボタンの節)の黒背景を
+     できるだけ減らしたい。卓上は2026-08-08にHaruみ了承済みの濃色のまま
+     残す。 */
+  @media (max-width: 899px) {
+    .cta-band.on-dark {
+      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
+    }
+    .cta-band.on-dark .eyebrow { color: var(--gold); }
+    .cta-band.on-dark .eyebrow::before { background: var(--gold); }
+    .cta-band.on-dark h1, .cta-band.on-dark h2, .cta-band.on-dark h3 { color: var(--ink); }
+    .cta-band.on-dark .lede { color: var(--ink-soft); }
+  }
 
   /* ---------------- Footer ---------------- */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
@@ -519,7 +533,7 @@
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold btn-small"><span>¥3,980<span class="cta-verb">で始める</span></span></a>
+    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold btn-small"><span>今すぐ<span class="cta-verb">始める</span></span></a>
   </div>
 </header>
 
@@ -540,7 +554,7 @@
       <div class="hero-chips">
         <span>聞く</span><span>話しかける</span><span>会話の練習</span><span>聞き返す・相槌</span>
       </div>
-      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">¥3,980で始める →</a>
+      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
       <div class="hero-note">販売期間：9月30日(水)〜10月17日(土)23:59まで ・ コース開始：10月19日(月)</div>
     </div>
   </div>
@@ -664,7 +678,7 @@
         <div><span class="ck">✓</span>基本文法の解説</div>
         <div><span class="ck">✓</span>意味確認クイズ</div>
       </div>
-      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">¥3,980で始める →</a>
+      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">今すぐ始める →</a>
       <p style="font-size:14px;color:var(--ink-soft);margin:16px 0 0;">ライブ練習会(任意・別料金、10/29・11/12)はコース購入者向けにご案内します。詳しくは購入後のメールで。</p>
     </div>
   </div>
@@ -706,7 +720,7 @@
     <span class="eyebrow">One Step Forward</span>
     <h2>困っている誰かに、<br>自分から動けるように。</h2>
     <p class="lede">販売は10月17日(土)23:59まで。<br>コースは10月19日(月)に始まります。</p>
-    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">¥3,980で始める →</a>
+    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
   </div>
 </section>
 
