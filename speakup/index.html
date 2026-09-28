@@ -292,7 +292,10 @@
   /* 見出しの中の強調。濃い銅（--gold）は写真の上で 1.4:1 しか出ず、
      大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero h1 em { color: var(--gold-pale); }
-  .hero .lede { max-width: 30em; margin: 0 0 16px; font-size: var(--text-md); color: rgba(251,249,246,0.92); }
+  /* 基本の .lede は line-height:1.9（長い地の文向け）。ここはHTML側の
+     <br> で意味の切れ目ごとに短文へ分けているので、1.9のままだと
+     短い行に長文用の行間が乗って一行ずつ浮いて見える。詰める。 */
+  .hero .lede { max-width: 30em; margin: 0 0 16px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; }
   /* 4つの動きを表す札。暗い写真の上なので、白地に濃い文字のまま置くと
      一番よく読める。 */
