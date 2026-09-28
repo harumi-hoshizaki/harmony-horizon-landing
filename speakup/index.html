@@ -137,6 +137,13 @@
     font-size: var(--text-lg); font-weight: 700; letter-spacing: 0; cursor: pointer; border: none;
     transition: transform 0.08s ease, box-shadow 0.08s ease;
   }
+  /* 2026-09-29 HARU様指摘: 携帯の「今すぐ始める」ボタンが大きすぎる。
+     実測すると高さ72px・文字23pxで、標準的なボタン(44〜52px)より
+     かなり大きかった。携帯だけ詰める(卓上はご指摘の対象外なので
+     そのまま)。 */
+  @media (max-width: 899px) {
+    .btn:not(.btn-small) { padding: 13px 26px; font-size: var(--text-md); }
+  }
   .btn-gold {
     background: var(--gold-bright); color: var(--ink);
     box-shadow: 0 3px 8px rgba(34,29,24,0.28), inset 0 1px 0 rgba(255,255,255,0.10);
