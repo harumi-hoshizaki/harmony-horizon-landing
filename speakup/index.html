@@ -23,18 +23,23 @@
      以前はこのLPだけ紺×金＋Google Fonts で、レッスンのページや
      法務ページと別のサイトに見えていた（追補4 §153-B）。 */
   :root {
-    --paper:      #FBF9F6;
+    /* 2026-09-28: 紙色・金は harmonyhorizon.foreigners（アプリ本体）の
+       speakup/css/tokens.css と同じ値に揃えた（HARU様指摘「ボタンの色が
+       違う」「背景の色が違う」）。新しい色は作らず、アプリ本番の
+       --paper / --accent-text / --accent-fill / --accent-fill-light を
+       そのまま移植。 */
+    --paper:      #FDFCFA;
     --paper-warm: #F4F0E9;
     --deep:       #1F1B17;
 
     --navy-deep:  #1F1B17;
     --navy:       #2C2620;
     --navy-mid:   #3A342C;
-    --cream:      #FBF9F6;
+    --cream:      #FDFCFA;
     --cream-soft: #F4F0E9;
-    --gold:       #9C5C33;
-    --gold-bright:#C98A5C;
-    --gold-pale:  #E9B98C;
+    --gold:       #694D11;
+    --gold-bright:#E2A33D;
+    --gold-pale:  #E9BA6E;
     --ink:        #221E19;
     /* 静かな札のための灰。これが無いと、番号・チェック・矢印まで
        全部が銅色になる。実測で銅は 40 か所（トップページは 16 か所）。
@@ -112,8 +117,13 @@
   /* サイト共通のボタン。明るい面では濃い炭に紙色の文字、
      暗い面では反転させる（追補4 §169）。 */
   .btn-gold { background: var(--deep); color: var(--paper); box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45); }
+  /* 2026-09-28: --gold をアプリと同じ文字用の色(#694D11)にしたので、
+     暗い地の上のボタンの塗りは彩度の高い --gold-bright(#E2A33D、
+     アプリの --accent-fill と同値)に変える。--gold のままだと
+     --deep の地に対してコントラスト比が2.1:1しかなく、ボタンだと
+     気づけない。 */
   .on-dark .btn-gold,
-  .btn-gold:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(31,27,23,0.5); }
+  .btn-gold:hover { background: var(--gold-bright); transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(31,27,23,0.5); }
   /* 指で触るとホバーが貼り付く（iOS）。ホバーできる装置だけに当てる。 */
   @media (hover: hover) {
     .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--deep); }
@@ -633,11 +643,12 @@
     <h2>外国人に話しかけるの、<br>ためらいませんか?</h2>
     <p class="lede">英語は知っている。でも、</p>
     <div class="card-list">
-      <div class="item"><span class="dot"></span><p>話しかけても、<br>相手の返事が聞き取れるか不安</p></div>
+      <div class="item"><span class="dot"></span><p>話しかけたいのに、<br>何と言えばいいか分からない</p></div>
+      <div class="item"><span class="dot"></span><p>言えたとしても、<br>相手の返事が聞き取れるか不安</p></div>
       <div class="item"><span class="dot"></span><p>聞き取れなかったら、<br>どう答えればいいか分からない</p></div>
       <div class="item"><span class="dot"></span><p>一度きりの練習では、<br>本番でとっさに声が出ない</p></div>
     </div>
-    <p class="lede">話せないだけでなく、<strong style="color:var(--ink);">聞き取れないのが怖くて</strong>、結局声をかけられない——それが本当の理由ではないでしょうか。<br><br>Ear to Voice は名前のとおり、<strong style="color:var(--ink);">耳から、声へ。</strong>駅やコンビニで困っている旅行者に出会う場面は、実はある程度決まっています。まず、よくある場面の会話を聞き取れるようにしてから、自分の言葉で声をかける練習に進みます。</p>
+    <p class="lede">何と言えばいいか分からない。言えたとしても、相手の返事が聞き取れないかもしれない——この両方が、声をかける一歩を重くしています。<br><br>Ear to Voice は名前のとおり、<strong style="color:var(--ink);">耳から、声へ。</strong>駅やコンビニで困っている旅行者に出会う場面は、実はある程度決まっています。よくある場面の会話を聞き取れるようにしてから、自分の言葉で声をかける練習に進む——<strong style="color:var(--ink);">「話す」と「聞く」、両方まとめて</strong>身につきます。</p>
   </div>
 </section>
 
