@@ -569,6 +569,7 @@
   .chat-under-block { align-self: stretch; width: 100%; margin-top: 8px; }
   .chat-link { font-size: var(--text-sm); }
   .chat-word-note { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--ink-hair); }
+  .chat-word-note-must { margin: 0 0 var(--space-2); line-height: 1; } /* 本体 main.css と同じ(MUSTの札・見出しの上) */
   .chat-word-note-word { margin: 0; font-weight: 700; line-height: var(--lh-heading); display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); }
   .chat-word-note-en { font-family: var(--font-latin); font-size: var(--text-lg); color: var(--accent-text); }
   .chat-word-note-mean { font-size: var(--text-md); color: var(--ink); }
@@ -1132,15 +1133,15 @@
      機械的に書き出したもの。手で打っていない。partner.listening(なぜ聞き取れない？)と、
      返しの note_word/note_mean/note_ja(ことばのメモ)も本体のデータそのまま。 */
   var TURNS = [
-    {"pAudioId": "I-HELP-4_b2n1", "pEn": "Actually, I'm a bit lost.", "pJa": "実は、ちょっと道に迷っていて。", "pAudio": "partner-1.mp3", "heard": "ぇあkしゅりあぃま べt らst.", "why": "【母音ドッキング】\"Actually, I'm\" は、読点があっても間を置かずに続けて発音されます。Actually の最後の「り」と I'm の「あぃ」がつながり、「ぇあkしゅりあぃm」と一息に聞こえます。【母音ドッキング】\"I'm a\" は、I'm の m と a がつながって「あぃま」と聞こえます。【い/えの中間音】\"bit\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「べt」と書いていますが、日本語の「え」とも違います。【消えるT】\"bit lost\" の bit の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま lost へ移るので、2語がひと続きに聞こえます。【あのようなおの音】\"lost\" の o は、喉を縦に開けて出す「あ」のような「お」の音です。", "sId": "RP07", "sEn": "Where are you trying to go?", "sJa": "どこへ行こうとしているんですか？", "note_word": "", "note_mean": "", "note_ja": ""},
-    {"pAudioId": "I-HELP-4_b2n2", "pEn": "I'm going to this karaoke place.", "pJa": "このカラオケに行きたいんです。", "pAudio": "partner-2.mp3", "heard": "あぃm ごぅぇんt'thぇs かrぁぉぅき pれぃs.", "why": "【い/えの中間音】\"going\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「ごぅぇん」と書いていますが、日本語の「え」とも違います。【Toの弱形】\"going to this\" の to は、「とぅ」とは発音されません。弱くなって次の this にドッキングし、「t'thぇs」とひと続きに聞こえます。【い/えの中間音】\"this\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。", "sId": "RP71", "sEn": "Cool. Let me see.", "sJa": "いいですね。ええと…", "note_word": "let me see", "note_mean": "ええと", "note_ja": "考えている間を\nつなぐ一言です。"},
-    {"pAudioId": "I-HELP-4_b2n3", "pEn": "Is it far?", "pJa": "遠いですか？", "pAudio": "partner-3.mp3", "heard": "ぇぜt fぁー?", "why": "【母音ドッキング】\"Is it\" はつながって「ぇぜt」の2音になり、短すぎて聞き逃しやすい所です。【い/えの中間音】\"Is\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「ぇぜt」と書いていますが、日本語の「え」とも違います。【い/えの中間音】\"it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。【消えるT】\"it far\" の it の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま far へ移るので、2語がひと続きに聞こえます。", "sId": "RP105", "sEn": "It's a five-minute walk.", "sJa": "歩いて5分です。", "note_word": "a five-minute walk", "note_mean": "歩いて5分", "note_ja": "車で5分なら\na five-minute drive。\n同じ形で言えます。"},
-    {"pAudioId": "I-HELP-4_b2n4", "pEn": "Oh, okay.", "pJa": "あ、そうなんですね。", "pAudio": "partner-4.mp3", "heard": "", "why": "", "sId": "RP72", "sEn": "Go straight, then turn left.", "sJa": "まっすぐ行って、左です。", "note_word": "", "note_mean": "", "note_ja": ""},
-    {"pAudioId": "I-HELP-4_b2n5", "pEn": "Ok. Straight, then left.", "pJa": "はい。まっすぐ行って、左ですね。", "pAudio": "partner-5.mp3", "heard": "", "why": "", "sId": "RP66", "sEn": "Walk about three blocks.", "sJa": "3ブロックくらい歩いてください。", "note_word": "block", "note_mean": "1区画", "note_ja": "道と道に\nはさまれた\n1かたまりです。\n角をいくつ\n過ぎるか数えます。"},
-    {"pAudioId": "I-HELP-4_b2n6", "pEn": "Got it. And after that?", "pJa": "なるほど。その後は？", "pAudio": "partner-6.mp3", "heard": "がりt。ぇなfたー thぇあt?", "why": "【Flap T】\"got it\" の t は母音にはさまれて「ら行」の音に変身し、「がりt」のように聞こえます。【い/えの中間音】\"it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。【andの弱形】\"And after\" の And は、最後の d の音が消え、「ぇなfたー」と聞こえることが多いです。【母音ドッキング】\"And after\" は、And の n と after の a がつながって、「ぇなfたー」と一息に聞こえます。", "sId": "RP70", "sEn": "You'll see a pedestrian bridge. Go over it.", "sJa": "歩道橋が見えます。それを渡ってください。", "note_word": "pedestrian bridge", "note_mean": "歩道橋", "note_ja": "go over it は\n「それを渡る」。\nit は歩道橋の\nことです。"},
-    {"pAudioId": "I-HELP-4_b2n7", "pEn": "Alright.", "pJa": "分かりました。", "pAudio": "partner-7.mp3", "heard": "", "why": "", "sId": "RP68", "sEn": "Then turn right at the convenience store.", "sJa": "そのあと、コンビニの所を右です。", "note_word": "", "note_mean": "", "note_ja": ""},
-    {"pAudioId": "I-HELP-4_b2n8", "pEn": "Great.", "pJa": "素晴らしいです。", "pAudio": "partner-8.mp3", "heard": "", "why": "", "sId": "RP69", "sEn": "And it's on your right.", "sJa": "右側にありますよ。", "note_word": "", "note_mean": "", "note_ja": ""},
-    {"pAudioId": "I-HELP-4_b2n9", "pEn": "Perfect. Thank you so much!", "pJa": "ばっちりです。本当にありがとうございます！", "pAudio": "partner-9.mp3", "heard": "ぷーfぇkt。thぇあnk ゆ そぅ まち!", "why": "【い/えの中間音】\"perfect\" の fect の e は、日本語の「え」ではなく、「え」と「い」の中間のような音です。【消えるT】\"perfect\" の最後の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めるだけなので、語尾がすっと消えて聞こえます。", "sId": "RP32", "sEn": "No problem!", "sJa": "いえいえ！", "note_word": "", "note_mean": "", "note_ja": ""}
+    {"pAudioId": "I-HELP-4_b2n1", "pEn": "Actually, I'm a bit lost.", "pJa": "実は、ちょっと道に迷っていて。", "pAudio": "partner-1.mp3", "heard": "ぇあkしゅりあぃま べt らst.", "why": "【母音ドッキング】\"Actually, I'm\" は、読点があっても間を置かずに続けて発音されます。Actually の最後の「り」と I'm の「あぃ」がつながり、「ぇあkしゅりあぃm」と一息に聞こえます。【母音ドッキング】\"I'm a\" は、I'm の m と a がつながって「あぃま」と聞こえます。【い/えの中間音】\"bit\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「べt」と書いていますが、日本語の「え」とも違います。【消えるT】\"bit lost\" の bit の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま lost へ移るので、2語がひと続きに聞こえます。【あのようなおの音】\"lost\" の o は、喉を縦に開けて出す「あ」のような「お」の音です。", "sId": "RP07", "sEn": "Where are you trying to go?", "sJa": "どこへ行こうとしているんですか？", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": [{"word": "actually", "mean": "実は", "text": "本当のことを\n打ち明ける\n一言です。", "must": true}, {"word": "a bit lost", "mean": "ちょっと迷って", "text": "lost は\n「道に迷った」。\na bit は\n「ちょっと」です。", "must": true}]},
+    {"pAudioId": "I-HELP-4_b2n2", "pEn": "I'm going to this karaoke place.", "pJa": "このカラオケに行きたいんです。", "pAudio": "partner-2.mp3", "heard": "あぃm ごぅぇんt'thぇs かrぁぉぅき pれぃs.", "why": "【い/えの中間音】\"going\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「ごぅぇん」と書いていますが、日本語の「え」とも違います。【Toの弱形】\"going to this\" の to は、「とぅ」とは発音されません。弱くなって次の this にドッキングし、「t'thぇs」とひと続きに聞こえます。【い/えの中間音】\"this\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。", "sId": "RP71", "sEn": "Cool. Let me see.", "sJa": "いいですね。ええと…", "note_word": "let me see", "note_mean": "ええと", "note_ja": "考えている間を\nつなぐ一言です。", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n3", "pEn": "Is it far?", "pJa": "遠いですか？", "pAudio": "partner-3.mp3", "heard": "ぇぜt fぁー?", "why": "【母音ドッキング】\"Is it\" はつながって「ぇぜt」の2音になり、短すぎて聞き逃しやすい所です。【い/えの中間音】\"Is\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「ぇぜt」と書いていますが、日本語の「え」とも違います。【い/えの中間音】\"it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。【消えるT】\"it far\" の it の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま far へ移るので、2語がひと続きに聞こえます。", "sId": "RP105", "sEn": "It's a five-minute walk.", "sJa": "歩いて5分です。", "note_word": "a five-minute walk", "note_mean": "歩いて5分", "note_ja": "車で5分なら\na five-minute drive。\n同じ形で言えます。", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n4", "pEn": "Oh, okay.", "pJa": "あ、そうなんですね。", "pAudio": "partner-4.mp3", "heard": "", "why": "", "sId": "RP72", "sEn": "Go straight, then turn left.", "sJa": "まっすぐ行って、左です。", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n5", "pEn": "Ok. Straight, then left.", "pJa": "はい。まっすぐ行って、左ですね。", "pAudio": "partner-5.mp3", "heard": "", "why": "", "sId": "RP66", "sEn": "Walk about three blocks.", "sJa": "3ブロックくらい歩いてください。", "note_word": "block", "note_mean": "1区画", "note_ja": "道と道に\nはさまれた\n1かたまりです。\n角をいくつ\n過ぎるか数えます。", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n6", "pEn": "Got it. And after that?", "pJa": "なるほど。その後は？", "pAudio": "partner-6.mp3", "heard": "がりt。ぇなfたー thぇあt?", "why": "【Flap T】\"got it\" の t は母音にはさまれて「ら行」の音に変身し、「がりt」のように聞こえます。【い/えの中間音】\"it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。【andの弱形】\"And after\" の And は、最後の d の音が消え、「ぇなfたー」と聞こえることが多いです。【母音ドッキング】\"And after\" は、And の n と after の a がつながって、「ぇなfたー」と一息に聞こえます。", "sId": "RP70", "sEn": "You'll see a pedestrian bridge. Go over it.", "sJa": "歩道橋が見えます。それを渡ってください。", "note_word": "pedestrian bridge", "note_mean": "歩道橋", "note_ja": "go over it は\n「それを渡る」。\nit は歩道橋の\nことです。", "pNotes": [{"word": "got it", "mean": "分かりました", "text": "「手に入れた」\nではありません。", "must": true}, {"word": "and after that?", "mean": "その後は？", "text": "「それで？」と、\n話の続きを\n聞く一言です。", "must": true}]},
+    {"pAudioId": "I-HELP-4_b2n7", "pEn": "Alright.", "pJa": "分かりました。", "pAudio": "partner-7.mp3", "heard": "", "why": "", "sId": "RP68", "sEn": "Then turn right at the convenience store.", "sJa": "そのあと、コンビニの所を右です。", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n8", "pEn": "Great.", "pJa": "素晴らしいです。", "pAudio": "partner-8.mp3", "heard": "", "why": "", "sId": "RP69", "sEn": "And it's on your right.", "sJa": "右側にありますよ。", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n9", "pEn": "Perfect. Thank you so much!", "pJa": "ばっちりです。本当にありがとうございます！", "pAudio": "partner-9.mp3", "heard": "ぷーfぇkt。thぇあnk ゆ そぅ まち!", "why": "【い/えの中間音】\"perfect\" の fect の e は、日本語の「え」ではなく、「え」と「い」の中間のような音です。【消えるT】\"perfect\" の最後の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めるだけなので、語尾がすっと消えて聞こえます。", "sId": "RP32", "sEn": "No problem!", "sJa": "いえいえ！", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": []}
   ];
   /* 同 intention.phrases。バッジは js/earToVoice.js renderCard の規則(recommended→定番、
      tone→口調、同じ口調で一番短い→短め)をこのデータに当てた結果。 */
@@ -1286,17 +1287,24 @@
     });
     return btn;
   }
-  /* js/ui.js wordNote(ことばのメモ)。 */
+  /* js/ui.js wordNote(ことばのメモ)。note_must なら見出しの上に MUST の札(本体の .chip = LPの .ph-chip)。 */
   function wordNote(ph, hidden) {
     return h('div', { class: 'chat-word-note', hidden: hidden }, [
+      ph.note_must ? h('p', { class: 'chat-word-note-must' }, [h('span', { class: 'ph-chip', text: 'MUST' })]) : null,
       ph.note_word
         ? h('p', { class: 'chat-word-note-word' }, [
             h('span', { class: 'chat-word-note-en', text: ph.note_word }),
             ph.note_mean ? h('span', { class: 'chat-word-note-mean', text: '＝ ' + ph.note_mean }) : null
           ])
         : null,
-      h('p', { class: 'chat-word-note-text', text: ph.note_ja })
+      ph.note_ja ? h('p', { class: 'chat-word-note-text', text: ph.note_ja }) : null
     ]);
+  }
+  /* js/ui.js partnerNotes: 相手のセリフのメモ(1つの文に2つまで)。 */
+  function partnerNotes(notes, hidden) {
+    return (notes || []).map(function (n) {
+      return wordNote({ note_word: n.word, note_mean: n.mean, note_ja: n.text, note_must: n.must }, hidden);
+    });
   }
   /* js/ui.js chatAvatar。 */
   function chatAvatar(who) {
@@ -1451,6 +1459,7 @@
       var src = function () { return partnerSrc(ex); };
       var enHost = h('p', { class: 'chat-en', hidden: true, text: ex.pEn });
       var jaHost = h('p', { class: 'chat-ja-meaning', hidden: true, text: ex.pJa });
+      var noteHosts = partnerNotes(ex.pNotes, true);
       var tipHost = ex.why ? listeningAccordion(ex.heard, ex.why) : null;
       if (tipHost) { tipHost.hidden = true; tipHost.classList.add('chat-under-block'); }
       var missedBtn, jaBtn, links;
@@ -1459,6 +1468,7 @@
         enHost.hidden = false;
         jaHost.hidden = false;
         if (tipHost) tipHost.hidden = false;
+        noteHosts.forEach(function (n) { n.hidden = false; });
         jaBtn.hidden = true;
         if (missed) missedBtn.hidden = true;
         links.hidden = missedBtn.hidden && jaBtn.hidden;
@@ -1468,7 +1478,7 @@
       links = h('div', { class: 'chat-under chat-under-links', hidden: true }, [missedBtn, jaBtn]);
       var voice = voiceRow(ex.pAudioId, src);
       voice.disabled = true;
-      var built = bubbleRow('partner', COPY.chatPartner, [enHost, jaHost, voice], { under: [links, tipHost] });
+      var built = bubbleRow('partner', COPY.chatPartner, [enHost, jaHost].concat(noteHosts, [voice]), { under: [links, tipHost] });
       built.row.classList.add('is-voice-row');
       thread.appendChild(built.row);
       scrollToBubble(built.row);
