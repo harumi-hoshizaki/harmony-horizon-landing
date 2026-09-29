@@ -10,7 +10,9 @@ const SPEC = { h1: [30, 36], h2: [24, 28], h3: [17, 20], body: [16, 18] };
    どこで切っても1〜2文字の行が出る。**本文の 16px は下げない**（追補5）。 */
 const SPEC_NARROW = { h1: [26, 36], h2: [21, 28], h3: [16, 20], body: [16, 18] };
 /* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
-const SPEC_LEGAL = { h1: [24, 34], h2: [17, 22], h3: [15, 18], body: [16, 18] };
+/* ★2026-09-29 HARU様決定: 法務3ページだけは本文14px(日本の規約ページで一般的な大きさ)。
+   「読む文章は16px以上」(2026-08-27)の例外。minRead がその下限。 */
+const SPEC_LEGAL = { h1: [20, 34], h2: [15, 22], h3: [14, 18], body: [14, 18], minRead: 14 };
 /* 2026-08-27: 販売LP2枚がこの一覧に入っていなかった。**売っているページを
    一度も測っていなかった。** 「すべて合格」と出ていたのに、実機では
    中央揃えののこぎり状で読みにくい状態だった（HARU様の指摘）。 */
@@ -102,7 +104,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
             /* 句点だけで判定すると「K.A.」のような署名を拾う。長さで切る。 */
             return own.length >= 15;
           })
-          .filter(e => parseFloat(getComputedStyle(e).fontSize) < 16)
+          .filter(e => parseFloat(getComputedStyle(e).fontSize) < (SPEC.minRead || 16))
           .slice(0, 5)
           .map(e => Math.round(parseFloat(getComputedStyle(e).fontSize)) + 'px "'
                  + (e.textContent || '').trim().slice(0, 16) + '"');
@@ -233,7 +235,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       for (const k of Object.keys(r.typeOk)) {
         if (r.typeOk[k] === false) bad.push(`${k} ${r.type[k]}px は範囲 ${spec[k].join('–')} の外`);
       }
-      if (r.tiny.length) bad.push(`読む文章が 16px 未満 ×${r.tiny.length} ${JSON.stringify(r.tiny)}`);
+      if (r.tiny.length) bad.push(`読む文章が ${spec.minRead || 16}px 未満 ×${r.tiny.length} ${JSON.stringify(r.tiny)}`);
       if (r.centered.length) bad.push(`読む文章が中央揃え ×${r.centered.length} ${JSON.stringify(r.centered)}`);
       if (r.fakeN) bad.push(`合成太字（自前ホストに無い太さ）×${r.fakeN} ${JSON.stringify(r.fake)}`);
       if (r.strayN) bad.push(`印付けの残り「>」が本文に出ている ×${r.strayN} ${JSON.stringify(r.strays)}`);
