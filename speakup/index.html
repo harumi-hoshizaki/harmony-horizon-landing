@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>外国人に話しかける20日間 — Ear to Voice | Harmony Horizon</title>
-<meta name="description" content="外国人を見かけた時に、自分から話しかけ、会話を広げられるように備える Ear to Voice｜外国人に話しかける20日間。よくある場面をネイティブ音声で聞き、声に出し、台本にそった会話の練習で自信をつけます。">
+<meta name="description" content="外国人を見かけた時に、自分から話しかけ、会話を広げられるように Ear to Voice｜外国人に話しかける20日間。よくある場面をネイティブ音声で聞き、声に出し、台本にそった会話の練習で自信をつけます。">
 <link rel="canonical" href="https://www.harmonyhorizon.space/speakup/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="外国人に話しかける20日間 — Ear to Voice | Harmony Horizon">
-<meta property="og:description" content="外国人を見かけた時に、自分から話しかけ、会話を広げられるように備える Ear to Voice｜外国人に話しかける20日間。よくある場面をネイティブ音声で聞き、声に出し、台本にそった会話の練習で自信をつけます。">
+<meta property="og:description" content="外国人を見かけた時に、自分から話しかけ、会話を広げられるように Ear to Voice｜外国人に話しかける20日間。よくある場面をネイティブ音声で聞き、声に出し、台本にそった会話の練習で自信をつけます。">
 <meta property="og:url" content="https://www.harmonyhorizon.space/speakup/">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="Harmony Horizon">
@@ -632,7 +632,8 @@
   /* 360px幅だけ1行に入らないので、意味の切れ目で折る(「。」だけが次の行に落ちないように)。 */
   .try-done-br { display: none; }
   @media (max-width: 370px) { .try-done-br { display: inline; } }
-  .try-done .try-done-cta { margin-top: var(--space-6); text-decoration: none; }
+  .try-done .try-done-cta { margin-top: var(--space-6); text-decoration: none; word-break: keep-all; }
+  /* 「コースでもっと挑戦する」は狭い画面で「挑／戦」と語の途中で折れないよう、<wbr>(コースで の後)でだけ折る。 */
   @media (prefers-reduced-motion: reduce) { .try-done { animation: none; } }
   /* speakup/js/ui.js voiceSpeedControls・segControl・
      collapsibleVoiceSpeedControls の見た目のそのままの移植(クラス名・
@@ -981,8 +982,8 @@
           <div class="try-done" id="tryDone" hidden>
             <p class="try-done-en">Well done!</p>
             <p class="try-done-title">最後まで<br class="try-done-br">会話できました。</p>
-            <p class="try-done-sub">「聞く → 理解する → 言う」を<br>最後までやり切りました。</p>
-            <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn-primary try-done-cta">コースに申し込む<span class="btn-arrow" aria-hidden="true">→</span></a>
+            <p class="try-done-sub">「聞く → 理解する<br class="br-xs"> → 言う」を<br>最後までやり切りました。</p>
+            <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn-primary try-done-cta">コースで<wbr>もっと挑戦する<span class="btn-arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -1039,7 +1040,7 @@
 <section id="price">
   <div class="container">
     <span class="eyebrow">Price</span>
-    <h2>今日から、<br>備えを始める。</h2>
+    <h2>次に会う外国人に、<br>声をかけるために。</h2>
 
     <div class="price-card">
       <div class="label">EAR TO VOICE</div>
