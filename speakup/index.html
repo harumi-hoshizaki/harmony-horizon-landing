@@ -577,14 +577,14 @@
   .chat-tail { display: flex; flex-direction: column; gap: var(--space-5); }
   .chat-tail:empty { display: none; }
   .chat-tail > * { margin-top: 0; margin-bottom: 0; }
-  /* LPだけ(HARU様 2026-09-29「なんかしら言ったを押す前まではアイコンが目立つように」):
-     本体は輪を2回広げて止めるが、LPは押すまでゆっくり呼吸するように広げ続ける(2.6秒に1回・淡く)。
-     速い点滅にはしない(読む邪魔・光に敏感な人への配慮)。 */
-  .chat-row.is-your-turn .chat-avatar { box-shadow: 0 0 0 3px var(--accent-fill); animation: yourTurnBreath 2.6s ease-out infinite; }
+  /* LPだけ(HARU様 2026-09-29「なんかしら言ったを押す前まではアイコンが目立つように」
+     →「光が弱すぎて気がつかない」):本体は輪を2回広げて止めるが、LPは押すまで光り続ける。
+     輪は4px。その外に半透明の金の輪(12px)とぼかした光が、1.6秒で1回ふくらんで戻る。
+     ちかちかする点滅にはしない(光に敏感な人への配慮。動きを減らす設定では止める)。 */
+  .chat-row.is-your-turn .chat-avatar { box-shadow: 0 0 0 4px var(--accent-fill); animation: yourTurnBreath 1.6s ease-in-out infinite; }
   @keyframes yourTurnBreath {
-    0%   { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 0 color-mix(in srgb, var(--accent-fill) 55%, transparent); }
-    60%  { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
-    100% { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+    0%, 100% { box-shadow: 0 0 0 4px var(--accent-fill), 0 0 0 4px color-mix(in srgb, var(--accent-fill) 0%, transparent), 0 0 0 0 color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+    50%      { box-shadow: 0 0 0 4px var(--accent-fill), 0 0 0 12px color-mix(in srgb, var(--accent-fill) 45%, transparent), 0 0 20px 14px color-mix(in srgb, var(--accent-fill) 55%, transparent); }
   }
   .chat-row.is-your-turn .chat-bubble { border-color: var(--accent-line); }
   .chat-row.is-your-turn .chat-sender { color: var(--accent-text); font-weight: 700; }
