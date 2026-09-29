@@ -191,6 +191,9 @@
      430px から先は1行に収まる（余裕 1〜10px）ので、それより下の
      全幅で強制的に2行へ割る。 */
   .br-narrow { display: none; }
+  /* スマホ幅だけ有効な改行(価格カードの販売期間。カードが画面より狭いので、430pxでも1行に入らない)。 */
+  .br-phone { display: none; }
+  @media (max-width: 599px) { .br-phone { display: inline; } }
   @media (max-width: 429px) { .br-narrow { display: inline; } }
   /* 2026-08-28: 卓上でも2行に割る。この写真は横幅いっぱいに
      写っていて object-position で寄せられる幅が乏しく（cover が
@@ -1059,11 +1062,11 @@
       <div class="label">EAR TO VOICE</div>
       <div class="product">外国人に話しかける20日間</div>
       <div class="amount">¥3,980</div>
-      <div class="note">販売期間：9月30日(水)〜10月17日(土)23:59まで<br>コース開始：10月19日(月) ・ サブスクではありません</div>
+      <div class="note">販売期間：<br>9月30日(水)〜<br class="br-phone">10月17日(土)23:59まで<br>コース開始：10月19日(月)<br>サブスクではありません</div>
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>20日間のコース(聞く → 話しかける → 会話の練習)</div>
-        <div><span class="ck">✓</span>よくある場面のネイティブ音声(駅の券売機・駅のホーム・コンビニ ほか)</div>
+        <div><span class="ck">✓</span>よくある場面のネイティブ音声(駅の券売機・駅のホーム・観光地ほか)</div>
         <div><span class="ck">✓</span>台本にそった会話の練習(何度でも繰り返し可)</div>
         <div><span class="ck">✓</span>聞き返す・相槌の練習</div>
         <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
