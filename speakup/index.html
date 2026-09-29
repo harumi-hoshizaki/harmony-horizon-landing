@@ -374,20 +374,62 @@
      「この場面ならどれが一番自然か」を伝える(正誤を煽らない)。 ---- */
   .try-photo { border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
   .try-photo img { display: block; width: 100%; height: auto; }
-  .try-opener-q { font-size: var(--text-md); font-weight: 700; color: var(--ink); margin: 0 0 14px; }
-  .try-opener-options { display: flex; flex-direction: column; gap: 10px; }
-  .try-opener-btn {
-    display: block; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid var(--line);
-    border-radius: 12px; background: #FFFFFF; font-size: var(--text-md); color: var(--ink); cursor: pointer;
-    -webkit-tap-highlight-color: transparent; transition: border-color 0.15s ease, background 0.15s ease;
-  }
-  .try-opener-btn:disabled { cursor: default; }
-  .try-opener-btn.is-picked { border-color: #A3782D; background: #F9F1E4; }
   .try-explain { margin-top: 16px; padding: 16px 18px; border-radius: 12px; background: var(--cream-soft); border: 1px solid var(--line); }
   .try-explain p { margin: 0; font-size: var(--text-sm); line-height: 1.7; color: var(--ink-soft); }
   .try-explain p + p { margin-top: 10px; }
   .try-continue { width: 100%; margin-top: 16px; justify-content: center; }
   .try-continue[hidden] { display: none; }
+  /* ---- ここから harmonyhorizon.foreigners の「言い方を選ぶ」画面
+     (js/earToVoice.js stepChoosePhrase + js/ui.js renderScreenHead/
+     modeRow + css/main.css)の、クラス名・数値ともそのままの移植。
+     HARU様2026-09-30「添付のスクリーンショットと1ピクセルも変えずに
+     再現してください」。色トークンだけ、値が一致/近似するこのLPの
+     命名に読み替えた(--ink-wash→var(--cream-soft)、--umber→#4B3325
+     [本体と同じ値]、--accent-wash→#F3E4C6[本体と同じ値]、
+     --accent-text→var(--gold)、--accent-line→#A3782D[本体と同じ値])。
+     class名の頭に ph- を付け、このLP既存の .note/.chip/.progress 等と
+     衝突しないようにした(中身・数値は本体のまま)。 ---- */
+  .ph-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+  .ph-cat { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; background: none; border: none; padding: 0; cursor: default; }
+  .ph-cat-top-row { display: flex; align-items: center; gap: 8px; }
+  .ph-cat-mark { flex: none; line-height: 0; }
+  .ph-cat-mark svg { width: 22px; height: 22px; display: block; }
+  .ph-cat-eyebrow { font-weight: 700; font-size: var(--text-lg); line-height: 1.3; letter-spacing: 0.03em; color: var(--ink); }
+  .ph-topbar-right { flex: none; }
+  .ph-progress { margin: 0; font-size: var(--text-md); font-weight: 700; letter-spacing: 0.04em; color: var(--ink-soft); }
+  .ph-journey-mode { margin: 0 0 20px; }
+  .ph-mode-name { display: inline-flex; align-items: center; padding: 6px 18px; border-radius: 999px; background: #F9F1E4; color: var(--gold); font-size: var(--text-lg); font-weight: 700; line-height: 1.6; white-space: nowrap; }
+  .ph-screen-title { font-weight: 700; font-size: var(--text-xl); line-height: 1.5; margin: 0 0 8px; color: var(--ink); }
+  .ph-note { background: var(--cream-soft); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin-bottom: 20px; }
+  .ph-note p { margin: 0; font-size: var(--text-md); line-height: 1.9; color: var(--ink); }
+  .ph-settings-collapsible { display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+  .ph-say-carousel { display: flex; flex-direction: column; gap: 24px; }
+  .ph-carousel-card { position: relative; background: var(--cream-soft); padding: 24px; min-height: 72px; display: flex; flex-direction: column; justify-content: center; gap: 24px; }
+  .ph-carousel-head { display: flex; flex-direction: column; gap: 12px; }
+  .ph-choice-pos-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .ph-choice-pos { margin: 0; color: #4B3325; line-height: 1; }
+  .ph-choice-pos-n { font-size: var(--text-3xl); font-weight: 700; }
+  .ph-choice-pos-of { font-size: var(--text-md); font-weight: 400; }
+  .ph-badge-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .ph-chip { display: inline-block; flex: none; white-space: nowrap; background: #F3E4C6; color: var(--gold); font-size: var(--text-sm); font-weight: 700; line-height: 1.4; border-radius: 999px; border: 1.5px solid transparent; padding: 4px 12px; }
+  .ph-chip-outline { background: transparent; border-color: #A3782D; }
+  .ph-carousel-stack { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .ph-carousel-gloss { margin: 0; font-size: var(--text-lg); font-weight: 700; line-height: 1.5; color: var(--ink); }
+  .ph-carousel-nav { display: flex; justify-content: center; align-items: center; gap: 24px; margin: 0; }
+  .ph-carousel-arrow {
+    flex: none; width: 48px; height: 48px; padding: 0; background: #FFFFFF; border: 1px solid var(--line);
+    border-radius: 50%; font-size: var(--text-xl); line-height: 1; color: var(--ink); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; -webkit-tap-highlight-color: transparent;
+  }
+  .ph-carousel-arrow:active { background: var(--cream-soft); }
+  .ph-audio-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 56px; padding: 0; background: none; border: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .ph-audio-btn-circle {
+    flex: none; width: 56px; height: 56px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 34% 28%, #7a6e64 0%, #4a413a 38%, var(--ink) 72%, #120e0b 100%);
+    box-shadow: 0 14px 28px rgba(34,29,24,.32), 0 5px 10px rgba(34,29,24,.28), inset 0 2px 2px rgba(255,255,255,.28), inset 0 -6px 12px rgba(0,0,0,.38);
+  }
+  .ph-audio-btn-circle svg { width: 24px; height: 24px; margin-left: 3px; filter: drop-shadow(0 2px 2px rgba(0,0,0,.45)); }
+  .ph-audio-btn.playing .ph-audio-btn-circle { box-shadow: 0 0 0 6px #F3E4C6, 0 14px 28px rgba(34,29,24,.32), 0 5px 10px rgba(34,29,24,.28), inset 0 2px 2px rgba(255,255,255,.28), inset 0 -6px 12px rgba(0,0,0,.38); }
   /* ---- ここから harmonyhorizon.foreigners speakup/js/ui.js + css/main.css
      の会話帳(chat-thread)の、クラス名・数値ともそのままの移植 ----
      (HARU様2026-09-30「なぜ書き方がアプリと違うんですか？全く同じように
@@ -677,8 +719,57 @@
       </div>
       <p class="try-situation">駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。</p>
       <div id="tryOpener">
-        <p class="try-opener-q">この状況、英語でなんて声をかけますか？</p>
-        <div class="try-opener-options" id="tryOpenerOptions"></div>
+        <div class="ph-head">
+          <button type="button" class="ph-cat" tabindex="-1">
+            <span class="ph-cat-top-row">
+              <span class="ph-cat-mark" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="var(--ink)"/><circle cx="16" cy="16" r="2.7" fill="var(--gold-bright)"/><circle cx="16" cy="16" r="7.2" fill="none" stroke="var(--gold-bright)" stroke-width="2"/><circle cx="16" cy="16" r="11.8" fill="none" stroke="var(--gold-bright)" stroke-width="1.6" opacity="0.55"/></svg>
+              </span>
+              <span class="ph-cat-eyebrow">言い方を選ぶ</span>
+            </span>
+          </button>
+          <div class="ph-topbar-right"><p class="ph-progress">1 / 2</p></div>
+        </div>
+        <div class="ph-journey-mode"><span class="ph-mode-name">リスニング＆スピーキング</span></div>
+        <h2 class="ph-screen-title">どれで練習しますか？</h2>
+        <div class="ph-note"><p class="ph-pre-line">3つを聞き比べて、<br>言いやすいものを選んで。<br>「›」で次の言い方を聞く。</p></div>
+        <div class="ph-settings-collapsible">
+          <div class="audio-tools-row">
+            <button type="button" class="settings-toggle" id="phSettingsToggle" aria-expanded="false">
+              <span class="settings-toggle-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></svg>
+              </span>
+              <span class="settings-toggle-label">声・速さ</span>
+              <span class="settings-toggle-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="settings-panel" id="phSettingsPanel" hidden>
+            <div class="controls-row" id="phControlsRow"></div>
+          </div>
+        </div>
+        <div class="ph-say-carousel">
+          <div class="ph-carousel-card">
+            <div class="ph-carousel-head">
+              <div class="ph-choice-pos-row">
+                <p class="ph-choice-pos"><span class="ph-choice-pos-n" id="phPosN">1</span><span class="ph-choice-pos-of"> / 3</span></p>
+                <span class="ph-badge-row" id="phBadgeRow"></span>
+              </div>
+              <div class="ph-carousel-stack">
+                <p class="ph-carousel-gloss">大丈夫ですか？</p>
+              </div>
+            </div>
+            <div class="ph-carousel-nav">
+              <button type="button" class="ph-carousel-arrow" id="phPrev" aria-label="前の言い方">‹</button>
+              <button type="button" class="ph-audio-btn" id="phPlay" aria-label="聞く">
+                <span class="ph-audio-btn-circle"><svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg></span>
+              </button>
+              <button type="button" class="ph-carousel-arrow" id="phNext" aria-label="次の言い方">›</button>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-gold try-continue" id="tryConfirm">これにする →</button>
         <div class="try-explain" id="tryExplain" hidden></div>
         <button type="button" class="btn btn-gold try-continue" id="tryContinue" hidden>会話を続ける →</button>
       </div>
@@ -1160,34 +1251,86 @@
      並べ(正誤を煽らない)、選んだ後に「この場面ならどれが一番自然か」を
      種明かしする。選び終えたら、いつもの8往復(doPartnerVoice〜)へ
      続ける。 */
+  /* ---- 「言い方を選ぶ」画面(js/earToVoice.js stepChoosePhrase の移植) ----
+     2026-09-30 HARU様「実際の画面(スクショ)を一字一句そのまま複製する形」。
+     3枚のカードを ‹ › でめくり、▶で聞き比べ、「これにする」で確定する。
+     データ・バッジの計算結果は実際のアプリのi-help-4 intention.phrasesと
+     stepChoosePhraseの計算をそのまま使う(op1=定番+短め、op2=無し、
+     op3=カジュアル)。 */
   function initOpener() {
     var opener = document.getElementById('tryOpener');
-    var optionsWrap = document.getElementById('tryOpenerOptions');
     var explainBox = document.getElementById('tryExplain');
+    var confirmBtn = document.getElementById('tryConfirm');
     var continueBtn = document.getElementById('tryContinue');
-    if (!opener || !optionsWrap || !explainBox || !continueBtn) { doPartnerVoice(); return; }
+    var posN = document.getElementById('phPosN');
+    var badgeRow = document.getElementById('phBadgeRow');
+    var prevArrow = document.getElementById('phPrev');
+    var nextArrow = document.getElementById('phNext');
+    var playBtn = document.getElementById('phPlay');
+    var settingsToggle = document.getElementById('phSettingsToggle');
+    var settingsPanel = document.getElementById('phSettingsPanel');
+    var controlsRow = document.getElementById('phControlsRow');
+    if (!opener || !explainBox || !confirmBtn || !continueBtn || !posN || !badgeRow || !prevArrow || !nextArrow || !playBtn) {
+      doPartnerVoice();
+      return;
+    }
 
     var OPTIONS = [
-      { id: 'op1', en: 'Are you okay?' },
-      { id: 'op2', en: 'Do you need any help?' },
-      { id: 'op3', en: 'Want me to show you?' }
+      { id: 'op1', en: 'Are you okay?', badges: [{ text: '定番' }, { text: '短め', outline: true }] },
+      { id: 'op2', en: 'Do you need any help?', badges: [] },
+      { id: 'op3', en: 'Want me to show you?', badges: [{ text: 'カジュアル', outline: true }] }
     ];
-    var buttons = [];
-    OPTIONS.forEach(function (opt) {
-      var b = document.createElement('button');
-      b.type = 'button';
-      b.className = 'try-opener-btn';
-      b.textContent = opt.en;
-      b.addEventListener('click', function () { pick(opt, b); });
-      buttons.push(b);
-      optionsWrap.appendChild(b);
-    });
+    var idx = 0;
+    var chosen = OPTIONS[0];
 
-    function pick(opt, btn) {
-      buttons.forEach(function (b) { b.disabled = true; });
-      btn.classList.add('is-picked');
-      play(AUDIO_BASE + 'model-' + state.voice + '-' + opt.id + '.mp3');
+    function renderCard(doPlay) {
+      posN.textContent = String(idx + 1);
+      badgeRow.innerHTML = '';
+      OPTIONS[idx].badges.forEach(function (b) {
+        var span = document.createElement('span');
+        span.className = 'ph-chip' + (b.outline ? ' ph-chip-outline' : '');
+        span.textContent = b.text;
+        badgeRow.appendChild(span);
+      });
+      chosen = OPTIONS[idx];
+      if (doPlay) playCard();
+    }
+    function playCard() {
+      var src = AUDIO_BASE + 'model-' + state.voice + '-' + OPTIONS[idx].id + '.mp3';
+      playBtn.classList.add('playing');
+      play(src, function () { playBtn.classList.remove('playing'); });
+    }
+    playBtn.addEventListener('click', playCard);
+    prevArrow.addEventListener('click', function () { idx = (idx - 1 + OPTIONS.length) % OPTIONS.length; renderCard(true); });
+    nextArrow.addEventListener('click', function () { idx = (idx + 1) % OPTIONS.length; renderCard(true); });
+    renderCard(false);
 
+    if (settingsToggle && settingsPanel) {
+      settingsToggle.addEventListener('click', function () {
+        var open = settingsToggle.getAttribute('aria-expanded') === 'true';
+        settingsToggle.setAttribute('aria-expanded', String(!open));
+        settingsPanel.hidden = open;
+      });
+    }
+    if (controlsRow) {
+      controlsRow.appendChild(segControl(
+        [{ label: '女性の声' }, { label: '男性の声' }],
+        function (i) { return (i === 1) === (state.voice === 'm'); },
+        function (i) { state.voice = i === 1 ? 'm' : 'f'; }
+      ));
+      controlsRow.appendChild(segControl(
+        [{ label: 'ふつう', sub: '1.0x' }, { label: 'ゆっくり', sub: '0.7x' }],
+        function (i) { return (i === 1) === (state.rate === 0.7); },
+        function (i) {
+          state.rate = i === 1 ? 0.7 : 1;
+          if (currentAudio) { try { currentAudio.playbackRate = state.rate; } catch (e) {} }
+        }
+      ));
+    }
+
+    confirmBtn.addEventListener('click', function () {
+      confirmBtn.hidden = true;
+      var opt = chosen;
       var p1 = document.createElement('p');
       var p2 = document.createElement('p');
       if (opt.id === 'op1') {
@@ -1201,7 +1344,7 @@
       explainBox.hidden = false;
       continueBtn.hidden = false;
       continueBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    }, { once: true });
 
     continueBtn.addEventListener('click', function () {
       userInteracted = true;
