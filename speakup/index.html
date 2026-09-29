@@ -193,7 +193,7 @@
   .br-narrow { display: none; }
   /* スマホ幅だけ有効な改行(価格カードの販売期間。カードが画面より狭いので、430pxでも1行に入らない)。 */
   .br-phone { display: none; }
-  @media (max-width: 599px) { .br-phone { display: inline; } }
+  @media (max-width: 599px) { .br-phone { display: inline; } .sep-pc { display: none; } }
   @media (max-width: 429px) { .br-narrow { display: inline; } }
   /* 2026-08-28: 卓上でも2行に割る。この写真は横幅いっぱいに
      写っていて object-position で寄せられる幅が乏しく（cover が
@@ -1062,7 +1062,7 @@
       <div class="label">EAR TO VOICE</div>
       <div class="product">外国人に話しかける20日間</div>
       <div class="amount">¥3,980</div>
-      <div class="note">販売期間：<br>9月30日(水)〜<br class="br-phone">10月17日(土)23:59まで<br>コース開始：10月19日(月)<br>サブスクではありません</div>
+      <div class="note">販売期間：<br class="br-phone">9月30日(水)〜<br class="br-phone">10月17日(土)23:59まで<br>コース開始：10月19日(月)<span class="sep-pc"> ・ </span><br class="br-phone">サブスクではありません</div>
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>20日間のコース(聞く → 話しかける → 会話の練習)</div>
