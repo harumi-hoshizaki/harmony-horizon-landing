@@ -1169,10 +1169,11 @@
   var PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   var PERSON_ICON = '<svg viewBox="0 0 40 40" fill="currentColor"><circle cx="20" cy="15.5" r="7.5"/><path d="M4.5 40c0-8.6 6.9-14.8 15.5-14.8S35.5 31.4 35.5 40z"/></svg>';
 
-  /* 声はコース本体と同じく1つの設定で、相手(外国人役)とお手本(自分)の両方が切り替わる
-     (js/scenarios.js partnerAudioUrl / modelAudioUrl)。既定は男性(HARU様 2026-09-29
-     「写真が男性の外国人なので」)。速さは既定ふつう。 */
-  var state = { voice: 'm', rate: 1 };
+  /* state.voice は日本人役(自分のお手本)の声。相手(外国人役)はいつもその逆の声
+     (HARU様 2026-09-29: 外国人は写真どおり男性・日本人は女性が既定。
+     男女どちらの英語も聞き取れるように、トグルで2人が入れ替わる)。
+     ※コース本体は2人とも同じ声で切り替わる。ここはLPだけの決め方。速さは既定ふつう。 */
+  var state = { voice: 'f', rate: 1 };
   var chosenOption = null;
   var currentAudio = null;
   /* ページを開いた直後に scrollIntoView すると、ヒーローを見る前に
@@ -1425,8 +1426,8 @@
     });
   }
 
-  /* 相手の声: 女性を選んでいれば partner-f-N.mp3(コースの audio/partner-f/)。 */
-  function partnerSrc(ex) { return AUDIO_BASE + (state.voice === 'f' ? ex.pAudio.replace('partner-', 'partner-f-') : ex.pAudio); }
+  /* 相手の声は自分の声の逆: 自分が女性なら男性(partner-N)、自分が男性なら女性(partner-f-N)。 */
+  function partnerSrc(ex) { return AUDIO_BASE + (state.voice === 'm' ? ex.pAudio.replace('partner-', 'partner-f-') : ex.pAudio); }
   function modelSrc(id) { return AUDIO_BASE + 'model-' + state.voice + '-' + id + '.mp3'; }
 
   function youOpening() {
