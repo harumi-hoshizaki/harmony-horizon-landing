@@ -308,7 +308,7 @@
   /* 2026-09-29 HARU様要望: 「駅のホーム〜しておきます」の上下に
      もっと余白を。携帯だけ(卓上は900px以上のルールで元に戻す)。 */
   .hero .lede { max-width: 30em; margin: 12px 0 28px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
-  .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; }
+  .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; text-align: left; }
   /* 2026-09-30: 丸いタグ(ピル)から2列のリストに変更。ピルは短い言葉用の
      形で、説明文まで入れると1行に収まらず携帯幅で折り返して崩れる
      (HARU様「見た目がいい方を教えて」への回答)。ラベル+説明の対は
@@ -567,7 +567,9 @@
   }
   /* js/ui.js tipAccordion/accordionItem/listeningBody(「なぜ聞き取れない？」) */
   .tip-stack { display: flex; flex-direction: column; gap: 10px; }
-  .tip-acc { background: var(--surface); border: 1.5px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: 0 6px 18px rgba(34, 29, 24, 0.05); }
+  /* LPだけ: 白い吹き出しの下に白い箱が続くと目が迷う(HARU様 2026-09-29)ので、本体の .note と同じ淡い地(--ink-wash)を敷く。
+     中のラベルは同じ地だと消えるので白(--surface)にする。 */
+  .tip-acc { background: var(--ink-wash); border: 1.5px solid var(--line); border-radius: var(--radius); overflow: hidden; box-shadow: 0 6px 18px rgba(34, 29, 24, 0.05); }
   .tip-toggle { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px; background: none; border: none; padding: 13px 16px; font-family: var(--font-gothic); cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .tip-toggle:focus-visible { outline: 2px solid var(--accent-line); outline-offset: -2px; }
   .tip-toggle-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
@@ -580,7 +582,7 @@
   .tip-listen-kana { margin: 2px 0 0; font-size: var(--text-lg); color: var(--ink); line-height: var(--lh-read); }
   .tip-listen-list { list-style: none; margin: 0; padding: 0; }
   .tip-listen-item { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ink-hair); }
-  .tip-listen-label { display: block; width: fit-content; font-weight: 700; font-size: var(--text-xs); color: var(--accent-text); background: var(--ink-wash-2); border-radius: var(--radius-sm); padding: var(--space-1) var(--space-2); margin: 0 0 var(--space-2) 0; }
+  .tip-listen-label { display: block; width: fit-content; font-weight: 700; font-size: var(--text-xs); color: var(--accent-text); background: var(--surface); border-radius: var(--radius-sm); padding: var(--space-1) var(--space-2); margin: 0 0 var(--space-2) 0; }
   .tip-listen-text { margin: 0; font-size: var(--text-md); color: var(--ink); line-height: var(--lh-read); }
   @media (prefers-reduced-motion: reduce) {
     .chat-row { animation: none; }
@@ -818,7 +820,7 @@
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。20日間で、よくある場面を練習しておきます。</p>
       <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
-      <div class="hero-note">販売期間：9月30日(水)〜10月17日(土)23:59まで ・ コース開始：10月19日(月)</div>
+      <div class="hero-note">販売期間：9月30日(水)〜10月17日(土)23:59まで<br>コース開始：10月19日(月)</div>
     </div>
   </div>
 </section>
