@@ -260,7 +260,8 @@
        大半は文字が乗っている地色(--deep)の余白。帯だけ削っても
        827pxにしかならず(844pxに対し覗きは17pxで実質見えない)、
        文字まわりの余白も一緒に削って792px程度まで下げ、次の
-       明るい段(.phone-sec)が開いた瞬間から見えるようにする。 */
+       明るい段(2026-09-30に端末の作例を外したあとは#try-it)が
+       開いた瞬間から見えるようにする。 */
     --hero-band: clamp(170px, 20vh, 420px);
   }
   .hero__media {
@@ -357,26 +358,6 @@
     .hero-chips { margin-bottom: 28px; }
     .hero .btn-gold { margin-bottom: 20px; }
   }
-
-  /* 端末の作例はヒーローから出して、明るい面に置く。
-     写真の上に重ねると、写真も端末も両方読めなくなる。 */
-  .phone-sec {
-    background: linear-gradient(180deg, var(--cream) 0%, var(--cream-soft) 100%);
-    padding: clamp(48px, 7vw, 84px) 0;
-  }
-  .hero-phone-wrap { display: flex; justify-content: center; margin: 0; }
-
-  /* ---------------- Phone mockup ----------------
-     枠(端末の縁)は装飾。中身は本物のスクリーンショット(.phone-shot)。 */
-  .phone {
-    width: 300px; background: var(--cream); border-radius: 40px; border: 10px solid var(--navy-deep);
-    box-shadow: var(--shadow-card); overflow: hidden; position: relative; text-align: left;
-  }
-  .phone::before {
-    content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-    width: 90px; height: 22px; background: var(--navy-deep); border-radius: 0 0 16px 16px; z-index: 2;
-  }
-  .phone-shot { display: block; width: 100%; height: auto; }
 
   /* ---------------- Try it（道案内のミニ体験）----------------
      2026-09-29 HARU様要望: 「道案内のクイズ(シミュレーション)を入れて、
@@ -667,24 +648,6 @@
   </div>
 </section>
 
-<!-- 端末の作例。2026-09-28まではCSSで手組みした架空のUIだった
-     (HARU様指摘「勝手に作った画像ですよね」)。実際にアプリを動かして
-     撮った本物のスクリーンショットに差し替えた。Day 3「駅までの道で」の
-     SPEAKING画面の次、「言い方を選ぶ」(3つの言い方を聞き比べる画面)を
-     HARU様が選定(2026-09-28)。撮り方: harmonyhorizon.foreigners を
-     speakup/app/index.html からローカルで起動し、合言葉と
-     modulesCompleted(clar/aizuchi)だけlocalStorageに入れてこの場面まで
-     進め、Playwrightでスクリーンショット。文言・写真とも加工していない。 -->
-<section class="phone-sec">
-  <div class="hero-phone-wrap reveal rd3">
-    <div class="phone">
-      <img class="phone-shot" src="/assets/site/speakup-app-screenshot.jpg"
-        width="780" height="1650" loading="lazy" decoding="async"
-        alt="Speak Upアプリの実際の画面。「言い方を選ぶ」で3つの言い方を聞き比べ、言いやすいものを選んでいる所。">
-    </div>
-  </div>
-</section>
-
 <!-- TRY IT -->
 <section id="try-it" style="background:var(--cream-soft);">
   <div class="container">
@@ -935,6 +898,11 @@
   var state = { turnIndex: 0, phase: 'partner-voice', voice: 'f', rate: 1 };
   var currentAudio = null;
   var lastRole = null; /* 直前の行が相手/あなたのどちらだったか(名前・アイコンの省略判定) */
+  /* 最初の1行はページを開いた**直後**に自動で作られる(doPartnerVoice)。
+     その時にscrollIntoViewすると、ヒーローを読む前に画面が勝手にTry Itまで
+     連れて行かれてしまう(実測: scrollYが881pxまで動いていた)。
+     本人が触ってから初めてスクロールする。 */
+  var userInteracted = false;
 
   function play(src, onEnded) {
     if (currentAudio) { try { currentAudio.pause(); } catch (e) {} }
@@ -1022,7 +990,7 @@
     row.appendChild(col);
     lastRole = who;
     thread.appendChild(row);
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (userInteracted) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return { row: row, bubble: bubble };
   }
 
@@ -1048,7 +1016,7 @@
     row.setAttribute('aria-hidden', 'true');
     row.appendChild(col);
     thread.appendChild(row);
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (userInteracted) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return row;
   }
 
@@ -1160,7 +1128,7 @@
     }
   }
 
-  nextBtn.addEventListener('click', advance);
+  nextBtn.addEventListener('click', function () { userInteracted = true; advance(); });
   doPartnerVoice();
 
   /* ---- 声・速さ（speakup/js/ui.js segControl の見た目の移植）---- */
