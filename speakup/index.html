@@ -589,8 +589,22 @@
     .tip-chevron { transition: none; }
   }
   /* LPだけの物: 会話を終えた後の購入の案内(本体の「終わる ＞」の席)。 */
-  .try-done { text-align: center; }
-  .try-done p { font-size: var(--text-sm); color: var(--muted); margin: 0 0 14px; }
+  /* 会話を最後まで終えた時の締め(HARU様 2026-09-29「作業終了ではなく、達成感を感じて
+     褒められて嬉しくなる終了画面に」)。本体の copy.branches.chatBranchDone の .note の代わり。
+     新しい色・書体は足さず、本体の6段階の文字サイズだけで強弱を付ける:
+     英語の褒め言葉 = --text-3xl(本体で「Welcome back!」のような演出だけに使う一番大きい段)/
+     「最後まで会話できました。」= 画面見出しと同じ --text-xl 太字 / 添え書き = 本文 --text-md。
+     紙吹雪・星・絵文字は使わない。会話との間は細い罫線と48pxで区切る。 */
+  .try-done { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); border-top: 1px solid var(--ink-hair); padding-top: var(--space-7); animation: chatRowIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.05) both; }
+  .try-done p { margin: 0; }
+  .try-done-en { font-family: var(--font-latin); font-size: var(--text-3xl); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; color: var(--ink); }
+  .try-done-title { font-size: var(--text-xl); font-weight: 700; line-height: var(--lh-heading); color: var(--ink); }
+  .try-done-sub { font-size: var(--text-md); line-height: var(--lh-read); color: var(--muted); }
+  /* 360px幅だけ1行に入らないので、意味の切れ目で折る(「。」だけが次の行に落ちないように)。 */
+  .try-done-br { display: none; }
+  @media (max-width: 370px) { .try-done-br { display: inline; } }
+  .try-done .try-done-cta { margin-top: var(--space-6); text-decoration: none; }
+  @media (prefers-reduced-motion: reduce) { .try-done { animation: none; } }
   /* speakup/js/ui.js voiceSpeedControls・segControl・
      collapsibleVoiceSpeedControls の見た目のそのままの移植(クラス名・
      数値とも同じ)。色トークンだけ、このLPの命名(--line/--gold/
@@ -944,8 +958,10 @@
           <div class="chat-tail" id="tryTail"></div>
           <div class="nav-row" id="tryNav"><button type="button" class="btn-primary" id="tryNext" hidden>次へ ＞</button></div>
           <div class="try-done" id="tryDone" hidden>
-            <p>お疲れさまでした。これが「聞く→言う」1レッスンぶんの流れです。</p>
-            <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
+            <p class="try-done-en">Well done!</p>
+            <p class="try-done-title">最後まで<br class="try-done-br">会話できました。</p>
+            <p class="try-done-sub">「聞く → 理解する → 言う」を<br>最後までやり切りました。</p>
+            <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn-primary try-done-cta">今すぐ始める<span class="btn-arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -1173,7 +1189,6 @@
     chatReplay: '聞く',
     chatYou: 'あなた',
     chatPartner: '相手',
-    chatBranchDone: '最後まで会話できました。',
     showMeaning: '意味と英文を見る',
     heardNo: '聞き取れなかった',
     tipListening: 'なぜ聞き取れない？',
@@ -1529,7 +1544,6 @@
 
   function finishBranch() {
     statusGroup.hidden = true;
-    tail.appendChild(h('div', { class: 'note' }, [h('p', { text: COPY.chatBranchDone })]));
     if (navRowEl) navRowEl.hidden = true;
     if (doneBlock) { tail.appendChild(doneBlock); doneBlock.hidden = false; }
     scrollToBubble(tail);
