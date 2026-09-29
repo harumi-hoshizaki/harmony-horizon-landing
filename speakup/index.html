@@ -452,6 +452,18 @@
   .ph-progress { margin: 0; font-size: var(--text-md); font-weight: 700; letter-spacing: 0.04em; color: var(--muted); }
   .ph-journey-mode { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin: 0; }
   .ph-mode-name { display: inline-flex; align-items: center; padding: 6px 18px; border-radius: 999px; background: var(--accent-tint); color: var(--accent-text); font-family: var(--font-gothic); font-size: var(--text-lg); font-weight: 700; line-height: 1.6; white-space: nowrap; }
+  /* js/ui.js modeRow + main.css .mode-name.is-enter(2026-09-30 HARU様「全タイトルに動きを」)。
+     札が上からふわっと入り、金の輪が外へ広がる。練習の種類が変わった時(.is-changed)は輪を2回。
+     このデモの3画面は、どれも前の画面と種類が違う(スピーキング→リスニング＆スピーキング→
+     シミュレーション)ので、本体と同じく3つとも2回。 */
+  .ph-mode-name.is-enter { animation: modeIn 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both, modeGlow 1.2s ease-out 300ms 1; }
+  .ph-mode-name.is-enter.is-changed { animation: modeIn 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both, modeGlow 1.2s ease-out 300ms 2; }
+  @keyframes modeIn { from { opacity: 0; transform: translateY(-8px) scale(0.92); } to { opacity: 1; transform: none; } }
+  @keyframes modeGlow {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-fill) 60%, transparent); }
+    100% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+  }
+  @media (prefers-reduced-motion: reduce) { .ph-mode-name.is-enter { animation: none; } }
   .ph-screen-title { font-family: var(--font-gothic); font-weight: 700; font-size: var(--text-xl); line-height: var(--lh-heading); margin: 0 0 var(--space-2) 0; letter-spacing: 0; color: var(--ink); }
   .ph-settings-collapsible { display: flex; flex-direction: column; align-items: center; }
   .ph-say-carousel { display: flex; flex-direction: column; gap: 24px; }
@@ -812,7 +824,7 @@
           </button>
         </div>
         <div class="screen-body">
-          <div class="ph-journey-mode"><span class="ph-mode-name">スピーキング</span></div>
+          <div class="ph-journey-mode"><span class="ph-mode-name" role="status">スピーキング</span></div>
           <div class="scene-block">
             <div class="scene-holder"><img class="scene-image" src="/assets/site/speakup-demo/help-04.jpg" alt="駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。" loading="lazy" decoding="async"></div>
             <p class="body-text situation-line">駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。</p>
@@ -839,7 +851,7 @@
           <div class="ph-topbar-right"><p class="ph-progress">1 / 2</p></div>
         </div>
         <div class="screen-body">
-          <div class="ph-journey-mode"><span class="ph-mode-name">リスニング＆スピーキング</span></div>
+          <div class="ph-journey-mode"><span class="ph-mode-name" role="status">リスニング＆スピーキング</span></div>
           <h2 class="ph-screen-title">どれで練習しますか？</h2>
           <div class="note"><p>3つを聞き比べて、<br>言いやすいものを選んで。<br>「›」で次の言い方を聞く。</p></div>
           <div class="ph-settings-collapsible">
@@ -896,7 +908,7 @@
           <div class="ph-topbar-right"><p class="ph-progress">2 / 2</p></div>
         </div>
         <div class="screen-body">
-          <div class="ph-journey-mode"><span class="ph-mode-name">シミュレーション</span></div>
+          <div class="ph-journey-mode"><span class="ph-mode-name" role="status">シミュレーション</span></div>
           <div class="scene-block">
             <div class="scene-holder"><img class="scene-image" src="/assets/site/speakup-demo/help-04.jpg" alt="駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。" loading="lazy" decoding="async"></div>
             <p class="body-text situation-line">駅の出口で、外国人旅行者が地図を見て困っています。</p>
@@ -1128,15 +1140,15 @@
      機械的に書き出したもの。手で打っていない。partner.listening(なぜ聞き取れない？)と、
      返しの note_word/note_mean/note_ja(ことばのメモ)も本体のデータそのまま。 */
   var TURNS = [
-    {"pAudioId": "I-HELP-4_b2n1", "pEn": "Actually, I'm a bit lost.", "pJa": "実は、ちょっと道に迷っていて。", "pAudio": "partner-1.mp3", "heard": "ぇあkちゅり、あぃm ぁ べt ろst.", "why": "【消えるT】\"bit lost\" の bit の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま lost へ移るので、2語がひと続きに聞こえます。【母音ドッキング】\"I'm a\" はつながって、2語の切れ目が消えます。", "sId": "RP07", "sEn": "Where are you trying to go?", "sJa": "どこへ行こうとしているんですか？", "note_word": "", "note_mean": "", "note_ja": ""},
-    {"pAudioId": "I-HELP-4_b2n2", "pEn": "I'm going to this karaoke place.", "pJa": "このカラオケに行きたいんです。", "pAudio": "partner-2.mp3", "heard": "あぃm ごぅぇん とぅ thぇs かrぁぉぅき pれぃs.", "why": "【Toの弱形】\"going to\" は「ごーいんぐ・とぅー」ではなく、つながって「ごぅぇんとぅ」と短く聞こえます。to の t は軽く弾いて「る」に近く聞こえることもあります。", "sId": "RP71", "sEn": "Cool. Let me see.", "sJa": "いいですね。ええと…", "note_word": "let me see", "note_mean": "ええと", "note_ja": "考えている間を\nつなぐ一言です。"},
-    {"pAudioId": "I-HELP-4_b2n3", "pEn": "Is it far?", "pJa": "遠いですか？", "pAudio": "partner-3.mp3", "heard": "ぇぜt fぁー?", "why": "【母音ドッキング】\"Is it\" はつながって「ぇぜt」の2音になり、短すぎて聞き逃しやすい所です。【消えるT】\"it far\" の it の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま far へ移るので、2語がひと続きに聞こえます。", "sId": "RP105", "sEn": "It's a five-minute walk.", "sJa": "歩いて5分です。", "note_word": "a five-minute walk", "note_mean": "歩いて5分", "note_ja": "「5分の」なので\nminute に s は\n付きません。"},
+    {"pAudioId": "I-HELP-4_b2n1", "pEn": "Actually, I'm a bit lost.", "pJa": "実は、ちょっと道に迷っていて。", "pAudio": "partner-1.mp3", "heard": "ぇあkしゅりあぃま べt らst.", "why": "【母音ドッキング】\"Actually, I'm\" は、読点があっても間を置かずに続けて発音されます。Actually の最後の「り」と I'm の「あぃ」がつながり、「ぇあkしゅりあぃm」と一息に聞こえます。【母音ドッキング】\"I'm a\" は、I'm の m と a がつながって「あぃま」と聞こえます。【い/えの中間音】\"bit\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「べt」と書いていますが、日本語の「え」とも違います。【消えるT】\"bit lost\" の bit の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま lost へ移るので、2語がひと続きに聞こえます。【あのようなおの音】\"lost\" の o は、喉を縦に開けて出す「あ」のような「お」の音です。", "sId": "RP07", "sEn": "Where are you trying to go?", "sJa": "どこへ行こうとしているんですか？", "note_word": "", "note_mean": "", "note_ja": ""},
+    {"pAudioId": "I-HELP-4_b2n2", "pEn": "I'm going to this karaoke place.", "pJa": "このカラオケに行きたいんです。", "pAudio": "partner-2.mp3", "heard": "あぃm ごぅぇんt'thぇs かrぁぉぅき pれぃs.", "why": "【い/えの中間音】\"going\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「ごぅぇん」と書いていますが、日本語の「え」とも違います。【Toの弱形】\"going to this\" の to は、「とぅ」とは発音されません。弱くなって次の this にドッキングし、「t'thぇs」とひと続きに聞こえます。【い/えの中間音】\"this\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。", "sId": "RP71", "sEn": "Cool. Let me see.", "sJa": "いいですね。ええと…", "note_word": "let me see", "note_mean": "ええと", "note_ja": "考えている間を\nつなぐ一言です。"},
+    {"pAudioId": "I-HELP-4_b2n3", "pEn": "Is it far?", "pJa": "遠いですか？", "pAudio": "partner-3.mp3", "heard": "ぇぜt fぁー?", "why": "【母音ドッキング】\"Is it\" はつながって「ぇぜt」の2音になり、短すぎて聞き逃しやすい所です。【い/えの中間音】\"Is\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。「ぇぜt」と書いていますが、日本語の「え」とも違います。【い/えの中間音】\"it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。【消えるT】\"it far\" の it の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めたまま far へ移るので、2語がひと続きに聞こえます。", "sId": "RP105", "sEn": "It's a five-minute walk.", "sJa": "歩いて5分です。", "note_word": "a five-minute walk", "note_mean": "歩いて5分", "note_ja": "「5分の」なので\nminute に s は\n付きません。"},
     {"pAudioId": "I-HELP-4_b2n4", "pEn": "Thanks.", "pJa": "ありがとう。", "pAudio": "partner-4.mp3", "heard": "", "why": "", "sId": "RP72", "sEn": "Go straight, then turn left.", "sJa": "まっすぐ行って、左です。", "note_word": "", "note_mean": "", "note_ja": ""},
     {"pAudioId": "I-HELP-4_b2n5", "pEn": "Ok. Straight, then left.", "pJa": "はい。まっすぐ行って、左ですね。", "pAudio": "partner-5.mp3", "heard": "", "why": "", "sId": "RP66", "sEn": "Walk about three blocks.", "sJa": "3ブロックくらい歩いてください。", "note_word": "block", "note_mean": "1区画", "note_ja": "道と道に\nはさまれた\n1かたまりです。\n角をいくつ\n過ぎるか数えます。"},
-    {"pAudioId": "I-HELP-4_b2n6", "pEn": "Got it. And after that?", "pJa": "なるほど。その後は？", "pAudio": "partner-6.mp3", "heard": "がりt。ぇなfたー thぇあt?", "why": "【Flap T】\"got it\" の t は母音にはさまれて「ら行」の音に変身し、「がりt」のように聞こえます。【andの弱形】\"And after\" の And は、最後の d の音が消え、「ぇなfたー」と聞こえることが多いです。", "sId": "RP70", "sEn": "You'll see a pedestrian bridge. Go over it.", "sJa": "歩道橋が見えます。それを渡ってください。", "note_word": "pedestrian bridge", "note_mean": "歩道橋", "note_ja": "go over it は\n「それを渡る」。\nit は歩道橋の\nことです。"},
+    {"pAudioId": "I-HELP-4_b2n6", "pEn": "Got it. And after that?", "pJa": "なるほど。その後は？", "pAudio": "partner-6.mp3", "heard": "がりt。ぇなfたー thぇあt?", "why": "【Flap T】\"got it\" の t は母音にはさまれて「ら行」の音に変身し、「がりt」のように聞こえます。【い/えの中間音】\"it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。【andの弱形】\"And after\" の And は、最後の d の音が消え、「ぇなfたー」と聞こえることが多いです。【母音ドッキング】\"And after\" は、And の n と after の a がつながって、「ぇなfたー」と一息に聞こえます。", "sId": "RP70", "sEn": "You'll see a pedestrian bridge. Go over it.", "sJa": "歩道橋が見えます。それを渡ってください。", "note_word": "pedestrian bridge", "note_mean": "歩道橋", "note_ja": "go over it は\n「それを渡る」。\nit は歩道橋の\nことです。"},
     {"pAudioId": "I-HELP-4_b2n7", "pEn": "Alright.", "pJa": "分かりました。", "pAudio": "partner-7.mp3", "heard": "", "why": "", "sId": "RP68", "sEn": "Then turn right at the convenience store.", "sJa": "そのあと、コンビニの所を右です。", "note_word": "", "note_mean": "", "note_ja": ""},
     {"pAudioId": "I-HELP-4_b2n8", "pEn": "Great.", "pJa": "素晴らしいです。", "pAudio": "partner-8.mp3", "heard": "", "why": "", "sId": "RP69", "sEn": "And it's on your right.", "sJa": "右側にありますよ。", "note_word": "", "note_mean": "", "note_ja": ""},
-    {"pAudioId": "I-HELP-4_b2n9", "pEn": "Perfect. Thank you so much!", "pJa": "ばっちりです。本当にありがとうございます！", "pAudio": "partner-9.mp3", "heard": "ぷーfぇkt。thぇあnk ゆ そぅ まち!", "why": "【消えるT】\"perfect\" の最後の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めるだけなので、語尾がすっと消えて聞こえます。", "sId": "RP32", "sEn": "No problem!", "sJa": "いえいえ！", "note_word": "", "note_mean": "", "note_ja": ""}
+    {"pAudioId": "I-HELP-4_b2n9", "pEn": "Perfect. Thank you so much!", "pJa": "ばっちりです。本当にありがとうございます！", "pAudio": "partner-9.mp3", "heard": "ぷーfぇkt。thぇあnk ゆ そぅ まち!", "why": "【い/えの中間音】\"perfect\" の fect の e は、日本語の「え」ではなく、「え」と「い」の中間のような音です。【消えるT】\"perfect\" の最後の t は、単独では出しません。舌を t の位置(上の歯ぐき)で止めるだけなので、語尾がすっと消えて聞こえます。", "sId": "RP32", "sEn": "No problem!", "sJa": "いえいえ！", "note_word": "", "note_mean": "", "note_ja": ""}
   ];
   /* 同 intention.phrases。バッジは js/earToVoice.js renderCard の規則(recommended→定番、
      tone→口調、同じ口調で一番短い→短め)をこのデータに当てた結果。 */
@@ -1548,10 +1560,27 @@
   /* ---- 画面1/3: 状況(js/lesson.js stepSituation) ----
      写真を見て、聞く前にまず自分で言ってみる。お手本も英文も出さない。
      「なんかしら言った」を押したら、その場で「言い方を選ぶ」へ。 */
+  /* 画面が出た瞬間に札を動かす(js/app.js が画面ごとに modeRow を作り直すのと同じ)。 */
+  function enterMode(screenEl) {
+    var m = screenEl && screenEl.querySelector('.ph-mode-name');
+    if (!m) return;
+    m.classList.remove('is-enter', 'is-changed');
+    void m.offsetWidth;
+    m.classList.add('is-enter', 'is-changed');
+  }
   function initScene() {
     var scene = document.getElementById('tryScene');
     var sayBtn = document.getElementById('trySceneSaid');
     if (!scene || !sayBtn) { showOpener(); return; }
+    /* 1画面目はページの下の方にあるので、開いた時ではなく、見える所まで来た時に動かす。 */
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { enterMode(scene); io.disconnect(); }
+        });
+      }, { threshold: 1 });
+      io.observe(scene.querySelector('.ph-mode-name'));
+    }
     sayBtn.addEventListener('click', function () {
       userInteracted = true;
       scene.hidden = true;
@@ -1575,6 +1604,7 @@
       return;
     }
     opener.hidden = false;
+    enterMode(opener);
     setupToggle('phSettingsToggle', 'phSettingsPanel', 'phControlsRow');
     var idx = 0;
     chosenOption = OPTIONS[0];
@@ -1613,6 +1643,7 @@
     var startBtn = document.getElementById('tryStartTalk');
     if (!convo || !startBtn) { startTalk(); return; }
     convo.hidden = false;
+    enterMode(convo);
     setupToggle('trySettingsToggle', 'trySettingsPanel', 'tryControlsRow');
     thread.hidden = true;
     statusGroup.hidden = true;
