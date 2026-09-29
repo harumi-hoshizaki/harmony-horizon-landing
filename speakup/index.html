@@ -379,7 +379,7 @@
   .try-guide li::before { content: counter(tg); position: absolute; left: 0; top: 0.2em; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; font-weight: 700; line-height: 24px; text-align: center; }
   .try-guide strong { color: var(--ink); }
   .try-guide .try-step { display: block; font-size: var(--text-md); font-weight: 700; color: var(--ink); margin-bottom: 2px; }
-  .try-guide-note { margin: 20px 0 0; max-width: 32em; font-size: var(--text-md); line-height: 1.8; color: var(--ink-soft); }
+  .try-guide-note { word-break: auto-phrase; text-wrap: pretty; margin: 20px 0 0; max-width: 32em; font-size: var(--text-md); line-height: 1.8; color: var(--ink-soft); }
   .try-guide-note strong { color: var(--ink); }
   /* 本体の .lead-mark と同じ蛍光ペン(--accent-fill-light #E9BA6E) */
   .try-mark { font-weight: 700; color: var(--ink); background: linear-gradient(transparent 55%, #E9BA6E 55%); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 2px; }
@@ -834,7 +834,7 @@
       <li><strong class="try-step">場面の中で使ってみる</strong>選んだフレーズを使って、<br>実際の場面を想定した会話を<br class="br-tab">シミュレーションします。</li>
       <li><strong class="try-step">実際に声に出す</strong>「声に出して」と<br class="br-xs">指示が出たら、<br class="br-phone">頭の中で考えるだけでなく、<br><span class="try-mark">実際に声に出してください。</span><br><span class="try-mark">口の筋肉に覚えさせるのが、<br class="br-phone">この練習の目的です。</span></li>
     </ol>
-    <p class="try-guide-note"><strong>「声・速さ」</strong>をタップすると、<br>女性の声・男性の声、<br class="br-phone">ふつう・ゆっくりを<br class="br-tab">切り替えられます。</p>
+    <p class="try-guide-note"><strong>「声・速さ」</strong>をタップすると、<br>声と速さを切り替えられます。</p>
     <p class="try-guide-end">では、Have fun!</p>
 
     <div class="try-card">
