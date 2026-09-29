@@ -66,7 +66,7 @@ SHELL = '''<!DOCTYPE html>
 <link rel="stylesheet" href="/assets/site/site.css">
 <script>document.documentElement.className = "js";</script>{jsonld}
 </head>
-<body>
+<body{bodyattr}>
 <a class="skip" href="#main">本文へ移動</a>
 
 <header class="hdr">
@@ -145,6 +145,9 @@ def render(src_dir, slug, out, title, desc, body_class=''):
         canon='' if out == 'index.html' else out.replace('index.html', ''),
         nav=links('      '), dnav=links('    '), fnav=links('        '),
         body=body,
+        # 法務ページは Speak Up LP の脚注から開かれるので、ページ全体(ヘッダー・脚注も)を
+        # アプリと同じ書体の決まりにする目印(site.css の body.is-legal)。
+        bodyattr=' class="is-legal"' if body_class else '',
         jsonld=JSONLD_HOME if out == 'index.html' else '')
     dest = ROOT / out
     dest.parent.mkdir(parents=True, exist_ok=True)

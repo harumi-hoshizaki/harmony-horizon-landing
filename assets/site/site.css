@@ -622,17 +622,28 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
    法律の文章は読むものであって、掲げるものではない。見出しを小さく、
    本文も小さく、段を狭くする。トップページの寸法をそのまま持ち込むと
    「宣言」に見えて、かえって読まれない。 */
+/* ★2026-09-29 HARU様「LPと、下をクリックすると出てくるページのフォントが全く違う」。
+   法務3ページは Speak Up LP の脚注から開かれるので、Speak Up アプリ本体
+   (harmonyhorizon.foreigners speakup/css/tokens.css、2026-09-25)と同じ決まりにする:
+   Webフォントを使わず、端末の標準書体1つだけ。見出し・本文・ロゴ・ラベルで書体を混ぜない。
+   文字の大きさもアプリの段(本文20px・ラベル14px・見出し23/28px)にそろえる。
+   トップページなど他のページは HARU のレッスンのサイトなので変えない。 */
+body.is-legal {
+  --display: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --sans:    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --brand:   -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --mono:    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+body.is-legal code { font-family: inherit; }
 .page-legal { padding: var(--s6) 0 var(--s8); }
-.page-legal h1 { font-size: 26px; line-height: 1.45; margin-bottom: var(--s2); }
-@media (min-width: 700px) { .page-legal h1 { font-size: 32px; } }
-.page-legal .updated { font-size: 13px; color: var(--stone-deep); margin-bottom: var(--s6); }
+.page-legal h1 { font-size: 28px; font-weight: 700; line-height: 1.5; margin-bottom: var(--s2); }
+.page-legal .updated { font-size: 14px; color: var(--stone-deep); margin-bottom: var(--s6); }
 .page-legal h2 {
-  font-size: 18px; line-height: 1.6; margin: var(--s6) 0 var(--s2);
+  font-size: 23px; font-weight: 700; line-height: 1.5; margin: var(--s6) 0 var(--s2);
   padding-top: var(--s3); border-top: 1px solid var(--line);
 }
-@media (min-width: 700px) { .page-legal h2 { font-size: 20px; } }
-.page-legal h3 { font-size: 16px; margin: var(--s4) 0 var(--s1); }
-.page-legal p, .page-legal li { font-size: 16px; line-height: 1.95; max-width: 34em; }
+.page-legal h3 { font-size: 20px; font-weight: 700; margin: var(--s4) 0 var(--s1); }
+.page-legal p, .page-legal li { font-size: 20px; line-height: 1.9; max-width: 34em; }
 .page-legal ul, .page-legal ol { padding-left: 1.4em; margin: 0 0 var(--s2); }
 .page-legal li { margin-bottom: var(--s1); }
 .page-legal .lead { color: var(--ink-soft); margin-bottom: var(--s5); }
@@ -642,7 +653,7 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 }
 @media (min-width: 620px) { .page-legal dl > div { grid-template-columns: 12em 1fr; gap: var(--s3); } }
 .page-legal dt { font-size: 14px; color: var(--stone-deep); }
-.page-legal dd { margin: 0; font-size: 16px; line-height: 1.9; }
+.page-legal dd { margin: 0; font-size: 20px; line-height: 1.9; }
 /* 単独で置くリンクは操作部品なので44pxを確保する。文章の中のリンクに
    同じ指定をすると行がいびつに伸びるので、クラスで分ける。 */
 .page-legal .mail {
@@ -652,7 +663,7 @@ a.feature:hover { border-color: var(--stone-deep); transform: translateY(-2px); 
 .page-legal .mail:hover { border-bottom-color: var(--bronze); }
 .page-legal .back {
   display: inline-flex; align-items: center; min-height: 44px;
-  margin-top: var(--s6); font-size: 16px; color: var(--bronze); text-decoration: none;
+  margin-top: var(--s6); font-size: 20px; color: var(--bronze); text-decoration: none;
 }
 
 /* ---------- 要確認マーカーの切替 ---------- */

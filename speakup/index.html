@@ -81,6 +81,8 @@
   }
 
   * { box-sizing: border-box; }
+  /* ボタンは既定で親の書体を受け継がない(ブラウザ既定の Arial になる)。アプリと同じ1書体にそろえる。 */
+  button, input, select, textarea { font-family: inherit; }
   html { scroll-behavior: smooth; }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1040,7 +1042,7 @@
         <div><span class="ck">✓</span>ことばのメモ(言い回しの意味と使い方)</div>
       </div>
       <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">コースに<wbr>申し込む&nbsp;→</a>
-      <p style="font-size:14px;color:var(--ink-soft);margin:16px 0 0;">ライブ練習会(任意・別料金、10/29・11/12)はコース購入者向けにご案内します。詳しくは購入後のメールで。</p>
+      <p style="font-size:var(--text-sm);line-height:1.7;color:var(--ink-soft);margin:16px 0 0;text-align:left;">ライブ練習会(任意・別料金、10/29・11/12)はコース購入者向けにご案内します。詳しくは購入後のメールで。</p>
     </div>
   </div>
 </section>
