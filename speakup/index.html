@@ -577,7 +577,15 @@
   .chat-tail { display: flex; flex-direction: column; gap: var(--space-5); }
   .chat-tail:empty { display: none; }
   .chat-tail > * { margin-top: 0; margin-bottom: 0; }
-  .chat-row.is-your-turn .chat-avatar { box-shadow: 0 0 0 3px var(--accent-fill); animation: yourTurnGlow 1.4s ease-out 2; }
+  /* LPだけ(HARU様 2026-09-29「なんかしら言ったを押す前まではアイコンが目立つように」):
+     本体は輪を2回広げて止めるが、LPは押すまでゆっくり呼吸するように広げ続ける(2.6秒に1回・淡く)。
+     速い点滅にはしない(読む邪魔・光に敏感な人への配慮)。 */
+  .chat-row.is-your-turn .chat-avatar { box-shadow: 0 0 0 3px var(--accent-fill); animation: yourTurnBreath 2.6s ease-out infinite; }
+  @keyframes yourTurnBreath {
+    0%   { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 0 color-mix(in srgb, var(--accent-fill) 55%, transparent); }
+    60%  { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+    100% { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+  }
   .chat-row.is-your-turn .chat-bubble { border-color: var(--accent-line); }
   .chat-row.is-your-turn .chat-sender { color: var(--accent-text); font-weight: 700; }
   @keyframes yourTurnGlow {
@@ -1134,7 +1142,7 @@
      返しの note_word/note_mean/note_ja(ことばのメモ)も本体のデータそのまま。 */
   var TURNS = [
     {"pAudioId": "I-HELP-4_b2n1", "pEn": "Actually, I'm a bit lost.", "pJa": "実は、ちょっと道に迷っていて。", "pAudio": "partner-1.mp3", "heard": "ぇあkしゅり、あぃm ぁ べt らst.", "why": "【母音ドッキング】会話では、読点のある \"Actually, I'm\" もつながって聞こえることがあります。続く \"I'm a\" もつながりやすく、「あぃま」のように切れ目が分かりにくくなることがあります。【消えるT】\"bit lost\" の bit の t は、はっきりとは発音されないことがあります。舌を t の位置(上の歯ぐき)で止めたまま lost へ移るので、2語がひと続きに聞こえることがあります。【い/えの中間音】\"bit\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。そのため、知っている単語でも別の音に聞こえることがあります。", "sId": "RP07", "sEn": "Where are you trying to go?", "sJa": "どこへ行こうとしているんですか？", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": [{"word": "actually", "mean": "実は", "text": "本当のことを\n打ち明ける\n一言です。", "must": true}, {"word": "a bit lost", "mean": "ちょっと迷って", "text": "lost は\n「道に迷った」。\na bit は\n「ちょっと」です。", "must": true}]},
-    {"pAudioId": "I-HELP-4_b2n2", "pEn": "I'm going to this karaoke place.", "pJa": "このカラオケに行きたいんです。", "pAudio": "partner-2.mp3", "heard": "あぃm ごぅぇんt'thぇs かrぁぉぅき pれぃs.", "why": "【Toの弱形】\"going to this\" の to は、必ず次の単語(this)にドッキングします。to は常に「t'＋次の単語」のように発音され、ここでは「ごぅぇんt'thぇs」と聞こえます。【い/えの中間音】\"going\" と \"this\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。そのため、知っている単語でも別の音に聞こえることがあります。", "sId": "RP71", "sEn": "Cool. Let me see.", "sJa": "いいですね。ええと…", "note_word": "let me see", "note_mean": "ええと", "note_ja": "考えている間を\nつなぐ一言です。", "pNotes": []},
+    {"pAudioId": "I-HELP-4_b2n2", "pEn": "I'm going to this karaoke place.", "pJa": "このカラオケに行きたいんです。", "pAudio": "partner-2.mp3", "heard": "あぃm ごぅぇんt'thぇs かrぁぉぅき pれぃs.", "why": "【Toの弱形】\"going to this\" の to は、必ず次の単語(this)にドッキングします。to は常に「t'＋次の単語」のように発音され、ここでは「ごぅぇんt'thぇs」と聞こえます。「る」のように聞こえることもありますよ。【い/えの中間音】\"going\" と \"this\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。そのため、知っている単語でも別の音に聞こえることがあります。", "sId": "RP71", "sEn": "Cool. Let me see.", "sJa": "いいですね。ええと…", "note_word": "let me see", "note_mean": "ええと", "note_ja": "考えている間を\nつなぐ一言です。", "pNotes": []},
     {"pAudioId": "I-HELP-4_b2n3", "pEn": "Is it far?", "pJa": "遠いですか？", "pAudio": "partner-3.mp3", "heard": "ぇぜt fぁー?", "why": "【母音ドッキング】\"Is it\" はつながって「ぇぜt」の2音になり、短すぎて聞き逃しやすい所です。【消えるT】\"it far\" の it の t は、はっきりとは発音されないことがあります。舌を t の位置(上の歯ぐき)で止めたまま far へ移るので、2語がひと続きに聞こえることがあります。【い/えの中間音】\"Is it\" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。そのため、知っている単語でも別の音に聞こえることがあります。", "sId": "RP105", "sEn": "It's a five-minute walk.", "sJa": "歩いて5分です。", "note_word": "a five-minute walk", "note_mean": "歩いて5分", "note_ja": "車で5分なら\na five-minute drive。\n同じ形で言えます。", "pNotes": []},
     {"pAudioId": "I-HELP-4_b2n4", "pEn": "Oh, okay.", "pJa": "あ、そうなんですね。", "pAudio": "partner-4.mp3", "heard": "", "why": "", "sId": "RP72", "sEn": "Go straight, then turn left.", "sJa": "まっすぐ行って、左です。", "note_word": "", "note_mean": "", "note_ja": "", "pNotes": []},
     {"pAudioId": "I-HELP-4_b2n5", "pEn": "Ok. Straight, then left.", "pJa": "はい。まっすぐ行って、左ですね。", "pAudio": "partner-5.mp3", "heard": "", "why": "", "sId": "RP66", "sEn": "Walk about three blocks.", "sJa": "3ブロックくらい歩いてください。", "note_word": "block", "note_mean": "1区画", "note_ja": "道と道に\nはさまれた\n1かたまりです。\n角をいくつ\n過ぎるか数えます。", "pNotes": []},
@@ -1353,7 +1361,7 @@
     var plain = (why || '').trim();
     return plain ? [[null, plain]] : [];
   }
-  function listeningAccordion(heard, why) {
+  function listeningAccordion(heard, why, onClose) {
     var wrap = h('div', { class: 'tip-listen' });
     if (heard) {
       wrap.appendChild(h('div', { class: 'tip-listen-heard' }, [
@@ -1380,11 +1388,30 @@
       var open = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!open));
       body.hidden = open;
+      if (open && onClose) onClose();
     });
     return h('div', { class: 'tip-stack' }, [h('div', { class: 'tip-acc' }, [toggle, body])]);
   }
 
   /* ---- 会話の練習(js/branches.js stepChatBranch の render の中身) ---- */
+  /* LPだけのスクロールの補助(HARU様 2026-09-29「文章を読んだ後に目が迷う」)。
+     自分の番で「なんかしら言った」を待っている間に、相手のセリフの説明を開いてボタンが
+     画面の下へ押し出されたら、読んでいる文を画面から消さない範囲でそっとボタンまで送る。
+     keepEl が無い時(「なぜ聞き取れない？」を閉じた=読み終えた時)は、そのままボタンへ送る。 */
+  function bringSayIntoView(keepEl) {
+    if (sayRow.hidden || !sayRow.firstChild) return;
+    var r = sayRow.firstChild.getBoundingClientRect();
+    var limit = window.innerHeight - 16;
+    if (r.top >= 0 && r.bottom <= limit) return;
+    var delta = r.bottom - limit;
+    if (delta <= 0) return;
+    if (keepEl) {
+      var hdr = document.querySelector('.site-header');
+      var top = keepEl.getBoundingClientRect().top;
+      if (top - delta < (hdr ? hdr.offsetHeight : 0) + 8) return;
+    }
+    try { window.scrollBy({ top: delta, behavior: 'smooth' }); } catch (e) { window.scrollBy(0, delta); }
+  }
   var started = false;
   /* 本体の「次へ」(待ち時間を飛ばす、2回目以降の人向けのボタン)は、1回きりの体験の
      このデモでは外した(HARU様 2026-09-29)。会話は自動で進み、止まるのは
@@ -1460,7 +1487,7 @@
       var enHost = h('p', { class: 'chat-en', hidden: true, text: ex.pEn });
       var jaHost = h('p', { class: 'chat-ja-meaning', hidden: true, text: ex.pJa });
       var noteHosts = partnerNotes(ex.pNotes, true);
-      var tipHost = ex.why ? listeningAccordion(ex.heard, ex.why) : null;
+      var tipHost = ex.why ? listeningAccordion(ex.heard, ex.why, function () { bringSayIntoView(null); }) : null;
       if (tipHost) { tipHost.hidden = true; tipHost.classList.add('chat-under-block'); }
       var missedBtn, jaBtn, links;
       var reveal = function (missed) {
@@ -1472,6 +1499,7 @@
         jaBtn.hidden = true;
         if (missed) missedBtn.hidden = true;
         links.hidden = missedBtn.hidden && jaBtn.hidden;
+        requestAnimationFrame(function () { bringSayIntoView(built.row); });
       };
       missedBtn = h('button', { class: 'btn-small chat-missed', type: 'button', text: COPY.heardNo, onClick: function () { reveal(true); } });
       jaBtn = h('button', { class: 'btn-link chat-link', type: 'button', text: COPY.showMeaning, onClick: function () { reveal(false); } });
