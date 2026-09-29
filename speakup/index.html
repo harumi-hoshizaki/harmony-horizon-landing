@@ -375,6 +375,26 @@
     border-radius: 22px; padding: clamp(24px, 5vw, 36px); box-shadow: var(--shadow-card);
   }
   .try-situation { font-size: var(--text-sm); color: var(--ink-soft); margin: 0 0 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+  /* ---- 冒頭の「言い方を選ぶ」ミニクイズ(HARU様2026-09-30のプロンプトを
+     そのまま実装)。写真は i-help-4 の本物の素材(help-04.jpg)。
+     3択はどれも文法的に正しい言い方として並べ、選んだ後の種明かしで
+     「この場面ならどれが一番自然か」を伝える(正誤を煽らない)。 ---- */
+  .try-photo { border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+  .try-photo img { display: block; width: 100%; height: auto; }
+  .try-opener-q { font-size: var(--text-md); font-weight: 700; color: var(--ink); margin: 0 0 14px; }
+  .try-opener-options { display: flex; flex-direction: column; gap: 10px; }
+  .try-opener-btn {
+    display: block; width: 100%; text-align: left; padding: 14px 16px; border: 1px solid var(--line);
+    border-radius: 12px; background: #FFFFFF; font-size: var(--text-md); color: var(--ink); cursor: pointer;
+    -webkit-tap-highlight-color: transparent; transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .try-opener-btn:disabled { cursor: default; }
+  .try-opener-btn.is-picked { border-color: #A3782D; background: #F9F1E4; }
+  .try-explain { margin-top: 16px; padding: 16px 18px; border-radius: 12px; background: var(--cream-soft); border: 1px solid var(--line); }
+  .try-explain p { margin: 0; font-size: var(--text-sm); line-height: 1.7; color: var(--ink-soft); }
+  .try-explain p + p { margin-top: 10px; }
+  .try-continue { width: 100%; margin-top: 16px; justify-content: center; }
+  .try-continue[hidden] { display: none; }
   /* ---- ここから harmonyhorizon.foreigners speakup/js/ui.js + css/main.css
      の会話帳(chat-thread)の、クラス名・数値ともそのままの移植 ----
      (HARU様2026-09-30「なぜ書き方がアプリと違うんですか？全く同じように
@@ -656,12 +676,21 @@
   <div class="container">
     <span class="eyebrow">Try It</span>
     <h2>実際のレッスンを<br>体験してみる。</h2>
-    <p class="lede" style="max-width:32em;">「駅までの道」のレッスンを、実際の音声つきで最後まで進めてみましょう。アプリと同じ会話です。</p>
+    <p class="lede" style="max-width:32em;">「駅までの道」のレッスンを、実際の音声つきで最後まで進めてみましょう。コースと同じ会話です。</p>
 
     <div class="try-card">
+      <div class="try-photo">
+        <img src="/assets/site/speakup-demo/help-04.jpg" alt="駅の出口で、地図を見て困っている外国人旅行者" width="1280" height="720" loading="lazy" decoding="async">
+      </div>
       <p class="try-situation">駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。</p>
+      <div id="tryOpener">
+        <p class="try-opener-q">この状況、英語でなんて声をかけますか？</p>
+        <div class="try-opener-options" id="tryOpenerOptions"></div>
+        <div class="try-explain" id="tryExplain" hidden></div>
+        <button type="button" class="btn btn-gold try-continue" id="tryContinue" hidden>会話を続ける →</button>
+      </div>
       <div class="chat-thread" id="tryLog"></div>
-      <button type="button" class="btn btn-gold try-next" id="tryNext">次へ →</button>
+      <button type="button" class="btn btn-gold try-next" id="tryNext" hidden>次へ →</button>
       <div class="try-done" id="tryDone" hidden>
         <p>お疲れさまでした。これが「聞く→言う」1レッスンぶんの流れです。</p>
         <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
@@ -1132,7 +1161,64 @@
   }
 
   nextBtn.addEventListener('click', function () { userInteracted = true; advance(); });
-  doPartnerVoice();
+
+  /* ---- 冒頭の「言い方を選ぶ」ミニクイズ ----
+     HARU様2026-09-30のプロンプトどおり: 3択はどれも自然な言い方として
+     並べ(正誤を煽らない)、選んだ後に「この場面ならどれが一番自然か」を
+     種明かしする。選び終えたら、いつもの8往復(doPartnerVoice〜)へ
+     続ける。 */
+  function initOpener() {
+    var opener = document.getElementById('tryOpener');
+    var optionsWrap = document.getElementById('tryOpenerOptions');
+    var explainBox = document.getElementById('tryExplain');
+    var continueBtn = document.getElementById('tryContinue');
+    if (!opener || !optionsWrap || !explainBox || !continueBtn) { doPartnerVoice(); return; }
+
+    var OPTIONS = [
+      { id: 'op1', en: 'Are you okay?' },
+      { id: 'op2', en: 'Do you need any help?' },
+      { id: 'op3', en: 'Want me to show you?' }
+    ];
+    var buttons = [];
+    OPTIONS.forEach(function (opt) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'try-opener-btn';
+      b.textContent = opt.en;
+      b.addEventListener('click', function () { pick(opt, b); });
+      buttons.push(b);
+      optionsWrap.appendChild(b);
+    });
+
+    function pick(opt, btn) {
+      buttons.forEach(function (b) { b.disabled = true; });
+      btn.classList.add('is-picked');
+      play(AUDIO_BASE + 'model-' + state.voice + '-' + opt.id + '.mp3');
+
+      var p1 = document.createElement('p');
+      var p2 = document.createElement('p');
+      if (opt.id === 'op1') {
+        p1.textContent = '「Are you okay?」、いいですね。相手はまだ言葉で説明していません。地図を見て困った顔をしているのが見た目で分かる場面なので、まず様子に反応するこの言い方が一番自然です。';
+      } else {
+        p1.textContent = '「' + opt.en + '」も自然な言い方です。ただ、この場面では相手はまだ言葉で説明していません —— 地図を見て困った顔をしているのが見た目で分かるだけです。こういう時は、まず様子に反応する「Are you okay?」が一番しっくりきます。';
+      }
+      p2.textContent = 'もし相手が状況を先に言葉で説明していたら、「Do you need any help?」の方が合う場面もあります。コースでは、場面によってこの使い分けまで練習します。';
+      explainBox.appendChild(p1);
+      explainBox.appendChild(p2);
+      explainBox.hidden = false;
+      continueBtn.hidden = false;
+      continueBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    continueBtn.addEventListener('click', function () {
+      userInteracted = true;
+      opener.hidden = true;
+      nextBtn.hidden = false;
+      doPartnerVoice();
+    }, { once: true });
+  }
+
+  initOpener();
 
   /* ---- 声・速さ（speakup/js/ui.js segControl の見た目の移植）---- */
   function segControl(items, isSelected, onSelect) {
