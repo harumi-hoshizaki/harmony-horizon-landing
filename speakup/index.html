@@ -367,6 +367,14 @@
      音声エンジン(js/audio.js)までは持ち込まず、このデモ専用の
      素朴な<audio>再生にした(固定9往復の再生だけなので、そこまでの
      堅牢さは不要)。 */
+  /* Try It の遊び方(HARU様 2026-09-29)。3つだけ、番号つきで短く。 */
+  .try-guide { list-style: none; counter-reset: tg; margin: 24px 0 0; padding: 0; max-width: 32em; display: flex; flex-direction: column; gap: 12px; }
+  .try-guide li { counter-increment: tg; position: relative; padding-left: 36px; font-size: var(--text-md); line-height: 1.8; color: var(--ink-soft); }
+  .try-guide li::before { content: counter(tg); position: absolute; left: 0; top: 0.2em; width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #FFFFFF; font-size: 14px; font-weight: 700; line-height: 24px; text-align: center; }
+  .try-guide strong { color: var(--ink); }
+  /* 本体の .lead-mark と同じ蛍光ペン(--accent-fill-light #E9BA6E) */
+  .try-mark { font-weight: 700; color: var(--ink); background: linear-gradient(transparent 55%, #E9BA6E 55%); -webkit-box-decoration-break: clone; box-decoration-break: clone; padding: 0 2px; }
+  .try-guide-end { margin: 20px 0 0; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
   .try-card {
     max-width: 560px; margin: 32px auto 0; background: #FFFFFF; border: 1px solid var(--line);
     border-radius: 22px; padding: clamp(24px, 5vw, 36px); box-shadow: var(--shadow-card);
@@ -818,6 +826,12 @@
     <span class="eyebrow">Try It</span>
     <h2>実際のレッスンを<br>体験してみる。</h2>
     <p class="lede" style="max-width:32em;">「カラオケまでの道」のレッスンを、実際の音声つきで最後まで進めてみましょう。コースと同じ会話です。</p>
+    <ol class="try-guide">
+      <li><strong>「声・速さ」</strong>をタップすると、女性の声・男性の声、ふつう・ゆっくりを切り替えられます。</li>
+      <li><strong>「なんかしら言った」</strong>が出たら、頭の中で考えるだけでなく、<span class="try-mark">実際に声に出してください。口の筋肉に覚えさせるのが、この練習の目的です。</span></li>
+      <li>会話は自動で進みます。<strong>「次へ」</strong>は押さなくても大丈夫です。</li>
+    </ol>
+    <p class="try-guide-end">では、Have fun!</p>
 
     <div class="try-card">
       <!-- 画面1/3: 状況(js/lesson.js stepSituation)。eyebrow「状況」・札
