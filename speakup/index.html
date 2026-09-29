@@ -761,7 +761,7 @@
      絞った。色(ゴールド)と大きさ(1段階)の2つだけを強調に使い、
      太字・イタリックは付けない（design-rules の「強調は色・太さ・
      大きさのどれか1〜2個まで」の方針に合わせた）。 */
-  .foot-tag { font-family: var(--font-display); font-style: normal; font-size: var(--text-sm); color: var(--gold); margin-bottom: 8px; }
+  .foot-tag { font-family: "Lora", Georgia, serif; font-style: italic; font-weight: 400; font-size: 18px; color: #8F6524; margin-bottom: 8px; } /* 全ページ共通(fonts.css の Lora の所に理由)。変えない */
   .foot-copy { font-size: var(--text-xs); color: var(--ink-soft); opacity: 0.85; }
   .foot-copy a { font-weight: 500; color: var(--ink); }
   /* 販売しているページからは、特定商取引法の表記へ必ず辿れるようにする。
@@ -799,6 +799,7 @@
     .hero h1 { font-size: var(--text-2xl); }
   }
 </style>
+<link rel="stylesheet" href="/assets/site/fonts.css">
 </head>
 <body>
 

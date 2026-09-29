@@ -47,6 +47,18 @@
   unicode-range: U+0020-007E, U+00A0, U+2010-2019, U+201C-201D, U+2013-2014, U+2026;
 }
 
+/* --- 欧文：Lora 斜体(キャッチコピー「Train your ears. Find your voice.」だけ) ---
+   2026-09-29 HARU様決定。4ページ(eatout / immigration / speakup / thank-you)と
+   メールで書体・大きさ・色がばらばらだったので、この1行は全部
+   「Lora 斜体・18px・#8F6524」にそろえた。書体は OFL(Lora-OFL.txt)。
+   以前 thank-you は Google Fonts の Lora(直立のみ)を斜めに傾けた偽の斜体だった。 */
+@font-face {
+  font-family: "Lora";
+  src: url("/assets/site/fonts/lora-400-italic-latin.woff2") format("woff2");
+  font-weight: 400; font-style: italic; font-display: swap;
+  unicode-range: U+0020-007E, U+00A0, U+2013-2014, U+2018-2019, U+201C-201D, U+2026;
+}
+
 /* --- 欧文：Inter（本文・操作部） --- */
 @font-face {
   font-family: "Inter";

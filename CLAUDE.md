@@ -89,6 +89,18 @@
 - 白いカードの上は紙の上より対比が下がる。`--stone-deep` は
   **白の上で 4.5:1** になる濃さにする（#6E675A）
 
+## キャッチコピー「Train your ears. Find your voice.」（2026-09-29 HARU様決定）
+
+4ページ（eatout / immigration / speakup / thank-you）とメールで、書体・大きさ・
+色が5通りばらばらだった。**どのページでも次の1つに固定する。変えない。**
+
+- 書体：**Lora の斜体（400）**。自前ホスト `assets/site/fonts/lora-400-italic-latin.woff2`
+  （`fonts.css` で宣言。Google Fonts の直立 Lora を傾けた偽の斜体にしない）
+- 大きさ：**18px**
+- 色：**#8F6524**（メールの金 #B4873C は白の上で 3.2:1 しか出ない。同じ金の色合いで 5.2:1）
+- クラスは `.foot-tag`。新しいページに入れる時も、このクラスと `fonts.css` を使う
+- メール（MailerLite）は HARU様が同じ形にそろえる
+
 ## 和文書体の抜け検査は、単体の index.html を持つページも見る（2026-08-28 必須ルール）
 
 `subset-jp-fonts.sh` と `check-jp-fonts.py` は元々 `content/pages/` と
