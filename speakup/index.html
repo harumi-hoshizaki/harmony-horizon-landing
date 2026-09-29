@@ -430,13 +430,6 @@
   .try-card .btn-primary:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
   .try-card .btn-arrow { color: var(--accent-line); }
   .try-card .btn-primary .btn-arrow { color: var(--ink); }
-  .try-card .btn-outline {
-    display: flex; align-items: center; justify-content: center; gap: var(--space-2); width: 100%;
-    font-family: var(--font-gothic); font-size: var(--text-md); font-weight: 400; line-height: 1.3; text-align: center;
-    color: var(--ink); background: transparent; border: 1.5px solid var(--ink-hair); border-radius: 0; padding: var(--space-2) 20px;
-    cursor: pointer; min-height: 56px; -webkit-tap-highlight-color: transparent;
-  }
-  .try-card .btn-outline:hover { background: transparent; color: var(--ink); } /* LP本体の .btn-outline:hover(紺の地)を打ち消す */
   .try-card .btn-small {
     font-family: var(--font-gothic); font-size: var(--text-sm); font-weight: 700; color: var(--accent-text); background: none;
     border: 1.5px solid var(--accent-text-border); border-radius: 0; padding: 9px 18px; cursor: pointer; -webkit-tap-highlight-color: transparent;
@@ -829,7 +822,6 @@
     <ol class="try-guide">
       <li><strong>「声・速さ」</strong>をタップすると、女性の声・男性の声、ふつう・ゆっくりを切り替えられます。</li>
       <li><strong>「なんかしら言った」</strong>が出たら、頭の中で考えるだけでなく、<span class="try-mark">実際に声に出してください。口の筋肉に覚えさせるのが、この練習の目的です。</span></li>
-      <li>会話は自動で進みます。<strong>「次へ」</strong>は押さなくても大丈夫です。</li>
     </ol>
     <p class="try-guide-end">では、Have fun!</p>
 
@@ -959,7 +951,6 @@
             <div class="btn-row" id="trySayRow" hidden></div>
           </div>
           <div class="chat-tail" id="tryTail"></div>
-          <div class="nav-row" id="tryNav"><button type="button" class="btn-primary" id="tryNext" hidden>次へ ＞</button></div>
           <div class="try-done" id="tryDone" hidden>
             <p class="try-done-en">Well done!</p>
             <p class="try-done-title">最後まで<br class="try-done-br">会話できました。</p>
@@ -1101,6 +1092,8 @@
      持ち込んでいないもの(意図的な省略):
        - 初回だけのモード橋(js/ui.js modeBridge)・はじめてガイド(js/guide.js)
        - 「＜ 戻る」(このデモは一方向の体験のため)
+       - 「次へ ＞」(本体では2回目以降の人が待ち時間を飛ばすボタン。1回きりのデモには不要。
+         HARU様 2026-09-29「外しましょう」)
        - 締めの「余裕があれば → 別の言い方でも練習する」と「終わる ＞」
          (LPでは、その席に購入の案内を置く)
        - 「聞き取れなかった」の記録・練習したフレーズの保存(保存先が無い)
@@ -1109,14 +1102,12 @@
 <script>
 (function () {
   var thread = document.getElementById('tryLog');
-  var nextBtn = document.getElementById('tryNext');
-  var navRowEl = document.getElementById('tryNav');
   var doneBlock = document.getElementById('tryDone');
   var tail = document.getElementById('tryTail');
   var statusGroup = document.getElementById('tryStatusGroup');
   var status = document.getElementById('tryStatus');
   var sayRow = document.getElementById('trySayRow');
-  if (!thread || !nextBtn || !tail || !statusGroup || !status || !sayRow) return;
+  if (!thread || !tail || !statusGroup || !status || !sayRow) return;
 
   var AUDIO_BASE = '/assets/site/speakup-demo/';
   /* speakup/data/scenarios/i-help-4.json(branches b2 の9往復)と speakup/data/pool.json から
@@ -1366,29 +1357,11 @@
 
   /* ---- 会話の練習(js/branches.js stepChatBranch の render の中身) ---- */
   var started = false;
-  var skipNow = null;
-  var pendingSkip = false;
-  function requestSkip() {
-    if (skipNow) skipNow();
-    else pendingSkip = true;
-  }
-  function skippableWait(ms) {
-    return new Promise(function (done) {
-      if (pendingSkip) { pendingSkip = false; return done(); }
-      var t;
-      var finish = function () {
-        clearTimeout(t);
-        if (skipNow === finish) skipNow = null;
-        done();
-      };
-      t = setTimeout(finish, ms);
-      skipNow = finish;
-    });
-  }
-  /* 「金色は、いま押してほしい1つだけ」: 「なんかしら言った」が出ている間だけ「次へ」を白に。 */
-  function setNavNextGold(on) {
-    nextBtn.classList.toggle('btn-primary', on);
-    nextBtn.classList.toggle('btn-outline', !on);
+  /* 本体の「次へ」(待ち時間を飛ばす、2回目以降の人向けのボタン)は、1回きりの体験の
+     このデモでは外した(HARU様 2026-09-29)。会話は自動で進み、止まるのは
+     自分の番の「なんかしら言った」だけ。 */
+  function wait(ms) {
+    return new Promise(function (done) { setTimeout(done, ms); });
   }
   function setStatus(text) {
     status.hidden = !text;
@@ -1404,7 +1377,6 @@
     sayRow.hidden = false;
     clear(sayRow);
     sayRow.appendChild(sayBtn);
-    setNavNextGold(false);
     if (userInteracted) {
       var fold = window.innerHeight - 12;
       var rowRect = o.row.getBoundingClientRect();
@@ -1415,16 +1387,10 @@
       } else scrollToBubble(o.row);
     }
     return new Promise(function (done) {
-      finish = function () {
-        if (skipNow === finish) skipNow = null;
-        done();
-      };
-      if (pendingSkip) { pendingSkip = false; return finish(); }
-      skipNow = finish;
+      finish = done;
     }).then(function () {
       sayRow.hidden = true;
       clear(sayRow);
-      setNavNextGold(true);
       o.row.classList.remove('is-your-turn');
       setStatus('');
       o.enHost.hidden = false;
@@ -1435,7 +1401,7 @@
       return playCue(o.src);
     }).then(function () {
       setStatus('');
-      return skippableWait(AFTER_REVEAL_MS);
+      return wait(AFTER_REVEAL_MS);
     });
   }
 
@@ -1457,7 +1423,7 @@
     var typingRow = typingIndicator();
     scrollToBubble(typingRow);
     setStatus('');
-    return skippableWait(TYPING_MS).then(function () {
+    return wait(TYPING_MS).then(function () {
       typingRow.remove();
       var src = AUDIO_BASE + ex.pAudio;
       var enHost = h('p', { class: 'chat-en', hidden: true, text: ex.pEn });
@@ -1487,7 +1453,7 @@
         setStatus('');
         voice.disabled = false;
         links.hidden = false;
-        return skippableWait(AFTER_REVEAL_MS);
+        return wait(AFTER_REVEAL_MS);
       });
     });
   }
@@ -1505,7 +1471,6 @@
 
   function finishBranch() {
     statusGroup.hidden = true;
-    if (navRowEl) navRowEl.hidden = true;
     if (doneBlock) { tail.appendChild(doneBlock); doneBlock.hidden = false; }
     scrollToBubble(tail);
   }
@@ -1526,17 +1491,8 @@
     if (startRow) startRow.remove();
     thread.hidden = false;
     statusGroup.hidden = false;
-    nextBtn.hidden = false;
-    if (navRowEl) navRowEl.hidden = false;
-    setNavNextGold(true);
     run();
   }
-
-  nextBtn.addEventListener('click', function () {
-    userInteracted = true;
-    if (started) requestSkip();
-    else startTalk();
-  });
 
   /* ---- 画面1/3: 状況(js/lesson.js stepSituation) ----
      写真を見て、聞く前にまず自分で言ってみる。お手本も英文も出さない。
@@ -1628,8 +1584,6 @@
     setupToggle('trySettingsToggle', 'trySettingsPanel', 'tryControlsRow');
     thread.hidden = true;
     statusGroup.hidden = true;
-    nextBtn.hidden = true;
-    if (navRowEl) navRowEl.hidden = true;
     startBtn.addEventListener('click', startTalk, { once: true });
     scrollCardTop();
   }
