@@ -307,13 +307,13 @@
      もっと余白を。携帯だけ(卓上は900px以上のルールで元に戻す)。 */
   .hero .lede { max-width: 30em; margin: 12px 0 28px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; }
-  /* 4つの動きを表す札。暗い写真の上なので、白地に濃い文字のまま置くと
-     一番よく読める。 */
-  .hero-chips { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; max-width: 30em; }
-  .hero-chips span {
-    background: rgba(251,249,246,0.94); border: 1px solid rgba(251,249,246,0.5); border-radius: 999px;
-    padding: 10px 20px; font-size: var(--text-xs); font-weight: 500; color: var(--deep);
-  }
+  /* 2026-09-30: 丸いタグ(ピル)から2列のリストに変更。ピルは短い言葉用の
+     形で、説明文まで入れると1行に収まらず携帯幅で折り返して崩れる
+     (HARU様「見た目がいい方を教えて」への回答)。ラベル+説明の対は
+     .who-item(297行目付近)と同じ考え方 —— 新しい部品は作らない。 */
+  .hero-skills { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 20px; margin-bottom: 24px; max-width: 30em; }
+  .hero-skills .label { font-weight: 700; color: #FFFFFF; font-size: var(--text-sm); }
+  .hero-skills .desc { color: rgba(251,249,246,0.72); font-size: var(--text-xs); margin-top: 2px; }
   /* 金のボタンはアプリと同じく地の明暗を問わず1色(--gold-bright)の
      ままにする。反転はもうしない。 */
 
@@ -355,7 +355,7 @@
     /* 2026-09-29 HARU様要望(卓上だけ): 「聞く/話しかける/会話の練習/
        聞き返す・相槌」の札と「今すぐ始める」ボタンが詰まって見える。
        ボタンの前後の余白を広げる。 */
-    .hero-chips { margin-bottom: 28px; }
+    .hero-skills { margin-bottom: 28px; }
     .hero .btn-gold { margin-bottom: 20px; }
   }
 
@@ -639,8 +639,11 @@
       <span class="eyebrow eyebrow-product">Ear to Voice ｜外国人に話しかける20日間</span>
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede">駅のホーム、コンビニの前、券売機の前。困っている旅行者に、自分から声をかけられるように。20日間で、よくある場面を練習しておきます。</p>
-      <div class="hero-chips">
-        <span>聞く</span><span>話しかける</span><span>会話の練習</span><span>聞き返す・相槌</span>
+      <div class="hero-skills">
+        <div><div class="label">聞く</div><div class="desc">聞き取る力</div></div>
+        <div><div class="label">話しかける</div><div class="desc">自分から一言</div></div>
+        <div><div class="label">会話の練習</div><div class="desc">最後まで話す</div></div>
+        <div><div class="label">聞き返す・相槌</div><div class="desc">分からない時も</div></div>
       </div>
       <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
       <div class="hero-note">販売期間：9月30日(水)〜10月17日(土)23:59まで ・ コース開始：10月19日(月)</div>
