@@ -449,6 +449,7 @@
      --accent-text→var(--gold)、--accent-fill→var(--gold-bright)、
      --accent-line→#A3782D(本体と同じ値)、--ink-hair/--line→var(--line)。 */
   .chat-thread { display: flex; flex-direction: column; gap: 16px; }
+  .chat-thread[hidden] { display: none; }
   .chat-row { display: flex; animation: chatRowIn 0.26s cubic-bezier(0.2, 0.9, 0.3, 1.05) both; }
   .chat-row.is-partner { justify-content: flex-start; }
   .chat-row.is-you { justify-content: flex-end; }
@@ -471,6 +472,9 @@
   .chat-bubble.is-you .chat-en { font-size: 32px; line-height: 1.3; letter-spacing: -0.005em; font-weight: 800; border-left: 4px solid var(--gold-bright); padding-left: 12px; margin: 12px 0 0; text-wrap: balance; }
   .chat-ja-meaning { font-size: var(--text-md); line-height: 1.7; color: var(--ink); margin: 6px 0 0; }
   .chat-ja { font-size: var(--text-md); line-height: 1.7; font-weight: 400; color: var(--ink); margin: 0; }
+  /* js/copy.js copy.branches.askEn/askEnOpening ── 自分の番で「言えた」を
+     押す前に必ず出ている問いかけ(監査で判明: LP側に無かった)。 */
+  .chat-prompt { font-size: var(--text-xs); color: var(--ink-soft); line-height: 1.6; white-space: pre-line; margin: 0 0 8px; }
   .chat-voice { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .chat-voice:first-child { margin-top: 0; }
   .chat-voice-label { flex: none; display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-sm); font-weight: 700; color: var(--gold); white-space: nowrap; }
@@ -478,9 +482,14 @@
   .chat-wave { flex: 1 1 auto; display: flex; align-items: center; gap: 2px; height: 24px; min-width: 0; overflow: hidden; }
   .chat-wave i { flex: 1 1 0; min-width: 2px; border-radius: 2px; background: var(--line); display: block; }
   .chat-voice.playing .chat-wave i { background: #A3782D; }
-  .chat-under { margin: 6px 0 0 4px; }
+  .chat-under { margin: 6px 0 0 4px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
   .chat-link { background: none; border: none; padding: 4px 0; font-size: var(--text-sm); color: var(--gold); font-weight: 500; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  /* js/copy.js copy.branches.heardNo(「聞き取れなかった」)。本体は
+     .btn-small(枠付き)、「意味と英文を見る」(文字リンク)と見た目を変える。 */
+  .chat-missed { border: 1px solid var(--line); background: #FFFFFF; border-radius: 999px; padding: 6px 14px; font-size: var(--text-sm); font-weight: 500; color: var(--ink-soft); cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .chat-typing { display: inline-flex; gap: 4px; padding: 16px 18px; }
+  /* copy.branches.chatBranchDone(「最後まで会話できました。」)。 */
+  .chat-branch-done { text-align: center; font-size: var(--text-sm); font-weight: 700; color: var(--ink-soft); margin: 4px 0 0; }
   .typing-dot { width: 6px; height: 6px; border-radius: 999px; background: var(--ink-soft); opacity: 0.5; animation: typingDot 1s ease infinite; }
   .typing-dot:nth-child(2) { animation-delay: 0.15s; }
   .typing-dot:nth-child(3) { animation-delay: 0.3s; }
@@ -504,6 +513,7 @@
   .controls-row .seg-label { font-size: var(--text-sm); white-space: nowrap; }
   .controls-row .seg-sub { white-space: nowrap; }
   .settings-collapsible { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
+  .settings-collapsible[hidden] { display: none; } /* .try-next[hidden]と同じ理由: displayの明示が要る */
   .settings-toggle {
     display: inline-flex; align-items: center; gap: 7px; border: 1.5px solid var(--line); background: #FFFFFF;
     border-radius: 0; padding: 7px 14px; font-size: var(--text-xs); font-weight: 700; color: var(--ink-soft);
@@ -723,11 +733,23 @@
     <p class="lede" style="max-width:32em;">「カラオケまでの道」のレッスンを、実際の音声つきで最後まで進めてみましょう。コースと同じ会話です。</p>
 
     <div class="try-card">
-      <div class="try-photo">
-        <img src="/assets/site/speakup-demo/help-04.jpg" alt="駅の出口で、地図を見て困っている外国人旅行者" width="1280" height="720" loading="lazy" decoding="async">
+      <!-- 画面1/4: 状況(lesson.js stepSituation)。写真を見て、聞く前に
+           まず自分で言ってみる盲目の produce ステップ。お手本もお手本の
+           音声も出さない(実際のアプリと同じ)。 -->
+      <div id="tryScene">
+        <p class="ph-cat-eyebrow" style="margin:0 0 12px;">状況</p>
+        <div class="ph-journey-mode"><span class="ph-mode-name">スピーキング</span></div>
+        <div class="try-photo">
+          <img src="/assets/site/speakup-demo/help-04.jpg" alt="駅の出口で、地図を見て困っている外国人旅行者" width="1280" height="720" loading="lazy" decoding="async">
+        </div>
+        <p class="try-situation">駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。</p>
+        <h2 class="ph-screen-title">あなたなら、<br>どう声をかけますか？</h2>
+        <div class="ph-note"><p>英語で、<br>声に出してみましょう。</p></div>
+        <button type="button" class="btn btn-gold try-continue" id="trySceneSaid">言えた</button>
       </div>
-      <p class="try-situation">駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。</p>
-      <div id="tryOpener">
+
+      <!-- 画面2/4: 言い方を選ぶ(earToVoice.js stepChoosePhrase) -->
+      <div id="tryOpener" hidden>
         <div class="ph-head">
           <button type="button" class="ph-cat" tabindex="-1">
             <span class="ph-cat-top-row">
@@ -779,16 +801,55 @@
           </div>
         </div>
         <button type="button" class="btn btn-gold try-continue" id="tryConfirm">これにする →</button>
-        <div class="try-explain" id="tryExplain" hidden></div>
-        <button type="button" class="btn btn-gold try-continue" id="tryContinue" hidden>会話を続ける →</button>
       </div>
-      <div class="chat-thread" id="tryLog"></div>
+
+      <!-- 画面3/4: 会話の練習の入口(branches.js runBranchPractice冒頭)。
+           場面は最初の一文だけ再掲(アプリと同じ、situation_jaの1文目のみ)。
+           「会話を始める」を押すまで会話は始まらない。 -->
+      <div id="tryConvoGate" hidden>
+        <div class="ph-head">
+          <button type="button" class="ph-cat" tabindex="-1">
+            <span class="ph-cat-top-row">
+              <span class="ph-cat-mark" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="var(--ink)"/><circle cx="16" cy="16" r="2.7" fill="var(--gold-bright)"/><circle cx="16" cy="16" r="7.2" fill="none" stroke="var(--gold-bright)" stroke-width="2"/><circle cx="16" cy="16" r="11.8" fill="none" stroke="var(--gold-bright)" stroke-width="1.6" opacity="0.55"/></svg>
+              </span>
+              <span class="ph-cat-eyebrow">会話の練習</span>
+            </span>
+          </button>
+          <div class="ph-topbar-right"><p class="ph-progress">2 / 2</p></div>
+        </div>
+        <div class="ph-journey-mode"><span class="ph-mode-name">シミュレーション</span></div>
+        <div class="try-photo">
+          <img src="/assets/site/speakup-demo/help-04.jpg" alt="駅の出口で、地図を見て困っている外国人旅行者" width="1280" height="720" loading="lazy" decoding="async">
+        </div>
+        <p class="try-situation">駅の出口で、外国人旅行者が地図を見て困っています。</p>
+        <div class="ph-settings-collapsible">
+          <div class="audio-tools-row">
+            <button type="button" class="settings-toggle" id="gateSettingsToggle" aria-expanded="false">
+              <span class="settings-toggle-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></svg>
+              </span>
+              <span class="settings-toggle-label">声・速さ</span>
+              <span class="settings-toggle-chevron">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+              </span>
+            </button>
+          </div>
+          <div class="settings-panel" id="gateSettingsPanel" hidden>
+            <div class="controls-row" id="gateControlsRow"></div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-gold try-continue" id="tryStartTalk">会話を始める</button>
+      </div>
+
+      <!-- 画面4/4: 会話本編(branches.js youOpening + partnerTurn/sayThenReveal の8往復) -->
+      <div class="chat-thread" id="tryLog" hidden></div>
       <button type="button" class="btn btn-gold try-next" id="tryNext" hidden>次へ →</button>
       <div class="try-done" id="tryDone" hidden>
         <p>お疲れさまでした。これが「聞く→言う」1レッスンぶんの流れです。</p>
         <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
       </div>
-      <div class="settings-collapsible">
+      <div class="settings-collapsible" id="convoSettingsWrap" hidden>
         <div class="audio-tools-row">
           <button type="button" class="settings-toggle" id="trySettingsToggle" aria-expanded="false">
             <span class="settings-toggle-icon">
@@ -967,35 +1028,36 @@
 </footer>
 
 <!-- TRY IT: 道案内のミニ体験。
-     2026-09-30 HARU様「なぜ、書き方がアプリと違うんですか？全く同じように
-     作ってください」を受けて作り直した。
-     会話データはアプリ本体(harmonyhorizon.foreigners
-     speakup/data/scenarios/i-help-4.json + pool.json)から1文字も変えずに
-     書き写した。音声も同アプリがElevenLabsで生成済みのmp3をそのまま
-     コピー(/assets/site/speakup-demo/)。
-     見た目・進み方は speakup/js/ui.js(bubbleRow/voiceRow/waveBars/
-     chatAvatar/segControl)と speakup/js/branches.js(partnerTurn/
-     sayThenReveal = 「あなた→言えた→英文＋お手本→相手」の順)の
-     そのままの移植:
-       - 相手の番は先に声のメッセージ(▶+波形、文字なし)だけを出し、
-         「意味を見る」を押すまで英文・和訳を見せない
-         (CLAUDE.md「相手のセリフは、聞く前に読ませない」)。
-       - 自分の番は先に和訳だけを出し、「言えた」を押した後に初めて
-         英文(お手本の声つき)を見せる(=思い出して声に出す練習が
-         先に来る、本体と同じ順番)。
-     本体の受話口バグ対策・マイク連動・記録(苦手フレーズ等)までは
-     持ち込んでいない(固定8往復の再生だけのデモなので不要)。 -->
+     2026-09-30 HARU様の監査プロンプトを受けて、アプリ本体
+     (harmonyhorizon.foreigners speakup/js/lesson.js stepSituation,
+     earToVoice.js stepChoosePhrase, branches.js runBranchPractice/
+     youOpening/partnerTurn/sayThenReveal)を1つずつ読み直し、画面遷移・
+     ボタン・進み方までそのまま作り直した。4画面構成:
+       1. 状況(stepSituation) — 写真を見て、聞く前にまず自分で言って
+          みる。お手本は出ない、ただ「言えた」で次へ。
+       2. 言い方を選ぶ(stepChoosePhrase) — 既存のまま。
+       3. 会話の練習の入口(runBranchPractice冒頭) — 場面を1文目だけ
+          再掲し、「会話を始める」を押すまで会話は始まらない。
+       4. 会話本編 — 選んだ言い方を**あなたが最初に言う**(youOpening、
+          以前のLPには無かった)→ 8往復(partnerTurn/sayThenReveal)。
+          相手の番は自動で進み(音声が鳴り終えたら1.2秒後に自動で
+          あなたの番へ)、「次へ」はいつでも押せる全画面共通のスキップ。
+          あなたの番だけ「言えた」を押すことが必須(本体と同じ)。
+     持ち込んでいないもの(意図的な省略。理由は各所コメント参照):
+       - 初回だけのモード橋(js/ui.js modeBridge)の動くお手本
+       - 聞き取りの「なぜ」(tipAccordion)・言葉のメモ(wordNote)
+       - 「戻る」ボタン(このLPのデモは一方向の体験のため)
+     会話データ・音声はi-help-4.json/pool.jsonおよび生成済みmp3を
+     1文字も変えずに使用。 -->
 <script>
 (function () {
   var thread = document.getElementById('tryLog');
   var nextBtn = document.getElementById('tryNext');
   var doneBlock = document.getElementById('tryDone');
-  var settingsToggle = document.getElementById('trySettingsToggle');
-  var settingsPanel = document.getElementById('trySettingsPanel');
-  var controlsRow = document.getElementById('tryControlsRow');
   if (!thread || !nextBtn) return;
 
   var AUDIO_BASE = '/assets/site/speakup-demo/';
+  var INTENTION_JA = '大丈夫ですか？'; /* i-help-4.json intention.ja。言い方3つ共通の和訳。 */
   var TURNS = [
     { pAudioId: 'I-HELP-4_b2n1', pEn: "Actually, I'm a bit lost.", pJa: '実は、ちょっと道に迷っていて。', pAudio: 'partner-1.mp3',
       sId: 'RP07', sEn: 'Where are you trying to go?', sJa: 'どこへ行きたいんですか？' },
@@ -1014,28 +1076,47 @@
     { pAudioId: 'I-HELP-4_b2n8', pEn: 'Perfect. Thank you so much!', pJa: 'ばっちりです。本当にありがとうございます！', pAudio: 'partner-8.mp3',
       sId: 'RP32', sEn: 'No problem!', sJa: 'いえいえ！' }
   ];
+  var ASK_EN_OPENING = '英語で、なんて言いますか？\n3回、声に出してください。'; /* copy.branches.askEnOpening */
+  var ASK_EN = '英語で、なんて言いますか？\n声に出してみましょう。'; /* copy.branches.askEn */
   /* js/ui.js PLAY_ICON / PERSON_ICON をそのまま使う。 */
   var PLAY_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
   var PERSON_ICON = '<svg viewBox="0 0 40 40" fill="currentColor"><circle cx="20" cy="15.5" r="7.5"/><path d="M4.5 40c0-8.6 6.9-14.8 15.5-14.8S35.5 31.4 35.5 40z"/></svg>';
 
   /* 「日本人役の声は既定で女性・外国人役は男性のまま(既にV1=男性)」
      (HARU様2026-09-29)。速さは既定ふつう。 */
-  var state = { turnIndex: 0, phase: 'partner-voice', voice: 'f', rate: 1 };
+  var state = { voice: 'f', rate: 1 };
+  var chosenOption = null; /* 「言い方を選ぶ」で確定した言い方({id, en}) */
   var currentAudio = null;
   var lastRole = null; /* 直前の行が相手/あなたのどちらだったか(名前・アイコンの省略判定) */
-  /* 最初の1行はページを開いた**直後**に自動で作られる(doPartnerVoice)。
-     その時にscrollIntoViewすると、ヒーローを読む前に画面が勝手にTry Itまで
-     連れて行かれてしまう(実測: scrollYが881pxまで動いていた)。
-     本人が触ってから初めてスクロールする。 */
+  /* ページを開いた直後の自動レンダリングでscrollIntoViewすると、
+     ヒーローを見る前に画面が勝手にTry Itまで連れて行かれてしまう
+     (実測: scrollYが881pxまで動いていた)。本人が触ってから初めて
+     スクロールする。 */
   var userInteracted = false;
+  /* 「次へ」はどの局面でも「いま待っている物を今すぐ済ませる」
+     共通スキップ(js/branches.js「言えたボタンとnavの次へ、どちらを
+     押しても先へ進む」と同じ発想)。局面が変わるたびに差し替える。 */
+  var skipCurrent = null;
 
+  /* 2026-09-30 監査で判明: 会話が自動で進む局面(相手の番の後・自分の
+     お手本の後)では、直前のaudio.play()から時間が経ってから次の
+     play()を呼ぶことになり、ブラウザの自動再生ポリシーで**無音のまま
+     'ended'が一生発火しない**ことがあった(headlessで実測、実機の
+     Safariでも起きうる)。本体はここにiOSの受話口対策など厚いエンジンを
+     持つが、このデモはそこまで持ち込まない代わりに、'ended'が来なくても
+     6秒で必ず先に進む安全弁を入れる(鳴らなくても進行は止まらない)。 */
   function play(src, onEnded) {
     if (currentAudio) { try { currentAudio.pause(); } catch (e) {} }
     var a = new Audio(src);
     a.playbackRate = state.rate;
     try { a.preservesPitch = true; a.webkitPreservesPitch = true; } catch (e) {}
     currentAudio = a;
-    if (onEnded) a.addEventListener('ended', onEnded);
+    if (onEnded) {
+      var fired = false;
+      var fire = function () { if (fired) return; fired = true; onEnded(); };
+      a.addEventListener('ended', fire);
+      setTimeout(fire, 6000);
+    }
     a.play().catch(function () {});
     return a;
   }
@@ -1059,8 +1140,10 @@
     return wrap;
   }
 
-  /* js/ui.js voiceRow の移植: ▶+ラベル+波形、押すと鳴る1行。 */
-  function voiceRow(label, seed, src, onPlay) {
+  /* js/ui.js voiceRow の移植: ▶+ラベル+波形、押すと鳴る1行。ラベルは
+     本体と同じくどこでも「聞く」(copy.branches.chatReplay)で統一
+     (以前のLPは自分の番だけ「お手本を聞く」にしていて、本体と違っていた)。 */
+  function voiceRow(seed, src, onPlay) {
     var b = document.createElement('button');
     b.type = 'button';
     b.className = 'chat-voice';
@@ -1068,7 +1151,7 @@
     labelSpan.className = 'chat-voice-label';
     labelSpan.innerHTML = PLAY_ICON;
     var labelText = document.createElement('span');
-    labelText.textContent = label;
+    labelText.textContent = '聞く';
     labelSpan.appendChild(labelText);
     b.appendChild(labelSpan);
     b.appendChild(waveBars(seed));
@@ -1145,144 +1228,169 @@
     return row;
   }
 
-  /* ---- 各ターンの進み方(js/branches.js partnerTurn/sayThenReveal と同じ順) ----
-     1. partner-voice: 「……」→ 声のメッセージだけの吹き出し(文字なし)
-     2. partner-text : 「意味を見る」で同じ吹き出しに英文・和訳を追加
-     3. student-ja   : あなたの番。和訳だけの吹き出し+「言えた」
-     4. student-en   : 「言えた」で英文(お手本の声つき)を追加 → 次のターンへ */
-  var partnerEnHost, partnerJaHost, studentSayBtn, studentEnHost, studentVoiceHost;
+  /* 一度だけ呼ばれることを保証するラッパー(自動タイマーとnextBtnの
+     どちらが先に呼んでも二重に進まないようにする)。 */
+  function once(fn) {
+    var done = false;
+    return function () {
+      if (done) return;
+      done = true;
+      fn();
+    };
+  }
 
-  function doPartnerVoice() {
-    var turn = TURNS[state.turnIndex];
+  /* ---- あなたの番(js/branches.js sayThenReveal の移植) ----
+     和訳(+問いかけ)だけを見せ、「言えた」を押すまで英文もお手本の声も
+     出さない。押した後は英文+「聞く」(自動再生)を見せ、鳴り終えたら
+     一呼吸おいて自動で次へ進む(「次へ」でいつでもスキップ可)。 */
+  function yourTurn(promptText, ja, en, audioSrc, onDone) {
+    var prompt = document.createElement('p');
+    prompt.className = 'chat-prompt';
+    prompt.textContent = promptText;
+    var jaEl = document.createElement('p');
+    jaEl.className = 'chat-ja';
+    jaEl.textContent = ja;
+    var sayBtn = document.createElement('button');
+    sayBtn.type = 'button';
+    sayBtn.className = 'btn btn-gold try-say';
+    sayBtn.textContent = '言えた';
+    var built = bubbleRow('you', 'あなた', [prompt, jaEl, sayBtn]);
+
+    var reveal = once(function () {
+      sayBtn.hidden = true;
+      var enEl = document.createElement('p');
+      enEl.className = 'chat-en';
+      enEl.textContent = en;
+      var voice = voiceRow(audioSrc, audioSrc);
+      built.bubble.appendChild(enEl);
+      built.bubble.appendChild(voice);
+      var finishWait = once(function () { skipCurrent = null; onDone(); });
+      skipCurrent = finishWait;
+      play(audioSrc, function () { setTimeout(finishWait, 900); });
+    });
+    sayBtn.addEventListener('click', reveal);
+    skipCurrent = reveal;
+  }
+
+  /* ---- 相手の番(js/branches.js partnerTurn の移植) ----
+     「……」→ 声のメッセージだけの吹き出し(文字なし、押さなくても自動再生)。
+     鳴り終えたら「意味と英文を見る」「聞き取れなかった」の2つのリンクが
+     出て(どちらもテキストを開くだけ)、1.2秒後に自動で次(あなたの番)へ
+     進む。「次へ」でいつでもスキップ可。 */
+  function partnerTurn(turn, onDone) {
     var typingRow = typingIndicator();
     setTimeout(function () {
       typingRow.remove();
       var src = AUDIO_BASE + turn.pAudio;
-      var voice = voiceRow('聞く', turn.pAudioId, src);
-      voice.disabled = true;
-      play(src, function () { voice.disabled = false; });
+      var voice = voiceRow(turn.pAudioId, src);
       var linkWrap = document.createElement('div');
       linkWrap.className = 'chat-under';
-      var link = document.createElement('button');
-      link.type = 'button';
-      link.className = 'chat-link';
-      link.textContent = '意味と英文を見る';
-      link.addEventListener('click', revealPartnerText);
-      linkWrap.appendChild(link);
       var built = bubbleRow('partner', '相手', [voice], { under: linkWrap, voiceRow: true });
-      partnerEnHost = built.bubble;
-      partnerLinkWrap = linkWrap;
-      nextBtn.textContent = '意味を見る →';
-    }, 550);
-  }
-  var partnerLinkWrap = null;
 
-  function revealPartnerText() {
-    if (!partnerEnHost || partnerEnHost.querySelector('.chat-en')) return;
-    var turn = TURNS[state.turnIndex];
-    var en = document.createElement('p');
-    en.className = 'chat-en';
-    en.textContent = turn.pEn;
-    var ja = document.createElement('p');
-    ja.className = 'chat-ja-meaning';
-    ja.textContent = turn.pJa;
-    partnerEnHost.appendChild(en);
-    partnerEnHost.appendChild(ja);
-    if (partnerLinkWrap) partnerLinkWrap.hidden = true;
-    state.phase = 'partner-text';
-    nextBtn.textContent = '言ってみる →';
-  }
+      function revealText() {
+        if (built.bubble.querySelector('.chat-en')) return;
+        var en = document.createElement('p');
+        en.className = 'chat-en';
+        en.textContent = turn.pEn;
+        var ja = document.createElement('p');
+        ja.className = 'chat-ja-meaning';
+        ja.textContent = turn.pJa;
+        built.bubble.appendChild(en);
+        built.bubble.appendChild(ja);
+      }
 
-  function doStudentJa() {
-    var turn = TURNS[state.turnIndex];
-    var ja = document.createElement('p');
-    ja.className = 'chat-ja';
-    ja.textContent = turn.sJa;
-    studentSayBtn = document.createElement('button');
-    studentSayBtn.type = 'button';
-    studentSayBtn.className = 'btn btn-gold try-say';
-    studentSayBtn.textContent = '言えた';
-    studentSayBtn.addEventListener('click', function () { revealStudentEn(); nextBtn.textContent = '次へ →'; });
-    var built = bubbleRow('you', 'あなた', [ja, studentSayBtn]);
-    studentEnHost = built.bubble;
-    nextBtn.textContent = '次へ →';
+      var finishWait = once(function () { skipCurrent = null; onDone(); });
+      skipCurrent = finishWait;
+      play(src, function () {
+        var missedBtn = document.createElement('button');
+        missedBtn.type = 'button';
+        missedBtn.className = 'chat-missed';
+        missedBtn.textContent = '聞き取れなかった';
+        missedBtn.addEventListener('click', function () { revealText(); linkWrap.hidden = true; });
+        var link = document.createElement('button');
+        link.type = 'button';
+        link.className = 'chat-link';
+        link.textContent = '意味と英文を見る';
+        link.addEventListener('click', revealText);
+        linkWrap.appendChild(missedBtn);
+        linkWrap.appendChild(link);
+        setTimeout(finishWait, 1200);
+      });
+    }, 600);
   }
 
-  function revealStudentEn() {
-    if (!studentEnHost || studentEnHost.querySelector('.chat-en')) return;
-    var turn = TURNS[state.turnIndex];
-    var en = document.createElement('p');
-    en.className = 'chat-en';
-    en.textContent = turn.sEn;
+  /* ---- あなたが最初に言う(js/branches.js youOpening の移植) ----
+     「言い方を選ぶ」で確定した言い方を、会話の1行目としてあなたが
+     言う。以前のLPにはこの1行が無く、会話が相手から始まっていた
+     (監査で判明した抜け)。 */
+  function youOpening() {
+    var src = AUDIO_BASE + 'model-' + state.voice + '-' + chosenOption.id + '.mp3';
+    yourTurn(ASK_EN_OPENING, INTENTION_JA, chosenOption.en, src, function () {
+      partnerTurn(TURNS[0], function () { runExchange(1); });
+    });
+  }
+
+  function runExchange(index) {
+    /* index番目の相手のセリフは既にrunExchange(index-1)内のpartnerTurnで
+       鳴らし終えている。ここでは対応するあなたの返しを言わせる。 */
+    var turn = TURNS[index - 1];
     var src = AUDIO_BASE + 'model-' + state.voice + '-' + turn.sId + '.mp3';
-    studentVoiceHost = voiceRow('お手本を聞く', turn.sId, src);
-    studentEnHost.appendChild(en);
-    studentEnHost.appendChild(studentVoiceHost);
-    play(src);
-    if (studentSayBtn) studentSayBtn.hidden = true;
-    state.phase = 'student-en';
-  }
-
-  /* 「言えた」ボタンと、下の主ボタン(次へ)の**どちらを押しても同じだけ
-     先へ進む**(js/branches.js「言えたボタンとnavの次へ、どちらを押しても
-     先へ進む」と同じ発想)。 */
-  function advance() {
-    if (state.phase === 'partner-voice') {
-      revealPartnerText();
-      return;
-    }
-    if (state.phase === 'partner-text') {
-      state.phase = 'student-ja';
-      doStudentJa();
-      return;
-    }
-    if (state.phase === 'student-ja') {
-      revealStudentEn();
-      nextBtn.textContent = '次へ →';
-      return;
-    }
-    if (state.phase === 'student-en') {
-      state.turnIndex += 1;
-      if (state.turnIndex >= TURNS.length) {
-        nextBtn.hidden = true;
-        doneBlock.hidden = false;
+    yourTurn(ASK_EN, turn.sJa, turn.sEn, src, function () {
+      if (index >= TURNS.length) {
+        finishBranch();
         return;
       }
-      state.phase = 'partner-voice';
-      doPartnerVoice();
-    }
+      partnerTurn(TURNS[index], function () { runExchange(index + 1); });
+    });
   }
 
-  nextBtn.addEventListener('click', function () { userInteracted = true; advance(); });
+  function finishBranch() {
+    var p = document.createElement('p');
+    p.className = 'chat-branch-done';
+    p.textContent = '最後まで会話できました。'; /* copy.branches.chatBranchDone */
+    thread.appendChild(p);
+    nextBtn.hidden = true;
+    skipCurrent = null;
+    doneBlock.hidden = false;
+    if (userInteracted) doneBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
 
-  /* ---- 冒頭の「言い方を選ぶ」ミニクイズ ----
-     HARU様2026-09-30のプロンプトどおり: 3択はどれも自然な言い方として
-     並べ(正誤を煽らない)、選んだ後に「この場面ならどれが一番自然か」を
-     種明かしする。選び終えたら、いつもの8往復(doPartnerVoice〜)へ
-     続ける。 */
-  /* ---- 「言い方を選ぶ」画面(js/earToVoice.js stepChoosePhrase の移植) ----
-     2026-09-30 HARU様「実際の画面(スクショ)を一字一句そのまま複製する形」。
-     3枚のカードを ‹ › でめくり、▶で聞き比べ、「これにする」で確定する。
-     データ・バッジの計算結果は実際のアプリのi-help-4 intention.phrasesと
-     stepChoosePhraseの計算をそのまま使う(op1=定番+短め、op2=無し、
-     op3=カジュアル)。 */
-  function initOpener() {
+  nextBtn.addEventListener('click', function () {
+    userInteracted = true;
+    if (skipCurrent) skipCurrent();
+  });
+
+  /* ---- 画面1/4: 状況(js/lesson.js stepSituation の移植) ----
+     写真を見て、聞く前にまず自分で言ってみる。お手本の音声も英文も
+     この画面では出さない(押しても何も鳴らない・何も表示されない —
+     本体もそう)。「言えた」は画面を進めるだけ。 */
+  function initScene() {
+    var scene = document.getElementById('tryScene');
+    var sayBtn = document.getElementById('trySceneSaid');
+    if (!scene || !sayBtn) { showOpener(); return; }
+    sayBtn.addEventListener('click', function () {
+      userInteracted = true;
+      scene.hidden = true;
+      showOpener();
+    }, { once: true });
+  }
+
+  /* ---- 画面2/4: 言い方を選ぶ(js/earToVoice.js stepChoosePhrase の移植) ---- */
+  function showOpener() {
     var opener = document.getElementById('tryOpener');
-    var explainBox = document.getElementById('tryExplain');
     var confirmBtn = document.getElementById('tryConfirm');
-    var continueBtn = document.getElementById('tryContinue');
     var posN = document.getElementById('phPosN');
     var badgeRow = document.getElementById('phBadgeRow');
     var prevArrow = document.getElementById('phPrev');
     var nextArrow = document.getElementById('phNext');
     var playBtn = document.getElementById('phPlay');
-    var settingsToggle = document.getElementById('phSettingsToggle');
-    var settingsPanel = document.getElementById('phSettingsPanel');
-    var controlsRow = document.getElementById('phControlsRow');
-    if (!opener || !explainBox || !confirmBtn || !continueBtn || !posN || !badgeRow || !prevArrow || !nextArrow || !playBtn) {
-      doPartnerVoice();
+    if (!opener || !confirmBtn || !posN || !badgeRow || !prevArrow || !nextArrow || !playBtn) {
+      chosenOption = { id: 'op1', en: 'Are you okay?' };
+      showConvoGate();
       return;
     }
+    opener.hidden = false;
+    setupToggle('phSettingsToggle', 'phSettingsPanel', 'phControlsRow');
 
     var OPTIONS = [
       { id: 'op1', en: 'Are you okay?', badges: [{ text: '定番' }, { text: '短め', outline: true }] },
@@ -1290,7 +1398,7 @@
       { id: 'op3', en: 'Want me to show you?', badges: [{ text: 'カジュアル', outline: true }] }
     ];
     var idx = 0;
-    var chosen = OPTIONS[0];
+    chosenOption = OPTIONS[0];
 
     function renderCard(doPlay) {
       posN.textContent = String(idx + 1);
@@ -1301,7 +1409,7 @@
         span.textContent = b.text;
         badgeRow.appendChild(span);
       });
-      chosen = OPTIONS[idx];
+      chosenOption = OPTIONS[idx];
       if (doPlay) playCard();
     }
     function playCard() {
@@ -1314,58 +1422,44 @@
     nextArrow.addEventListener('click', function () { idx = (idx + 1) % OPTIONS.length; renderCard(true); });
     renderCard(false);
 
-    if (settingsToggle && settingsPanel) {
-      settingsToggle.addEventListener('click', function () {
-        var open = settingsToggle.getAttribute('aria-expanded') === 'true';
-        settingsToggle.setAttribute('aria-expanded', String(!open));
-        settingsPanel.hidden = open;
-      });
-    }
-    if (controlsRow) {
-      controlsRow.appendChild(segControl(
-        [{ label: '女性の声' }, { label: '男性の声' }],
-        function (i) { return (i === 1) === (state.voice === 'm'); },
-        function (i) { state.voice = i === 1 ? 'm' : 'f'; }
-      ));
-      controlsRow.appendChild(segControl(
-        [{ label: 'ふつう', sub: '1.0x' }, { label: 'ゆっくり', sub: '0.7x' }],
-        function (i) { return (i === 1) === (state.rate === 0.7); },
-        function (i) {
-          state.rate = i === 1 ? 0.7 : 1;
-          if (currentAudio) { try { currentAudio.playbackRate = state.rate; } catch (e) {} }
-        }
-      ));
-    }
-
     confirmBtn.addEventListener('click', function () {
-      confirmBtn.hidden = true;
-      var opt = chosen;
-      var p1 = document.createElement('p');
-      var p2 = document.createElement('p');
-      if (opt.id === 'op1') {
-        p1.textContent = '「Are you okay?」、いいですね。相手はまだ言葉で説明していません。地図を見て困った顔をしているのが見た目で分かる場面なので、まず様子に反応するこの言い方が一番自然です。';
-      } else {
-        p1.textContent = '「' + opt.en + '」も自然な言い方です。ただ、この場面では相手はまだ言葉で説明していません —— 地図を見て困った顔をしているのが見た目で分かるだけです。こういう時は、まず様子に反応する「Are you okay?」が一番しっくりきます。';
-      }
-      p2.textContent = 'もし相手が状況を先に言葉で説明していたら、「Do you need any help?」の方が合う場面もあります。コースでは、場面によってこの使い分けまで練習します。';
-      explainBox.appendChild(p1);
-      explainBox.appendChild(p2);
-      explainBox.hidden = false;
-      continueBtn.hidden = false;
-      continueBtn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, { once: true });
-
-    continueBtn.addEventListener('click', function () {
       userInteracted = true;
       opener.hidden = true;
-      nextBtn.hidden = false;
-      doPartnerVoice();
+      showConvoGate();
     }, { once: true });
   }
 
-  initOpener();
+  /* ---- 画面3/4: 会話の練習の入口(js/branches.js runBranchPractice冒頭の移植) ----
+     場面はアプリと同じく1文目だけ再掲(situation_ja.split('。')[0])。
+     「会話を始める」を押すまで会話は始まらない。 */
+  function showConvoGate() {
+    var gate = document.getElementById('tryConvoGate');
+    var startBtn = document.getElementById('tryStartTalk');
+    if (!gate || !startBtn) { startConversation(); return; }
+    gate.hidden = false;
+    setupToggle('gateSettingsToggle', 'gateSettingsPanel', 'gateControlsRow');
+    startBtn.addEventListener('click', function () {
+      userInteracted = true;
+      gate.hidden = true;
+      startConversation();
+    }, { once: true });
+  }
 
-  /* ---- 声・速さ（speakup/js/ui.js segControl の見た目の移植）---- */
+  /* ---- 画面4/4: 会話本編 ---- */
+  function startConversation() {
+    thread.hidden = false;
+    nextBtn.hidden = false;
+    var convoSettings = document.getElementById('convoSettingsWrap');
+    if (convoSettings) {
+      convoSettings.hidden = false;
+      setupToggle('trySettingsToggle', 'trySettingsPanel', 'tryControlsRow');
+    }
+    youOpening();
+  }
+
+  /* ---- 声・速さ（speakup/js/ui.js segControl/voiceSpeedControls の移植）----
+     3画面(言い方を選ぶ・会話の入口・会話本編)それぞれに独立した
+     トグルを持つ(本体も画面ごとに1つずつ持つ形と同じ)。 */
   function segControl(items, isSelected, onSelect) {
     var buttons = [];
     var seg = document.createElement('div');
@@ -1397,13 +1491,20 @@
     return seg;
   }
 
-  if (controlsRow) {
-    controlsRow.appendChild(segControl(
+  var wiredToggles = {};
+  function setupToggle(toggleId, panelId, rowId) {
+    if (wiredToggles[toggleId]) return;
+    wiredToggles[toggleId] = true;
+    var toggle = document.getElementById(toggleId);
+    var panel = document.getElementById(panelId);
+    var row = document.getElementById(rowId);
+    if (!toggle || !panel || !row) return;
+    row.appendChild(segControl(
       [{ label: '女性の声' }, { label: '男性の声' }],
       function (i) { return (i === 1) === (state.voice === 'm'); },
       function (i) { state.voice = i === 1 ? 'm' : 'f'; }
     ));
-    controlsRow.appendChild(segControl(
+    row.appendChild(segControl(
       [{ label: 'ふつう', sub: '1.0x' }, { label: 'ゆっくり', sub: '0.7x' }],
       function (i) { return (i === 1) === (state.rate === 0.7); },
       function (i) {
@@ -1411,14 +1512,14 @@
         if (currentAudio) { try { currentAudio.playbackRate = state.rate; } catch (e) {} }
       }
     ));
-  }
-  if (settingsToggle && settingsPanel) {
-    settingsToggle.addEventListener('click', function () {
-      var open = settingsToggle.getAttribute('aria-expanded') === 'true';
-      settingsToggle.setAttribute('aria-expanded', String(!open));
-      settingsPanel.hidden = open;
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+      panel.hidden = open;
     });
   }
+
+  initScene();
 })();
 </script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cbce8f1a5efe454ca00b354ec0f02307"}'></script><!-- End Cloudflare Web Analytics -->
