@@ -1222,30 +1222,65 @@
 
   /* 音を1本鳴らし、終わったら解決する Promise。本体の AudioCue.play() の代わり。
      'ended' が来ない時(ブラウザの自動再生の制限・読み込み失敗・途中で止めた)も
-     必ず解決する —— 鳴らなくても会話の進行は止まらない。 */
+     必ず解決する —— 鳴らなくても会話の進行は止まらない。
+     ★2026-09-29 音の入れ物(Audio)は1つだけにして使い回す(本体 js/audio.js の
+     player と同じ考え)。iPhone の Safari は「タップの中で一度鳴らした入れ物」しか
+     後から自動で鳴らせない。以前は1本ごとに new Audio() を作っていたため、
+     待ち時間の後に鳴らす相手のセリフが、iPhone では黙って飛ばされるおそれがあった。
+     最初のタップで無音を鳴らして入れ物を起こしておく(primeAudio)。 */
+  var SILENT_WAV = 'data:audio/wav;base64,UklGRsQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';
+  var player = null;
+  var endCue = null;
+  function getPlayer() {
+    if (!player) { player = new Audio(); player.preload = 'auto'; }
+    return player;
+  }
+  var primed = false;
+  function primeAudio() {
+    if (primed) return;
+    primed = true;
+    if (endCue) return;
+    var a = getPlayer();
+    a.src = SILENT_WAV;
+    try { var pr = a.play(); if (pr && pr.catch) pr.catch(function () {}); } catch (e) {}
+  }
+  document.addEventListener('touchend', primeAudio, true);
+  document.addEventListener('click', primeAudio, true);
   function playCue(src) {
     return new Promise(function (resolve) {
-      if (currentAudio) { try { currentAudio.pause(); } catch (e) {} }
-      var a = new Audio(src);
-      a.playbackRate = state.rate;
-      try { a.preservesPitch = true; a.webkitPreservesPitch = true; } catch (e) {}
+      if (endCue) endCue();
+      var a = getPlayer();
       currentAudio = a;
       var fired = false;
+      var started = false;
       var timer = null;
+      var onPlaying = function () {
+        started = true;
+        clearTimeout(timer);
+        var d = isFinite(a.duration) && a.duration > 0 ? a.duration / (a.playbackRate || 1) : 5;
+        timer = setTimeout(fire, (d + 1.5) * 1000);
+      };
+      var onPause = function () { if (started) fire(); };
       var fire = function () {
         if (fired) return;
         fired = true;
         clearTimeout(timer);
+        a.removeEventListener('ended', fire);
+        a.removeEventListener('error', fire);
+        a.removeEventListener('pause', onPause);
+        a.removeEventListener('playing', onPlaying);
+        if (endCue === fire) endCue = null;
         resolve();
       };
+      endCue = fire;
+      a.src = src;
+      a.defaultPlaybackRate = state.rate;
+      a.playbackRate = state.rate;
+      try { a.preservesPitch = true; a.webkitPreservesPitch = true; } catch (e) {}
       a.addEventListener('ended', fire);
-      a.addEventListener('pause', fire);
       a.addEventListener('error', fire);
-      a.addEventListener('playing', function () {
-        clearTimeout(timer);
-        var d = isFinite(a.duration) && a.duration > 0 ? a.duration / (a.playbackRate || 1) : 5;
-        timer = setTimeout(fire, (d + 1.5) * 1000);
-      });
+      a.addEventListener('pause', onPause);
+      a.addEventListener('playing', onPlaying);
       timer = setTimeout(fire, 6000);
       var pr = a.play();
       if (pr && pr.catch) pr.catch(fire);
