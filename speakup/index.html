@@ -369,6 +369,12 @@
     max-width: 560px; margin: 32px auto 0; background: #FFFFFF; border: 1px solid var(--line);
     border-radius: 22px; padding: clamp(24px, 5vw, 36px); box-shadow: var(--shadow-card);
   }
+  /* スマホでは本体の画面と同じ幅にする(.screen-body の左右24pxだけ)。LPの余白(--pad)と
+     カードの余白が重なると、本体より約40px狭くなり、32pxの英文(convenience など)が
+     1語に収まらず途中で折れていた。 */
+  @media (max-width: 599px) {
+    .try-card { margin-left: calc(-1 * var(--pad)); margin-right: calc(-1 * var(--pad)); border-radius: 0; border-left: 0; border-right: 0; padding: 32px 24px; }
+  }
   /* ---- ここから下の .try-card 内は、harmonyhorizon.foreigners
      speakup/css/tokens.css のトークンを**値ごとそのまま**カードに置き、
      speakup/css/main.css の規則を**そのまま**写したもの(2026-09-29
