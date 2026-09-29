@@ -137,6 +137,8 @@
     font-size: var(--text-lg); font-weight: 700; letter-spacing: 0; cursor: pointer; border: none;
     transition: transform 0.08s ease, box-shadow 0.08s ease;
   }
+  /* 「コースに申し込む」は狭い画面で「申し込／む」のように語の途中で折れないよう、<wbr>(コースに の後)でだけ折る。 */
+  .btn { word-break: keep-all; overflow-wrap: anywhere; }
   /* 2026-09-29 HARU様指摘: 携帯の「今すぐ始める」ボタンが大きすぎる。
      実測すると高さ72px・文字23pxで、標準的なボタン(44〜52px)より
      かなり大きかった。携帯だけ詰める(卓上はご指摘の対象外なので
@@ -181,9 +183,6 @@
     .site-header .brand-mark { width: 28px; height: 28px; }
     .site-header .brand-word { font-size: var(--text-xs); }
   }
-  /* さらに狭い画面では「で始める」を落とし、価格だけにする。
-     ボタン全体が押せるので、動詞が無くても意味は通る。 */
-  @media (max-width: 380px) { .site-header .cta-verb { display: none; } }
   /* 320px 級。28px でも11文字は1行に入らないので、意味の切れ目で折る。
      機械任せにすると「る。」だけの行になる。 */
   /* 「自分から、声をかけられる。」は 393px でも自然な折り返しでは
@@ -789,7 +788,7 @@
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold btn-small"><span>今すぐ<span class="cta-verb">始める</span></span></a>
+    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold btn-small">申し込む</a>
   </div>
 </header>
 
@@ -807,7 +806,7 @@
       <span class="eyebrow eyebrow-product">Ear to Voice ｜外国人に話しかける20日間</span>
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。20日間で、よくある場面を練習しておきます。</p>
-      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
+      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">コースに<wbr>申し込む&nbsp;→</a>
       <div class="hero-note">販売期間：9月30日(水)〜10月17日(土)23:59まで<br>コース開始：10月19日(月)</div>
     </div>
   </div>
@@ -951,7 +950,7 @@
             <p class="try-done-en">Well done!</p>
             <p class="try-done-title">最後まで<br class="try-done-br">会話できました。</p>
             <p class="try-done-sub">「聞く → 理解する → 言う」を<br>最後までやり切りました。</p>
-            <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn-primary try-done-cta">今すぐ始める<span class="btn-arrow" aria-hidden="true">→</span></a>
+            <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn-primary try-done-cta">コースに申し込む<span class="btn-arrow" aria-hidden="true">→</span></a>
           </div>
         </div>
       </div>
@@ -1025,7 +1024,7 @@
         <div><span class="ck">✓</span>聞き取りのコツ(なぜ聞き取れないかの解説)</div>
         <div><span class="ck">✓</span>ことばのメモ(言い回しの意味と使い方)</div>
       </div>
-      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">今すぐ始める →</a>
+      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">コースに<wbr>申し込む&nbsp;→</a>
       <p style="font-size:14px;color:var(--ink-soft);margin:16px 0 0;">ライブ練習会(任意・別料金、10/29・11/12)はコース購入者向けにご案内します。詳しくは購入後のメールで。</p>
     </div>
   </div>
@@ -1059,7 +1058,7 @@
     <span class="eyebrow">One Step Forward</span>
     <h2>自分から、<br>声をかけられるように。</h2>
     <p class="lede">販売は10月17日(土)23:59まで。<br>コースは10月19日(月)に始まります。</p>
-    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">今すぐ始める →</a>
+    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">コースに<wbr>申し込む&nbsp;→</a>
   </div>
 </section>
 
