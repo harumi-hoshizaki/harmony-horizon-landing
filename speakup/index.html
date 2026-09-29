@@ -418,7 +418,7 @@
   .try-card .screen-body { display: flex; flex-direction: column; gap: var(--space-6); }
   .try-card .body-text { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); white-space: pre-line; }
   .try-card .scene-block { display: block; }
-  .try-card .scene-block .situation-line { margin: 12px 0 0; }
+  .try-card .scene-block .situation-line { margin: 12px 0 0; word-break: keep-all; overflow-wrap: anywhere; } /* 語の途中(キ／ョロ)で折らない。<wbr> の所でだけ折る */
   .try-card .scene-holder { width: 100%; border-radius: var(--radius-photo); overflow: hidden; }
   .try-card .scene-image { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: var(--radius-photo); background: var(--line); }
   .try-card .next-block { display: flex; flex-direction: column; gap: var(--space-4); }
@@ -872,8 +872,8 @@
         <div class="screen-body">
           <div class="ph-journey-mode"><span class="ph-mode-name" role="status">スピーキング</span></div>
           <div class="scene-block">
-            <div class="scene-holder"><img class="scene-image" src="/assets/site/speakup-demo/help-04.webp" alt="駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。" loading="lazy" decoding="async"></div>
-            <p class="body-text situation-line">駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。</p>
+            <div class="scene-holder"><img class="scene-image" src="/assets/site/speakup-demo/help-04.webp" alt="駅の出口で、外国人が携帯を手にキョロキョロ。何か困っているようです。行き先までは歩いて5分ほどです。" loading="lazy" decoding="async"></div>
+            <p class="body-text situation-line">駅の<wbr>出口で、<wbr>外国人が<wbr>携帯を<wbr>手に<wbr>キョロキョロ。<wbr>何か困っているようです。<wbr>行き先までは<wbr>歩いて<wbr>5分ほどです。</p>
           </div>
           <div class="next-block">
             <h2 class="ph-screen-title">あなたなら、<br>どう声をかけますか？</h2>
@@ -956,8 +956,8 @@
         <div class="screen-body">
           <div class="ph-journey-mode"><span class="ph-mode-name" role="status">シミュレーション</span></div>
           <div class="scene-block">
-            <div class="scene-holder"><img class="scene-image" src="/assets/site/speakup-demo/help-04.webp" alt="駅の出口で、外国人旅行者が地図を見て困っています。行き先までは歩いて5分ほどです。" loading="lazy" decoding="async"></div>
-            <p class="body-text situation-line">駅の出口で、外国人旅行者が地図を見て困っています。</p>
+            <div class="scene-holder"><img class="scene-image" src="/assets/site/speakup-demo/help-04.webp" alt="駅の出口で、外国人が携帯を手にキョロキョロ。何か困っているようです。行き先までは歩いて5分ほどです。" loading="lazy" decoding="async"></div>
+            <p class="body-text situation-line">駅の<wbr>出口で、<wbr>外国人が<wbr>携帯を<wbr>手に<wbr>キョロキョロ。<wbr>何か困っているようです。</p>
           </div>
           <div class="ph-settings-collapsible">
             <div class="audio-tools-row">
