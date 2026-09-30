@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>今日の一言｜Ear to Voice</title>
+<style>
+  /* 開始前メールの「今日の一言」を、文字より先に音で聞くページ(HARU様 2026-09-30)。
+     Ear to Voice = 文字を出す前に、音声を聞いて声に出す。文字は聞いた後にだけ出す。
+     色はメール・販売ページと同じ。購入者向けのおまけなので noindex。 */
+  :root {
+    --ink: #221D18; --muted: #5C5548; --paper: #F5F0E8; --surface: #FFFFFF;
+    --line: #E8E1D4; --accent-fill: #E2A33D; --accent-text: #694D11; --wash: #F9F1E4;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif; font-size: 17px; line-height: 1.9; -webkit-text-size-adjust: 100%; }
+  .wrap { max-width: 520px; margin: 0 auto; padding: 24px 16px 40px; }
+  .card { background: var(--surface); border-radius: 14px; overflow: hidden; }
+  .band { height: 6px; background: var(--accent-fill); }
+  .inner { padding: 24px 24px 28px; }
+  .brand { font-size: 13px; font-weight: 700; letter-spacing: .18em; color: var(--accent-text); }
+  .brand-sub { font-size: 13px; color: var(--muted); }
+  .label { margin: 26px 0 0; font-size: 15px; font-weight: 700; letter-spacing: .12em; color: var(--accent-text); }
+  h1 { margin: 6px 0 0; font-size: 22px; line-height: 1.6; }
+  .lead { margin: 14px 0 0; }
+  .play-row { display: flex; gap: 12px; flex-wrap: wrap; margin: 24px 0 0; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 52px; padding: 0 22px; border-radius: 8px; border: 1.5px solid var(--accent-fill); font: inherit; font-weight: 700; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .btn-play { background: var(--accent-fill); color: var(--ink); flex: 1 1 180px; font-size: 18px; }
+  .btn-slow { background: var(--surface); color: var(--accent-text); flex: 0 1 auto; }
+  .btn.playing { box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-fill) 35%, transparent); }
+  .btn-reveal { margin: 22px 0 0; width: 100%; background: var(--wash); color: var(--accent-text); border-color: var(--wash); }
+  .btn-reveal[hidden], .reveal[hidden] { display: none; }
+  .count { margin: 12px 0 0; font-size: 15px; color: var(--muted); }
+  .reveal { margin: 22px 0 0; padding: 22px 18px; border: 1.5px solid var(--accent-fill); border-radius: 12px; background: #FFFBF3; text-align: center; }
+  .en { font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 28px; line-height: 1.35; }
+  .ja { margin: 6px 0 0; }
+  .after { margin: 18px 0 0; }
+  .tag { margin: 28px 0 0; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-size: 18px; color: #8F6524; }
+  @media (prefers-reduced-motion: reduce) { .btn.playing { box-shadow: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="band"></div>
+    <div class="inner">
+      <div class="brand">EAR TO VOICE</div>
+      <div class="brand-sub">耳から、声へ</div>
+      <p class="label">今日の一言</p>
+      <h1>まずは、文字を見ないで<br>聞いてみましょう。</h1>
+      <p class="lead" id="lead">聞こえたまま、<br>声に出してまねしてください。<br>何度聞いても大丈夫です。</p>
+      <div class="play-row">
+        <button type="button" class="btn btn-play" id="play">▶ 聞く</button>
+        <button type="button" class="btn btn-slow" id="slow">ゆっくり</button>
+      </div>
+      <p class="count" id="count" hidden></p>
+      <button type="button" class="btn btn-reveal" id="reveal" hidden>声に出せたら、文字を見る</button>
+      <div class="reveal" id="text" hidden>
+        <div class="en" id="en"></div>
+        <div class="ja" id="ja"></div>
+      </div>
+      <p class="after" id="after" hidden>文字を見たら、もう一度聞いて、声に出してみましょう。<br>発音のコツは、メールに書いてあります。</p>
+      <p class="tag">Train your ears. Find your voice.</p>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  var PHRASES = {
+    '01': { en: 'Are you okay?', ja: '大丈夫ですか？' },
+    '02': { en: 'Do you need any help?', ja: '何かお手伝いしましょうか？' },
+    '03': { en: 'Got it.', ja: 'なるほど。分かりました。' },
+    '04': { en: 'Then turn right at the convenience store.', ja: 'そのあと、コンビニの所を右です。' },
+    '05': { en: "Sorry, I didn't catch that.", ja: 'すみません、聞き取れませんでした。' },
+    '06': { en: 'Oh, I see.', ja: 'ああ、なるほど。' },
+    '07': { en: 'Is it far?', ja: '遠いですか？' }
+  };
+  var m = /[?&]d=(\d\d)/.exec(location.search);
+  var key = m && PHRASES[m[1]] ? m[1] : '01';
+  var p = PHRASES[key];
+  document.getElementById('en').textContent = p.en;
+  document.getElementById('ja').textContent = p.ja;
+
+  /* 音の入れ物は1つだけ使い回す(iPhone の Safari 対策。販売ページの Try It と同じ考え)。 */
+  var audio = new Audio();
+  audio.preload = 'auto';
+  var plays = 0;
+  var playBtn = document.getElementById('play');
+  var slowBtn = document.getElementById('slow');
+  var countEl = document.getElementById('count');
+  var revealBtn = document.getElementById('reveal');
+
+  function play(slow, btn) {
+    playBtn.classList.remove('playing');
+    slowBtn.classList.remove('playing');
+    audio.pause();
+    audio.src = 'audio/' + key + (slow ? '_slow' : '') + '.mp3';
+    btn.classList.add('playing');
+    var pr = audio.play();
+    if (pr && pr.catch) pr.catch(function () { btn.classList.remove('playing'); });
+  }
+  audio.addEventListener('ended', function () {
+    playBtn.classList.remove('playing');
+    slowBtn.classList.remove('playing');
+    plays += 1;
+    countEl.hidden = false;
+    countEl.textContent = plays + '回 聞きました。声に出してみましたか？';
+    revealBtn.hidden = false;
+  });
+  playBtn.addEventListener('click', function () { play(false, playBtn); });
+  slowBtn.addEventListener('click', function () { play(true, slowBtn); });
+  revealBtn.addEventListener('click', function () {
+    document.getElementById('text').hidden = false;
+    document.getElementById('after').hidden = false;
+    revealBtn.hidden = true;
+  });
+})();
+</script>
+</body>
+</html>
