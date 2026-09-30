@@ -192,7 +192,8 @@
      430px から先は1行に収まる（余裕 1〜10px）ので、それより下の
      全幅で強制的に2行へ割る。 */
   .br-narrow { display: none; }
-  /* スマホ幅だけ有効な改行(価格カードの販売期間。カードが画面より狭いので、430pxでも1行に入らない)。 */
+  /* スマホ幅だけ有効な改行(価格カードの注記など。カードが画面より狭いので、430pxでも1行に入らない)。 */
+  .nw { white-space: nowrap; } /* 日付・短い言い切りを途中で折らない */
   .br-phone { display: none; }
   @media (max-width: 599px) { .br-phone { display: inline; } .sep-pc { display: none; } }
   .br-xs { display: none; }
@@ -836,7 +837,7 @@
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。20日間で、よくある場面を練習しておきます。</p>
       <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">コースに<wbr>申し込む&nbsp;→</a>
-      <div class="hero-note">販売期間：9月30日(水)〜10月24日(土)23:59まで<br>コース開始：10月26日(月)</div>
+      <div class="hero-note">申込締切：10月24日(土)23:59<br>コース開始：10月26日(月)</div>
     </div>
   </div>
 </section>
@@ -1049,7 +1050,7 @@
       <div class="label">EAR TO VOICE</div>
       <div class="product">外国人に話しかける20日間</div>
       <div class="amount">¥3,980</div>
-      <div class="note">販売期間：<br class="br-phone">9月30日(水)〜<br class="br-phone">10月24日(土)23:59まで<br>コース開始：10月26日(月)<span class="sep-pc"> ・ </span><br class="br-phone">サブスクではありません</div>
+      <div class="note">申込締切：<br class="br-xs"><span class="nw">10月24日(土)23:59</span><br>コース開始：<br class="br-xs"><span class="nw">10月26日(月)</span><br><span style="word-break: keep-all;">サブスクでは<wbr>ありません</span></div>
       <hr>
       <div class="includes">
         <div><span class="ck">✓</span>20日間のコース(聞く → 話しかける → 会話の練習)</div>
@@ -1078,7 +1079,7 @@
       </details>
       <details class="faq-item">
         <summary>いつまでに申し込めばいいですか?<span class="sign">+</span></summary>
-        <div class="a">販売期間は9月30日(水)〜10月24日(土)23:59までです。締め切り後は販売しません。コースは10月26日(月)に始まります。</div>
+        <div class="a">お申し込みは10月24日(土)23:59までです。締め切り後は販売しません。コースは10月26日(月)に始まります。</div>
       </details>
       <details class="faq-item">
         <summary>ライブ練習会とは何ですか?<span class="sign">+</span></summary>
