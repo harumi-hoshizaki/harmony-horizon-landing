@@ -358,7 +358,9 @@
   .teacher { display: flex; gap: 16px; align-items: flex-start; }
   .teacher figure { margin: 0; width: 84px; flex: none; }
   .teacher img { width: 100%; height: auto; border-radius: 12px; display: block; }
-  .teacher .bio { flex: 1 1 auto; }
+  /* ★min-width:0 が無いと、flex の子は中身より縮まない。320px で
+     横に 52px はみ出していた(機械検査が検出)。 */
+  .teacher .bio { flex: 1 1 auto; min-width: 0; }
   .teacher .bio p { font-size: var(--text-sm); line-height: 1.85; color: var(--ink-soft); margin: 0; }
   .teacher-name { font-size: var(--text-xs) !important; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 6px !important; }
   .teacher-name b { color: var(--ink); font-weight: 700; letter-spacing: 0; font-size: var(--text-sm); }
