@@ -354,12 +354,14 @@
   .fit.is-not { background: var(--cream-soft); }
 
   /* 講師 */
-  .teacher { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
-  .teacher figure { margin: 0; width: 132px; flex: none; }
-  .teacher img { width: 100%; height: auto; border-radius: 14px; display: block; }
-  .teacher figcaption { margin-top: 8px; font-size: var(--text-sm); font-weight: 500; color: var(--ink); text-align: center; }
-  .teacher .bio { flex: 1 1 260px; }
-  .teacher .bio p { font-size: var(--text-sm); line-height: 1.9; color: var(--ink-soft); }
+  /* 小さくした版。写真は 132px → 84px、見出し(h2)はやめて名前を1行に。 */
+  .teacher { display: flex; gap: 16px; align-items: flex-start; }
+  .teacher figure { margin: 0; width: 84px; flex: none; }
+  .teacher img { width: 100%; height: auto; border-radius: 12px; display: block; }
+  .teacher .bio { flex: 1 1 auto; }
+  .teacher .bio p { font-size: var(--text-sm); line-height: 1.85; color: var(--ink-soft); margin: 0; }
+  .teacher-name { font-size: var(--text-xs) !important; letter-spacing: 0.12em; color: var(--gold); margin-bottom: 6px !important; }
+  .teacher-name b { color: var(--ink); font-weight: 700; letter-spacing: 0; font-size: var(--text-sm); }
 
   /* よくある質問 */
   .faq { margin-top: 8px; }
@@ -677,18 +679,20 @@
 <!-- TEACHER -->
 <section>
   <div class="container">
-    <span class="eyebrow">教える人</span>
-    <h2>HARU</h2>
+    <!-- ★2026-10-02 HARU様のご指示で、この節だけ小さくしました
+         (写真を小さく、文章を1つに)。ページが13.9画面と長く、
+         ここは125字に728px使っていたためです。
+         ★写真と名前は残します —— 誰が教えるのか分からないページから、
+           人は申し込みません。削るのは「大きさ」であって「存在」ではない。 -->
     <div class="teacher">
       <figure>
         <picture>
           <source srcset="/assets/site/haru.webp" type="image/webp">
           <img src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" loading="lazy" decoding="async">
         </picture>
-        <figcaption>HARU</figcaption>
       </figure>
       <div class="bio">
-        <p>「知っている英語」を「使える英語」に変えるためのレッスンをしています。</p>
+        <p class="teacher-name">教える人　<b>HARU</b></p>
         <p>日本人が聞き取れないのは、能力の問題ではありません。<b>どの音がどう変わるかを、誰も教えてくれなかっただけ</b>です。そこを1つずつ開いていくのが、このレッスンです。</p>
       </div>
     </div>
