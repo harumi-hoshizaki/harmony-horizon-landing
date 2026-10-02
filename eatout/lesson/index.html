@@ -104,7 +104,8 @@
   h2 { font-size: var(--text-xl); line-height: 1.35; }
   h3 { font-size: var(--text-sm); line-height: 1.5; }
   .lede { color: var(--ink-soft); font-size: var(--text-md); line-height: 1.9; }
-  @media (min-width: 900px) { h1 { font-size: var(--text-3xl); } }
+  /* 卓上は段の一番上(--text-3xl 40px)。Speak Up の卓上と同じ。 */
+  @media (min-width: 900px) { h1, .hero h1 { font-size: var(--text-3xl); } }
 
   /* ボタン。押す物は角ゼロ（コース本体と同じ決まり） */
   .btn {
@@ -185,7 +186,7 @@
   .hero__in { position: relative; padding-block: max(56px, calc(var(--hero-band) - 52px)) 24px; }
   .hero .eyebrow { color: var(--gold-pale); }
   .hero .eyebrow::before { background: var(--gold-pale); }
-  .hero h1 { color: #FFFFFF; margin-bottom: 10px; font-size: clamp(1.875rem, 6.2vw, 2.6rem);  /* 下限 30px。tools/mobile-audit.js の h1 の幅(30–36px)に合わせる */ }
+  .hero h1 { color: #FFFFFF; margin-bottom: 10px; font-size: var(--text-2xl);  /* ★アプリの段。ここに別の大きさを作らない(Speak Upの見出しと同じ28px) */ }
   .hero h1 em { color: var(--gold-pale); font-style: normal; }
   /* ★2026-10-02 HARU様「携帯バージョンはHeroの文字数が多すぎですね。
      携帯だけ、単語知ってるのに。／聞き取れない。／話せない。の3行に」。
@@ -377,6 +378,9 @@
     /* 見出しが折り返して「のに、」「ない。」だけの行にならない幅。
        41.6px × 14文字 ≒ 582px 要る。本文はもう少し狭いほうが読みやすい。 */
     .hero__in .container > * { max-width: 540px; }
+    /* ★卓上の見出しは段の一番上(40px)。上の .hero h1 がこの行より前に
+       あって勝ってしまうので、ここで指定する(Speak Upの卓上と同じ)。 */
+    .hero h1 { font-size: var(--text-3xl); }
     .hero__in .container > h1 { max-width: 660px; }
     .date-card { max-width: 480px; }
   }
