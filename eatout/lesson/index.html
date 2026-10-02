@@ -201,7 +201,14 @@
      ★申し込みボタンは最初の画面に残すこと(393×659・430×690 で実測)。 */
   :root { --hero-band: clamp(150px, 24svh, 320px); }
   .hero__media { position: absolute; inset: 0 0 auto; height: var(--hero-band); overflow: hidden; }
-  .hero__media img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: 58% 30%; }
+  /* ★2026-10-02 HARU様「後ろの背景がAIっぽい」。おっしゃる通り、
+     右側の棚まわりと奥がいちばん作り物に見えます。**寄せて枠の外に出す**。
+     人物2人とカップだけを残し、棚は切る。
+     ★引き(scale)を下げないこと。下げると棚が戻ってきます。 */
+  .hero__media img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    object-position: 30% 44%; transform: scale(1.7); transform-origin: 30% 46%;
+  }
   /* 写真の下端だけ、地の色(クリーム)へ溶かす。文字には覆いを掛けない。 */
   .hero__media::after {
     content: ''; position: absolute; inset: 0;
@@ -459,7 +466,8 @@
   @media (min-width: 900px) {
     /* 卓上：帯をやめて全面に敷き、階調を横向きにする(販売LPと同じ)。 */
     .hero__media { inset: 0; height: auto; }
-    .hero__media img { object-position: 50% 44%; }
+    /* 卓上は画面が広いぶん、背景がよく見えてしまう。携帯より強く寄せる。 */
+    .hero__media img { object-position: 36% 46%; transform: scale(1.45); transform-origin: 34% 48%; }
     /* 卓上は幅があるので、写真を全面に敷いて左に文字を置く(今まで通り)。
        携帯で明るくした指定を、ここで暗い面用に戻す。 */
     .hero { background: var(--espresso); color: var(--cream); }
@@ -486,9 +494,9 @@
            黒くなる。数値は tools/hero-contrast.js で実測して決めた。 */
       background:
         linear-gradient(90deg,
-          rgba(31,27,23,.95) 0%, rgba(31,27,23,.93) 36%, rgba(31,27,23,.80) 53%,
-          rgba(31,27,23,.46) 67%, rgba(31,27,23,.16) 83%, rgba(31,27,23,0) 100%),
-        linear-gradient(180deg, rgba(31,27,23,.24) 0%, rgba(31,27,23,.08) 45%, rgba(31,27,23,.28) 100%);
+          rgba(31,27,23,.91) 0%, rgba(31,27,23,.88) 36%, rgba(31,27,23,.74) 53%,
+          rgba(31,27,23,.38) 67%, rgba(31,27,23,.12) 83%, rgba(31,27,23,0) 100%),
+        linear-gradient(180deg, rgba(31,27,23,.18) 0%, rgba(31,27,23,.05) 45%, rgba(31,27,23,.20) 100%);
     }
     .hero__in { padding-block: 92px 84px; }
     .hero .container { max-width: 1120px; }
@@ -532,11 +540,8 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero__media">
-    <picture>
-      <source srcset="/assets/site/scene-counter-mirrored.webp" type="image/webp">
-      <img src="/assets/site/scene-counter-mirrored.jpg" alt="" width="2048" height="1529"
-           fetchpriority="high" decoding="async">
-    </picture>
+    <img src="/eatout/lesson/images/hero-cafe.jpg" alt="" width="1920" height="1080"
+         fetchpriority="high" decoding="async">
   </div>
   <div class="hero__in">
     <div class="container">
