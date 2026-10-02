@@ -76,16 +76,23 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
       };
       return { h1:worst(boxes.h1), em:worst(boxes.em), lede:worst(boxes.lede), eyebrow:worst(boxes.eyebrow) };
     }, { b64, boxes });
-    const emc = await pg.evaluate(() => {
-      const e = document.querySelector('.hero h1 em');
-      return e ? getComputedStyle(e).color : null;
+    /* ★2026-10-02 文字の色を**白と決め打ち**していた。携帯だけ明るい地に
+       変えたページ(/eatout/lesson/)では、実際は濃い文字なのに白で測って
+       1.05 という嘘の値が出る。**実際の色を読む**ようにした。
+       rgba の半透明は、下の地と混ぜずそのままの色で見る(従来と同じ近似)。 */
+    const colors = await pg.evaluate(() => {
+      const g = s => { const e = [...document.querySelectorAll(s)].find(e => e.offsetParent !== null);
+        return e ? getComputedStyle(e).color : null; };
+      return { h1: g('.hero h1'), em: g('.hero h1 em'), lede: g('.hero .lede'), eyebrow: g('.hero .eyebrow') };
     });
+    const emc = colors.em;
     const rgb = c => c.match(/[\d.]+/g).slice(0,3).map(Number);
+    const show = (name, col, box) => '| ' + name + (col ? ' ' + col : '') + ' ' + (col && box ? cr(rgb(col), box) : '—');
     console.log(n,
-      'h1(白)', cr([255,255,255], out.h1),
-      '| 強調' + (emc ? ' ' + emc : ''), out.em && emc ? cr(rgb(emc), out.em) : '—',
-      '| 導入文(rgba .9→近似 #E9E6E1)', cr([233,230,225], out.lede),
-      '| 前書き(#E9B98C)', cr([233,185,140], out.eyebrow));
+      show('h1', colors.h1, out.h1).slice(2),
+      show('強調', emc, out.em),
+      show('導入文', colors.lede, out.lede),
+      show('前書き', colors.eyebrow, out.eyebrow));
     await ctx.close();
   }
   await b.close();
