@@ -333,6 +333,13 @@
   .reason .r-tx { margin: 0; font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; }
   .reason .r-tx b { color: var(--ink); font-weight: 500; }
 
+  /* ページの途中に置く申し込み */
+  .mid-cta { margin-top: var(--space-mid, 32px); }
+  .mid-cta .btn { width: 100%; }
+  /* 14px だと「読む文章が16px未満」で落ちる(日付と値段は読む文章)。18pxに。 */
+  .mid-cta-note { margin: 10px 0 0; font-size: var(--text-sm); color: var(--stone-deep); }
+  @media (min-width: 700px) { .mid-cta .btn { width: auto; min-width: 320px; } }
+
   /* 身につくこと */
   .gains { list-style: none; margin: 8px 0 0; padding: 0; }
   .gains li { position: relative; padding: 12px 0 12px 30px; font-size: var(--text-sm); line-height: 1.85; border-top: 1px solid var(--line); }
@@ -595,21 +602,19 @@
     <h2>知らない単語は、<br>ありましたか？</h2>
     <p>3つとも、中学校で習う単語だけでできています。知らない単語は、たぶん1つもなかったはずです。</p>
     <p>それでも聞き取れないのは、英語が<b>単語ごとに区切って</b>発音されないからです。となりの単語とくっつき、弱くなり、別の音に変わります。文字で覚えた形と、耳に届く音が、まったく別物になる。これが、何年勉強しても店先で固まってしまう理由です。</p>
-    <ul class="reason">
-      <li>
-        <p class="r-en">to go</p>
-        <p class="r-tx">to が <b>「t’」だけ</b>につぶれて、次の go にくっついてしまいます。「とぅー ごー」という形で待っていると、いつまでも来ません。</p>
-      </li>
-      <li>
-        <p class="r-en">Can I</p>
-        <p class="r-tx">2語が<b>1つの音</b>になって「けなぃ」。can も文の中では弱く、「けん」「くん」くらいにしか聞こえません。</p>
-      </li>
-      <li>
-        <p class="r-en">It’ll be about a</p>
-        <p class="r-tx">It’ll の t が「ろ」に変わって<b>「いろぅ」</b>、be about a は<b>「びぁばぅら」</b>。5語が2つの音になります。単語を1つずつ追っていると、間に合いません。</p>
-      </li>
-    </ul>
+    <!-- ★2026-10-02 ここにあった to go / Can I / It’ll be about a の3つの説明は
+         **削除しました**。すぐ上のクイズの「英文と聞こえ方を見る」の中に
+         同じものがあり、読み手は「さっき読んだ」と感じます(HARU様
+         「不必要な部分が書かれている？」)。説明はクイズの中が正。
+         ★ここに例を書き戻さないこと。 -->
     <p style="margin-top:22px">このルールは、知らないあいだは何回聞いても聞こえません。<b>知った瞬間に、聞こえるようになります。</b>レッスンでやるのは、この「知った瞬間」を3つ作って、口で固めることです。</p>
+    <!-- ★2026-10-02 ここが、読む人の気持ちがいちばん動く所。
+         ここから一番下のボタンまで10画面ぶんスクロールさせていました。
+         ★押す場所をここから外さないこと。 -->
+    <div class="mid-cta">
+      <a href="https://buy.stripe.com/14A7sL12ubrGevu9kCeEo0g" target="_blank" rel="noopener" class="btn btn-gold"><span>申し込む</span></a>
+      <p class="mid-cta-note">10月15日（木）21:30〜・90分・¥2,300</p>
+    </div>
   </div>
 </section>
 
@@ -637,7 +642,6 @@
       <li>店員さんの決まり文句が、単語ではなく<b>かたまり</b>で聞こえるようになります。</li>
       <li>聞き取れなかったときの一言が、考えなくても口から出てくるようになります。</li>
       <li>飲食店で必ず聞かれる質問に、<b>自分の定番の返事</b>が決まった状態で帰れます。</li>
-      <li>「音は、知れば聞こえる」と分かるので、この後の練習の仕方が変わります。</li>
     </ul>
   </div>
 </section>
@@ -701,7 +705,6 @@
       <div><dt>参加費</dt><dd>¥2,300（この日1回のレッスン分）</dd></div>
       <div><dt>締め切り</dt><dd>10月14日（水）まで</dd></div>
       <div><dt>場所</dt><dd>Zoom。お申し込みの後、入り方をメールでお送りします。</dd></div>
-      <div><dt>内容</dt><dd>飲食店で店員さんが使う英語を使った、音のつなげ方（リンキング）と発音の練習</dd></div>
       <div><dt>あると安心</dt><dd>イヤホンと、声を出せる場所</dd></div>
     </dl>
     <p class="member-note">飲食店英会話のコースをお持ちの方は、メールでお送りしている購入者価格（¥1,000）のリンクからお申し込みください。見つからないときは <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> までご連絡ください。</p>
