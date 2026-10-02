@@ -305,18 +305,28 @@
   .member-note a { color: var(--ink); font-weight: 500; word-break: break-all; }
 
   /* 締め */
-  .cta-band.on-dark {
-    background:
-      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.2), transparent 65%),
-      linear-gradient(180deg, var(--espresso-lift) 0%, var(--espresso) 100%);
-    color: var(--cream);
+  /* ★2026-10-02 HARU様「やっぱり黒い部分がすごく多くて、私のアプリじゃない
+     ような気がします。こんなに黒入れる必要ありますか。そこまで茶色っぽい色を
+     入れる必要がないと思う」。
+     締めの帯も**焦げ茶の面をやめて、明るい金地の箱**にしました。
+     コース本体(eatout/try の .gold-box)と同じ考え方 ——
+     **アプリは紙の色の上に金の箱**で、暗い面は1つも使っていません。
+     ★ここに暗い面を戻さないこと。暗くしたくなったら、まずアプリの画面を
+       見てください。アプリに無いものを、売る側のページに足さない。 */
+  .cta-band {
+    background: var(--cream-soft);
+    border-top: 1px solid var(--line);
   }
-  .on-dark h2 { color: var(--cream); }
-  .cta-band .eyebrow { color: var(--gold-bright); }
-  .cta-band .eyebrow::before { background: var(--gold-bright); }
-  .cta-band p { color: rgba(251,249,246,0.8); font-size: var(--text-sm); line-height: 1.9; }
+  .cta-band .inner {
+    background: var(--accent-wash, #F3E4C6); border: 1px solid var(--gold);
+    border-radius: 14px; padding: 24px 20px;
+  }
+  .cta-band h2 { color: var(--ink); }
+  .cta-band .eyebrow { color: var(--gold); }
+  .cta-band .eyebrow::before { background: var(--gold); }
+  .cta-band p { color: var(--ink-soft); font-size: var(--text-sm); line-height: 1.9; }
   .cta-band .btn { width: 100%; margin-top: 10px; }
-  .cta-band .price-line { font-size: var(--text-sm); color: rgba(251,249,246,0.7); margin: 14px 0 0; }
+  .cta-band .price-line { font-size: var(--text-sm); color: var(--stone-deep); margin: 14px 0 0; }
 
   /* フッター（/eatout/ と同じ） */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
@@ -771,13 +781,15 @@
 </section>
 
 <!-- CTA -->
-<section class="cta-band on-dark">
+<section class="cta-band">
   <div class="container">
+    <div class="inner">
     <span class="eyebrow">10月15日（木）21:30〜</span>
     <h2>「え？今なんて？」を、<br>この日で減らしませんか。</h2>
     <p>聞き取れないまま旅行の日が来るか、音のルールを知ってから行くか。変わるのは、90分です。</p>
     <a href="https://buy.stripe.com/14A7sL12ubrGevu9kCeEo0g" target="_blank" rel="noopener" class="btn btn-gold"><span>申し込む</span></a>
     <p class="price-line">参加費 ¥2,300 ・ 締め切り 10月14日（水）・ Zoom・90分</p>
+    </div>
   </div>
 </section>
 
