@@ -318,6 +318,9 @@
      もっと余白を。携帯だけ(卓上は900px以上のルールで元に戻す)。 */
   .hero .lede { max-width: 30em; margin: 12px 0 28px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; text-align: left; }
+  /* 2026-10-02 HARU様: 見出しの上に悩みを2行。悩みは小さく薄く、約束(h1)を大きく。
+     色は .hero-note と同じ値、大きさは .lede と同じ。新しい色は足さない。 */
+  .hero-pain { margin: 14px 0 10px; font-size: var(--text-md); line-height: 1.6; color: rgba(251,249,246,0.74); word-break: keep-all; }
   /* 2026-09-30: 丸いタグ(ピル)から2列のリストに変更。ピルは短い言葉用の
      形で、説明文まで入れると1行に収まらず携帯幅で折り返して崩れる
      (HARU様「見た目がいい方を教えて」への回答)。ラベル+説明の対は
@@ -853,6 +856,7 @@
   <div class="hero__in">
     <div class="container reveal rd1">
       <span class="eyebrow eyebrow-product">Ear to Voice ｜外国人に話しかける20日間</span>
+      <p class="hero-pain">読める。書ける。<br>でも、<wbr>聞き取れない。<wbr>話せない。</p>
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。20日間で、よくある場面を練習しておきます。</p>
       <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">コースに<wbr>申し込む&nbsp;→</a>
@@ -1019,7 +1023,7 @@
   <div class="container" style="max-width:740px;">
     <span class="eyebrow">Problem</span>
     <h2>外国人に話しかけるの、<br>ためらいませんか?</h2>
-    <p class="lede">英語は習ったはずなのに、</p>
+    <p class="lede" style="word-break:keep-all;">習ったはずの<wbr>英語なのに、<br>いざ外国人を<wbr>目の前にすると、<br>聞き取れない。<br>言葉が出てこない。</p>
     <div class="card-list">
       <div class="item"><span class="dot"></span><p>話しかけたいのに、<br>何と言えばいいか分からない</p></div>
       <div class="item"><span class="dot"></span><p>言えたとしても、<br>相手の返事が聞き取れるか不安</p></div>
