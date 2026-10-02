@@ -32,7 +32,16 @@ const cr = (a,b) => { const x=L(a),y=L(b); return +(((Math.max(x,y)+0.05)/(Math.
         return {x:X,y:Y,w:X2-X,h:Y2-Y}; };
       // 見出しの中の強調（em）も別に測る。ここに濃い色を置くと、
       // 見出し全体は通っているのに強調部分だけ 1.4:1 になる。
-      return { h1:g('.hero h1'), em:g('.hero h1 em'), lede:g('.hero .lede'), eyebrow:g('.hero .eyebrow') };
+      /* ★2026-10-02 em は querySelector で**最初の1つ**を取っていたが、
+         画面幅で見出しを出し分けるページ(携帯3行／卓上2行)では、最初の em が
+         display:none の側に入っていて測れず「—」になった。**見えている方**を
+         選ぶ。見えている em が無ければ今まで通り null。 */
+      const visEm = [...document.querySelectorAll('.hero h1 em')].find(e => e.offsetParent !== null);
+      const gEl = el => { if (!el) return null; const r = el.getBoundingClientRect();
+        const X=Math.max(0,Math.round(r.x)), Y=Math.max(0,Math.round(r.y));
+        const X2=Math.min(innerWidth,Math.round(r.right)), Y2=Math.min(innerHeight,Math.round(r.bottom));
+        return (X2<=X||Y2<=Y) ? null : {x:X,y:Y,w:X2-X,h:Y2-Y}; };
+      return { h1:g('.hero h1'), em:gEl(visEm), lede:g('.hero .lede'), eyebrow:g('.hero .eyebrow') };
     });
     // 文字を消す。合わせて**手前に浮くもの**も消す。固定バーは石色で、
     // 文字範囲に重なると地色として拾われ、1.18 のような偽の値になる。

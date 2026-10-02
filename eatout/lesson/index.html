@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>10/15 90分レッスン — 店員さんの英語が、速く聞こえる理由 | Harmony Horizon</title>
-<meta name="description" content="10月15日（木）21:30〜23:00（日本時間）、Zoomで90分、¥2,300。単語は知っているのに店員さんの英語だけ速く聞こえるのは、音がつながって形が変わるからです。その変わり方を知って、声に出して、その場で返せるところまで練習します。">
+<meta name="description" content="10月15日（木）21:30〜（日本時間）、Zoomで90分、¥2,300。単語は知っているのに聞き取れないのは、音がつながって形が変わるからです。その変わり方を知って、声に出して、その場で返せるところまで練習します。">
 <link rel="canonical" href="https://www.harmonyhorizon.space/eatout/lesson/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="単語は知ってるはずなのに、聞き取れない。出てこない。">
@@ -149,6 +149,13 @@
   .hero .eyebrow::before { background: var(--gold-pale); }
   .hero h1 { color: #FFFFFF; margin-bottom: 10px; font-size: clamp(1.875rem, 6.2vw, 2.6rem);  /* 下限 30px。tools/mobile-audit.js の h1 の幅(30–36px)に合わせる */ }
   .hero h1 em { color: var(--gold-pale); font-style: normal; }
+  /* ★2026-10-02 HARU様「携帯バージョンはHeroの文字数が多すぎですね。
+     携帯だけ、単語知ってるのに。／聞き取れない。／話せない。の3行に」。
+     狭い画面では、長い1文より短い3行のほうが速く目に入る。
+     卓上は幅があるので2行のまま(3行にすると間延びする)。
+     ★どちらか片方だけ直さないこと。言い回しを変える時は両方。 */
+  .h1-d { display: none; }
+  @media (min-width: 700px) { .h1-m { display: none; } .h1-d { display: inline; } }
   .hero .lede { color: rgba(251,249,246,0.92); margin-bottom: 14px; font-size: 16px; line-height: 1.75; }
   /* 日時と値段の札。HARU様「値段とか、時間とかわかりやすく書いて」。
      ★この札から「いつ・いくら・どこで・どれくらい」の4つを外さないこと。 */
@@ -361,12 +368,12 @@
   <div class="hero__in">
     <div class="container">
       <span class="eyebrow">90分のオンラインレッスン</span>
-      <h1>単語は知ってるはずなのに、<br><em>聞き取れない。出てこない。</em></h1>
+      <h1><span class="h1-m">単語知ってるのに。<br><em>聞き取れない。</em><br><em>話せない。</em></span><span class="h1-d">単語は知ってるはずなのに、<br><em>聞き取れない。出てこない。</em></span></h1>
       <p class="lede">速いのではなく、音がつながって形が変わっているだけです。その変わり方を知って、声に出すところまで、90分で練習します。</p>
       <div class="date-card">
         <div class="row">
           <span class="d">10月15日（木）</span>
-          <span class="t">21:30〜23:00</span>
+          <span class="t">21:30〜</span>
         </div>
         <p class="n">日本時間・Zoom・90分・参加費 ¥2,300</p>
       </div>
@@ -537,7 +544,7 @@
     <span class="eyebrow">詳細</span>
     <h2>日時と、<br>お申し込み</h2>
     <dl class="details-list">
-      <div><dt>日時</dt><dd>10月15日（木）21:30〜23:00（日本時間）・90分</dd></div>
+      <div><dt>日時</dt><dd>10月15日（木）21:30〜（日本時間）・90分</dd></div>
       <div><dt>参加費</dt><dd>¥2,300（この日1回のレッスン分）</dd></div>
       <div><dt>締め切り</dt><dd>10月14日（水）まで</dd></div>
       <div><dt>場所</dt><dd>Zoom。お申し込みの後、入り方をメールでお送りします。</dd></div>
