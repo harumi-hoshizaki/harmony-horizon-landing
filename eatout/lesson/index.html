@@ -282,7 +282,12 @@
     font-size: var(--text-xs); letter-spacing: 0.12em; color: var(--gold);
     font-weight: 700; margin: 14px 0 6px;
   }
-  .clip .tips-list { margin: 0; padding-left: 1.15em; }
+  /* ★2026-10-02 HARU様「Bullet points 要らなくない？ 削除して」。
+     点をやめて、札(.chip)が行の頭に立つ形にする。1項目が3〜4行になるので、
+     点があると行頭が不ぞろいに見えていた。
+     ★点を戻さないこと。 */
+  .clip .tips-list { margin: 0; padding-left: 0; list-style: none; }
+  .clip .tips-list li + li { margin-top: 10px; }
   .clip .tips-list li { font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; margin-bottom: 6px; }
   /* ★2026-10-02 HARU様「Rの音 を見て。こうやって Tips を統一して書いて」。
      【見出し】を**小さな札**にする。コース本体(eatout/listening・try の
@@ -537,7 +542,7 @@
   <div class="container">
     <span class="eyebrow">まず、聞いてみてください</span>
     <h2>この3つ、<br>聞き取れますか？</h2>
-    <p class="lede">レッスンで実際に使う音声。なんて言ってるか聞き取れる？そして答えられる？文字を見ずに、まず耳だけでチェックして。</p>
+    <p class="lede">なんて言ってるか聞き取れる？そして答えられる？文字を見ずに、まず耳だけでチェックして。</p>
 
     <div class="clip">
       <div class="clip-photo"><img src="/eatout/lesson/images/ordering-cafe.jpg" alt="カフェのカウンターで、店員が客に話しかけている。" width="800" height="450" loading="lazy" decoding="async"></div>
