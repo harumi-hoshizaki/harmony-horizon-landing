@@ -521,8 +521,8 @@
   /* ---- ここから harmonyhorizon.foreigners speakup/js/ui.js + css/main.css
      の会話(chat-thread)の、クラス名・数値・トークンともそのままの写し。
      2026-09-29 再監査で、行間(--lh-base/--lh-read)・入力中の点・
-     続けて話す時の詰め(.is-followup)・「聞き取れなかった」(.btn-small)・
-     「意味と英文を見る」(.btn-link)・自分の番の金の輪(.is-your-turn)・
+     続けて話す時の詰め(.is-followup)・
+     「意味と英文を見る」(.btn-link。2026-10-02 から相手のセリフの下はこれ1つ)・自分の番の金の輪(.is-your-turn)・
      ことばのメモ(.chat-word-note)・なぜ聞き取れない？(.tip-*)が
      本体と違っていた/抜けていたので、本体の現在の規則で置き換えた。 ---- */
   .chat-thread { display: flex; flex-direction: column; gap: var(--space-4); }
@@ -566,7 +566,6 @@
   .chat-under { align-self: flex-start; margin: 6px 0 0 4px; }
   .chat-under-links { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
   .chat-under-links .btn-link { padding: 4px 0; }
-  .chat-under-links .chat-missed { min-height: 44px; padding: 8px 16px; margin: 4px 0 8px; }
   .chat-under-block { align-self: stretch; width: 100%; margin-top: 8px; }
   .chat-link { font-size: var(--text-sm); }
   .chat-word-note { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--ink-hair); }
@@ -1201,7 +1200,6 @@
     chatYou: 'あなた',
     chatPartner: '相手',
     showMeaning: '意味と英文を見る',
-    heardNo: '聞き取れなかった',
     tipListening: 'なぜ聞き取れない？',
     tipHeardLabel: 'こう聞こえます'
   };
@@ -1557,21 +1555,22 @@
       var noteHosts = partnerNotes(ex.pNotes, true);
       var tipHost = ex.why ? listeningAccordion(ex.heard, ex.why, function () { bringSayIntoView(null); }) : null;
       if (tipHost) { tipHost.hidden = true; tipHost.classList.add('chat-under-block'); }
-      var missedBtn, jaBtn, links;
-      var reveal = function (missed) {
+      /* リンクは「意味と英文を見る」1つだけ(HARU様 2026-10-02。コース本体と同じ)。
+         「聞き取れなかった」も同じものを開くだけだったので、まとめた。聞き取れなかった人は、
+         開いたあとに出る「なぜ聞き取れない？」を押す。 */
+      var jaBtn, links;
+      var reveal = function () {
         userInteracted = true;
         enHost.hidden = false;
         jaHost.hidden = false;
         if (tipHost) tipHost.hidden = false;
         noteHosts.forEach(function (n) { n.hidden = false; });
         jaBtn.hidden = true;
-        if (missed) missedBtn.hidden = true;
-        links.hidden = missedBtn.hidden && jaBtn.hidden;
+        links.hidden = true;
         requestAnimationFrame(function () { bringSayIntoView(built.row); });
       };
-      missedBtn = h('button', { class: 'btn-small chat-missed', type: 'button', text: COPY.heardNo, onClick: function () { reveal(true); } });
-      jaBtn = h('button', { class: 'btn-link chat-link', type: 'button', text: COPY.showMeaning, onClick: function () { reveal(false); } });
-      links = h('div', { class: 'chat-under chat-under-links', hidden: true }, [missedBtn, jaBtn]);
+      jaBtn = h('button', { class: 'btn-link chat-link', type: 'button', text: COPY.showMeaning, onClick: function () { reveal(); } });
+      links = h('div', { class: 'chat-under chat-under-links', hidden: true }, [jaBtn]);
       var voice = voiceRow(ex.pAudioId, src);
       voice.disabled = true;
       var built = bubbleRow('partner', COPY.chatPartner, [enHost, jaHost].concat(noteHosts, [voice]), { under: [links, tipHost] });
