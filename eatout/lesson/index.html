@@ -52,8 +52,18 @@
        ★Webフォント(Inter / Zen Kaku Gothic New / Cormorant / Playfair)は
          使わない。端末の標準書体1本。見出し・本文・ロゴ・札で書体を混ぜない。
        ★新しい大きさを作らない。下の6段階だけを使う。 */
-    --sans:  -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-    --brand: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    /* ★2026-10-02 読みやすさで Order Up 側に決定(HARU様「読みやすいのはどっち？
+       そっちでいいです」)。理由は下の2つ:
+       (1) 端末の標準書体は、**Windows では Yu Gothic になる**。細くて、
+           40〜60代の読者には線が薄い。Zen Kaku Gothic New は自前で配るので
+           iPhone でも Android でも Windows でも**同じ濃さで出る**。
+       (2) このページは Order Up(飲食店英会話)のレッスン。ここから同じ
+           コースへ進むので、書体が途中で変わらない方がよい。
+       ★Speak Up は端末の標準書体のまま(2026-09-28 のご指示は
+         「Speak Upのページだけ」)。2つの商品で書体が違うのは承知の上。
+       ★大きさは下の6段階のまま(読みやすさで決めた段。変えない)。 */
+    --sans:  "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+    --brand: "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
     --font-display: var(--sans);
     --font-body:    var(--sans);
     --text-xs:  14px;
