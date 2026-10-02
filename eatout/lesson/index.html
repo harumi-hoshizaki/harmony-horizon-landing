@@ -399,16 +399,25 @@
   @media (min-width: 700px) { .mid-cta .btn { width: auto; min-width: 320px; } }
 
   /* 身につくこと */
+  /* ★2026-10-02 HARU様「統一できないの？ 四角か⭕️？」
+     **アプリはすでに1種類に決まっていました**: 6pxの丸・金(--accent-line
+     #A3782D)・左に16pxの字下げ(eatout/listening の .tip-bullets と
+     .ai-why-list が同じ形)。四角はこのページだけが作った別物だったので、
+     アプリの丸にそろえます。
+     ★新しい印(四角・矢印・チェック)を作らないこと。印は**この丸1種類**。
+       Tipsだけは印を付けない —— 行の頭に札(.chip)が立つので、
+       印と札が二重になるため(HARU様 2026-10-02「Bullet points 要らない」)。 */
   .gains { list-style: none; margin: 8px 0 0; padding: 0; }
-  .gains li { position: relative; padding: 12px 0 12px 30px; font-size: var(--text-sm); line-height: 1.85; border-top: 1px solid var(--line); }
+  .gains li { position: relative; padding: 12px 0 12px 16px; font-size: var(--text-sm); line-height: 1.85; border-top: 1px solid var(--line); }
   .gains li:last-child { border-bottom: 1px solid var(--line); }
-  .gains li::before { content: ''; position: absolute; left: 4px; top: 22px; width: 10px; height: 10px; background: var(--brand-gold); }
+  .gains li::before { content: ''; position: absolute; left: 0; top: calc(12px + 0.68em); width: 6px; height: 6px; border-radius: 50%; background: #A3782D; }
 
   /* 向き・不向き */
   .fit { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 0 0 16px; }
   .fit h3 { margin: 0 0 10px; }
-  .fit ul { margin: 0; padding-left: 1.2em; }
-  .fit li { font-size: var(--text-sm); line-height: 1.85; color: var(--ink-soft); margin-bottom: 6px; }
+  .fit ul { list-style: none; margin: 0; padding: 0; }
+  .fit li { position: relative; padding-left: 16px; font-size: var(--text-sm); line-height: 1.85; color: var(--ink-soft); margin-bottom: 8px; }
+  .fit li::before { content: ''; position: absolute; left: 0; top: 0.68em; width: 6px; height: 6px; border-radius: 50%; background: #A3782D; }
   .fit.is-not { background: var(--cream-soft); }
 
   /* 講師 */
