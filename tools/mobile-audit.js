@@ -13,6 +13,17 @@ const SPEC_NARROW = { h1: [26, 36], h2: [21, 28], h3: [16, 20], body: [16, 18] }
 /* ★2026-09-29 HARU様決定: 法務3ページだけは本文14px(日本の規約ページで一般的な大きさ)。
    「読む文章は16px以上」(2026-08-27)の例外。minRead がその下限。 */
 const SPEC_LEGAL = { h1: [20, 34], h2: [15, 22], h3: [14, 18], body: [14, 18], minRead: 14 };
+/* ★2026-10-02 アプリの段に合わせたページ(Speak Up のLP 2026-09-28、
+   レッスンのページ 2026-10-02)。HARU様「Order Up や Speak Up と同じ
+   Font にするべき」「Sources of the truth を守って」。
+   正本はアプリ本番の 6段階(speakup/css/tokens.css --text-*:
+   14 / 18 / 20 / 23 / 26 / 28 / 40)。上の SPEC_NARROW は**それ以前の
+   サイトの段**なので、アプリに合わせたページをそれで測ると
+   「body 20px は範囲外」と出続ける —— 正しいものを不合格にしていた
+   (実際 /speakup/ は 2026-09-28 からずっとこの3件を出していた)。
+   ★アプリの段を変える時は、ここも一緒に変えること。 */
+const SPEC_APP = { h1: [28, 40], h2: [23, 28], h3: [16, 20], body: [18, 20] };
+const APP_SCALE = ['/speakup/', '/eatout/lesson/'];
 /* 2026-08-27: 販売LP2枚がこの一覧に入っていなかった。**売っているページを
    一度も測っていなかった。** 「すべて合格」と出ていたのに、実機では
    中央揃えののこぎり状で読みにくい状態だった（HARU様の指摘）。 */
@@ -46,7 +57,9 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       });
       await pg.goto(BASE + p, { waitUntil: 'networkidle' });
       await pg.waitForTimeout(300);
-      const spec = LEGAL.includes(p) ? SPEC_LEGAL : (w <= 360 ? SPEC_NARROW : SPEC);
+      const spec = LEGAL.includes(p) ? SPEC_LEGAL
+                 : APP_SCALE.includes(p) ? SPEC_APP
+                 : (w <= 360 ? SPEC_NARROW : SPEC);
       const r = await pg.evaluate((SPEC) => {
         const de = document.documentElement, vw = de.clientWidth;
         const px = s => { const e = document.querySelector(s); return e ? Math.round(parseFloat(getComputedStyle(e).fontSize)) : null; };

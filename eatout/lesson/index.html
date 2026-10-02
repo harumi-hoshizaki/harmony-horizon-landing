@@ -42,8 +42,27 @@
     --line:       rgba(34, 30, 25, 0.13);
     --line-light: rgba(251, 249, 246, 0.18);
     --shadow-card:0 30px 70px -24px rgba(31, 27, 23, 0.18);
-    --sans:  "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
-    --brand: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;  /* ★ロゴの字。2026-10-02に端末の標準書体へ(Speak Upと同じ)。戻さないこと */
+    /* ★2026-10-02 HARU様「このページで使われている FONT やサイズ、
+       Sources of the truth を一つも守ってません。Order Up や Speak Up と
+       同じ Font にするべきです」。
+       正本は**アプリ本番**(harmonyhorizon.foreigners speakup/css/tokens.css
+       の --font-gothic と --text-*)。Speak Up のLPは 2026-09-28 に
+       そこへ移っており、このページだけ古い Inter + Zen Kaku + 独自の
+       px 指定のままでした。
+       ★Webフォント(Inter / Zen Kaku Gothic New / Cormorant / Playfair)は
+         使わない。端末の標準書体1本。見出し・本文・ロゴ・札で書体を混ぜない。
+       ★新しい大きさを作らない。下の6段階だけを使う。 */
+    --sans:  -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    --brand: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    --font-display: var(--sans);
+    --font-body:    var(--sans);
+    --text-xs:  14px;
+    --text-sm:  18px;
+    --text-md:  20px;
+    --text-lg:  23px;
+    --text-xl:  26px;
+    --text-2xl: 28px;
+    --text-3xl: 40px;
     --max-w: 720px;
     --pad: clamp(20px, 5vw, 48px);
     --section-pad: clamp(48px, 8vw, 88px);
@@ -55,13 +74,17 @@
      text-wrap: pretty は最後の行が短くなる割り方を避けてくれる。
      対応していないブラウザでは今まで通りの折り返しになるだけ。
      ★ tools/mobile-audit.js の孤立行の検査は、これが効いている前提。 */
-  p, li, dd, h1, h2, h3, figcaption, summary { text-wrap: pretty; }
+  /* ★word-break: auto-phrase は、和文を**文節の切れ目**で折る。
+     site.css の法務ページが同じ組み合わせを使っている(そちらが先例)。
+     text-wrap: pretty だけでは、和文の孤立行は消しきれなかった。 */
+  p, li, dd, h1, h2, h3, figcaption, summary { text-wrap: pretty; word-break: auto-phrase; }
   * { box-sizing: border-box; }
+  button, input, select, textarea { font-family: inherit; }
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
     margin: 0; background: var(--cream); color: var(--ink);
-    font-family: var(--sans); font-size: 17px; line-height: 1.8;
+    font-family: var(--font-body); font-size: var(--text-md); line-height: 1.75;
     -webkit-font-smoothing: antialiased; overflow-x: hidden;
   }
   a { color: inherit; }
@@ -71,36 +94,42 @@
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
-    font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-size: var(--text-xs); letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--gold); font-weight: 500; margin: 0 0 14px;
   }
   .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--gold); }
 
-  h1, h2, h3 { font-family: var(--sans); font-weight: 700; color: var(--ink); margin: 0 0 0.5em; letter-spacing: -0.01em; }
-  h1 { font-size: clamp(1.9rem, 6.4vw, 2.75rem); line-height: 1.35; }
-  h2 { font-size: clamp(1.5rem, 4.6vw, 2.1rem); line-height: 1.4; }
-  h3 { font-size: 18px; line-height: 1.5; }
-  .lede { color: var(--ink-soft); font-size: 17px; line-height: 1.9; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--ink); margin: 0 0 0.5em; letter-spacing: -0.01em; }
+  h1 { font-size: var(--text-2xl); line-height: 1.35; }
+  h2 { font-size: var(--text-xl); line-height: 1.35; }
+  h3 { font-size: var(--text-sm); line-height: 1.5; }
+  .lede { color: var(--ink-soft); font-size: var(--text-md); line-height: 1.9; }
+  @media (min-width: 900px) { h1 { font-size: var(--text-3xl); } }
 
   /* ボタン。押す物は角ゼロ（コース本体と同じ決まり） */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 10px;
-    padding: 16px 30px; border-radius: 0; min-height: 52px;
-    font-size: 17px; letter-spacing: 0.02em; font-weight: 500; cursor: pointer; border: none;
-    text-decoration: none;
+    padding: 16px 34px; border-radius: 0; min-height: 52px;
+    font-size: var(--text-lg); letter-spacing: 0; font-weight: 700; cursor: pointer; border: none;
+    text-decoration: none; word-break: keep-all; overflow-wrap: anywhere;
   }
+  /* 携帯では詰める(2026-09-29 HARU様「携帯のボタンが大きすぎる」。Speak Upと同じ) */
+  @media (max-width: 899px) { .btn:not(.btn-small) { padding: 13px 26px; font-size: var(--text-md); } }
   /* ★2026-10-02 HARU様「申し込むはいつもの黄色のボタンじゃないの？」。
      濃い焦げ茶の階調だったので、アプリ・メールと同じ金(--brand-gold #E2A33D)に
      した。字は --espresso なので金の上で 9.5:1 出る。暗い面でも同じ金のまま
      （反転させない。押す場所が1ページで2通りの色になるのを避ける）。
      ★値段はボタンに入れない(HARU様「値段ははぶいたほうがいいよ」)。
        金額は日付の札と詳細に書いてある。 */
+  /* アプリ本番の主ボタン(.btn-primary)をそのまま。地=フラットな金・
+     文字=濃色・角丸ゼロ・影は浮き上がり+上の光の薄い1本。 */
   .btn-gold {
-    background: var(--brand-gold); color: var(--espresso); font-weight: 700;
-    box-shadow: 0 14px 34px -16px rgba(163,120,45,0.55);
+    background: var(--brand-gold); color: var(--ink);
+    box-shadow: 0 3px 8px rgba(34,29,24,0.28), inset 0 1px 0 rgba(255,255,255,0.10);
   }
-  @media (hover: hover) { .btn-gold:hover { background: #D9952F; } }
-  .btn-small { padding: 12px 20px; min-height: 44px; font-size: 16px; }
+  .btn-gold:active { transform: scale(0.97); }
+  @media (hover: hover) { .btn-gold:hover { box-shadow: 0 6px 14px rgba(34,29,24,0.34), inset 0 1px 0 rgba(255,255,255,0.14); } }
+  .btn-small { padding: 12px 20px; min-height: 44px; font-size: var(--text-sm); }
   @media (max-width: 460px) { .btn-small { padding: 12px 14px; } }
   .btn:focus-visible, .play:focus-visible, summary:focus-visible { outline: 3px solid var(--brand-gold); outline-offset: 3px; }
 
@@ -126,12 +155,12 @@
      (speakup/index.html のコメントに「この2ページは影響しない」と書いてある)。
      ここで3ページそろえる。
      ★--brand はこのページでは .brand-word だけが使う。 */
-  .brand-word { font-family: var(--brand); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
-  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold); font-weight: 500; line-height: 1.4; }
+  .brand-word { font-family: var(--brand); font-weight: 700; font-size: var(--text-sm); letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
+  .brand-tag { font-size: var(--text-xs); letter-spacing: 0.04em; color: var(--gold); font-weight: 500; line-height: 1.4; }
   @media (max-width: 400px) {
     .site-header .brand { gap: 10px; }
     .site-header .brand-mark { width: 28px; height: 28px; }
-    .site-header .brand-word { font-size: 16px; }
+    .site-header .brand-word { font-size: var(--text-xs); }
   }
 
   /* ★2026-10-02 写真のヒーロー。販売LP(/eatout/)の .hero をそのまま写した
@@ -144,7 +173,7 @@
      46svh では 393×659 で申し込みボタンが画面の外(932px)に出ていた。 */
   /* ★帯は「残っている高さ」から。見出しが長くなった分(2026-10-02の
      文言変更)、帯を1段細くして申し込みボタンを最初の一画面に残した。 */
-  :root { --hero-band: clamp(112px, 19svh, 220px); }
+  :root { --hero-band: clamp(96px, 15svh, 200px); }
   .hero__media { position: absolute; inset: 0 0 auto; height: var(--hero-band); overflow: hidden; }
   .hero__media img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: 58% 30%; }
   .hero__media::after {
@@ -153,7 +182,7 @@
       rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 30%, rgba(31,27,23,.30) 46%,
       rgba(31,27,23,.74) 60%, rgba(31,27,23,.94) 74%, rgba(31,27,23,1) 86%);
   }
-  .hero__in { position: relative; padding-block: max(62px, calc(var(--hero-band) - 44px)) 28px; }
+  .hero__in { position: relative; padding-block: max(56px, calc(var(--hero-band) - 52px)) 24px; }
   .hero .eyebrow { color: var(--gold-pale); }
   .hero .eyebrow::before { background: var(--gold-pale); }
   .hero h1 { color: #FFFFFF; margin-bottom: 10px; font-size: clamp(1.875rem, 6.2vw, 2.6rem);  /* 下限 30px。tools/mobile-audit.js の h1 の幅(30–36px)に合わせる */ }
@@ -165,7 +194,7 @@
      ★どちらか片方だけ直さないこと。言い回しを変える時は両方。 */
   .h1-d { display: none; }
   @media (min-width: 700px) { .h1-m { display: none; } .h1-d { display: inline; } }
-  .hero .lede { color: rgba(251,249,246,0.92); margin-bottom: 14px; font-size: 16px; line-height: 1.75; }
+  .hero .lede { color: rgba(251,249,246,0.92); margin-bottom: 14px; font-size: var(--text-sm); line-height: 1.75; }
   /* 日時と値段の札。HARU様「値段とか、時間とかわかりやすく書いて」。
      ★この札から「いつ・いくら・どこで・どれくらい」の4つを外さないこと。 */
   .date-card {
@@ -173,11 +202,11 @@
     padding: 14px 18px; margin: 0 0 16px;
   }
   .date-card .row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
-  .date-card .d { font-size: 24px; font-weight: 700; color: #FFFFFF; line-height: 1.3; }
-  .date-card .t { font-size: 18px; font-weight: 500; color: #FFFFFF; }
-  .date-card .n { margin: 6px 0 0; font-size: 16px; color: rgba(251,249,246,0.82); line-height: 1.7; }
+  .date-card .d { font-size: var(--text-lg); font-weight: 700; color: #FFFFFF; line-height: 1.3; }
+  .date-card .t { font-size: var(--text-sm); font-weight: 500; color: #FFFFFF; }
+  .date-card .n { margin: 6px 0 0; font-size: var(--text-sm); color: rgba(251,249,246,0.82); line-height: 1.7; }
   .hero .btn { width: 100%; }
-  .hero .under { font-size: 16px; color: rgba(251,249,246,0.74); margin: 10px 0 0; }
+  .hero .under { font-size: var(--text-sm); color: rgba(251,249,246,0.74); margin: 10px 0 0; }
 
   .bg-soft { background: var(--cream-soft); }
 
@@ -187,13 +216,13 @@
     padding: 20px; margin: 0 0 16px;
   }
   .clip-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .clip-no { font-size: 12.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
-  .clip-scene { font-size: 16px; color: var(--ink-soft); }
+  .clip-no { font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
+  .clip-scene { font-size: var(--text-sm); color: var(--ink-soft); }
   .plays { display: flex; flex-wrap: wrap; gap: 10px; }
   .play {
     display: inline-flex; align-items: center; gap: 8px;
     min-height: 48px; padding: 10px 18px; border-radius: 0;
-    font: inherit; font-size: 16px; font-weight: 500; cursor: pointer;
+    font: inherit; font-size: var(--text-sm); font-weight: 500; cursor: pointer;
     background: var(--cream-soft); color: var(--ink); border: 1px solid var(--line);
   }
   .play svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -202,36 +231,46 @@
   .clip summary {
     list-style: none; cursor: pointer; min-height: 48px; padding: 12px 0 4px;
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    font-size: 16px; font-weight: 500; color: var(--ink);
+    font-size: var(--text-sm); font-weight: 500; color: var(--ink);
   }
   .clip summary::-webkit-details-marker { display: none; }
-  .clip summary .sign { color: var(--stone-deep); font-size: 20px; font-weight: 400; transition: transform 0.25s ease; }
+  .clip summary .sign { color: var(--stone-deep); font-size: var(--text-md); font-weight: 400; transition: transform 0.25s ease; }
   .clip details[open] summary .sign { transform: rotate(45deg); }
-  .clip .en { font-size: 21px; font-weight: 500; color: var(--ink); line-height: 1.5; margin: 6px 0 2px; }
-  .clip .ja { font-size: 16px; color: var(--ink-soft); margin: 0 0 10px; }
-  .clip .tip { font-size: 16px; color: var(--ink-soft); line-height: 1.85; margin: 0; }
-  .clip .tip b { color: var(--ink); font-weight: 500; }
-  .spotify-note { font-size: 16px; color: var(--ink-soft); margin: 22px 0 0; line-height: 1.85; }
+  .clip .en { font-size: var(--text-lg); font-weight: 500; color: var(--ink); line-height: 1.5; margin: 6px 0 2px; }
+  .clip .ja { font-size: var(--text-sm); color: var(--ink-soft); margin: 0 0 10px; }
+  /* ★2026-10-02 HARU様「Flap T とか発音Tipsやリンクする音のTipsをいつも通りに
+     加えてくれませんか？ アプリと統一して」。自分の言葉で1段落にまとめていたのを
+     やめ、**コース本体(eatout/listening)の pronunciationTips / linkingTips を
+     そのまま**、同じ2つの見出しで並べる。
+     ★ここに自分で書いたTipsを混ぜないこと。本体を写すだけ。
+     ★【】の見出しを新しく作らないこと(HARU様のご承認事項)。 */
+  .clip .tips-label {
+    font-size: var(--text-xs); letter-spacing: 0.12em; color: var(--gold);
+    font-weight: 700; margin: 14px 0 6px;
+  }
+  .clip .tips-list { margin: 0; padding-left: 1.15em; }
+  .clip .tips-list li { font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; margin-bottom: 6px; }
+  .spotify-note { font-size: var(--text-sm); color: var(--ink-soft); margin: 22px 0 0; line-height: 1.85; }
   .spotify-note a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
 
   /* やること */
   .steps { list-style: none; margin: 8px 0 0; padding: 0; }
   .steps li { display: flex; gap: 16px; padding: 16px 0; border-top: 1px solid var(--line); }
   .steps li:last-child { border-bottom: 1px solid var(--line); }
-  .steps .num { font-size: 14px; font-weight: 500; color: var(--stone-deep); min-width: 26px; padding-top: 2px; }
+  .steps .num { font-size: var(--text-xs); font-weight: 500; color: var(--stone-deep); min-width: 26px; padding-top: 2px; }
   .steps h3 { margin: 0 0 2px; }
-  .steps p { margin: 0; font-size: 16px; color: var(--ink-soft); }
+  .steps p { margin: 0; font-size: var(--text-sm); color: var(--ink-soft); }
 
   /* 詳細 */
   .details-list { margin: 8px 0 0; padding: 0; }
   .details-list div { padding: 14px 0; border-top: 1px solid var(--line); }
   .details-list div:last-child { border-bottom: 1px solid var(--line); }
-  .details-list dt { font-size: 12.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
-  .details-list dd { margin: 4px 0 0; font-size: 17px; }
+  .details-list dt { font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
+  .details-list dd { margin: 4px 0 0; font-size: var(--text-sm); }
 
   .member-note {
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
-    padding: 16px 20px; margin: 24px 0 0; font-size: 16px; color: var(--ink-soft); line-height: 1.85;
+    padding: 16px 20px; margin: 24px 0 0; font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85;
   }
   .member-note a { color: var(--ink); font-weight: 500; word-break: break-all; }
 
@@ -245,16 +284,16 @@
   .on-dark h2 { color: var(--cream); }
   .cta-band .eyebrow { color: var(--gold-bright); }
   .cta-band .eyebrow::before { background: var(--gold-bright); }
-  .cta-band p { color: rgba(251,249,246,0.8); font-size: 17px; line-height: 1.9; }
+  .cta-band p { color: rgba(251,249,246,0.8); font-size: var(--text-sm); line-height: 1.9; }
   .cta-band .btn { width: 100%; margin-top: 10px; }
-  .cta-band .price-line { font-size: 16px; color: rgba(251,249,246,0.7); margin: 14px 0 0; }
+  .cta-band .price-line { font-size: var(--text-sm); color: rgba(251,249,246,0.7); margin: 14px 0 0; }
 
   /* フッター（/eatout/ と同じ） */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
-  .foot-tag { font-family: "Lora", Georgia, serif; font-style: italic; font-weight: 400; font-size: 18px; color: #8F6524; margin-bottom: 8px; }
-  .foot-copy { font-size: 12.5px; color: var(--ink-soft); opacity: 0.85; }
-  .foot-copy a { font-weight: 500; color: var(--ink); font-size: 16px; text-decoration: none; }
-  .foot-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 18px; font-size: 16px; }
+  .foot-tag { font-family: "Lora", Georgia, serif; font-style: italic; font-weight: 400; font-size: var(--text-sm); color: #8F6524; margin-bottom: 8px; }
+  .foot-copy { font-size: var(--text-xs); color: var(--ink-soft); opacity: 0.85; }
+  .foot-copy a { font-weight: 500; color: var(--ink); font-size: var(--text-sm); text-decoration: none; }
+  .foot-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 18px; font-size: var(--text-sm); }
   .foot-legal a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.18); display: inline-flex; align-items: center; min-height: 44px; }
 
   @media (min-width: 700px) {
@@ -273,13 +312,13 @@
   .reason { list-style: none; margin: 24px 0 0; padding: 0; }
   .reason li { padding: 16px 0; border-top: 1px solid var(--line); }
   .reason li:last-child { border-bottom: 1px solid var(--line); }
-  .reason .r-en { font-size: 17px; font-weight: 500; color: var(--ink); margin: 0 0 4px; }
-  .reason .r-tx { margin: 0; font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
+  .reason .r-en { font-size: var(--text-sm); font-weight: 500; color: var(--ink); margin: 0 0 4px; }
+  .reason .r-tx { margin: 0; font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; }
   .reason .r-tx b { color: var(--ink); font-weight: 500; }
 
   /* 身につくこと */
   .gains { list-style: none; margin: 8px 0 0; padding: 0; }
-  .gains li { position: relative; padding: 12px 0 12px 30px; font-size: 17px; line-height: 1.85; border-top: 1px solid var(--line); }
+  .gains li { position: relative; padding: 12px 0 12px 30px; font-size: var(--text-sm); line-height: 1.85; border-top: 1px solid var(--line); }
   .gains li:last-child { border-bottom: 1px solid var(--line); }
   .gains li::before { content: ''; position: absolute; left: 4px; top: 22px; width: 10px; height: 10px; background: var(--brand-gold); }
 
@@ -287,16 +326,16 @@
   .fit { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; padding: 20px; margin: 0 0 16px; }
   .fit h3 { margin: 0 0 10px; }
   .fit ul { margin: 0; padding-left: 1.2em; }
-  .fit li { font-size: 16px; line-height: 1.85; color: var(--ink-soft); margin-bottom: 6px; }
+  .fit li { font-size: var(--text-sm); line-height: 1.85; color: var(--ink-soft); margin-bottom: 6px; }
   .fit.is-not { background: var(--cream-soft); }
 
   /* 講師 */
   .teacher { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
   .teacher figure { margin: 0; width: 132px; flex: none; }
   .teacher img { width: 100%; height: auto; border-radius: 14px; display: block; }
-  .teacher figcaption { margin-top: 8px; font-size: 16px; font-weight: 500; color: var(--ink); text-align: center; }
+  .teacher figcaption { margin-top: 8px; font-size: var(--text-sm); font-weight: 500; color: var(--ink); text-align: center; }
   .teacher .bio { flex: 1 1 260px; }
-  .teacher .bio p { font-size: 17px; line-height: 1.9; color: var(--ink-soft); }
+  .teacher .bio p { font-size: var(--text-sm); line-height: 1.9; color: var(--ink-soft); }
 
   /* よくある質問 */
   .faq { margin-top: 8px; }
@@ -305,12 +344,12 @@
   .faq summary {
     list-style: none; cursor: pointer; min-height: 52px; padding: 14px 0;
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    font-size: 17px; font-weight: 500; color: var(--ink);
+    font-size: var(--text-sm); font-weight: 500; color: var(--ink);
   }
   .faq summary::-webkit-details-marker { display: none; }
-  .faq summary .sign { color: var(--stone-deep); font-size: 20px; font-weight: 400; transition: transform 0.25s ease; }
+  .faq summary .sign { color: var(--stone-deep); font-size: var(--text-md); font-weight: 400; transition: transform 0.25s ease; }
   .faq details[open] summary .sign { transform: rotate(45deg); }
-  .faq p { font-size: 16px; color: var(--ink-soft); line-height: 1.9; margin: 0 0 16px; }
+  .faq p { font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.9; margin: 0 0 16px; }
   @media (prefers-reduced-motion: reduce) { .faq summary .sign, .clip summary .sign { transition: none; } }
 
   @media (min-width: 900px) {
@@ -414,7 +453,18 @@
         <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
         <p class="en">For here or to go?</p>
         <p class="ja">店内で召し上がりますか？お持ち帰りですか？</p>
-        <p class="tip"><b>to go</b> の to は弱くつぶれて、「とぅー」ではなく「t’ごぅ」のように短く聞こえます。「るごぅ」のように聞こえることも多いです。</p>
+        <div class="tips">
+          <p class="tips-label">発音Tips</p>
+          <ul class="tips-list">
+            <li>【おぅの二重母音】"go" の o は、「ごー」ではなく「ごぅ」のように、二重母音として発音します。</li>
+          </ul>
+          <p class="tips-label">つながる音Tips</p>
+          <ul class="tips-list">
+            <li>【前置詞】"For" は "f" の音だけのように軽く発音され、次の "here" にドッキングします。</li>
+            <li>【母音ドッキング】"here or" はつながって「ひあor」のように一息で聞こえます。</li>
+            <li>【Toの弱形】"to go" の to は弱く、「とぅー」ではなく「t’ごぅ」のように短く聞こえます。「るごぅ」に近く聞こえることもあります。</li>
+          </ul>
+        </div>
       </details>
     </div>
 
@@ -434,7 +484,18 @@
         <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
         <p class="en">It’ll be about a 20-minute wait.</p>
         <p class="ja">20分ほどお待ちいただくことになります。</p>
-        <p class="tip"><b>It’ll</b> の t は「ろ」のような音に変わって「いろぅ」とつぶれます。「イット ウィル」とは聞こえません。<b>be about a</b> も1つになって「びぁばぅら」。待つかどうかを決めるのに、ここは数字を拾うしかありません。</p>
+        <div class="tips">
+          <p class="tips-label">発音Tips</p>
+          <ul class="tips-list">
+            <li>【機能語の弱形】"It’ll" の t は「ろ」のような音に変身し、「ぇろぅ」のように短くつぶれて聞こえます。「イット ウィル」とは聞こえません。will は、基本的に「うぃる」とは発音されず、「ぅ」のようなリズム感、音で発音されます。</li>
+            <li>【い/えの中間音】"minute" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。</li>
+          </ul>
+          <p class="tips-label">つながる音Tips</p>
+          <ul class="tips-list">
+            <li>【Flap T】"be about a" の t は母音に挟まれて「ら行」の音に変身し、「びぁばぅら」のように聞こえます。</li>
+            <li>【消えるT】文末の "wait" の最後の t も同じく破裂させず、舌をtの位置で止めるだけで終わります。</li>
+          </ul>
+        </div>
       </details>
     </div>
 
@@ -449,7 +510,18 @@
         <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
         <p class="en">Can I start you off with something to drink?</p>
         <p class="ja">まず、お飲み物はいかがですか？</p>
-        <p class="tip"><b>Can I</b> はつながって「けなぃ」の一息になります。<b>to drink</b> の to も「t’」だけにつぶれて、次の drink にくっつきます。</p>
+        <div class="tips">
+          <p class="tips-label">発音Tips</p>
+          <ul class="tips-list">
+            <li>【機能語の弱形】"can" は文中では弱く「けん」や「くん」のように短く聞こえます。</li>
+            <li>【い/えの中間音】"drink" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。</li>
+          </ul>
+          <p class="tips-label">つながる音Tips</p>
+          <ul class="tips-list">
+            <li>【同化】"start you" は t と y がくっついて「すたーちゅ」のように聞こえます。</li>
+            <li>【母音ドッキング】"Can I" はつながって「けなぃ」のように一息で聞こえます。</li>
+          </ul>
+        </div>
       </details>
     </div>
 
