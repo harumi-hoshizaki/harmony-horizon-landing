@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10/15 グループレッスン — 飲食店の英語を聞き取る・言える | Harmony Horizon</title>
+<meta name="description" content="10月15日（木）21:30〜（日本時間）オンライン90分。飲食店で店員さんが話す英語を使って、音のつなげ方（リンキング）と発音のコツを声に出して練習するグループレッスンです。">
+<link rel="canonical" href="https://www.harmonyhorizon.space/eatout/lesson/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="10/15 グループレッスン — この英語、聞き取れますか？">
+<meta property="og:description" content="飲食店で店員さんが話す英語を使って、聞き取れる耳とスラスラ出てくる口を90分で一緒に作ります。10月15日（木）21:30〜（日本時間）オンライン。">
+<meta property="og:url" content="https://www.harmonyhorizon.space/eatout/lesson/">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="Harmony Horizon">
+<meta property="og:image" content="https://www.harmonyhorizon.space/assets/site/scene-order.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="896">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='96' fill='%23221D18'/%3E%3Ccircle cx='100' cy='100' r='69' fill='none' stroke='%23E2A33D' stroke-width='8' opacity='0.55'/%3E%3Ccircle cx='100' cy='100' r='46' fill='none' stroke='%23E2A33D' stroke-width='12'/%3E%3Ccircle cx='100' cy='100' r='16' fill='%23E2A33D'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/assets/site/fonts.css">
+<style>
+  /* 2026-10-02 10/15 グループレッスン専用ページ。
+     飲食店英会話の販売LP（/eatout/）と同じ配色・書体・部品で組む。
+     コースの販売ページではないので、コースの購入ボタンは置かない
+     （レッスンとコースを取り違えさせない。HARU様の指示）。
+     音声はコース本体と同じファイルを /eatout/quiz/audio と
+     /eatout/tryout/audio から読む。第三者への通信を出さないため、
+     Spotify は埋め込まず、別タブで開くリンクだけにする。 */
+  :root {
+    --espresso:      #1F1B17;
+    --espresso-light:#5A514B;
+    --espresso-lift: #2C2620;
+    --cream:      #FBF9F6;
+    --cream-soft: #F4F0E9;
+    --gold:       #9C5C33;
+    --gold-bright:#C98A5C;
+    --gold-pale:  #E9B98C;
+    --brand-gold: #E2A33D;
+    --ink:        #221E19;
+    --stone-deep: #6E675A;
+    --ink-soft:   #4A443B;
+    --line:       rgba(34, 30, 25, 0.13);
+    --line-light: rgba(251, 249, 246, 0.18);
+    --shadow-card:0 30px 70px -24px rgba(31, 27, 23, 0.18);
+    --sans:  "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+    --brand: "Cormorant Garamond", "Zen Old Mincho", "Hiragino Mincho ProN", serif;
+    --max-w: 720px;
+    --pad: clamp(20px, 5vw, 48px);
+    --section-pad: clamp(48px, 8vw, 88px);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    margin: 0; background: var(--cream); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.8;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  a { color: inherit; }
+  .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--pad); }
+  section { padding: var(--section-pad) 0; }
+  p { margin: 0 0 1em; }
+
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--gold); font-weight: 500; margin: 0 0 14px;
+  }
+  .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--gold); }
+
+  h1, h2, h3 { font-family: var(--sans); font-weight: 700; color: var(--ink); margin: 0 0 0.5em; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(1.9rem, 6.4vw, 2.75rem); line-height: 1.35; }
+  h2 { font-size: clamp(1.5rem, 4.6vw, 2.1rem); line-height: 1.4; }
+  h3 { font-size: 18px; line-height: 1.5; }
+  .lede { color: var(--ink-soft); font-size: 17px; line-height: 1.9; }
+
+  /* ボタン。押す物は角ゼロ（コース本体と同じ決まり） */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 16px 30px; border-radius: 0; min-height: 52px;
+    font-size: 17px; letter-spacing: 0.02em; font-weight: 500; cursor: pointer; border: none;
+    text-decoration: none;
+  }
+  .btn-gold {
+    background: linear-gradient(180deg, var(--espresso-light) 0%, var(--espresso) 100%);
+    color: var(--cream);
+    box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+  }
+  @media (hover: hover) { .btn-gold:hover { background: var(--gold); } }
+  .on-dark .btn-gold { background: var(--cream); color: var(--espresso); }
+  @media (hover: hover) { .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--espresso); } }
+  .btn-small { padding: 12px 20px; min-height: 44px; font-size: 16px; }
+  @media (max-width: 460px) { .btn-small { padding: 12px 14px; } }
+  .btn:focus-visible, .play:focus-visible, summary:focus-visible { outline: 3px solid var(--brand-gold); outline-offset: 3px; }
+
+  /* ヘッダー（/eatout/ と同じ） */
+  .site-header {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(251, 249, 246, 0.94);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header .container {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding-top: 10px; padding-bottom: 10px; max-width: 1120px;
+  }
+  .brand { display: flex; align-items: center; gap: 12px; min-height: 44px; text-decoration: none; }
+  .brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
+  .brand-word { font-family: var(--brand); font-weight: 500; font-size: 17px; letter-spacing: 0.06em; color: var(--ink); line-height: 1.15; }
+  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold); font-weight: 500; line-height: 1.4; }
+  @media (max-width: 400px) {
+    .site-header .brand { gap: 10px; }
+    .site-header .brand-mark { width: 28px; height: 28px; }
+    .site-header .brand-word { font-size: 16px; }
+  }
+
+  /* 最初の一画面：見出し・日付・申し込みボタンまで（393×659 で収める） */
+  .hero { padding: 28px 0 40px; }
+  .hero h1 { margin-bottom: 12px; }
+  .hero .lede { margin-bottom: 18px; }
+  .date-card {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 20px; margin: 0 0 18px;
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px;
+  }
+  .date-card .d { font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1.3; }
+  .date-card .t { font-size: 18px; font-weight: 500; color: var(--ink); }
+  .date-card .n { flex-basis: 100%; font-size: 16px; color: var(--ink-soft); line-height: 1.7; }
+  .hero .btn { width: 100%; }
+  .hero .under { font-size: 16px; color: var(--stone-deep); margin: 10px 0 0; }
+
+  .bg-soft { background: var(--cream-soft); }
+
+  /* 聞いてみる */
+  .clip {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
+    padding: 20px; margin: 0 0 16px;
+  }
+  .clip-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .clip-no { font-size: 12.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
+  .clip-scene { font-size: 16px; color: var(--ink-soft); }
+  .plays { display: flex; flex-wrap: wrap; gap: 10px; }
+  .play {
+    display: inline-flex; align-items: center; gap: 8px;
+    min-height: 48px; padding: 10px 18px; border-radius: 0;
+    font: inherit; font-size: 16px; font-weight: 500; cursor: pointer;
+    background: var(--cream-soft); color: var(--ink); border: 1px solid var(--line);
+  }
+  .play svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .play.is-playing { background: var(--espresso); color: var(--cream); border-color: var(--espresso); }
+  .clip details { margin-top: 14px; border-top: 1px solid var(--line); }
+  .clip summary {
+    list-style: none; cursor: pointer; min-height: 48px; padding: 12px 0 4px;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-size: 16px; font-weight: 500; color: var(--ink);
+  }
+  .clip summary::-webkit-details-marker { display: none; }
+  .clip summary .sign { color: var(--stone-deep); font-size: 20px; font-weight: 400; transition: transform 0.25s ease; }
+  .clip details[open] summary .sign { transform: rotate(45deg); }
+  .clip .en { font-size: 21px; font-weight: 500; color: var(--ink); line-height: 1.5; margin: 6px 0 2px; }
+  .clip .ja { font-size: 16px; color: var(--ink-soft); margin: 0 0 10px; }
+  .clip .tip { font-size: 16px; color: var(--ink-soft); line-height: 1.85; margin: 0; }
+  .clip .tip b { color: var(--ink); font-weight: 500; }
+  .spotify-note { font-size: 16px; color: var(--ink-soft); margin: 22px 0 0; line-height: 1.85; }
+  .spotify-note a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* やること */
+  .steps { list-style: none; margin: 8px 0 0; padding: 0; }
+  .steps li { display: flex; gap: 16px; padding: 16px 0; border-top: 1px solid var(--line); }
+  .steps li:last-child { border-bottom: 1px solid var(--line); }
+  .steps .num { font-size: 14px; font-weight: 500; color: var(--stone-deep); min-width: 26px; padding-top: 2px; }
+  .steps h3 { margin: 0 0 2px; }
+  .steps p { margin: 0; font-size: 16px; color: var(--ink-soft); }
+
+  /* 詳細 */
+  .details-list { margin: 8px 0 0; padding: 0; }
+  .details-list div { padding: 14px 0; border-top: 1px solid var(--line); }
+  .details-list div:last-child { border-bottom: 1px solid var(--line); }
+  .details-list dt { font-size: 12.5px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; }
+  .details-list dd { margin: 4px 0 0; font-size: 17px; }
+
+  .member-note {
+    background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
+    padding: 16px 20px; margin: 24px 0 0; font-size: 16px; color: var(--ink-soft); line-height: 1.85;
+  }
+  .member-note a { color: var(--ink); font-weight: 500; word-break: break-all; }
+
+  /* 締め */
+  .cta-band.on-dark {
+    background:
+      radial-gradient(ellipse 800px 360px at 50% 0%, rgba(163,120,45,0.2), transparent 65%),
+      linear-gradient(180deg, var(--espresso-lift) 0%, var(--espresso) 100%);
+    color: var(--cream);
+  }
+  .on-dark h2 { color: var(--cream); }
+  .cta-band .eyebrow { color: var(--gold-bright); }
+  .cta-band .eyebrow::before { background: var(--gold-bright); }
+  .cta-band p { color: rgba(251,249,246,0.8); font-size: 17px; line-height: 1.9; }
+  .cta-band .btn { width: 100%; margin-top: 10px; }
+  .cta-band .price-line { font-size: 16px; color: rgba(251,249,246,0.7); margin: 14px 0 0; }
+
+  /* フッター（/eatout/ と同じ） */
+  footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
+  .foot-tag { font-family: "Lora", Georgia, serif; font-style: italic; font-weight: 400; font-size: 18px; color: #8F6524; margin-bottom: 8px; }
+  .foot-copy { font-size: 12.5px; color: var(--ink-soft); opacity: 0.85; }
+  .foot-copy a { font-weight: 500; color: var(--ink); font-size: 16px; text-decoration: none; }
+  .foot-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 22px; margin-top: 18px; font-size: 16px; }
+  .foot-legal a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid rgba(0,0,0,0.18); display: inline-flex; align-items: center; min-height: 44px; }
+
+  @media (min-width: 700px) {
+    .hero .btn, .cta-band .btn { width: auto; min-width: 320px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a href="#top" class="brand">
+      <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Ear to Voice">
+        <circle cx="100" cy="100" r="96" fill="#221D18"/>
+        <circle cx="100" cy="100" r="69" fill="none" stroke="#E2A33D" stroke-width="8" opacity="0.55"/>
+        <circle cx="100" cy="100" r="46" fill="none" stroke="#E2A33D" stroke-width="12"/>
+        <circle cx="100" cy="100" r="16" fill="#E2A33D"/>
+      </svg>
+      <div>
+        <div class="brand-word">EAR TO VOICE</div>
+        <div class="brand-tag">耳から、声へ</div>
+      </div>
+    </a>
+    <a href="#apply" class="btn btn-gold btn-small"><span>申し込む</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <span class="eyebrow">Group Lesson ・ 10/15</span>
+    <h1>この英語、<br>聞き取れますか？</h1>
+    <p class="lede">飲食店で店員さんが話す英語を使って、「聞き取れる耳」と「スラスラ出てくる口」を、90分で一緒に作ります。</p>
+    <div class="date-card">
+      <span class="d">10月15日（木）</span>
+      <span class="t">21:30〜（日本時間）</span>
+      <span class="n">オンライン（Zoom）・90分・レッスン1回のお申し込みです</span>
+    </div>
+    <a href="https://buy.stripe.com/14A7sL12ubrGevu9kCeEo0g" class="btn btn-gold"><span>¥2,300で申し込む</span></a>
+    <p class="under">締め切りは10月14日（水）です。</p>
+  </div>
+</section>
+
+<!-- LISTEN -->
+<section class="bg-soft" id="listen">
+  <div class="container">
+    <span class="eyebrow">Listen First</span>
+    <h2>まずは、文字を見ないで<br>聞いてみてください。</h2>
+    <p class="lede">カフェやレストランで、店員さんに実際に聞かれる英語です。どのくらい聞き取れるか、試してみてください。</p>
+
+    <div class="clip">
+      <div class="clip-head"><span class="clip-no">01</span><span class="clip-scene">カフェのレジで</span></div>
+      <div class="plays">
+        <button type="button" class="play" data-src="/eatout/quiz/audio/q_size_02_f.mp3"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>ふつう</button>
+        <button type="button" class="play" data-src="/eatout/quiz/audio/q_size_02_f_slow.mp3"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>ゆっくり</button>
+      </div>
+      <details>
+        <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
+        <p class="en">For here or to go?</p>
+        <p class="ja">店内ですか？お持ち帰りですか？</p>
+        <p class="tip"><b>to go</b> の to は弱く、「とぅー」ではなく「t’ごぅ」のように短く聞こえます。「るごぅ」のように聞こえることも多いです。</p>
+      </details>
+    </div>
+
+    <div class="clip">
+      <div class="clip-head"><span class="clip-no">02</span><span class="clip-scene">レストランで、席に着いたら</span></div>
+      <div class="plays">
+        <button type="button" class="play" data-src="/eatout/quiz/audio/q_drink_04_f.mp3"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>ふつう</button>
+        <button type="button" class="play" data-src="/eatout/quiz/audio/q_drink_04_f_slow.mp3"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>ゆっくり</button>
+      </div>
+      <details>
+        <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
+        <p class="en">Can I start you off with something to drink?</p>
+        <p class="ja">まず、お飲み物はいかがですか？</p>
+        <p class="tip"><b>Can I</b> はつながって「けなぃ」のように一息で聞こえます。can も文の中では弱く、「けん」「くん」のように短くなります。</p>
+      </details>
+    </div>
+
+    <div class="clip">
+      <div class="clip-head"><span class="clip-no">03</span><span class="clip-scene">お会計のとき</span></div>
+      <div class="plays">
+        <button type="button" class="play" data-src="/eatout/tryout/audio/q_check_02_f.mp3"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>ふつう</button>
+        <button type="button" class="play" data-src="/eatout/tryout/audio/q_check_02_f_slow.mp3"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>ゆっくり</button>
+      </div>
+      <details>
+        <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
+        <p class="en">Together or separate?</p>
+        <p class="ja">一緒、それとも別々？（お会計を1つにまとめますか、分けますか）</p>
+        <p class="tip"><b>Together or</b> はつながって「Tげtheror」のように一息で聞こえます。3語が1つの塊になるので、文字で見た形とは別物に聞こえます。</p>
+      </details>
+    </div>
+
+    <p class="spotify-note">ほかの練習音声は、Spotifyでも聞けます。<br><a href="https://open.spotify.com/episode/5TzuIwm40OlUM7IMfDTOom" target="_blank" rel="noopener">Spotifyで聞く（別のタブで開きます）</a></p>
+  </div>
+</section>
+
+<!-- WHY -->
+<section>
+  <div class="container">
+    <span class="eyebrow">Why</span>
+    <h2>知らない単語は、<br>ありましたか？</h2>
+    <p>きっと、初めて見た単語はほとんどなかったと思います。単語は知っているのに聞こえないのは、音がつながって形が変わるからです。</p>
+    <p>聞き取れないことと、スラスラ出てこないことは、実は同じところでつまずいています。音のつながりを知らないと、耳にも入ってこないし、口からも出てこないんです。</p>
+  </div>
+</section>
+
+<!-- STEPS -->
+<section class="bg-soft">
+  <div class="container">
+    <span class="eyebrow">In The Lesson</span>
+    <h2>レッスンでやること</h2>
+    <ol class="steps">
+      <li><span class="num">01</span><div><h3>聞く</h3><p>文字を見ないで、店員さんの英語をまず耳だけで聞きます。</p></div></li>
+      <li><span class="num">02</span><div><h3>音のかたまりをつかむ</h3><p>どこで音がつながって、どう変わるのか（リンキング）を一緒に確かめます。</p></div></li>
+      <li><span class="num">03</span><div><h3>何度も声に出す</h3><p>聞こえた音のとおりに、何度もまねして言います。発音のコツは、その場でお伝えします。</p></div></li>
+      <li><span class="num">04</span><div><h3>自分で言えるようにする</h3><p>最後は、文字を見ないで自分の口からスラスラ出てくるところまで練習します。</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<!-- DETAILS -->
+<section>
+  <div class="container">
+    <span class="eyebrow">Details</span>
+    <h2>レッスンの詳細</h2>
+    <dl class="details-list">
+      <div><dt>日時</dt><dd>10月15日（木）21:30〜（日本時間）、90分</dd></div>
+      <div><dt>内容</dt><dd>飲食店で店員さんが使う英語を使った、音のつなげ方（リンキング）と発音のコツ</dd></div>
+      <div><dt>参加費</dt><dd>¥2,300（レッスン1回分）</dd></div>
+      <div><dt>締め切り</dt><dd>10月14日（水）まで</dd></div>
+      <div><dt>参加方法</dt><dd>Zoomで行います。参加方法は、お申し込みいただいた方にメールでお送りします。</dd></div>
+      <div><dt>あると安心</dt><dd>イヤホンと、声を出せる場所</dd></div>
+    </dl>
+    <p class="member-note">飲食店英会話のコースをお持ちの方は、メールでお送りしている購入者価格（¥1,000）のリンクからお申し込みください。見つからないときは <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> までご連絡ください。</p>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="cta-band on-dark" id="apply">
+  <div class="container">
+    <span class="eyebrow">See You There</span>
+    <h2>10月15日、画面の向こうで<br>会えるのを楽しみにしています。</h2>
+    <p>「私にできるかな？」と思った方こそ、ぜひ来てください。聞き取れなかった悔しさも、言えなかった悔しさも、そのまま持ってきてくれたら大丈夫です。</p>
+    <a href="https://buy.stripe.com/14A7sL12ubrGevu9kCeEo0g" class="btn btn-gold"><span>¥2,300で申し込む</span></a>
+    <p class="price-line">お支払いはクレジットカードです。お申し込みのあと、Zoomの参加方法をメールでお送りします。</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-tag">Train your ears. Find your voice.</div>
+    <div class="foot-copy">© 2026 Harmony Horizon ・ <a href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a> ・ <a href="https://www.harmonyhorizon.space">harmonyhorizon.space</a></div>
+    <div class="foot-legal">
+      <a href="/legal/tokushoho/">特定商取引法に基づく表記</a>
+      <a href="/legal/terms/">利用規約</a>
+      <a href="/legal/privacy/">プライバシーポリシー</a>
+    </div>
+  </div>
+</footer>
+
+<!-- iPhoneで音が受話口から出るのを防ぐ。/eatout/ と同じファイルを読む -->
+<script src="/eatout/audio-fix.js"></script>
+<script>
+(function () {
+  var current = null, currentBtn = null;
+  function stop() {
+    if (current) { current.pause(); current = null; }
+    if (currentBtn) { currentBtn.classList.remove('is-playing'); currentBtn = null; }
+  }
+  document.querySelectorAll('.play').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var same = currentBtn === btn;
+      stop();
+      if (same) return;
+      var a = new Audio(btn.getAttribute('data-src'));
+      current = a; currentBtn = btn;
+      btn.classList.add('is-playing');
+      a.addEventListener('ended', stop);
+      a.addEventListener('error', stop);
+      if (typeof window.eatoutPlay === 'function') { window.eatoutPlay(a); }
+      else { var p = a.play(); if (p && p.catch) p.catch(stop); }
+    });
+  });
+})();
+</script>
+</body>
+</html>

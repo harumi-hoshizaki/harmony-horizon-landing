@@ -58,7 +58,7 @@ def strip_code_comments(text, suffix):
 # 「和文の書体に抜けなし」が出続けていたのは、見ていなかっただけ。
 for f in (sorted(glob.glob('content/pages/*.html')) + sorted(glob.glob('content/legal/*.html'))
           + sorted(glob.glob('eatout/*.html')) + sorted(glob.glob('immigration/*.html'))
-          + sorted(glob.glob('speakup/*.html'))
+          + sorted(glob.glob('speakup/*.html')) + sorted(glob.glob('eatout/lesson/*.html'))
           + ['tools/build-site.py', 'assets/site/site.js']):
     h = strip_code_comments(open(f, encoding='utf-8').read(), pathlib.Path(f).suffix)
     t = re.sub(r'<script.*?</script>|<style.*?</style>', '', h, flags=re.S)

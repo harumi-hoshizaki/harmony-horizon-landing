@@ -20,7 +20,7 @@ _R = pathlib.Path(__file__).resolve().parent.parent
 # 抜けを両方のスクリプトで直す（片方だけ直すとずれる。§171 と同じ罠）。
 PAGES = (sorted((_R / 'content/pages').glob('*.html')) + sorted((_R / 'content/legal').glob('*.html'))
          + sorted((_R / 'eatout').glob('*.html')) + sorted((_R / 'immigration').glob('*.html'))
-         + sorted((_R / 'speakup').glob('*.html')))
+         + sorted((_R / 'speakup').glob('*.html')) + sorted((_R / 'eatout/lesson').glob('*.html')))
 
 def strip_code_comments(text, suffix):
     """注釈の日本語を拾わない。
