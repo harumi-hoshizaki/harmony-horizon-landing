@@ -251,6 +251,12 @@
   }
   .clip .tips-list { margin: 0; padding-left: 1.15em; }
   .clip .tips-list li { font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; margin-bottom: 6px; }
+  .clip .tips-list b, .clip .tips-text b { color: var(--ink); font-weight: 700; }
+  /* 「文の形」は1つしか無いので、点を打たない(1個だけの箇条書きは素人っぽい) */
+  .clip .tips-text { font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; margin: 0; }
+  /* 「こう返せます」は自分が言う側。英文なので太さを上げて、説明と見分ける。 */
+  .clip .tips-list.is-reply { list-style: none; padding-left: 0; }
+  .clip .tips-list.is-reply li { color: var(--ink); font-weight: 700; }
   .spotify-note { font-size: var(--text-sm); color: var(--ink-soft); margin: 22px 0 0; line-height: 1.85; }
   .spotify-note a { color: var(--ink); font-weight: 500; text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
 
@@ -456,8 +462,15 @@
       <details>
         <summary>英文と聞こえ方を見る<span class="sign" aria-hidden="true">+</span></summary>
         <p class="en">For here or to go?</p>
-        <p class="ja">店内で召し上がりますか？お持ち帰りですか？</p>
+        <p class="ja">店内で召し上がりますか？ お持ち帰りですか？</p>
         <div class="tips">
+          <p class="tips-label">単語と言い方</p>
+          <ul class="tips-list">
+            <li><b>for here</b> ＝ 店内で(飲む・食べる)。</li>
+            <li><b>to go</b> ＝ 持ち帰りで。北米では「テイクアウト」より to go が普通の言い方です。</li>
+          </ul>
+          <p class="tips-label">文の形</p>
+          <p class="tips-text">「A or B?」の二択なので、Yes / No ではなく、<b>どちらかを答えます</b>。北米のカフェでよく聞かれる質問です。</p>
           <p class="tips-label">発音Tips</p>
           <ul class="tips-list">
             <li>【おぅの二重母音】"go" の o は、「ごー」ではなく「ごぅ」のように、二重母音として発音します。</li>
@@ -467,6 +480,11 @@
             <li>【前置詞】"For" は "f" の音だけのように軽く発音され、次の "here" にドッキングします。</li>
             <li>【母音ドッキング】"here or" はつながって「ひあor」のように一息で聞こえます。</li>
             <li>【Toの弱形】"to go" の to は弱く、「とぅー」ではなく「t’ごぅ」のように短く聞こえます。「るごぅ」に近く聞こえることもあります。</li>
+          </ul>
+          <p class="tips-label">こう返せます</p>
+          <ul class="tips-list is-reply">
+            <li>For here, please.（店内で）</li>
+            <li>To go, please.（持ち帰りで）</li>
           </ul>
         </div>
       </details>
@@ -489,15 +507,29 @@
         <p class="en">It’ll be about a 20-minute wait.</p>
         <p class="ja">20分ほどお待ちいただくことになります。</p>
         <div class="tips">
+          <p class="tips-label">単語と言い方</p>
+          <ul class="tips-list">
+            <li><b>It’ll</b> ＝ It will の短縮形。</li>
+            <li><b>wait</b> ＝ ここでは「待ち時間」(名詞)。<b>about</b> ＝ 約・およそ。</li>
+          </ul>
+          <p class="tips-label">文の形</p>
+          <p class="tips-text">質問ではなく<b>案内</b>です。返事は "That’s okay."(それなら待ちます)で十分。いちばん大事なのは<b>数字(20)</b>の聞き取りです。</p>
           <p class="tips-label">発音Tips</p>
           <ul class="tips-list">
             <li>【機能語の弱形】"It’ll" の t は「ろ」のような音に変身し、「ぇろぅ」のように短くつぶれて聞こえます。「イット ウィル」とは聞こえません。will は、基本的に「うぃる」とは発音されず、「ぅ」のようなリズム感、音で発音されます。</li>
             <li>【い/えの中間音】"minute" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。</li>
+            <li>【数字ははっきり】待ち時間の数字は、文の中でいちばんはっきり発音されます。数字だけ拾えれば、この文は聞き取れたのと同じです。</li>
           </ul>
           <p class="tips-label">つながる音Tips</p>
           <ul class="tips-list">
             <li>【Flap T】"be about a" の t は母音に挟まれて「ら行」の音に変身し、「びぁばぅら」のように聞こえます。</li>
+            <li>【消えるT】"minute" の最後の t は強く発音されず、「みにっ」のように止まって聞こえます。</li>
             <li>【消えるT】文末の "wait" の最後の t も同じく破裂させず、舌をtの位置で止めるだけで終わります。</li>
+          </ul>
+          <p class="tips-label">こう返せます</p>
+          <ul class="tips-list is-reply">
+            <li>That’s okay.（それなら待ちます）</li>
+            <li>We’ll wait.（待ちます）</li>
           </ul>
         </div>
       </details>
@@ -515,15 +547,28 @@
         <p class="en">Can I start you off with something to drink?</p>
         <p class="ja">まず、お飲み物はいかがですか？</p>
         <div class="tips">
+          <p class="tips-label">単語と言い方</p>
+          <ul class="tips-list">
+            <li><b>start you off with ○○</b> ＝ まず○○から始める。「まずお飲み物からいかがですか」という、お店の決まった言い方です。<b>直訳の「あなたをスタートさせる」で考えると、意味が取れません。</b></li>
+          </ul>
+          <p class="tips-label">文の形</p>
+          <p class="tips-text">文は長いですが、聞かれていることは "Something to drink?" と<b>同じ</b>です。全部聞き取れなくても、<b>drink さえ拾えれば答えられます</b>。長い文は、拾う単語を1つ決めておくのがコツです。</p>
           <p class="tips-label">発音Tips</p>
           <ul class="tips-list">
             <li>【機能語の弱形】"can" は文中では弱く「けん」や「くん」のように短く聞こえます。</li>
-            <li>【い/えの中間音】"drink" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。</li>
+            <li>【い/えの中間音】"with"(うぇth)、"something"(smthぇん)、"drink"(Drぇんk) の i は、日本語の「い」ではなく、<b>「え」と「い」の中間</b>のような音です。この3語とも、カナでは「ぇ」と書いています。</li>
+            <li>【ngの止め方】"something" の最後の ng は、g を発音せず、鼻から息を抜く「ん」に近い音で止めます。</li>
           </ul>
           <p class="tips-label">つながる音Tips</p>
           <ul class="tips-list">
             <li>【同化】"start you" は t と y がくっついて「すたーちゅ」のように聞こえます。</li>
-            <li>【母音ドッキング】"Can I" はつながって「けなぃ」のように一息で聞こえます。</li>
+            <li>【母音ドッキング】"Can I" はつながって「けなぃ」のように一息で聞こえます。同じことが "you off" でも起きて、off の o が直前の you にくっつき、「ちゅあf」のようにひと続きに聞こえます。</li>
+            <li>【Toの弱形】"something to drink" の to は弱く発音され、「t’」だけにつぶれて、<b>次の単語(drink)にドッキングします</b>。「t’Drぇんk」で1つの音のかたまりです。「とぅー どりんく」とは聞こえません。</li>
+          </ul>
+          <p class="tips-label">こう返せます</p>
+          <ul class="tips-list is-reply">
+            <li>Just water, please.（お水だけで）</li>
+            <li>I’ll have a Coke.（コーラにします）</li>
           </ul>
         </div>
       </details>
