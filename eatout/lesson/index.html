@@ -7,7 +7,7 @@
 <meta name="description" content="10月15日（木）21:30〜23:00（日本時間）、Zoomで90分、¥2,300。単語は知っているのに店員さんの英語だけ速く聞こえるのは、音がつながって形が変わるからです。その変わり方を知って、声に出して、その場で返せるところまで練習します。">
 <link rel="canonical" href="https://www.harmonyhorizon.space/eatout/lesson/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="単語は知っているのに、店員さんの英語だけ速い。">
+<meta property="og:title" content="単語は知ってるはずなのに、聞き取れない。出てこない。">
 <meta property="og:description" content="速いのではなく、音がつながって形が変わっているだけです。10月15日（木）21:30〜、Zoomで90分、¥2,300。">
 <meta property="og:url" content="https://www.harmonyhorizon.space/eatout/lesson/">
 <meta property="og:locale" content="ja_JP">
@@ -133,7 +133,9 @@
   .hero { position: relative; background: var(--espresso); color: var(--cream); padding: 0; }
   /* ★帯の高さは「画面の幅」ではなく**残っている高さ**から決める(CLAUDE.md)。
      46svh では 393×659 で申し込みボタンが画面の外(932px)に出ていた。 */
-  :root { --hero-band: clamp(140px, 25svh, 240px); }
+  /* ★帯は「残っている高さ」から。見出しが長くなった分(2026-10-02の
+     文言変更)、帯を1段細くして申し込みボタンを最初の一画面に残した。 */
+  :root { --hero-band: clamp(112px, 19svh, 220px); }
   .hero__media { position: absolute; inset: 0 0 auto; height: var(--hero-band); overflow: hidden; }
   .hero__media img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: 58% 30%; }
   .hero__media::after {
@@ -142,12 +144,12 @@
       rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 30%, rgba(31,27,23,.30) 46%,
       rgba(31,27,23,.74) 60%, rgba(31,27,23,.94) 74%, rgba(31,27,23,1) 86%);
   }
-  .hero__in { position: relative; padding-block: max(74px, calc(var(--hero-band) - 48px)) 32px; }
+  .hero__in { position: relative; padding-block: max(62px, calc(var(--hero-band) - 44px)) 28px; }
   .hero .eyebrow { color: var(--gold-pale); }
   .hero .eyebrow::before { background: var(--gold-pale); }
   .hero h1 { color: #FFFFFF; margin-bottom: 10px; font-size: clamp(1.875rem, 6.2vw, 2.6rem);  /* 下限 30px。tools/mobile-audit.js の h1 の幅(30–36px)に合わせる */ }
   .hero h1 em { color: var(--gold-pale); font-style: normal; }
-  .hero .lede { color: rgba(251,249,246,0.92); margin-bottom: 16px; font-size: 16px; line-height: 1.8; }
+  .hero .lede { color: rgba(251,249,246,0.92); margin-bottom: 14px; font-size: 16px; line-height: 1.75; }
   /* 日時と値段の札。HARU様「値段とか、時間とかわかりやすく書いて」。
      ★この札から「いつ・いくら・どこで・どれくらい」の4つを外さないこと。 */
   .date-card {
@@ -300,15 +302,28 @@
     .hero__media { inset: 0; height: auto; }
     .hero__media img { object-position: 50% 44%; }
     .hero__media::after {
-      /* ★卓上の階調。薄いと写真の明るい所で文字が読めなくなる。
-         tools/hero-contrast.js で実測して決めた値(最初に作った
-         .94→.12 では h1 が 4.08、導入文が 2.01 しか出ていなかった)。
-         ★薄くする方向に触らないこと。触ったら必ず測り直す。 */
-      background: linear-gradient(90deg, rgba(31,27,23,.97) 0%, rgba(31,27,23,.95) 48%, rgba(31,27,23,.80) 74%, rgba(31,27,23,.55) 100%);
+      /* ★2026-10-02 HARU様「PCサイズは黒すぎませんか？ プロならどうする？」
+         —— 黒すぎた本当の原因は階調ではなく**文字の置き場所**でした。
+         文字を画面の真ん中(720pxの箱)に置いていたので、読めるようにするには
+         写真を端から端まで濃く塗るしかなく、せっかくの写真が黒い板になって
+         いた。直し方は「濃さを上げる」ではなく、**文字を片側に寄せて覆いも
+         その側だけにする**(販売LPの卓上と同じ考え方)。文字は左の540pxに
+         寄せ、右は写真を素のまま見せる。
+         ★文字の幅と階調は対で動かすこと。片方だけ触ると、また全面が
+           黒くなる。数値は tools/hero-contrast.js で実測して決めた。 */
+      background:
+        linear-gradient(90deg,
+          rgba(31,27,23,.95) 0%, rgba(31,27,23,.93) 36%, rgba(31,27,23,.80) 53%,
+          rgba(31,27,23,.46) 67%, rgba(31,27,23,.16) 83%, rgba(31,27,23,0) 100%),
+        linear-gradient(180deg, rgba(31,27,23,.24) 0%, rgba(31,27,23,.08) 45%, rgba(31,27,23,.28) 100%);
     }
     .hero__in { padding-block: 92px 84px; }
-    .hero .container { max-width: var(--max-w); }
-    .date-card { max-width: 30em; }
+    .hero .container { max-width: 1120px; }
+    /* 見出しが折り返して「のに、」「ない。」だけの行にならない幅。
+       41.6px × 14文字 ≒ 582px 要る。本文はもう少し狭いほうが読みやすい。 */
+    .hero__in .container > * { max-width: 540px; }
+    .hero__in .container > h1 { max-width: 660px; }
+    .date-card { max-width: 480px; }
   }
 </style>
 </head>
@@ -346,7 +361,7 @@
   <div class="hero__in">
     <div class="container">
       <span class="eyebrow">90分のオンラインレッスン</span>
-      <h1>単語は知っているのに、<br><em>店員さんの英語だけ速い。</em></h1>
+      <h1>単語は知ってるはずなのに、<br><em>聞き取れない。出てこない。</em></h1>
       <p class="lede">速いのではなく、音がつながって形が変わっているだけです。その変わり方を知って、声に出すところまで、90分で練習します。</p>
       <div class="date-card">
         <div class="row">
