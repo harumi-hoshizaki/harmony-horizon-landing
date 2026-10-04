@@ -882,10 +882,15 @@ section:not(.alt) .steps li, section:not(.alt) .quote { background: var(--paper-
 body.is-ai {
   --aj-ink: #111111;
   --aj-muted: #55555F;
-  --aj-peach: #FFEBDD;
-  --aj-lilac: #ECE8FF;
-  --aj-mint: #DFF5EA;
-  --aj-sky: #E3F0FF;
+  /* 2026-10-04 HARU様「色が多すぎる。黄色のボタンと喧嘩しない色一つに」。
+     面の色は淡い青グレー1色だけ。金（橙寄りの黄）の反対側の色相なので、
+     ボタンが一番目立つ。昔の4色の名前は残し、全部同じ値にする。 */
+  --aj-tint: #EEF2F7;
+  --aj-tint-ink: #2E3A4D;
+  --aj-peach: var(--aj-tint);
+  --aj-lilac: var(--aj-tint);
+  --aj-mint: var(--aj-tint);
+  --aj-sky: var(--aj-tint);
   --aj-line: rgba(17,17,17,.08);
   --aj-font: "Inter", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
   font-family: var(--aj-font);
@@ -898,7 +903,7 @@ body.is-ai h1, body.is-ai h2, body.is-ai h3 { font-family: var(--aj-font); color
 .aj-tag {
   display: inline-flex; align-items: center; gap: 8px; margin: 0 0 var(--s3);
   padding: 6px 14px; border-radius: 999px; background: var(--aj-lilac);
-  font-size: 14px; font-weight: 600; letter-spacing: .02em; color: #3B3363; line-height: 1.4;
+  font-size: 14px; font-weight: 600; letter-spacing: .02em; color: var(--aj-tint-ink); line-height: 1.4;
 }
 .aj-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: #E2A33D; }
 
@@ -965,7 +970,7 @@ body.is-ai .aj-h3 { font-size: 22px; font-weight: 700; line-height: 1.45; letter
 .aj-list li { position: relative; padding-left: 26px; font-size: 17px; line-height: 1.75; color: var(--aj-ink); }
 .aj-list li::before {
   content: ""; position: absolute; left: 0; top: .55em; width: 14px; height: 14px; border-radius: 50%;
-  background: var(--aj-mint); box-shadow: inset 0 0 0 4px #fff, inset 0 0 0 14px #3BA776;
+  background: var(--aj-ink); box-shadow: inset 0 0 0 4px #fff;
 }
 
 /* 作ったもの：大小の箱を組む（bento） */
@@ -974,7 +979,7 @@ body.is-ai .aj-h3 { font-size: 22px; font-weight: 700; line-height: 1.45; letter
 .aj-work { border-radius: 28px; padding: var(--s5) var(--s4); overflow: hidden; position: relative; }
 @media (min-width: 900px) { .aj-work { padding: var(--s6) var(--s5); } }
 .aj-work p { font-size: 17px; line-height: 1.8; color: #2B2B33; margin: 0 0 var(--s2); max-width: 34em; }
-.aj-work__k { font-size: 14px !important; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #3B3363 !important; margin-bottom: var(--s1) !important; }
+.aj-work__k { font-size: 14px !important; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--aj-tint-ink) !important; margin-bottom: var(--s1) !important; }
 .aj-work--peach { background: var(--aj-peach); }
 .aj-work--lilac { background: var(--aj-lilac); }
 .aj-work--mint  { background: var(--aj-mint); }
