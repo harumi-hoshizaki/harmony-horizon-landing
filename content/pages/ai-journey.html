@@ -10,7 +10,7 @@
         </div>
         <h1 class="aj-display" lang="en">Hi, I’m HARU.</h1>
         <p class="aj-sub">AIで、作ってみる毎日。</p>
-        <p class="aj-lede">英会話のコース、レストランの動画、毎日の作業の自動化。プロではありませんが、AIに相談しながら自分の手で作っています。ここには、その日にできたことをそのまま書いています。</p>
+        <p class="aj-lede">英会話のコース、レストランの動画、支払いからお礼のメールまでの仕組みを、AIと一緒に自分の手で作り、実際に動かしています。ここには、その日にできたことをそのまま書いています。</p>
         <div class="row">
           <a class="btn" href="#log">今日できたこと</a>
           <a class="btn btn--ghost" href="/ai-journey/contact/">話してみる</a>
@@ -26,10 +26,11 @@
     </div>
     <div class="wrap">
       <ul class="aj-chips" aria-label="作っているもの">
-        <li>英会話コース</li>
-        <li>レストランの Reels</li>
-        <li>作業の自動化</li>
         <li>ウェブサイト</li>
+        <li>オンラインコース</li>
+        <li>AIとの会話・音声</li>
+        <li>短い動画</li>
+        <li>作業の自動化</li>
       </ul>
     </div>
   </section>
@@ -67,25 +68,25 @@
         <article class="aj-work aj-work--wide aj-work--peach" data-reveal>
           <div class="aj-work__body">
             <p class="aj-work__k">Courses</p>
-            <h3 class="aj-h3">音声つきの英会話コース</h3>
-            <p>飲食店や入国審査の場面を、耳と声で練習するコースです。会話の音声は AI で作り、聞き取りやすさを一つずつ確かめています。</p>
-            <p class="aj-links"><a href="/eatout/">飲食店のコース</a><a href="/immigration/">入国審査のコース</a></p>
+            <h3 class="aj-h3">申し込みから練習まで、一人で作ったコース</h3>
+            <p>飲食店や入国審査の場面を、耳と声で練習する英会話のコースです。中身だけでなく、申し込みと支払い（Stripe）、支払いが本当に済んだかの確認、練習できる回数の管理まで作り、実際に販売しています。</p>
+            <p class="aj-links"><a href="/eatout/">飲食店のコース</a><a href="/immigration/">入国審査のコース</a><a href="/speakup/">Speak Up</a></p>
           </div>
           <img class="aj-work__shot" src="/assets/site/speakup-app-screenshot.jpg" alt="" width="780" height="1650" loading="lazy" decoding="async">
         </article>
         <article class="aj-work aj-work--lilac" data-reveal>
-          <p class="aj-work__k">Reels</p>
-          <h3 class="aj-h3">レストラン紹介の動画</h3>
-          <p>モントリオールのお店を紹介する縦型の動画です。撮った素材と自分の言葉を入れると、字幕（英語・フランス語）とナレーションの原稿までそろう仕組みを作りました。</p>
+          <p class="aj-work__k">AI talk</p>
+          <h3 class="aj-h3">AIの店員と、声で話す練習</h3>
+          <p>場面ごとに役を決めたAI（ElevenLabs）が店員になり、こちらの英語に声で答えます。話がそれないように決まりを入れ、一回の購入で使える回数も数えています。</p>
         </article>
         <article class="aj-work aj-work--mint" data-reveal>
-          <p class="aj-work__k">Automation</p>
-          <h3 class="aj-h3">毎日の作業の自動化</h3>
-          <p>コースの音声づくり、動画の納品セット、サイトの文字の大きさや押しやすさの検査。手でやっていたことを、AI と一緒に自動にしました。</p>
+          <p class="aj-work__k">AI voice</p>
+          <h3 class="aj-h3">聞き取りやすいAIの音声</h3>
+          <p>コースの会話はAIの声で作り、速さや聞こえ方を一つずつ確かめています。iPhoneで音が小さくなる問題も、試験を作って直しました。</p>
         </article>
         <article class="aj-work aj-work--wide aj-work--case" data-reveal>
           <div class="aj-work__body">
-            <p class="aj-work__k">Sample</p>
+            <p class="aj-work__k">Website</p>
             <h3 class="aj-h3">リフォーム会社のサイト（見本）</h3>
             <p>モントリオールの住宅リフォーム会社を想定して作った、フランス語と英語のサイトです。会社名の「Soleil Rénovation」と施工例は、見本のための架空のものです。</p>
             <p class="aj-links"><a href="/ai-journey/work/soleil/fr/">見本を開く</a></p>
@@ -94,12 +95,15 @@
             <img src="/assets/site/work-soleil.jpg" alt="" width="1280" height="800" loading="lazy" decoding="async">
           </a>
         </article>
-        <article class="aj-work aj-work--wide aj-work--sky" data-reveal>
-          <div class="aj-work__body">
-            <p class="aj-work__k">Website</p>
-            <h3 class="aj-h3">このサイト</h3>
-            <p>文字の大きさ、写真の切り方、携帯の最初の一画面にボタンが入るか。AI と一緒に測りながら直してきました。</p>
-          </div>
+        <article class="aj-work aj-work--sky" data-reveal>
+          <p class="aj-work__k">Video</p>
+          <h3 class="aj-h3">レストラン紹介の短い動画</h3>
+          <p>モントリオールのお店を紹介する縦型の動画です。撮った素材と自分の言葉を入れると、字幕（英語・フランス語）とナレーションの原稿までそろう仕組みを作りました。</p>
+        </article>
+        <article class="aj-work aj-work--mint" data-reveal>
+          <p class="aj-work__k">Automation</p>
+          <h3 class="aj-h3">支払いから、お礼のメールまで自動で</h3>
+          <p>レッスンの代金が支払われると、申込者の一覧に入り、お礼のメールが届きます（Stripe・Zapier・MailerLite）。サイトの文字の大きさや押しやすさも、毎回自動で測っています。</p>
         </article>
       </div>
     </div>
@@ -107,9 +111,26 @@
 
   <section class="aj-sec">
     <div class="wrap">
+      <div class="aj-head">
+        <p class="aj-tag">For you</p>
+        <h2 class="aj-h2 aj-en" lang="en">I don’t just use AI. <span class="nw">I build with it.</span></h2>
+        <p class="aj-lede">AIに聞いて終わりではなく、AIと一緒に、動くものを作ります。たとえば、こんなことをお手伝いできます。</p>
+      </div>
+      <ul class="aj-offer">
+        <li data-reveal><h3 class="aj-h3">ウェブサイト</h3><p>日本語・英語・フランス語で。携帯で開いた最初の一画面まで測って作ります。</p></li>
+        <li data-reveal><h3 class="aj-h3">オンラインで売る仕組み</h3><p>申し込み、支払い、お礼のメール、中身の受け渡しまでをつなげます。</p></li>
+        <li data-reveal><h3 class="aj-h3">AIとの会話・音声</h3><p>役になりきって答えるAIや、聞き取りやすい音声の教材を作ります。</p></li>
+        <li data-reveal><h3 class="aj-h3">短い動画</h3><p>素材と言葉から、字幕（英語・フランス語）とナレーションの原稿までそろえます。</p></li>
+        <li data-reveal><h3 class="aj-h3">毎日の作業の自動化</h3><p>手でくり返していることを、決まった時に自動で動くようにします。</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="aj-sec">
+    <div class="wrap">
       <div class="aj-cta" data-reveal>
         <h2 class="aj-h2">一緒に、<span class="nw">作ってみませんか。</span></h2>
-        <p class="aj-lede">感想や質問、「こんなものを作ってほしい」というご相談も歓迎します。</p>
+        <p class="aj-lede">「こんなものを作ってほしい」というご相談も、感想や質問も歓迎します。</p>
         <a class="btn" href="/ai-journey/contact/">問い合わせる</a>
       </div>
     </div>

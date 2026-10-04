@@ -1024,3 +1024,10 @@ body.is-ai .aj-cta .aj-h2 { color: #fff; }
 .aj-work__site img { width: 100%; height: auto; display: block; }
 /* 「今日できたこと」は1行で（2026-10-04 HARU様）。7文字なので 320px でも収まる */
 .aj-nowrap { white-space: nowrap; }
+/* 頼めること（2026-10-04 HARU様「頼もうと思える部分を書いた方がいい」）。札の列ではなく、線で区切った行 */
+body.is-ai .aj-en { font-size: clamp(32px, 5vw, 56px); max-width: 16em; }
+.aj-offer { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--aj-line); }
+.aj-offer li { display: grid; gap: 6px; padding: var(--s4) 0; border-bottom: 1px solid var(--aj-line); }
+.aj-offer .aj-h3 { margin: 0; }
+.aj-offer p { margin: 0; font-size: 17px; line-height: 1.8; color: var(--aj-muted); max-width: 34em; }
+@media (min-width: 900px) { .aj-offer li { grid-template-columns: .8fr 1.2fr; gap: var(--s8); align-items: baseline; } }
