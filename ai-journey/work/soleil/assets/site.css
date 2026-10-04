@@ -1,0 +1,686 @@
+/* MONTPETIT RENOVATIONS
+   Design system — Blueprint V2.0 §29–§33 (Architectural Editorial Luxury)
+   3 colours + neutrals, 2 type roles, 8px spacing, 1240px container.
+   No external requests: no webfonts, no third-party CSS (Add. 2 §127). */
+
+/* ---------- TOKENS ---------- */
+:root {
+  /* Marine + cuivre : les couleurs du client, tenues en retrait (V2.0 §30, §84).
+     L orange vif du logo est ramené au cuivre — un matériau, pas un cône de chantier. */
+  /* Blanc crème plutôt que beige : la couleur vient des photos, pas du fond.
+     Contrastes vérifiés AA sur --paper pour chaque couleur de texte. */
+  --paper:      #FBF9F6;
+  --paper-warm: #F4F0E9;
+  --stone:      #E6E0D6;
+  --stone-deep: #7A7263;   /* 4.6:1 sur --paper — utilisable en petit texte */
+  --stone-light:#A9A296;   /* 7.0:1 sur --deep — libellés du pied de page */
+  /* Charbon chaud, pas marine : le bleu refroidit le bois et se bat avec le
+     cuivre. Un noir chaud laisse la photo porter la couleur. */
+  --deep:       #1F1B17;
+  --deep-lift:  #2C2620;
+  --ink:        #1A1D24;
+  --ink-soft:   #474E5A;
+  --bronze:     #9C5C33;
+  --bronze-lit: #C98A5C;
+  /* Brique : la première couleur du projet. Réservée à UNE action — appeler.
+     Le cuivre reste l'accent décoratif (surtitres, filets, survols) ;
+     les deux ne se confondent pas. Cf. addenda 4, §169. */
+  --brick:      #7A2E1E;
+  --line:       rgba(26,29,36,.14);
+  --line-soft:  rgba(26,29,36,.08);
+
+  /* Auto-hébergées (assets/fonts.css). Archivo pour la voix, Inter pour la lecture. */
+  --display: "Playfair Display", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+  --serif: var(--display);
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px;
+  --s6: 64px; --s7: 80px; --s8: 96px; --s9: 120px;
+
+  --container: 1240px;
+  --pad: 24px;
+  --ease: cubic-bezier(.2,.6,.2,1);
+}
+
+@media (min-width: 900px) { :root { --pad: 48px; } }
+
+/* ---------- RESET ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+@media (min-width: 900px) { body { font-size: 18px; } }
+img, svg { max-width: 100%; height: auto; display: block; }
+a { color: inherit; }
+button { font: inherit; }
+
+/* ---------- TYPE ---------- */
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; margin: 0; letter-spacing: -.012em; }
+/* §31 — bureau : H1 56-72 · H2 40-52 · H3 24-32 · corps 17-19
+        mobile : H1 40-48 · H2 32-38 · H3 22-26 */
+h1 { font-size: clamp(44px, 5.4vw, 68px); line-height: 1.05; }
+h2 { font-size: clamp(32px, 3.6vw, 48px); line-height: 1.12; }
+h3 { font-size: clamp(22px, 2.1vw, 28px); line-height: 1.25; }
+p  { margin: 0 0 var(--s3); }
+p:last-child { margin-bottom: 0; }
+
+.eyebrow {
+  font-family: var(--sans);
+  font-size: 12px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--bronze); margin: 0 0 var(--s2);
+}
+.lede { font-size: clamp(19px, 2vw, 22px); line-height: 1.55; color: var(--ink-soft); max-width: 62ch; }
+.muted { color: var(--ink-soft); }
+.small { font-size: 14px; line-height: 1.6; }
+
+/* ---------- LAYOUT ---------- */
+.wrap { width: 100%; max-width: var(--container); margin: 0 auto; padding: 0 var(--pad); }
+section { padding: var(--s7) 0; }
+@media (min-width: 900px) { section { padding: var(--s9) 0; } }
+.rule { height: 1px; background: var(--line); border: 0; margin: 0; }
+
+/* Le titre et son paragraphe se lisent de haut en bas, dans la même colonne.
+   L'ancien gabarit (titre à gauche, paragraphe à droite, alignés par le bas)
+   faisait sauter l'œil d'un bloc à l'autre et laissait le paragraphe orphelin :
+   c'est un tic de site d'agence, pas d'entrepreneur. */
+.sec-head { display: block; margin-bottom: var(--s5); max-width: 78ch; }
+.sec-head > * + * { margin-top: var(--s2); }
+.sec-head .lede { max-width: 62ch; }
+.sec-head .lede + .lede { margin-top: var(--s2); }
+.sec-num {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .16em;
+  color: var(--stone-deep); display: block; margin-bottom: var(--s2);
+}
+
+/* ---------- LINKS & BUTTONS ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 16px 28px; min-height: 48px;
+  font-size: 14px; letter-spacing: .1em; text-transform: uppercase;
+  text-decoration: none; border: 1px solid var(--deep); background: var(--deep); color: var(--paper);
+  transition: background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+  cursor: pointer;
+}
+.btn:hover { background: var(--bronze); border-color: var(--bronze); color: #fff; }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--light { background: transparent; color: #fff; border-color: rgba(255,255,255,.5); }
+.btn--light:hover { background: #fff; color: var(--ink); border-color: #fff; }
+/* Appeler — la seule action qui porte l'accent, partout où elle apparaît.
+   Blanc sur cuivre : 5.3:1. Cuivre contre charbon : 3.3:1, assez pour
+   distinguer deux boutons voisins. */
+.btn--call { background: var(--brick); border-color: var(--brick); color: #fff; }
+.btn--call:hover { background: var(--deep); border-color: var(--deep); color: var(--paper); }
+.btn[disabled], .btn[aria-disabled="true"] { opacity: .45; pointer-events: none; }
+
+.link {
+  display: inline-block; text-decoration: none; padding: 10px 0 4px;
+  border-bottom: 1px solid var(--line); transition: border-color .3s var(--ease);
+}
+.link:hover { border-color: var(--ink); }
+
+a:focus-visible, button:focus-visible, input:focus-visible,
+select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--bronze); outline-offset: 3px;
+}
+.skip {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+.skip:focus {
+  position: fixed; left: 8px; top: 8px; z-index: 100;
+  width: auto; height: auto; clip-path: none;
+  background: var(--deep); color: var(--paper); padding: 12px 20px;
+}
+
+/* ---------- STATUS CHIPS (pre-launch only) ---------- */
+.need, .draft {
+  display: inline-block; font-family: var(--mono); font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; padding: 3px 8px; border-radius: 2px; vertical-align: middle;
+  white-space: nowrap; max-width: 100%; overflow-wrap: anywhere;
+}
+@media (max-width: 400px) { .need, .draft { white-space: normal; } }
+/* Les marqueurs ne doivent JAMAIS reprendre la couleur d'une action.
+   La brique appartient à « appeler ». L'ambre et le noir sont le signal
+   universel du provisoire : impossible à confondre avec la marque,
+   et il disparaît en production. Cf. addenda 4, §169. */
+.need { background: #F2C14E; color: #24211C; border: 1px dashed #6B5A2A; font-weight: 500; }
+.draft { background: transparent; color: var(--stone-deep); border: 1px dashed var(--stone-deep); }
+.banner {
+  background: var(--deep); color: var(--paper); font-size: 13px; line-height: 1.5;
+  padding: 12px var(--pad); text-align: center;
+}
+.banner strong { color: #E9B98C; }
+
+/* ---------- HEADER ---------- */
+.hdr {
+  position: sticky; top: 0; z-index: 40;
+  background: rgba(251,249,246,.94); backdrop-filter: saturate(1.4) blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+}
+.hdr__in { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); height: 72px; min-width: 0; }
+@media (min-width: 900px) { .hdr__in { height: 88px; gap: var(--s3); } }
+/* Le mot-symbole ne pousse jamais les commandes hors de l'écran : il rétrécit
+   avant. Mesuré sur 320 / 360 / 390 px. */
+.brand {
+  font-family: var(--display); font-weight: 600; font-size: 19px; letter-spacing: -.012em;
+  text-decoration: none; line-height: 1.1; padding: 6px 0; white-space: nowrap;
+}
+@media (min-width: 400px) { .brand { font-size: 21px; } }
+@media (min-width: 560px) { .brand { font-size: 23px; } }
+.brand span {
+  display: block; font-family: var(--display); font-weight: 400; font-size: 9px;
+  letter-spacing: .24em; text-transform: uppercase; color: var(--stone-deep); margin-top: 5px;
+}
+@media (min-width: 560px) { .brand span { font-size: 10px; letter-spacing: .32em; margin-top: 6px; } }
+.nav { display: none; }
+@media (min-width: 1000px) {
+  .nav { display: flex; align-items: center; gap: var(--s3); }
+  .nav a { white-space: nowrap; }
+  .nav a { font-size: 15px; text-decoration: none; letter-spacing: .005em; color: var(--ink-soft);
+    padding: 4px 0; border-bottom: 1px solid transparent;
+    transition: border-color .3s var(--ease), color .3s var(--ease); }
+  .nav a:hover, .nav a[aria-current="page"] { color: var(--ink); border-color: var(--ink); }
+}
+.hdr__end { display: flex; align-items: center; gap: var(--s3); }
+/* <p> hérite d'une marge basse : elle décalait FR/EN vers le haut. */
+/* Cibles tactiles : 44 px minimum (WCAG 2.2 AA). Le texte fait 13 px ;
+   c'est le rembourrage qui porte la cible, pas la taille de la police.
+   Sous 560 px, le sélecteur de langue disparaît de l'en-tête : il est dans
+   le tiroir, avec une cible plus grande. Le garder deux fois sur un écran
+   de 320 px pousse le mot-symbole hors cadre. */
+.lang { display: none; align-items: center; gap: 2px; margin: 0;
+  font-family: var(--sans); font-size: 13px; letter-spacing: .04em; line-height: 1; }
+.lang a {
+  text-decoration: none; color: var(--stone-deep);
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 34px; min-height: 44px; padding: 0 4px;
+}
+@media (min-width: 560px) { .lang { display: flex; } }
+.lang a:hover { color: var(--ink); }
+.lang [aria-current] { color: var(--ink); }
+/* Pour un entrepreneur, le téléphone est le premier chemin de conversion :
+   il reste visible, il n'est pas enterré dans la page contact (V2.0 §48). */
+.hdr__tel { display: none; }
+@media (min-width: 1280px) {
+  .hdr__tel {
+    white-space: nowrap;
+    display: inline-block; text-decoration: none; font-size: 15px;
+    letter-spacing: .01em; padding: 4px 0; border-bottom: 1px solid var(--line);
+    transition: border-color .3s var(--ease);
+  }
+  .hdr__tel:hover { border-color: var(--ink); }
+}
+.hdr .btn { display: none; }
+@media (min-width: 1000px) {
+  .hdr .btn { display: inline-flex; padding: 13px 22px; min-height: 46px; font-size: 11px; letter-spacing: .14em; }
+}
+
+.burger {
+  display: inline-flex; flex-direction: column; justify-content: center; gap: 5px;
+  width: 48px; height: 48px; padding: 0 12px; background: none; border: 0; cursor: pointer;
+}
+@media (min-width: 1000px) { .burger { display: none; } }
+.burger i { display: block; height: 1px; background: var(--ink); transition: transform .3s var(--ease), opacity .3s var(--ease); }
+.burger[aria-expanded="true"] i:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.burger[aria-expanded="true"] i:nth-child(2) { opacity: 0; }
+.burger[aria-expanded="true"] i:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+/* Le tiroir commence sous l'en-tête. Sa position est mesurée à l'ouverture,
+   jamais devinée : un bandeau au-dessus de l'en-tête (avis de maquette,
+   bannière de consentement, barre d'annonce) le décale vers le bas, et une
+   marge fixe cacherait les premiers éléments derrière l'en-tête. */
+.drawer {
+  position: fixed; inset: 0; z-index: 39; background: var(--paper);
+  padding: var(--s4) var(--pad) var(--s5); display: flex; flex-direction: column;
+  transform: translateY(-100%); transition: transform .45s var(--ease); overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.drawer[data-open="true"] { transform: translateY(0); }
+/* La navigation ne crie jamais plus fort que la marque, et elle reste en
+   sans-sérif — la sérif est la voix de la marque, pas celle de l'interface
+   (Addendum 4 §159).
+   Comparer des corps ne suffit pas : à taille égale l'Inter paraît nettement
+   plus grand que le Playfair, dont la hauteur d'x est bien plus basse. C'est
+   la hauteur de capitale qui se compare. Deux crans sous la marque à chaque
+   palier donne des capitales presque identiques — et la sérif garde le
+   dessus. Suit les paliers de `.brand` (19 / 21 / 23). */
+.drawer__nav a {
+  display: block; font-family: var(--sans); font-weight: 500; font-size: 17px;
+  letter-spacing: -.005em; text-decoration: none; padding: 14px 0;
+  border-bottom: 1px solid var(--line-soft); min-height: 48px;
+}
+@media (min-width: 400px) { .drawer__nav a { font-size: 18px; } }
+@media (min-width: 560px) { .drawer__nav a { font-size: 20px; } }
+/* Un numéro de téléphone est une donnée, pas la voix de la marque : il se lit
+   chiffre par chiffre, à voix haute, souvent en marchant. La sérif de titrage
+   dessine des chiffres au dessin marqué qui se lisent mal en petite taille.
+   Chiffres alignés (`lnum`), mais PAS à chasse fixe : la chasse fixe sert à
+   aligner des colonnes ; sur un numéro isolé elle écarte les groupes et donne
+   un rendu mécanique. Ici, proportionnel. Cf. §159. */
+.drawer__tel {
+  display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  font-family: var(--sans); font-weight: 500; font-size: 20px;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-feature-settings: "lnum" 1, "pnum" 1;
+  text-decoration: none; margin-top: var(--s4); letter-spacing: .01em;
+  color: var(--ink); min-height: 56px;
+}
+/* Le surtitre porte la couleur de l'action : dans le tiroir on ne remplit
+   rien — deux blocs pleins entreraient en concurrence avec le bouton
+   principal — mais l'action reste identifiable à sa couleur (§169). */
+.drawer__tel small {
+  display: block; font-family: var(--sans); font-weight: 500; font-size: 11px;
+  letter-spacing: .16em; text-transform: uppercase; color: var(--brick); margin-bottom: 4px;
+}
+.drawer__lang { margin-top: var(--s4); display: flex; align-items: center; gap: 4px; font-size: 15px; }
+.drawer__lang a {
+  text-decoration: none; color: var(--stone-deep);
+  display: inline-flex; align-items: center; min-height: 48px; padding: 0 6px;
+}
+.drawer__lang a[aria-current] { color: var(--ink); }
+.drawer .btn { margin-top: var(--s3); }
+@media (min-width: 1000px) { .drawer { display: none; } }
+
+/* ---------- HERO ---------- */
+.hero { position: relative; background: var(--deep); color: var(--paper); }
+.hero__media { position: absolute; inset: 0; overflow: hidden; }
+/* `padding: X 0 Y` remettait à zéro le rembourrage horizontal de `.wrap` :
+   sur mobile, le titre et le texte touchaient le bord de l'écran.
+   N'écrire que l'axe vertical laisse le rembourrage du conteneur en place. */
+.hero__in { position: relative; padding-block: var(--s8) var(--s7); }
+@media (min-width: 900px) { .hero__in { padding-block: 168px var(--s9); min-height: 84vh; display: flex; align-items: flex-end; } }
+.hero__grid { width: 100%; display: grid; gap: var(--s4); }
+@media (min-width: 900px) { .hero__grid { grid-template-columns: 1.35fr .8fr; gap: var(--s7); align-items: end; } }
+.hero h1 { color: #fff; max-width: 15ch; }
+.hero .eyebrow { color: var(--bronze-lit); }
+.hero p { color: rgba(245,241,234,.95); }
+.hero__cta { display: flex; flex-wrap: wrap; gap: var(--s2); margin-top: var(--s4); }
+.hero .btn:not(.btn--light) { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.hero .btn:not(.btn--light):hover { background: var(--bronze); border-color: var(--bronze); color: #fff; }
+
+/* ---------- IMAGE SLOTS (Add. 1 §95 — shot list rendered in place) ---------- */
+.slot {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  padding: var(--s4); text-align: center;
+  background:
+    repeating-linear-gradient(135deg, rgba(162,149,127,.10) 0 2px, transparent 2px 11px),
+    linear-gradient(160deg, var(--paper-warm), var(--stone));
+  border: 1px dashed var(--stone-deep);
+  color: var(--ink-soft);
+}
+.slot__label { font-family: var(--mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; max-width: 34ch; line-height: 1.7; }
+.slot__label b { display: block; color: var(--ink); letter-spacing: .14em; margin-bottom: 6px; }
+.slot--hero { position: absolute; inset: 0; border: 0; padding: var(--s3); align-items: flex-end; justify-content: flex-end; text-align: right;
+  background: linear-gradient(155deg, var(--deep-lift), var(--deep) 62%); }
+.slot--hero .slot__label { max-width: 26ch; font-size: 10px; }
+.slot--hero .slot__label { color: rgba(245,241,234,.42); }
+.slot--hero .slot__label b { color: rgba(245,241,234,.72); }
+.slot--3x2 { aspect-ratio: 3 / 2; }
+.slot--4x5 { aspect-ratio: 4 / 5; }
+.slot--16x9 { aspect-ratio: 16 / 9; }
+
+/* ---------- DEMO PHOTOGRAPHY ---------- */
+.ph { width: 100%; object-fit: cover; display: block; background: var(--stone); }
+.ph--cover { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Photo de héros : plein cadre, sans marge ni bordure. */
+.hero__img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; padding: 0; border: 0; display: block;
+}
+/* Voile : assez dense sous le texte pour tenir le contraste AA même sur une
+   photo d'intérieur très claire — c'est le cas le plus difficile. */
+.hero__scrim {
+  position: absolute; inset: 0;
+  /* Noir chaud, pas marine : un voile bleu refroidit une cuisine en bois et
+     contredit le positionnement. La photo doit rester chaude. */
+  background:
+    linear-gradient(180deg, rgba(26,19,13,.22) 0%, rgba(26,19,13,.04) 34%, rgba(22,17,12,.88) 100%),
+    linear-gradient(90deg, rgba(22,17,12,.58) 0%, rgba(22,17,12,.12) 50%, rgba(22,17,12,.38) 100%);
+}
+.draft--demo { color: var(--bronze); border-color: var(--bronze); }
+.notice code {
+  font-family: var(--mono); font-size: 12px; background: rgba(26,29,36,.07);
+  padding: 1px 5px; border-radius: 2px;
+}
+
+/* ---------- TRUST BAR ---------- */
+.trust { background: var(--paper-warm); border-block: 1px solid var(--line-soft); padding: var(--s5) 0; }
+.trust__grid { display: grid; gap: var(--s4); }
+@media (min-width: 760px) { .trust__grid { grid-template-columns: repeat(3, 1fr); gap: var(--s5); } }
+.trust dt { font-family: var(--sans); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--stone-deep); margin-bottom: var(--s1); }
+.trust dd { margin: 0; font-family: var(--serif); font-size: 21px; line-height: 1.35; }
+/* Un numéro de permis est une donnée : sans-sérif, chiffres alignés (§159). */
+.trust dd.num { font-family: var(--sans); font-weight: 400; font-size: 18px;
+  font-variant-numeric: lining-nums proportional-nums; letter-spacing: .01em; }
+
+/* ---------- GRIDS ---------- */
+.grid { display: grid; gap: var(--s4); }
+.grid--2 { grid-template-columns: 1fr; }
+.grid--3 { grid-template-columns: 1fr; }
+@media (min-width: 720px) { .grid--2 { grid-template-columns: repeat(2, 1fr); } .grid--3 { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1000px) { .grid--3 { grid-template-columns: repeat(3, 1fr); gap: var(--s5); } .grid--2 { gap: var(--s7); } }
+
+.card { display: flex; flex-direction: column; gap: var(--s2); text-decoration: none; }
+.card__body { padding-top: var(--s2); }
+.card h3 { margin-bottom: 6px; }
+.card p { font-size: 16px; color: var(--ink-soft); margin: 0; }
+
+.svc { border-top: 1px solid var(--line); padding-top: var(--s3); }
+.svc h3 { margin-bottom: var(--s1); }
+.svc p { font-size: 16px; color: var(--ink-soft); }
+
+/* ---------- PROCESS ---------- */
+.steps { counter-reset: step; display: grid; gap: 0; }
+.step { display: grid; gap: var(--s1); padding: var(--s3) 0; border-top: 1px solid var(--line); }
+@media (min-width: 760px) { .step { grid-template-columns: 88px 1fr 1.2fr; gap: var(--s4); align-items: baseline; padding: var(--s4) 0; } }
+.step::before {
+  counter-increment: step; content: "0" counter(step);
+  font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--stone-deep);
+}
+.step h3 { font-size: clamp(20px, 2vw, 26px); }
+.step p { font-size: 16px; color: var(--ink-soft); margin: 0; }
+
+/* ---------- QUOTE / EMPTY STATES ---------- */
+.empty {
+  border: 1px solid var(--line); padding: var(--s5) var(--s4); text-align: center;
+  background: var(--paper-warm);
+}
+.empty h3 { margin-bottom: var(--s2); }
+.empty p { max-width: 56ch; margin-inline: auto; color: var(--ink-soft); font-size: 16px; }
+
+/* ---------- FAQ ---------- */
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-of-type { border-bottom: 1px solid var(--line); }
+.faq summary {
+  list-style: none; cursor: pointer; padding: var(--s3) 0; display: flex; gap: var(--s2) var(--s3);
+  justify-content: space-between; align-items: baseline; flex-wrap: wrap;
+  font-family: var(--serif); font-size: clamp(19px, 2vw, 24px);
+  min-height: 44px;
+}
+.faq summary > * { min-width: 0; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-family: var(--sans); font-size: 20px; color: var(--stone-deep); }
+.faq details[open] summary::after { content: "–"; }
+.faq details > div { padding: 0 0 var(--s3); max-width: 66ch; color: var(--ink-soft); }
+
+/* ---------- AREAS ---------- */
+.areas { display: flex; flex-wrap: wrap; gap: var(--s1) var(--s2); list-style: none; padding: 0; margin: 0; }
+.areas li { font-size: 15px; color: var(--ink-soft); }
+.areas li::after { content: "·"; margin-left: var(--s2); color: var(--stone-deep); }
+.areas li:last-child::after { content: ""; }
+
+/* ---------- FORM ---------- */
+.form { display: grid; gap: var(--s3); }
+@media (min-width: 760px) { .form { grid-template-columns: 1fr 1fr; } .form .full { grid-column: 1 / -1; } }
+.field { display: grid; gap: 6px; }
+.field label { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.field input, .field select, .field textarea {
+  font: inherit; font-size: 16px; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 1px solid var(--line);
+  padding: 12px 2px; min-height: 48px; border-radius: 0;
+}
+.field textarea { min-height: 132px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { border-bottom-color: var(--ink); }
+.consent { display: flex; gap: var(--s2); align-items: flex-start; font-size: 14px; color: var(--ink-soft); }
+.consent { min-height: 44px; padding: 10px 0; }
+.consent input { width: 24px; height: 24px; margin-top: 2px; flex: none; accent-color: var(--bronze); }
+.notice {
+  border-left: 2px solid var(--bronze); padding: var(--s2) var(--s3);
+  background: var(--paper-warm); font-size: 14px; line-height: 1.6;
+}
+
+/* ---------- FOOTER ---------- */
+.ftr { background: var(--deep); color: rgba(245,241,234,.72); padding: var(--s7) 0 var(--s4); }
+.ftr a { color: rgba(245,241,234,.72); text-decoration: none; }
+.ftr a:hover { color: #fff; }
+.ftr__grid { display: grid; gap: var(--s5); }
+@media (min-width: 860px) { .ftr__grid { grid-template-columns: 1.6fr 1fr 1fr 1.2fr; gap: var(--s5); } }
+.ftr h4 { font-family: var(--sans); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--stone-light); margin-bottom: var(--s2); }
+.ftr ul { list-style: none; margin: 0; padding: 0; display: grid; font-size: 15px; }
+.ftr ul li { display: flex; }
+.ftr ul a, .ftr ul li { min-height: 44px; align-items: center; }
+.ftr ul a { display: inline-flex; align-items: center; }
+.ftr__brand { font-family: var(--display); font-weight: 600; font-size: 26px; color: #fff; margin-bottom: var(--s2); }
+.ftr__legal {
+  margin-top: var(--s6); padding-top: var(--s2); border-top: 1px solid rgba(245,241,234,.14);
+  /* Un `gap` sans écart de rangée : dès qu'une ligne se replie (un marqueur
+     « à fournir » sur deux lignes), les rangées se chevauchent. Toujours
+     donner un écart vertical à un conteneur `flex-wrap`. */
+  display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); font-size: 13px; align-items: center;
+}
+/* Enfant direct seulement : sinon la règle de zone tactile attrape aussi le
+   marqueur `<span class="need">` niché à l'intérieur et lui impose 44px de
+   haut — il déborde alors de sa ligne et chevauche son libellé. */
+.ftr__legal > a, .ftr__legal > span { display: inline-flex; align-items: center; min-height: 44px; }
+.ftr__rbq { font-family: var(--sans); font-size: 12px; letter-spacing: .06em; color: #fff; }
+
+/* ---------- STICKY MOBILE CTA (V2.0 §48) ---------- */
+.sticky {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 35;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  /* brique et charbon sont deux fonds sombres : le filet qui les sépare doit
+     être clair, sinon la barre se lit comme un seul bloc. */
+  background: var(--stone); border-top: 1px solid var(--line);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.sticky a {
+  background: var(--paper); text-align: center; padding: 15px 8px; min-height: 52px;
+  font-size: 13px; letter-spacing: .08em; text-transform: uppercase; text-decoration: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.sticky a:first-child { background: var(--deep); color: var(--paper); }
+/* `.sticky a` (classe + élément) l'emporte sur une classe seule :
+   il faut la même spécificité pour que l'accent s'applique. */
+.sticky a.sticky__call { background: var(--brick); color: #fff; }
+.sticky--one { grid-template-columns: 1fr; }
+@media (min-width: 1000px) { .sticky { display: none; } }
+/* La barre grandit quand le libellé se replie sur deux lignes : réserver une
+   hauteur fixe cache la dernière ligne du pied de page. Repli sûr en CSS,
+   valeur exacte mesurée par le script. */
+@media (max-width: 999px) { body { padding-bottom: var(--sticky-h, 84px); } }
+
+/* ---------- REVEAL ---------- */
+.js [data-reveal] { opacity: 0; transform: translateY(18px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
+.js [data-reveal].is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
+  .drawer { transition: none; }
+}
+
+/* ---------- LEGAL / PROSE ---------- */
+.prose { max-width: 68ch; }
+.prose h2 { font-size: clamp(24px, 2.6vw, 32px); margin: var(--s6) 0 var(--s2); }
+.prose h2:first-child { margin-top: 0; }
+.prose ul { padding-left: 20px; margin: 0 0 var(--s3); }
+.prose li { margin-bottom: var(--s1); }
+
+
+/* =================================================================
+   VARIANTE DENSE — le langage des entrepreneurs en rénovation
+   Plus de photo, moins d'air, sans-sérif, éléments de confiance
+   remontés. Activée par build.design = 'dense'.
+   ================================================================= */
+[data-design="dense"] {
+  --s7: 56px; --s8: 72px; --s9: 88px;
+}
+[data-design="dense"] h1, [data-design="dense"] h2,
+[data-design="dense"] h3, [data-design="dense"] h4 {
+  font-family: var(--display); font-weight: 600; letter-spacing: -.012em;
+}
+/* Bas des fourchettes §31 : plus dense que l'éditorial, jamais hors spec. */
+[data-design="dense"] h1 { font-size: clamp(40px, 4.6vw, 58px); line-height: 1.06; }
+[data-design="dense"] h2 { font-size: clamp(32px, 3.1vw, 42px); line-height: 1.14; }
+[data-design="dense"] h3 { font-size: clamp(22px, 1.9vw, 25px); line-height: 1.3; }
+/* Boutons et surtitres restent en Inter : la sérif est la voix, pas l'interface. */
+[data-design="dense"] .faq summary { font-family: var(--display); font-weight: 600; }
+[data-design="dense"] .lede { font-size: clamp(17px, 1.5vw, 19px); }
+[data-design="dense"] section { padding: var(--s7) 0; }
+@media (min-width: 900px) { [data-design="dense"] section { padding: var(--s8) 0; } }
+[data-design="dense"] .sec-head { margin-bottom: var(--s4); }
+[data-design="dense"] .sec-num { display: none; }
+[data-design="dense"] .eyebrow { font-size: 11px; letter-spacing: .16em; margin-bottom: var(--s1); }
+
+/* hero : plus court, la photo prend le dessus */
+@media (min-width: 900px) {
+  [data-design="dense"] .hero__in { min-height: 66vh; padding-block: 120px var(--s7); }
+  [data-design="dense"] .hero__grid { grid-template-columns: 1.2fr .9fr; gap: var(--s6); }
+}
+[data-design="dense"] .hero h1 { max-width: 18ch; }
+
+/* bandeau de confiance : plus serré, lisible d'un coup d'œil */
+[data-design="dense"] .trust { padding: var(--s4) 0; }
+/* Pas de gras ici. Le gras sert à hiérarchiser dans un bloc de texte ; sur une
+   ligne isolée, sous un libellé déjà en petites capitales espacées, il ne
+   hiérarchise rien — il durcit. Le contraste vient du libellé (11px, gris,
+   espacé) face à la valeur (grande, sombre) : c'est la taille et la couleur
+   qui font l'écart, pas la graisse. §160 */
+[data-design="dense"] .trust dd { font-size: 19px; }
+[data-design="dense"] .trust dd.num { font-size: 17px; }
+[data-design="dense"] .trust dt { margin-bottom: 4px; }
+
+/* services : cartes avec image, le motif attendu dans ce métier */
+[data-design="dense"] .svc { border-top: 0; padding-top: 0; }
+[data-design="dense"] .svc .slot { margin-bottom: var(--s2); }
+[data-design="dense"] .svc h3 { margin-bottom: 4px; }
+[data-design="dense"] .svc p { font-size: 15px; line-height: 1.55; }
+[data-design="dense"] .grid { gap: var(--s3); }
+@media (min-width: 1000px) { [data-design="dense"] .grid--3 { gap: var(--s4); } }
+
+/* étapes : plus compactes */
+[data-design="dense"] .step { padding: var(--s2) 0; }
+@media (min-width: 760px) { [data-design="dense"] .step { padding: var(--s3) 0; } }
+[data-design="dense"] .step h3 { font-size: 22px; }
+[data-design="dense"] .step p { font-size: 15px; }
+
+/* FAQ */
+[data-design="dense"] .faq summary { font-family: var(--sans); font-weight: 600; font-size: 17px; padding: var(--s2) 0; }
+
+/* =================================================================
+   MODE RÉVISION — masquer les marqueurs de maquette
+   ================================================================= */
+.review-off .need, .review-off .draft, .review-off .banner,
+.review-off .notice, .review-off .empty, .review-off .dev-note { display: none !important; }
+/* Note de travail : visible seulement quand les marqueurs le sont. */
+.dev-note { color: var(--stone-deep); font-size: 15px; margin-top: var(--s2); }
+.revtoggle {
+  position: fixed; left: 16px; bottom: 16px; z-index: 60;
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px; min-height: 44px;
+  background: var(--deep); color: var(--paper); border: 0; cursor: pointer;
+  font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  box-shadow: 0 4px 18px rgba(31,27,23,.28);
+}
+.revtoggle i { width: 8px; height: 8px; border-radius: 50%; background: #E9B98C; display: block; }
+.review-off .revtoggle i { background: rgba(245,241,234,.35); }
+@media (max-width: 999px) { .revtoggle { bottom: 64px; } }
+/* z-index 60 : il flotte au-dessus du tiroir (39) et recouvrait le sélecteur
+   de langue. Un outil de relecture ne doit jamais masquer la navigation. */
+#drawer[data-open="true"] ~ .revtoggle { opacity: 0; pointer-events: none; }
+
+
+/* Galerie d'un même chantier : plusieurs cadrages, une seule lumière. */
+.gal { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s2); margin-top: var(--s3); }
+@media (min-width: 900px) { .gal { grid-template-columns: repeat(4, 1fr); gap: var(--s3); margin-top: var(--s4); } }
+.gal .ph, .gal .slot, .gal .gal__wide { aspect-ratio: 4 / 5; width: 100%; }
+
+
+/* Liste d'informations (coordonnées, faits) — surtout pas .steps, qui numérote
+   ses entrées : des coordonnées ne sont pas une suite d'étapes. */
+.info { margin: 0; display: grid; }
+.info > div {
+  display: grid; gap: 2px; padding: var(--s2) 0;
+  border-top: 1px solid var(--line);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 560px) {
+  .info > div { grid-template-columns: 150px 1fr; gap: var(--s3); align-items: baseline; }
+}
+.info dt {
+  font-family: var(--sans); font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--stone-deep);
+}
+.info dd { margin: 0; font-size: 17px; line-height: 1.5; }
+.info dd a {
+  display: inline-flex; align-items: center; min-height: 44px;
+  text-decoration: none; border-bottom: 1px solid var(--line);
+}
+.info dd a:hover { border-color: var(--ink); }
+
+/* Bloc entier masqué en mode révision quand sa valeur n'est pas encore fournie
+   (sinon il reste « Licence RBQ : » suivi de rien). */
+.review-off .need-wrap { display: none !important; }
+
+/* Contact : le formulaire et les coordonnées partent de la même ligne. */
+.contact-body { padding-top: 0 !important; }
+.contact-body .grid--2 { align-items: start; }
+[data-design="dense"] .ftr__brand { font-family: var(--display); font-weight: 600; font-size: 24px; letter-spacing: -.01em; }
+
+/* Une intro suivie immédiatement d'un formulaire n'a pas besoin de sa marge basse. */
+.page-intro--tight { padding-bottom: var(--s4) !important; }
+/* Bouton inactif : volontairement en retrait, pas « cassé ». */
+.btn[disabled], .btn[aria-disabled="true"] {
+  opacity: 1; background: transparent; color: var(--stone-deep); border-color: var(--line);
+}
+
+.form-note {
+  margin-top: var(--s2); padding: 10px 14px; font-size: 14px; line-height: 1.5;
+  background: var(--paper-warm); border-left: 2px solid var(--bronze);
+}
+
+/* ---------- SECTEURS DESSERVIS ---------- */
+.areas-grid { display: grid; gap: var(--s4); }
+@media (min-width: 760px) { .areas-grid { grid-template-columns: 1.4fr 1fr; gap: var(--s6); } }
+.areas-title {
+  font-family: var(--sans); font-size: 12px; font-weight: 500; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--stone-deep); margin-bottom: var(--s2);
+}
+
+/* ---------- PIED DE PAGE : vérification de licence ---------- */
+.ftr__verify {
+  margin: var(--s5) 0 0; padding-top: var(--s3);
+  border-top: 1px solid rgba(245,241,234,.14);
+  font-size: 14px; color: rgba(245,241,234,.72);
+}
+.ftr__verify a { border-bottom: 1px solid rgba(245,241,234,.3); }
+.ftr__legal { margin-top: var(--s3); border-top: 0; padding-top: 0; }
+
+/* ---------- PAGES LÉGALES ----------
+   Un texte juridique se lit, il ne se proclame pas : titre plus petit,
+   corps plus petit, colonne plus étroite. */
+.page-legal h1 { font-size: clamp(32px, 3.2vw, 42px); }
+.page-legal .prose { max-width: 66ch; font-size: 16px; line-height: 1.7; }
+.page-legal .prose h2 { font-size: clamp(20px, 1.7vw, 22px); margin: var(--s5) 0 var(--s1); }
+.page-legal .prose p { margin-bottom: var(--s2); color: var(--ink-soft); }
+.page-legal .eyebrow { display: none; }
+
+/* ---------- PAGES DE SERVICE ---------- */
+.svc__link {
+  display: inline-flex; align-items: center; min-height: 44px;
+  text-decoration: none; border-bottom: 1px solid var(--line);
+  transition: border-color .3s var(--ease);
+}
+.svc__link:hover { border-color: var(--ink); }
+.scope { list-style: none; padding: 0; margin: 0; display: grid; }
+.scope li {
+  padding: var(--s2) 0 var(--s2) 26px; border-top: 1px solid var(--line);
+  font-size: 16px; line-height: 1.55; position: relative;
+}
+.scope li::before {
+  content: ""; position: absolute; left: 0; top: 26px;
+  width: 12px; height: 1px; background: var(--bronze);
+}
+.sample{color:inherit;opacity:.72;font-style:italic}
+
+/* Version vitrine (portfolio) : masquer les notes internes de la maquette. */
+.dev-note, .notice:has(code) { display: none !important; }

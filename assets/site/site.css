@@ -1017,3 +1017,8 @@ body.is-ai .aj-cta .aj-h2 { color: #fff; }
   body.is-ai .aj-cta .aj-h2 { font-size: 30px; }
 }
 @media (max-width: 380px) { body.is-ai .aj-cta .aj-h2 { font-size: 24px; } }
+/* 作った見本（2026-10-04 HARU様「Soleil Renovation を作りましたとギャラリーに」） */
+.aj-work--case { background: var(--aj-tint); display: grid; gap: var(--s4); align-items: center; }
+@media (min-width: 900px) { .aj-work--case { grid-template-columns: .9fr 1.1fr; } }
+.aj-work__site { display: block; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,.14); }
+.aj-work__site img { width: 100%; height: auto; display: block; }
