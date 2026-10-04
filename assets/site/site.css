@@ -800,3 +800,74 @@ body:not(.is-legal) .btn--ghost-light { color: #fff; border-color: rgba(255,255,
 .aij-hero h1 { margin-bottom: var(--s3); }
 .aij-card__k { font-size: var(--text-xs); font-weight: 500; letter-spacing: .08em; color: var(--gold-text); margin-bottom: var(--s1); }
 .aij-card .more + .more { margin-top: 0; }
+
+/* ==========================================================================
+   クリーン・モダン（2026-10-04 HARU様「askcatgpt.com のようにクリーンでモダンに。
+   今のサイトは上品すぎる」）。上品に見えていた正体は5つ:
+   ① 生成り色の紙（#FBF9F6 / #F4F0E9）と茶色がかった黒
+   ② 暗い写真に文字を重ねたヒーロー
+   ③ 「01〜06」の通し番号と、見出し左・本文右の雑誌風の2列
+   ④ 細い罫線と銅色の縦罫
+   ⑤ 角の立った写真とカード
+   → 白い地・明るいヒーロー・番号なし1列・角の丸いカードに替える。
+   書体・文字の大きさ・金のボタンは上の「Speak Up と同じ」のまま変えない。
+   ========================================================================== */
+:root {
+  --paper: #FFFFFF;
+  --paper-warm: #F5F5F2;   /* 生成りではなく、ほぼ無彩色の薄い灰 */
+  --deep: #1C1B1A;
+  --line: rgba(0,0,0,.10);
+  --line-soft: rgba(0,0,0,.06);
+  --radius: 20px;
+  --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+}
+.hdr { background: rgba(255,255,255,.92); }
+
+/* ③ 通し番号をやめ、見出し→本文を1列に積む */
+.sec-num { display: none; }
+@media (min-width: 900px) {
+  .sec-head { grid-template-columns: 1fr; max-width: 44em; align-items: start; }
+  .sec-head > .lede { grid-column: auto; }
+  .sec-head > div:first-child { grid-row: auto; }
+}
+.sec-head h2 { margin-bottom: 0; }
+
+/* ② 明るいヒーロー：文字は白い地の上、写真は横（携帯は下）に角丸で置く */
+.hero { background: var(--paper); color: var(--ink); overflow: visible; }
+.hero__grid { display: grid; gap: var(--s5); padding-block: var(--s5) var(--s7); align-items: center; }
+.hero h1 { color: var(--ink); margin-bottom: var(--s3); }
+body:not(.is-legal) .hero .eyebrow { color: var(--gold-text); }
+.hero .lede { color: var(--ink-soft); max-width: 30em; }
+.hero__photo { margin: 0; }
+.hero__photo img {
+  width: 100%; height: auto; display: block; border-radius: var(--radius);
+  aspect-ratio: 4 / 3; object-fit: cover; object-position: 50% 30%;
+}
+@media (min-width: 900px) {
+  .hero__grid { grid-template-columns: 1.05fr .95fr; gap: var(--s7); padding-block: var(--s8) var(--s9); }
+  .hero__photo img { aspect-ratio: 4 / 5; object-position: 68% 34%; }
+}
+
+/* ⑤ 角を丸め、カードは白い板＋薄い影。罫線の区切りをやめる */
+.card, .feature, .aij-entry, .aij-card {
+  border: 1px solid var(--line-soft); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden; background: #fff;
+}
+.card:hover, a.feature:hover { border-color: var(--line); }
+.band img, .portrait img { border-radius: var(--radius); border: 0; }
+.steps li, .quote {
+  background: #fff; border: 1px solid var(--line-soft); border-top: 1px solid var(--line-soft);
+  border-radius: var(--radius); box-shadow: var(--shadow); padding: var(--s4) var(--s3);
+}
+section:not(.alt) .steps li, section:not(.alt) .quote { background: var(--paper-warm); box-shadow: none; }
+.faq { background: #fff; border: 1px solid var(--line-soft); border-radius: var(--radius); padding: 0 var(--s3); box-shadow: var(--shadow); }
+.faq details:first-child { border-top: 0; }
+.faq details:last-child { border-bottom: 0; }
+
+/* ④ 銅の縦罫をやめる */
+.statement { border-left: 0; padding-left: 0; }
+.cta { border-top: 0; }
+.page-head { border-bottom: 0; }
+.hero { padding: 0; }
+/* 工程は3つ。4列だと右に1枠空く */
+@media (min-width: 1100px) { .steps { grid-template-columns: repeat(3, 1fr); } }
