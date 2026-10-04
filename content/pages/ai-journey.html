@@ -1,85 +1,105 @@
-  <section class="aij-hero">
-    <div class="wrap aij-hero__in">
-      <div class="aij-hero__text" data-reveal>
-        <div class="aij-who">
+  <section class="aj-hero">
+    <div class="wrap aj-hero__in">
+      <div class="aj-hero__text" data-reveal>
+        <div class="aj-me">
           <picture>
             <source srcset="/assets/site/haru.webp" type="image/webp">
-            <img class="aij-avatar" src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" decoding="async">
+            <img class="aj-me__img" src="/assets/site/haru.jpg" alt="" width="560" height="700" decoding="async">
           </picture>
-          <p class="aij-who__name">HARU<span>カナダ・モントリオール在住</span></p>
+          <p class="aj-tag">AI Journey</p>
         </div>
-        <p class="eyebrow">AI Journey</p>
-        <h1>AIで、<span class="nw">作ってみる。</span></h1>
-        <p class="lede">英会話のコース、レストランの動画、毎日の作業の自動化。プロではありませんが、AIに相談しながら自分の手で作っています。作れるようになったことは、いずれ講座やサービスとして教え、届けていきます。その前に、ここに「今日できたこと」を書いています。</p>
+        <h1 class="aj-display">こんにちは、<br>HARUです。</h1>
+        <p class="aj-sub">AIで、作ってみる毎日。</p>
+        <p class="aj-lede">英会話のコース、レストランの動画、毎日の作業の自動化。プロではありませんが、AIに相談しながら自分の手で作っています。ここには、その日にできたことをそのまま書いています。</p>
         <div class="row">
           <a class="btn" href="#log">今日できたこと</a>
           <a class="btn btn--ghost" href="/ai-journey/contact/">話してみる</a>
         </div>
       </div>
-      <figure class="aij-photo" data-reveal>
+      <figure class="aj-hero__photo" data-reveal>
         <picture>
           <source srcset="/assets/site/haru.webp" type="image/webp">
-          <img src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" decoding="async">
+          <img src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" decoding="async" fetchpriority="high">
         </picture>
+        <figcaption class="aj-badge">Montréal から</figcaption>
       </figure>
+    </div>
+    <div class="wrap">
+      <ul class="aj-chips" aria-label="作っているもの">
+        <li>英会話コース</li>
+        <li>レストランの Reels</li>
+        <li>作業の自動化</li>
+        <li>ウェブサイト</li>
+      </ul>
     </div>
   </section>
 
-  <section id="log" class="aij-sec">
-    <div class="wrap wrap--narrow">
-      <p class="eyebrow">Build log</p>
-      <h2>今日できたこと</h2>
-      <p class="lede">うまくいったことも、失敗したことも、そのまま書きます。</p>
-
-      <ol class="aij-log">
-        <li class="aij-entry" data-reveal>
-          <time class="aij-entry__date" datetime="2026-10-04">2026年10月4日</time>
-          <h3>このページを作って、サイト全体を作り直しました</h3>
-          <ul class="ticks">
-            <li>「AI Journey」のページを公開しました</li>
-            <li>明朝をやめて、読みやすいゴシックにそろえました</li>
-            <li>ロゴを入れて、文字とボタンを Speak Up と同じ決まりにしました</li>
-          </ul>
+  <section id="log" class="aj-sec">
+    <div class="wrap aj-split">
+      <div class="aj-split__head">
+        <p class="aj-tag">Build log</p>
+        <h2 class="aj-h2">今日<br>できたこと</h2>
+        <p class="aj-note">うまくいったことも、失敗したことも、そのまま書きます。</p>
+      </div>
+      <ol class="aj-log">
+        <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-04">2026.10.04</time>
+          <div>
+            <h3 class="aj-h3">このページを作って、サイト全体を作り直しました</h3>
+            <ul class="aj-list">
+              <li>「AI Journey」のページを公開しました</li>
+              <li>明朝をやめて、読みやすいゴシックにそろえました</li>
+              <li>ロゴを入れ、白い地と角の丸いカードのすっきりした形にしました</li>
+            </ul>
+          </div>
         </li>
       </ol>
     </div>
   </section>
 
-  <section class="aij-sec aij-sec--tint">
+  <section class="aj-sec aj-sec--work">
     <div class="wrap">
-      <p class="eyebrow">Made with AI</p>
-      <h2>これまでに作ったもの</h2>
-      <div class="aij-cards">
-        <article class="aij-card" data-reveal>
-          <p class="aij-card__k">Courses</p>
-          <h3>音声つきの英会話コース</h3>
-          <p>飲食店や入国審査の場面を、耳と声で練習するコースです。会話の音声は AI で作り、聞き取りやすさを一つずつ確かめています。</p>
-          <p class="more"><a href="/eatout/">飲食店のコース</a></p>
-          <p class="more"><a href="/immigration/">入国審査のコース</a></p>
+      <div class="aj-head">
+        <p class="aj-tag">Made with AI</p>
+        <h2 class="aj-h2">これまでに作ったもの</h2>
+      </div>
+      <div class="aj-bento">
+        <article class="aj-work aj-work--wide aj-work--peach" data-reveal>
+          <div class="aj-work__body">
+            <p class="aj-work__k">Courses</p>
+            <h3 class="aj-h3">音声つきの英会話コース</h3>
+            <p>飲食店や入国審査の場面を、耳と声で練習するコースです。会話の音声は AI で作り、聞き取りやすさを一つずつ確かめています。</p>
+            <p class="aj-links"><a href="/eatout/">飲食店のコース</a><a href="/immigration/">入国審査のコース</a></p>
+          </div>
+          <img class="aj-work__shot" src="/assets/site/speakup-app-screenshot.jpg" alt="" width="780" height="1650" loading="lazy" decoding="async">
         </article>
-        <article class="aij-card" data-reveal>
-          <p class="aij-card__k">Reels</p>
-          <h3>レストラン紹介の動画</h3>
-          <p>モントリオールのレストランやカフェを紹介する縦型の動画です。撮った素材と自分の言葉を入れると、同じデザインの動画、英語とフランス語の字幕、ナレーションの原稿がそろう仕組みを AI と作りました。</p>
+        <article class="aj-work aj-work--lilac" data-reveal>
+          <p class="aj-work__k">Reels</p>
+          <h3 class="aj-h3">レストラン紹介の動画</h3>
+          <p>モントリオールのお店を紹介する縦型の動画です。撮った素材と自分の言葉を入れると、字幕（英語・フランス語）とナレーションの原稿までそろう仕組みを作りました。</p>
         </article>
-        <article class="aij-card" data-reveal>
-          <p class="aij-card__k">Automation</p>
-          <h3>毎日の作業の自動化</h3>
-          <p>コースの音声づくり、動画の納品セットづくり、サイトの文字の大きさや押しやすさの検査。毎回手でやっていたことを、AI と一緒に自動にしました。</p>
+        <article class="aj-work aj-work--mint" data-reveal>
+          <p class="aj-work__k">Automation</p>
+          <h3 class="aj-h3">毎日の作業の自動化</h3>
+          <p>コースの音声づくり、動画の納品セット、サイトの文字の大きさや押しやすさの検査。手でやっていたことを、AI と一緒に自動にしました。</p>
         </article>
-        <article class="aij-card" data-reveal>
-          <p class="aij-card__k">Website</p>
-          <h3>このサイト</h3>
-          <p>文字の大きさや写真の切り方まで、AI と一緒に測りながら直してきました。</p>
+        <article class="aj-work aj-work--wide aj-work--sky" data-reveal>
+          <div class="aj-work__body">
+            <p class="aj-work__k">Website</p>
+            <h3 class="aj-h3">このサイト</h3>
+            <p>文字の大きさ、写真の切り方、携帯の最初の一画面にボタンが入るか。AI と一緒に測りながら直してきました。</p>
+          </div>
         </article>
       </div>
     </div>
   </section>
 
-  <section class="aij-sec">
-    <div class="wrap wrap--narrow aij-end" data-reveal>
-      <h2>同じように<span class="nw">試している方へ。</span></h2>
-      <p class="lede">感想や質問、「こんなものを作ってほしい」というご相談も歓迎します。</p>
-      <a class="btn" href="/ai-journey/contact/">問い合わせる</a>
+  <section class="aj-sec">
+    <div class="wrap">
+      <div class="aj-cta" data-reveal>
+        <h2 class="aj-h2">一緒に、<span class="nw">作ってみませんか。</span></h2>
+        <p class="aj-lede">感想や質問、「こんなものを作ってほしい」というご相談も歓迎します。</p>
+        <a class="btn" href="/ai-journey/contact/">問い合わせる</a>
+      </div>
     </div>
   </section>
