@@ -765,3 +765,36 @@ body:not(.is-legal) .btn--ghost-light { color: #fff; border-color: rgba(255,255,
   .brand-mark { width: 28px; height: 28px; }
   .brand .brand-word { font-size: var(--text-xs); }
 }
+
+/* ---------- AI Journey（2026-10-04 HARU様「askcatgpt.com のようにクリーンでモダンに」
+   「人の存在がないと誰がやっているか分からず不安。顔を出す」「今日できたことで十分」） ---------- */
+.aij-hero { padding: var(--s6) 0 var(--s7); background: var(--paper); }
+.aij-hero__in { display: grid; gap: var(--s5); align-items: center; }
+.aij-who { display: flex; align-items: center; gap: 14px; margin-bottom: var(--s4); }
+.aij-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; }
+.aij-who__name { margin: 0; font-weight: 700; font-size: var(--text-sm); line-height: 1.3; color: var(--ink); }
+.aij-who__name span { display: block; font-weight: 400; font-size: var(--text-xs); color: var(--ink-soft); }
+.aij-photo { display: none; margin: 0; }
+.aij-photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 24px; }
+@media (min-width: 900px) {
+  .aij-hero { padding: var(--s8) 0; }
+  .aij-hero__in { grid-template-columns: 1.15fr .85fr; gap: var(--s7); }
+  .aij-who { display: none; }
+  .aij-photo { display: block; }
+}
+.aij-sec { padding: var(--s7) 0; }
+.aij-sec--tint { background: var(--paper-warm, #F4F0E9); }
+.aij-log { list-style: none; margin: var(--s5) 0 0; padding: 0; display: grid; gap: var(--s3); }
+.aij-entry {
+  background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: var(--s3) var(--s3) var(--s4);
+}
+.aij-entry__date { display: block; font-size: var(--text-xs); font-weight: 500; letter-spacing: .08em; color: var(--gold-text); margin-bottom: var(--s1); }
+.aij-entry h3 { margin-bottom: var(--s2); }
+.aij-cards { display: grid; gap: var(--s3); margin-top: var(--s4); }
+@media (min-width: 900px) { .aij-cards { grid-template-columns: repeat(3, 1fr); } }
+.aij-card { background: #fff; border: 1px solid var(--line); border-radius: 16px; padding: var(--s4) var(--s3); }
+.aij-card h3 { margin-bottom: var(--s1); }
+.aij-card p { margin-bottom: 0; }
+.aij-card .more { margin-top: var(--s2); }
+.aij-end .btn { margin-top: var(--s3); }
+.aij-hero h1 { margin-bottom: var(--s3); }

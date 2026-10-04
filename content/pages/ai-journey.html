@@ -1,91 +1,77 @@
-  <section class="page-head">
-    <div class="wrap">
-      <div data-reveal>
+  <section class="aij-hero">
+    <div class="wrap aij-hero__in">
+      <div class="aij-hero__text" data-reveal>
+        <div class="aij-who">
+          <picture>
+            <source srcset="/assets/site/haru.webp" type="image/webp">
+            <img class="aij-avatar" src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" decoding="async">
+          </picture>
+          <p class="aij-who__name">HARU<span>モントリオール在住の英語の先生</span></p>
+        </div>
         <p class="eyebrow">AI Journey</p>
-        <h1>AIで作る、<span class="nw">実験の記録。</span></h1>
-        <p class="lede">英語を教えながら、AIを使って教材やサイトを自分の手で作っています。プロではありません。うまくいったことも、失敗したことも、ここにそのまま残していきます。</p>
+        <h1>英語の先生が、<span class="nw">AIで作ってみる。</span></h1>
+        <p class="lede">プロではありません。AIに相談しながら、教材やサイトを自分の手で作っています。作れるようになったことは、いずれ講座やサービスとして教え、届けていきます。その前に、ここに「今日できたこと」を書いています。</p>
+        <div class="row">
+          <a class="btn" href="#log">今日できたこと</a>
+          <a class="btn btn--ghost" href="/ai-journey/contact/">話してみる</a>
+        </div>
       </div>
+      <figure class="aij-photo" data-reveal>
+        <picture>
+          <source srcset="/assets/site/haru.webp" type="image/webp">
+          <img src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" decoding="async">
+        </picture>
+      </figure>
     </div>
   </section>
 
-  <section>
-    <div class="wrap">
-      <div class="sec-head" data-reveal>
-        <div>
-          <span class="sec-num">01</span>
-          <p class="eyebrow">なぜ書くのか</p>
-          <h2>完璧でなくても、<span class="nw">始められる。</span></h2>
-        </div>
-        <p class="lede">英語のレッスンでいつも伝えていることを、自分でも試しています。間違えながら進むほうが、黙って準備を続けるより早く上達します。AIも同じだと思っています。</p>
-      </div>
+  <section id="log" class="aij-sec">
+    <div class="wrap wrap--narrow">
+      <p class="eyebrow">Build log</p>
+      <h2>今日できたこと</h2>
+      <p class="lede">うまくいったことも、失敗したことも、そのまま書きます。</p>
 
-      <ul class="ticks" data-reveal>
-        <li>何を作ろうとしたか</li>
-        <li>実際にどうなったか（数字や画面も）</li>
-        <li>そこから何を学んだか</li>
-        <li>次に何を試すか</li>
-      </ul>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <div class="sec-head" data-reveal>
-        <div>
-          <span class="sec-num">02</span>
-          <p class="eyebrow">これまでに作ったもの</p>
-          <h2>AIと一緒に、<span class="nw">形にしたもの。</span></h2>
-        </div>
-        <p class="lede">どれもコードを書く仕事をしたことのない私が、AIに相談しながら作りました。</p>
-      </div>
-
-      <ol class="steps" data-reveal>
-        <li>
-          <span class="steps__n">01</span>
-          <h3>このサイト</h3>
-          <p>文字の大きさや写真の切り方まで、AIと一緒に測りながら直してきました。読者の方からいただいた「文字が小さい」という声も、すぐに反映できました。</p>
-        </li>
-        <li>
-          <span class="steps__n">02</span>
-          <h3>飲食店の英会話コース</h3>
-          <p>海外のレストランで注文する場面を、音声で練習できるコースです。会話の音声もAIで作っています。</p>
-          <p class="more"><a href="/eatout/">コースを見る</a></p>
-        </li>
-        <li>
-          <span class="steps__n">03</span>
-          <h3>入国審査の英会話コース</h3>
-          <p>空港で聞かれる質問に、落ち着いて答える練習ができます。飲食店のコースで学んだ作り方を、そのまま生かしました。</p>
-          <p class="more"><a href="/immigration/">コースを見る</a></p>
+      <ol class="aij-log">
+        <li class="aij-entry" data-reveal>
+          <time class="aij-entry__date" datetime="2026-10-04">2026年10月4日</time>
+          <h3>このページを作って、サイト全体を作り直しました</h3>
+          <ul class="ticks">
+            <li>「AI Journey」のページを公開しました</li>
+            <li>明朝をやめて、読みやすいゴシックにそろえました</li>
+            <li>ロゴを入れて、文字とボタンを Speak Up と同じ決まりにしました</li>
+          </ul>
         </li>
       </ol>
     </div>
   </section>
 
-  <section>
-    <div class="wrap wrap--narrow">
-      <div class="sec-head" data-reveal>
-        <div>
-          <span class="sec-num">03</span>
-          <p class="eyebrow">記録</p>
-          <h2>実験ノート</h2>
-        </div>
+  <section class="aij-sec aij-sec--tint">
+    <div class="wrap">
+      <p class="eyebrow">Made with AI</p>
+      <h2>これまでに作ったもの</h2>
+      <div class="aij-cards">
+        <article class="aij-card" data-reveal>
+          <h3>このサイト</h3>
+          <p>文字の大きさや写真の切り方まで、AIと一緒に測りながら直してきました。</p>
+        </article>
+        <article class="aij-card" data-reveal>
+          <h3>飲食店の英会話コース</h3>
+          <p>海外のレストランで注文する場面を、音声で練習できるコースです。</p>
+          <p class="more"><a href="/eatout/">コースを見る</a></p>
+        </article>
+        <article class="aij-card" data-reveal>
+          <h3>入国審査の英会話コース</h3>
+          <p>空港で聞かれる質問に、落ち着いて答える練習ができます。</p>
+          <p class="more"><a href="/immigration/">コースを見る</a></p>
+        </article>
       </div>
-
-      <article data-reveal>
-        <p class="eyebrow">2026年10月4日</p>
-        <h3>この記録を始めました</h3>
-        <p>AIで作っていることを、外に向けて書いてみることにしました。まだ実験の段階です。週に一度、ここに何を試してどうなったかを書いていきます。</p>
-      </article>
     </div>
   </section>
 
-  <section class="cta">
-    <div class="wrap">
-      <div class="cta__in" data-reveal>
-        <p class="eyebrow">つながる</p>
-        <h2>同じように<span class="nw">試している方へ。</span></h2>
-        <p class="lede">感想や質問、「こんなものを作ってほしい」というご相談も歓迎します。</p>
-        <a class="btn" href="/ai-journey/contact/">問い合わせる</a>
-      </div>
+  <section class="aij-sec">
+    <div class="wrap wrap--narrow aij-end" data-reveal>
+      <h2>同じように<span class="nw">試している方へ。</span></h2>
+      <p class="lede">感想や質問、「こんなものを作ってほしい」というご相談も歓迎します。</p>
+      <a class="btn" href="/ai-journey/contact/">問い合わせる</a>
     </div>
   </section>
