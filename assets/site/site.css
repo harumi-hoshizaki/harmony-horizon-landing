@@ -1022,3 +1022,5 @@ body.is-ai .aj-cta .aj-h2 { color: #fff; }
 @media (min-width: 900px) { .aj-work--case { grid-template-columns: .9fr 1.1fr; } }
 .aj-work__site { display: block; border-radius: 16px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,.14); }
 .aj-work__site img { width: 100%; height: auto; display: block; }
+/* 「今日できたこと」は1行で（2026-10-04 HARU様）。7文字なので 320px でも収まる */
+.aj-nowrap { white-space: nowrap; }
