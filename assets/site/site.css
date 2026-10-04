@@ -649,6 +649,11 @@ body.is-legal code { font-family: inherit; }
    同日「英語レッスンの他のページとサイト全体の Harmony Horizon も」→ :root で全ページに。
    ここに残るのは AI Journey の見出しの太さだけ。 */
 body.is-ai h1, body.is-ai h2, body.is-ai h3 { font-weight: 700; letter-spacing: 0; }
+/* HARU の色：オレンジがかった黄色に黒い字のボタン（2026-10-04 HARU様）。
+   eatout の --brand-gold と同じ #E2A33D。黒（--ink）の字で 8:1 以上出る。 */
+body.is-ai .btn { background: #E2A33D; border-color: #E2A33D; color: var(--ink); font-weight: 700; border-radius: 999px; }
+body.is-ai .btn:hover { background: #E2A33D; border-color: #E2A33D; color: var(--ink); }
+@media (hover: hover) { body.is-ai .btn:hover { background: #F0B550; border-color: #F0B550; } }
 /* 社名（全ページ）。Speak Up のロゴと同じ、標準書体の太字 */
 .brand, .ftr__brand { font-weight: 700; letter-spacing: -.01em; }
 .brand { font-size: 19px; }

@@ -1,0 +1,53 @@
+  <section class="page-head">
+    <div class="wrap">
+      <div data-reveal>
+        <p class="eyebrow">AI Journey</p>
+        <h1>AIのことで、<span class="nw">話しましょう。</span></h1>
+        <p class="lede">感想や質問、「こんなものを作ってほしい」というご相談を受け付けています。英語レッスンのお問い合わせは<a href="/contact.html">こちらのページ</a>からお願いします。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="form">
+    <div class="wrap">
+      <div class="form-layout">
+        <div data-reveal>
+          <p class="eyebrow">Contact</p>
+          <h2>何でも気軽に<span class="nw">どうぞ。</span></h2>
+          <p class="lede">まだ実験している段階なので、一緒に試してみたいという方も歓迎します。24〜48時間以内にご返信します。</p>
+          <p class="small">フォームが使いにくい場合は、直接メールでも構いません。<br>
+            <a class="ftr__mail" href="mailto:haru@harmonyhorizon.space">haru@harmonyhorizon.space</a></p>
+        </div>
+
+        <form class="form" action="https://formspree.io/f/mkolljne" method="POST" data-reveal>
+          <input type="hidden" name="_subject" value="AI Journey: お問い合わせ">
+          <p class="hp" aria-hidden="true"><label>この欄は空のままにしてください <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></p>
+
+          <p class="field">
+            <label for="name">お名前 <span class="req">必須</span></label>
+            <input type="text" id="name" name="name" required autocomplete="name">
+          </p>
+          <p class="field">
+            <label for="email">メールアドレス <span class="req">必須</span></label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </p>
+          <p class="field">
+            <label for="topic">ご用件</label>
+            <select id="topic" name="topic">
+              <option value="AI: 作ってほしいものの相談">作ってほしいものの相談</option>
+              <option value="AI: 感想・質問">感想・質問</option>
+              <option value="AI: その他">その他</option>
+            </select>
+          </p>
+          <p class="field">
+            <label for="message">メッセージ</label>
+            <textarea id="message" name="message" rows="6" placeholder="作りたいもの、困っていること、感想など。"></textarea>
+          </p>
+          <p class="field field--consent">
+            <span class="small">ご記入いただいた内容は、ご返信のためだけに使います。第三者に提供することはありません。</span>
+          </p>
+          <button class="btn" type="submit">送信する</button>
+        </form>
+      </div>
+    </div>
+  </section>

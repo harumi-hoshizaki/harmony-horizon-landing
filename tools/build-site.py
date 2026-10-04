@@ -25,7 +25,16 @@ PAGES = [
     # SNS のプロフィールから直接リンクする。
     ('ai-journey', 'ai-journey/index.html', 'AI Journey', 'AI Journey — Harmony Horizon',
      '英語を教えながら、AIを使って教材やサイトを自分で作っています。うまくいったことも失敗も、実験の記録として残します。'),
+    ('ai-contact', 'ai-journey/contact/index.html', 'AI Contact', 'AIのお問い合わせ — Harmony Horizon',
+     'AIで作っていることへの感想や質問、「こんなものを作ってほしい」というご相談を受け付けています。'),
 ]
+
+# AI Journey のページだけのメニュー（2026-10-04 HARU様）。英語レッスンの4項目は
+# 「英語学習」1つにまとめてトップへ。お問い合わせは AI 用のフォームへ。
+AI_SLUGS = ('ai-journey', 'ai-contact')
+NAV_AI = [('https://www.harmonyhorizon.space/', '英語学習'),
+          ('ai-journey/', 'AI Journey'),
+          ('ai-journey/contact/', 'お問い合わせ')]
 
 # 法務3ページ。ナビには入れないが、**脚注から必ず辿れる**ようにする。
 # 販売しているのはこのドメインなので、特定商取引法の表記は
@@ -87,7 +96,7 @@ SHELL = '''<!DOCTYPE html>
   <nav class="drawer__nav" aria-label="メニュー">
 {dnav}
   </nav>
-  <a class="btn" href="/contact.html">相談する</a>
+  <a class="btn" href="{contact}">{contact_label}</a>
 </div>
 
 <main id="main">
@@ -128,13 +137,14 @@ SHELL = '''<!DOCTYPE html>
 '''
 
 def render(src_dir, slug, out, title, desc, body_class='', page_class=''):
+    nav = NAV_AI if slug in AI_SLUGS else NAV
     def links(indent):
         rows = []
-        for href, label in NAV:
+        for href, label in nav:
             # 節への錨（#apps）はトップページの中を指す。他のページからでも
             # 同じ場所に着くよう、必ず / から書く。
-            target = '/' + href
-            cur = ' aria-current="page"' if href == out else ''
+            target = href if href.startswith('https://') else '/' + href
+            cur = ' aria-current="page"' if out in (href, href + 'index.html') else ''
             rows.append(f'{indent}<a href="{target}"{cur}>{label}</a>')
         return '\n'.join(rows)
     body = (src_dir / f'{slug}.html').read_text(encoding='utf-8').rstrip()
@@ -149,6 +159,8 @@ def render(src_dir, slug, out, title, desc, body_class='', page_class=''):
         canon='' if out == 'index.html' else out.replace('index.html', ''),
         nav=links('      '), dnav=links('    '), fnav=links('        '),
         body=body,
+        contact='/ai-journey/contact/' if slug in AI_SLUGS else '/contact.html',
+        contact_label='問い合わせる' if slug in AI_SLUGS else '相談する',
         # 法務ページは Speak Up LP の脚注から開かれるので、ページ全体(ヘッダー・脚注も)を
         # アプリと同じ書体の決まりにする目印(site.css の body.is-legal)。
         # AI Journey は英語レッスンとは別の話なので、明朝をやめてゴシックで組む
@@ -164,7 +176,7 @@ def render(src_dir, slug, out, title, desc, body_class='', page_class=''):
 def build():
     for slug, out, name, title, desc in PAGES:
         render(SRC, slug, out, title, desc,
-               page_class='is-ai' if slug == 'ai-journey' else '')
+               page_class='is-ai' if slug in AI_SLUGS else '')
     # 法務ページは本文が長い。追補3 §152 のとおり寸法を落とすので、
     # 目印のクラスを付けて CSS 側で切り替える。
     for slug, out, name, desc in LEGAL:
