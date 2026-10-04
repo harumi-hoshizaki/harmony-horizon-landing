@@ -641,24 +641,9 @@ body.is-legal {
 }
 body.is-legal code { font-family: inherit; }
 
-/* ---------- AI Journey（2026-10-04 HARU様決定） ----------
-   「明朝は上品すぎて伝統文化のよう。AIの話なので読みやすいゴシックで」
-   「Harmony Horizon の文字（Cormorant Garamond）も嫌い」。
-   続けて「Speak Up と同じ Font で」。/speakup/ と同じ端末の標準書体1つで、
-   見出し・本文・社名を組む（speakup/index.html の --display/--sans/--brand と同じ値）。
-   同日「英語レッスンの他のページとサイト全体の Harmony Horizon も」→ :root で全ページに。
-   ここに残るのは AI Journey の見出しの太さだけ。 */
-body.is-ai h1, body.is-ai h2, body.is-ai h3 { font-weight: 700; letter-spacing: 0; }
-/* HARU の色：オレンジがかった黄色に黒い字のボタン（2026-10-04 HARU様）。
-   eatout の --brand-gold と同じ #E2A33D。黒（--ink）の字で 8:1 以上出る。 */
-body.is-ai .btn { background: #E2A33D; border-color: #E2A33D; color: var(--ink); font-weight: 700; border-radius: 999px; }
-body.is-ai .btn:hover { background: #E2A33D; border-color: #E2A33D; color: var(--ink); }
-@media (hover: hover) { body.is-ai .btn:hover { background: #F0B550; border-color: #F0B550; } }
-/* 社名（全ページ）。Speak Up のロゴと同じ、標準書体の太字 */
-.brand, .ftr__brand { font-weight: 700; letter-spacing: -.01em; }
-.brand { font-size: 19px; }
-@media (min-width: 400px) { .brand { font-size: 20px; } }
-@media (min-width: 560px) { .brand { font-size: 21px; } }
+/* AI Journey（2026-10-04 HARU様決定）：書体・ボタン・ロゴは下の「Speak Up と同じ
+   文字の決まり」で全ページ共通。AI のページだけの違いはメニュー（build-site.py の NAV_AI）。 */
+.ftr__brand { font-weight: 700; letter-spacing: -.01em; }
 .page-legal { padding: var(--s6) 0 var(--s8); }
 .page-legal h1 { font-size: 22px; font-weight: 700; line-height: 1.5; margin-bottom: var(--s2); }
 .page-legal .updated { font-size: 13px; color: var(--stone-deep); margin-bottom: var(--s6); }
@@ -713,4 +698,70 @@ body.is-ai .btn:hover { background: #E2A33D; border-color: #E2A33D; color: var(-
 @media (prefers-reduced-motion: reduce) {
   .js [data-reveal] { opacity: 1; transform: none; transition: none; }
   .drawer { transition: none; }
+}
+
+/* ==========================================================================
+   Speak Up と同じ文字の決まり（2026-10-04 HARU様「書体以外も、文字の大きさ・色・
+   字間を Speak Up と同じに」「ホームページにロゴが無い」）。
+   正本は speakup/index.html（＝アプリ本番 speakup/css/tokens.css の6段階
+   14 / 18 / 20 / 23 / 26 / 28 / 40）。新しい大きさは作らない。
+   法務3ページ（14px の例外、2026-09-29）は対象外。
+   ========================================================================== */
+:root {
+  --text-xs: 14px; --text-sm: 18px; --text-md: 20px; --text-lg: 23px;
+  --text-xl: 26px; --text-2xl: 28px; --text-3xl: 40px;
+  --gold-text: #694D11;     /* Speak Up の --gold。紙の上の小さな金文字 */
+  --gold-fill: #E2A33D;     /* Speak Up の --gold-bright。ボタンとロゴの金 */
+}
+body:not(.is-legal) { font-size: var(--text-md); line-height: 1.75; }
+body:not(.is-legal) h1, body:not(.is-legal) h2, body:not(.is-legal) h3 {
+  font-weight: 700; letter-spacing: -0.01em;
+}
+body:not(.is-legal) h1 { font-size: var(--text-2xl); line-height: 1.3; }
+body:not(.is-legal) h2 { font-size: var(--text-xl); line-height: 1.35; }
+body:not(.is-legal) h3 { font-size: var(--text-md); line-height: 1.5; }
+@media (min-width: 900px) {
+  body:not(.is-legal) h1 { font-size: var(--text-3xl); }
+}
+body:not(.is-legal) .lede { font-size: var(--text-md); line-height: 1.9; }
+body:not(.is-legal) .eyebrow {
+  font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.08em; color: var(--gold-text);
+}
+/* 写真の上は明るい金（CLAUDE.md「写真に重ねる文字」）。Speak Up のヒーローと同じく
+   導入文の行間は 1.55（31px）。1.9 だと携帯の最初の一画面からボタンが落ちた。 */
+body:not(.is-legal) .hero .eyebrow { color: #E9BA6E; }   /* Speak Up の --gold-pale */
+body:not(.is-legal) .hero .lede { line-height: 1.55; }
+
+/* ボタン：Speak Up の .btn-gold（金に黒い字・角は四角・太字） */
+body:not(.is-legal) .btn {
+  background: var(--gold-fill); border-color: var(--gold-fill); color: var(--ink);
+  font-size: var(--text-md); font-weight: 700; letter-spacing: 0; border-radius: 0;
+  padding: 13px 26px;
+  box-shadow: 0 3px 8px rgba(34,29,24,0.28), inset 0 1px 0 rgba(255,255,255,0.10);
+}
+@media (min-width: 900px) { body:not(.is-legal) .btn { font-size: var(--text-lg); padding: 16px 34px; } }
+body:not(.is-legal) .btn:hover { background: var(--gold-fill); border-color: var(--gold-fill); color: var(--ink); }
+@media (hover: hover) {
+  body:not(.is-legal) .btn:hover { box-shadow: 0 6px 14px rgba(34,29,24,0.34), inset 0 1px 0 rgba(255,255,255,0.14); }
+}
+body:not(.is-legal) .btn--ghost, body:not(.is-legal) .btn--ghost-light { box-shadow: none; background: transparent; }
+body:not(.is-legal) .btn--ghost { color: var(--ink); border-color: var(--ink); }
+body:not(.is-legal) .btn--ghost-light { color: #fff; border-color: rgba(255,255,255,.6); }
+
+/* ロゴ：Speak Up / Eat Out と同じ丸い印＋社名＋「耳から、声へ」 */
+.brand { flex-direction: row; align-items: center; gap: 12px; font-size: inherit; }
+.brand-mark { width: 32px; height: 32px; flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; }
+.brand .brand-word {
+  display: block; font-family: var(--brand); font-weight: 700; font-size: var(--text-sm);
+  letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; margin: 0;
+}
+.brand .brand-tag {
+  display: block; font-family: var(--sans); font-size: var(--text-xs); font-weight: 500;
+  letter-spacing: 0.04em; color: var(--gold-text); line-height: 1.4; margin-top: 2px;
+}
+@media (max-width: 400px) {
+  .brand { gap: 10px; }
+  .brand-mark { width: 28px; height: 28px; }
+  .brand .brand-word { font-size: var(--text-xs); }
 }

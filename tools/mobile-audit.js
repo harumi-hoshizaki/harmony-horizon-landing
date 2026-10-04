@@ -23,7 +23,8 @@ const SPEC_LEGAL = { h1: [20, 34], h2: [15, 22], h3: [14, 18], body: [14, 18], m
    (実際 /speakup/ は 2026-09-28 からずっとこの3件を出していた)。
    ★アプリの段を変える時は、ここも一緒に変えること。 */
 const SPEC_APP = { h1: [28, 40], h2: [23, 28], h3: [16, 20], body: [18, 20] };
-const APP_SCALE = ['/speakup/', '/eatout/lesson/'];
+/* 2026-10-04: build-site.py の全ページも Speak Up の段に（HARU様）。 */
+const APP_SCALE = ['/speakup/', '/eatout/lesson/', '/', '/programs.html', '/student-voices.html', '/contact.html', '/ai-journey/', '/ai-journey/contact/'];
 /* 2026-08-27: 販売LP2枚がこの一覧に入っていなかった。**売っているページを
    一度も測っていなかった。** 「すべて合格」と出ていたのに、実機では
    中央揃えののこぎり状で読みにくい状態だった（HARU様の指摘）。 */
