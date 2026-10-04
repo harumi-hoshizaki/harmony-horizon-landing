@@ -127,7 +127,7 @@ SHELL = '''<!DOCTYPE html>
 </html>
 '''
 
-def render(src_dir, slug, out, title, desc, body_class=''):
+def render(src_dir, slug, out, title, desc, body_class='', page_class=''):
     def links(indent):
         rows = []
         for href, label in NAV:
@@ -151,7 +151,9 @@ def render(src_dir, slug, out, title, desc, body_class=''):
         body=body,
         # 法務ページは Speak Up LP の脚注から開かれるので、ページ全体(ヘッダー・脚注も)を
         # アプリと同じ書体の決まりにする目印(site.css の body.is-legal)。
-        bodyattr=' class="is-legal"' if body_class else '',
+        # AI Journey は英語レッスンとは別の話なので、明朝をやめてゴシックで組む
+        # (2026-10-04 HARU様「上品すぎる。読みやすいゴシックで」。site.css の body.is-ai)。
+        bodyattr=' class="is-legal"' if body_class else (f' class="{page_class}"' if page_class else ''),
         jsonld=JSONLD_HOME if out == 'index.html' else '')
     dest = ROOT / out
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -161,7 +163,8 @@ def render(src_dir, slug, out, title, desc, body_class=''):
 
 def build():
     for slug, out, name, title, desc in PAGES:
-        render(SRC, slug, out, title, desc)
+        render(SRC, slug, out, title, desc,
+               page_class='is-ai' if slug == 'ai-journey' else '')
     # 法務ページは本文が長い。追補3 §152 のとおり寸法を落とすので、
     # 目印のクラスを付けて CSS 側で切り替える。
     for slug, out, name, desc in LEGAL:

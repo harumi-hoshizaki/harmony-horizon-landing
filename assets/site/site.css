@@ -638,6 +638,22 @@ body.is-legal {
   --mono:    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
 }
 body.is-legal code { font-family: inherit; }
+
+/* ---------- AI Journey（2026-10-04 HARU様決定） ----------
+   「明朝は上品すぎて伝統文化のよう。AIの話なので読みやすいゴシックで」
+   「Harmony Horizon の文字（Cormorant Garamond）も嫌い」。
+   続けて「Speak Up と同じ Font で」。/speakup/ と同じ端末の標準書体1つで、
+   見出し・本文・社名を組む（speakup/index.html の --display/--sans/--brand と同じ値）。
+   英語レッスンの他のページは変えない。 */
+body.is-ai {
+  --display: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --sans:    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --brand:   -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+}
+body.is-ai h1, body.is-ai h2, body.is-ai h3 { font-weight: 700; letter-spacing: 0; }
+body.is-ai .brand, body.is-ai .ftr__brand { font-weight: 700; letter-spacing: -.01em; }
+body.is-ai .brand { font-size: 19px; }
+@media (min-width: 400px) { body.is-ai .brand { font-size: 20px; } }
 .page-legal { padding: var(--s6) 0 var(--s8); }
 .page-legal h1 { font-size: 22px; font-weight: 700; line-height: 1.5; margin-bottom: var(--s2); }
 .page-legal .updated { font-size: 13px; color: var(--stone-deep); margin-bottom: var(--s6); }
