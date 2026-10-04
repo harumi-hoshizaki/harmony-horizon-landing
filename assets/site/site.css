@@ -26,10 +26,12 @@
   /* 欧文が先、和文が後。ブラウザは字ごとに探すので、英字は Playfair /
      Inter、かなと漢字は Zen Old Mincho / Zen Kaku Gothic New で出る。
      一つの family 指定で二つの言語を組み分けられる（追補5）。 */
-  --display: "Playfair Display", "Zen Old Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
-  /* 社名専用。旧サイトから使っている書体に戻した */
-  --brand:   "Cormorant Garamond", "Zen Old Mincho", "Hiragino Mincho ProN", serif;
-  --sans: "Inter", "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", sans-serif;
+  /* 2026-10-04 HARU様「明朝は上品すぎる。読みやすいゴシックで」「Harmony Horizon の
+     文字も嫌い」「Speak Up と同じ Font で」。見出し・本文・社名すべてを /speakup/ と
+     同じ端末の標準書体1つにする（明朝・Cormorant Garamond・Playfair はやめた）。戻さないこと。 */
+  --display: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --brand:   -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+  --sans:    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --s1: 8px;  --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px;
@@ -644,16 +646,14 @@ body.is-legal code { font-family: inherit; }
    「Harmony Horizon の文字（Cormorant Garamond）も嫌い」。
    続けて「Speak Up と同じ Font で」。/speakup/ と同じ端末の標準書体1つで、
    見出し・本文・社名を組む（speakup/index.html の --display/--sans/--brand と同じ値）。
-   英語レッスンの他のページは変えない。 */
-body.is-ai {
-  --display: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-  --sans:    -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-  --brand:   -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
-}
+   同日「英語レッスンの他のページとサイト全体の Harmony Horizon も」→ :root で全ページに。
+   ここに残るのは AI Journey の見出しの太さだけ。 */
 body.is-ai h1, body.is-ai h2, body.is-ai h3 { font-weight: 700; letter-spacing: 0; }
-body.is-ai .brand, body.is-ai .ftr__brand { font-weight: 700; letter-spacing: -.01em; }
-body.is-ai .brand { font-size: 19px; }
-@media (min-width: 400px) { body.is-ai .brand { font-size: 20px; } }
+/* 社名（全ページ）。Speak Up のロゴと同じ、標準書体の太字 */
+.brand, .ftr__brand { font-weight: 700; letter-spacing: -.01em; }
+.brand { font-size: 19px; }
+@media (min-width: 400px) { .brand { font-size: 20px; } }
+@media (min-width: 560px) { .brand { font-size: 21px; } }
 .page-legal { padding: var(--s6) 0 var(--s8); }
 .page-legal h1 { font-size: 22px; font-weight: 700; line-height: 1.5; margin-bottom: var(--s2); }
 .page-legal .updated { font-size: 13px; color: var(--stone-deep); margin-bottom: var(--s6); }
