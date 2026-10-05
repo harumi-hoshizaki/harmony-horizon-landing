@@ -88,22 +88,7 @@ function showStart() {
   // ボタンは最初の一画面に入れる(LP の決まり: 393×659 で下端が画面に収まる)。
   body.appendChild(h('div', { class: 'next-block' }, [
     primaryButton('クイズをはじめる', () => show(0)),
-    h('p', { class: 'muted-text', text: '全4問・約3分・無料' }),
-  ]));
-  const flow = h('ol', { class: 'bridge-flow' });
-  ['音声を聞く。', '意味を選ぶ。', '聞き取れなかった理由を、\n音のパターンで知る。'].forEach((t, i) => {
-    flow.appendChild(h('li', {}, [
-      h('span', { class: 'onb-flow-n', text: String(i + 1) }),
-      h('span', { class: 'bridge-flow-text', text: t }),
-    ]));
-  });
-  body.appendChild(h('div', { class: 'bridge-flow-block' }, [
-    h('p', { class: 'bridge-flow-head', text: 'クイズの流れ' }),
-    flow,
-  ]));
-  body.appendChild(h('div', { class: 'note' }, [
-    h('p', { text: '終わると、4つの音のうち、\nどれを聞き逃したかが\nわかります。' }),
-    h('p', { text: 'メール登録なしで、\n結果を見られます。' }),
+    h('p', { class: 'muted-text', text: '全4問・約3分・無料\n登録なしで、結果が見られます。' }),
   ]));
 }
 
