@@ -329,7 +329,7 @@ export const copy = {
     reviewStart: '復習をはじめる',
     // 完了画面の「次は「◯◯」です。」と、締めくくり画面で使う(次の日が復習の日の時)。
     reviewDayName: '復習の日',
-    courseDone: '20日間のコース、\n完了です。',
+    courseDone: 'コースを、\n最後まで終えました。',
   },
   listen: {
     title: '聞き流す',
