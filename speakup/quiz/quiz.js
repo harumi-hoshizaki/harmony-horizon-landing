@@ -175,8 +175,6 @@ function showResult() {
       h('p', { class: 'tip-listen-text' }, [
         h('span', { class: 'tip-listen-label', text: q.primary }),
         state.answers[i] ? '聞き取れました。' : '聞き逃しました。',
-        h('br'),
-        `コースの${st.by_label[q.primary]}本の会話で解説しています。`,
       ]),
     ]));
   });
@@ -186,8 +184,9 @@ function showResult() {
   ]));
 
   body.appendChild(h('div', { class: 'note' }, [
-    h('p', { text: `コースの相手のセリフ\n${st.partner_lines}本のうち、${st.tipped_lines}本に\n解説があります。` }),
-    h('p', { text: `解説は${st.patterns}種類の\nパターンに\n分けてあります。` }),
+    h('p', { text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }),
+    h('p', { text: '英語は、単語が\nつながったり、\n音が消えたりして、\n別の音に聞こえます。' }),
+    h('p', { text: `このコースでは、会話ごとに\nその理由を説明します。\n音のパターンは${st.patterns}種類。\n決まりを知ると、\n聞こえ方が変わります。` }),
   ]));
 
   body.appendChild(newsletterBlock(score, qs));
@@ -207,7 +206,7 @@ function newsletterBlock(score, qs) {
   const missed = qs.filter((_, i) => !state.answers[i]).map((q) => q.primary);
   const input = h('input', { class: 'text-input', type: 'email', id: 'quizEmail', name: 'email', autocomplete: 'email', inputmode: 'email', required: 'required' });
   const msg = h('p', { class: 'muted-text', hidden: true });
-  const submit = primaryButton('解説メールを受け取る', onSubmit);
+  const submit = primaryButton('コツをメールで受け取る', onSubmit);
   const form = h('div', { class: 'next-block' }, [
     h('label', { class: 'text-input-label', for: 'quizEmail', text: 'メールアドレス' }),
     input,
@@ -238,8 +237,8 @@ function newsletterBlock(score, qs) {
     }
   }
   return h('div', { class: 'answer-group' }, [
-    h('h3', { class: 'group-title', text: 'パターンの解説を、メールで' }),
-    h('p', { class: 'body-text', text: '音のパターンの解説を、\n週1回ほどお届けします。' }),
+    h('h3', { class: 'group-title', text: '聞き取りのコツを、メールで' }),
+    h('p', { class: 'body-text', text: '音のパターンを1つずつ、\n聞き取りのコツといっしょに\n週1回ほどお届けします。' }),
     form,
     h('p', { class: 'muted-text' }, [
       'いつでも配信を止められます。送信すると、',
