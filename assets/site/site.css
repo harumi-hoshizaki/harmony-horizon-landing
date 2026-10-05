@@ -1056,3 +1056,14 @@ body.is-ai .ftr a:hover { color: #fff; }
 .aj-auto b { font-size: 16px; color: var(--aj-tint-ink); }
 .aj-auto span { font-size: 17px; line-height: 1.7; color: var(--aj-ink); font-weight: 600; }
 .aj-auto small { font-size: 16px; color: var(--aj-muted); }
+/* 言語の切り替え（2026-10-05 HARU様「AI Journey は3か国語で」）。押しやすい高さ 44px */
+.aj-lang { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 var(--s3); }
+.aj-lang a { display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 999px;
+  font-size: 16px; font-weight: 600; color: var(--aj-ink, #111); text-decoration: none; border: 1px solid rgba(17,17,17,.12); background: #fff; }
+.aj-lang a[aria-current] { background: #EEF2F7; border-color: transparent; }
+@media (hover: hover) { .aj-lang a:hover { border-color: rgba(17,17,17,.4); } }
+.aj-badge { font-size: 16px; }
+/* 切り替えは顔写真の行に入れ、ボタンを携帯の最初の一画面に残す。携帯では「AI Journey」の札を外す */
+.aj-me .aj-lang { margin: 0 0 0 auto; flex-wrap: nowrap; }
+.aj-me .aj-lang a { padding: 0 12px; }
+@media (max-width: 899px) { .aj-me .aj-tag { display: none; } }
