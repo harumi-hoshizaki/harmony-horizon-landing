@@ -1,0 +1,12 @@
+/* 書体だけ本体と違う(HARU様 2026-10-05「ヒラギノは使わないで。読みにくいので」)。
+   大きさ・行間・余白は本体の main.css / tokens.css のまま。
+   書体は自前ホスト(第三者への通信ゼロ)。400/700/900 は Zen Kaku Gothic New に本物がある太さ
+   (本体の 800 は 900 に寄る。600 は無いので使わない=偽ボールドを避ける)。 */
+@font-face { font-family: "Zen Kaku Gothic New"; font-weight: 400; font-style: normal; font-display: swap; src: url("lib/fonts/zen-kaku-400.woff2") format("woff2"); }
+@font-face { font-family: "Zen Kaku Gothic New"; font-weight: 700; font-style: normal; font-display: swap; src: url("lib/fonts/zen-kaku-700.woff2") format("woff2"); }
+@font-face { font-family: "Zen Kaku Gothic New"; font-weight: 900; font-style: normal; font-display: swap; src: url("lib/fonts/zen-kaku-900.woff2") format("woff2"); }
+:root {
+  --font-display: "Zen Kaku Gothic New", sans-serif;
+  --font-gothic:  "Zen Kaku Gothic New", sans-serif;
+  --font-latin:   "Zen Kaku Gothic New", sans-serif;
+}
