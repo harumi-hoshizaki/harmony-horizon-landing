@@ -68,12 +68,28 @@ function optionsFor(q, i) {
   return list;
 }
 
-/* ---------- はじめに(Welcome) ---------- */
+/* ---------- はじめに(Welcome) ----------
+   LP(/speakup/)のヒーローと同じ写真(京都の路地で、日本人の女性が外国人の男性と話している)。
+   「やらなきゃ損」に変わる材料は、ここで全部見せる: ①自分ごと(知っている単語なのに)
+   ②具体的な約束(何がわかるか) ③低い負担(4問・無料・メール登録なしで結果が見られる)。
+   数字や実績は、データにないものは書かない。 */
 function showStart() {
   const body = screen({ brandLockup: true });
-  body.appendChild(sceneBlock(DATA.hero.image, DATA.hero.situation));
-  body.appendChild(h('h2', { class: 'screen-title', text: '単語は知っているのに、\n聞き取れないのはなぜ？' }));
-  body.appendChild(markedLead('原因は、英語の{{音のパターン}}です。\n実際のコースの音声で、\n4つ確かめてみましょう。', 'body-text'));
+  const photo = h('div', { class: 'scene-holder' }, [
+    h('picture', {}, [
+      h('source', { srcset: '/assets/site/scene-kyoto-street.webp', type: 'image/webp' }),
+      h('img', { class: 'scene-image', src: '/assets/site/scene-kyoto-street.jpg',
+        alt: '京都の路地で、日本人の女性が外国人の男性と話しています。' }),
+    ]),
+  ]);
+  body.appendChild(photo);
+  body.appendChild(h('h2', { class: 'screen-title', text: '知っている単語なのに、\n聞き取れない理由。' }));
+  body.appendChild(markedLead('あなたの耳が{{聞き逃す音}}を、\n実際の音声で確かめます。', 'body-text'));
+  // ボタンは最初の一画面に入れる(LP の決まり: 393×659 で下端が画面に収まる)。
+  body.appendChild(h('div', { class: 'next-block' }, [
+    primaryButton('クイズをはじめる', () => show(0)),
+    h('p', { class: 'muted-text', text: '全4問・約3分・無料' }),
+  ]));
   const flow = h('ol', { class: 'bridge-flow' });
   ['音声を聞く。', '意味を選ぶ。', '聞き取れなかった理由を、\n音のパターンで知る。'].forEach((t, i) => {
     flow.appendChild(h('li', {}, [
@@ -85,8 +101,10 @@ function showStart() {
     h('p', { class: 'bridge-flow-head', text: 'クイズの流れ' }),
     flow,
   ]));
-  body.appendChild(h('div', { class: 'btn-row' }, [primaryButton('はじめる', () => show(0))]));
-  body.appendChild(h('p', { class: 'muted-text', text: '全4問・無料' }));
+  body.appendChild(h('div', { class: 'note' }, [
+    h('p', { text: '終わると、4つの音のうち、\nどれを聞き逃したかが\nわかります。' }),
+    h('p', { text: 'メール登録なしで、\n結果を見られます。' }),
+  ]));
 }
 
 /* ---------- 1問 ---------- */
