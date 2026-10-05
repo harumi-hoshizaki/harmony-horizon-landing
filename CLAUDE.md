@@ -206,3 +206,11 @@ node    tools/hero-contrast.js http://127.0.0.1:8802/speakup/index.html
 `harmony-horizon` リポジトリの
 `docs/contractor-website-blueprint/`（追補4・追補5）。
 **新しく何かを組む前に、そこの README 冒頭「何より先に読むこと」を読む。**
+
+## 書体はヒラギノを含む端末標準で固定(2026-10-05 HARU様決定)
+
+`-apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif`。
+`/speakup` のLPと Speak Up 本体と同じ。**クイズ(`/speakup/quiz/`)も同じ**。
+HARU様は MacBook で見ているのでヒラギノ角ゴで表示される。
+**他の書体(Zen Kaku Gothic New など)に替えない。** 一度替えて、同日に戻した経緯がある
+(「ヒラギノは使わないで」→ LPの画面を示して「この書体を真似して」→「LPがヒラギノなのでクイズも同じでOK。常にこれを使って」)。
