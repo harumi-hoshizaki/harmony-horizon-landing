@@ -91,8 +91,8 @@
     <div class="wrap">
       <ul class="aj-chips" aria-label="Ce que je peux faire">
         <li>Réservations et paiements automatisés</li>
-        <li>Réseaux sociaux et courriels automatisés</li>
-        <li>IA qui répond aux clients</li>
+        <li>Réseaux sociaux automatisés</li>
+        <li>Agents IA</li>
         <li>Vente en ligne</li>
         <li>Sites web</li>
         <li>Voix IA et vidéos courtes</li>
@@ -108,6 +108,17 @@
         <p class="aj-note">Ce qui a marché et ce qui n’a pas marché, tel quel.</p>
       </div>
       <ol class="aj-log">
+        <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-05">2026.10.05</time>
+          <div>
+            <h3 class="aj-h3">J’ai créé un système pour publier sur les réseaux sociaux depuis Claude Code</h3>
+            <ul class="aj-list">
+              <li>Les vidéos, carrousels et photos partent de Claude Code, passent par Buffer et arrivent sur Instagram, Threads et YouTube</li>
+              <li>Les vidéos sont hébergées sur Cloudflare R2, et leurs liens publics sont envoyés à Buffer</li>
+              <li>Au début, l’environnement de travail n’avait pas accès à Internet. J’ai ouvert l’accès réseau, ajouté les clés, et tout fonctionne</li>
+            </ul>
+          </div>
+        </li>
         <li class="aj-entry" data-reveal>
           <time class="aj-entry__date" datetime="2026-10-04">2026.10.04</time>
           <div>
@@ -140,7 +151,7 @@
             <p class="aj-stack">API Stripe · voix IA · Vercel</p>
             <p class="aj-links"><a href="/eatout/">Voir le cours du restaurant</a><a href="/immigration/">Voir le cours d’immigration</a><a href="/speakup/">Voir Speak Up</a></p>
           </div>
-          <img class="aj-work__shot" src="/assets/site/speakup-app-screenshot.jpg" alt="" width="780" height="1650" loading="lazy" decoding="async">
+          <img class="aj-work__shot" src="/assets/site/course-simulation.jpg" alt="Une simulation de conversation du cours : aider en anglais une personne perdue à la sortie d’une gare" width="786" height="1884" loading="lazy" decoding="async">
         </article>
         <article class="aj-work aj-work--wide aj-work--auto" data-reveal>
           <div class="aj-work__body">
@@ -150,6 +161,7 @@
             <p class="aj-fast">Le parcours du paiement au courriel de remerciement a pris moins de 10 minutes à mettre en place</p>
           </div>
           <ul class="aj-auto">
+            <li><b>Quand une vidéo ou une photo est prête</b><span>Claude Code la programme sur Instagram, Threads et YouTube</span><small>Buffer · Cloudflare R2</small></li>
             <li><b>Quand un paiement passe</b><span>l’acheteur est ajouté à la liste et reçoit un courriel de remerciement</span><small>Stripe · Zapier · MailerLite</small></li>
             <li><b>Après chaque achat</b><span>un courriel de bienvenue avec le mode d’emploi part automatiquement</span><small>MailerLite</small></li>
             <li><b>Chaque lundi matin</b><span>un courriel me rappelle de planifier les publications de la semaine</span><small>Zapier</small></li>
@@ -158,9 +170,9 @@
         </article>
         <article class="aj-work aj-work--lilac" data-reveal>
           <p class="aj-work__k">AI talk</p>
-          <h3 class="aj-h3">Pratiquer à l’oral avec un serveur IA</h3>
-          <p>Pour chaque scène, une IA joue le serveur et répond à voix haute à votre anglais. Des règles l’empêchent de sortir du sujet, et elle compte les séances incluses dans chaque achat. Le même système peut servir pour un accueil ou un service à la clientèle.</p>
-          <p class="aj-stack">API ElevenLabs</p>
+          <h3 class="aj-h3">Un agent IA vocal qui joue le serveur</h3>
+          <p>Pour chaque scène, un agent IA doté d’un rôle et de règles joue le serveur et répond à voix haute à votre anglais. Ses consignes l’empêchent de sortir du sujet, et il compte les séances incluses dans chaque achat. Le même système peut servir d’agent IA pour le téléphone, l’accueil ou le service à la clientèle.</p>
+          <p class="aj-stack">ElevenLabs Agents · API</p>
         </article>
         <article class="aj-work aj-work--mint" data-reveal>
           <p class="aj-work__k">AI voice</p>
@@ -198,8 +210,8 @@
       </div>
       <ul class="aj-offer">
         <li data-reveal><h3 class="aj-h3">Réservations et paiements automatisés</h3><p>Relier l’inscription, le paiement, les courriels de confirmation et votre liste de clients, pour que plus personne n’ait à tout saisir à la main.</p></li>
-        <li data-reveal><h3 class="aj-h3">Réseaux sociaux et courriels automatisés</h3><p>Publications programmées, infolettres et rappels hebdomadaires qui partent à l’heure, tout seuls.</p></li>
-        <li data-reveal><h3 class="aj-h3">Une IA qui répond aux clients</h3><p>Une IA qui répond aux questions fréquentes, par écrit ou à voix haute, selon les règles de votre entreprise.</p></li>
+        <li data-reveal><h3 class="aj-h3">Publication automatisée sur les réseaux sociaux</h3><p>Programmer vidéos, carrousels et photos sur Instagram, Threads et YouTube en une seule fois. Les infolettres et les rappels hebdomadaires peuvent aussi partir tout seuls.</p></li>
+        <li data-reveal><h3 class="aj-h3">Des agents IA qui répondent aux clients</h3><p>Une IA qui répond aux questions fréquentes, par écrit ou à voix haute, selon les règles de votre entreprise.</p></li>
         <li data-reveal><h3 class="aj-h3">Les tâches répétitives du bureau</h3><p>Formulaires copiés dans un tableur, rapports hebdomadaires envoyés automatiquement, et tout ce que votre équipe refait à la main.</p></li>
         <li data-reveal><h3 class="aj-h3">Sites web</h3><p>En japonais, en anglais et en français. Pensés jusqu’au premier écran sur cellulaire, avec des modifications rapides après la mise en ligne.</p></li>
         <li data-reveal><h3 class="aj-h3">Vidéos courtes et voix IA</h3><p>Sous-titres (anglais et français) et narration à partir de vos images et de vos mots, et voix IA pour la formation et les guides.</p></li>

@@ -1067,3 +1067,7 @@ body.is-ai .ftr a:hover { color: #fff; }
 .aj-me .aj-lang { margin: 0 0 0 auto; flex-wrap: nowrap; }
 .aj-me .aj-lang a { padding: 0 12px; }
 @media (max-width: 899px) { .aj-me .aj-tag { display: none; } }
+/* 写真のない全幅カードは、文も枠いっぱいに（2026-10-05 HARU様「FULLの枠ですよ」） */
+.aj-work--sky.aj-work--wide p { max-width: none; }
+/* 行末に1〜2語だけ残る行を減らす（3か国語で文の長さが違うため、改行を手で入れずにブラウザに整えさせる） */
+body.is-ai p, body.is-ai li, body.is-ai h2, body.is-ai h3 { text-wrap: pretty; }

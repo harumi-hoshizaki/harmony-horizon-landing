@@ -32,8 +32,8 @@
     <div class="wrap">
       <ul class="aj-chips" aria-label="できること">
         <li>予約・支払いの自動化</li>
-        <li>SNS・メールの自動化</li>
-        <li>問い合わせに答えるAI</li>
+        <li>SNS投稿の自動化</li>
+        <li>AIエージェント</li>
         <li>オンラインで売る仕組み</li>
         <li>ウェブサイト</li>
         <li>AIの音声・短い動画</li>
@@ -49,6 +49,17 @@
         <p class="aj-note">うまくいったことも、失敗したことも、そのまま書きます。</p>
       </div>
       <ol class="aj-log">
+        <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-05">2026.10.05</time>
+          <div>
+            <h3 class="aj-h3">Claude Code から、SNSへ投稿する仕組みを作りました</h3>
+            <ul class="aj-list">
+              <li>Claude Code から Buffer を通して、Instagram・Threads・YouTube に動画・カルーセル・写真を出せるようにしました</li>
+              <li>動画は Cloudflare R2 に置き、公開URLを Buffer に渡しています</li>
+              <li>はじめは通信ができずに止まりましたが、許可と鍵を用意して動かしました</li>
+            </ul>
+          </div>
+        </li>
         <li class="aj-entry" data-reveal>
           <time class="aj-entry__date" datetime="2026-10-04">2026.10.04</time>
           <div>
@@ -81,7 +92,7 @@
             <p class="aj-stack">Stripe API・AIの音声・Vercel</p>
             <p class="aj-links"><a href="/eatout/">飲食店のコースを見る</a><a href="/immigration/">入国審査のコースを見る</a><a href="/speakup/">Speak Up を見る</a></p>
           </div>
-          <img class="aj-work__shot" src="/assets/site/speakup-app-screenshot.jpg" alt="" width="780" height="1650" loading="lazy" decoding="async">
+          <img class="aj-work__shot" src="/assets/site/course-simulation.jpg" alt="コースの会話シミュレーション。駅の出口で迷っている外国人に、英語で話しかける場面" width="786" height="1884" loading="lazy" decoding="async">
         </article>
         <article class="aj-work aj-work--wide aj-work--auto" data-reveal>
           <div class="aj-work__body">
@@ -91,6 +102,7 @@
             <p class="aj-fast">支払いからお礼のメールまでの流れは、10分かからずに組んで動かしました</p>
           </div>
           <ul class="aj-auto">
+            <li><b>動画や写真ができたら</b><span>Claude Code から Instagram・Threads・YouTube へ投稿を予約する</span><small>Buffer・Cloudflare R2</small></li>
             <li><b>支払いが済んだら</b><span>申込者の一覧に入り、お礼のメールが届く</span><small>Stripe・Zapier・MailerLite</small></li>
             <li><b>購入した人に</b><span>使い方の案内メールが自動で届く</span><small>MailerLite</small></li>
             <li><b>毎週月曜の朝に</b><span>その週の発信の準備を知らせるメールが届く</span><small>Zapier</small></li>
@@ -99,9 +111,9 @@
         </article>
         <article class="aj-work aj-work--lilac" data-reveal>
           <p class="aj-work__k">AI talk</p>
-          <h3 class="aj-h3">AIの店員と、声で話す練習</h3>
-          <p>場面ごとに役を決めたAIが店員になり、こちらの英語に声で答えます。話がそれないように決まりを入れ、一回の購入で使える回数も数えています。同じ仕組みで、受付やお客様対応のAIも作れます。</p>
-          <p class="aj-stack">ElevenLabs API</p>
+          <h3 class="aj-h3">店員役の、声で話すAIエージェント</h3>
+          <p>場面ごとに役と決まりを持たせたAIエージェントが店員になり、こちらの英語に声で答えます。話がそれないように指示を組み、一回の購入で使える回数も数えています。同じ仕組みで、電話や受付、お客様対応のAIエージェントも作れます。</p>
+          <p class="aj-stack">ElevenLabs Agents・API</p>
         </article>
         <article class="aj-work aj-work--mint" data-reveal>
           <p class="aj-work__k">AI voice</p>
@@ -139,8 +151,8 @@
       </div>
       <ul class="aj-offer">
         <li data-reveal><h3 class="aj-h3">予約・支払いの自動化</h3><p>申し込み、支払い、確認のメール、顧客の一覧への登録までをつなげて、手で打ち込む作業をなくします。</p></li>
-        <li data-reveal><h3 class="aj-h3">SNSとメールの自動化</h3><p>投稿の予約、メールの配信、毎週の準備の知らせまで、決まった時に自動で動くようにします。</p></li>
-        <li data-reveal><h3 class="aj-h3">問い合わせに答えるAI</h3><p>よくある質問に答えるAIや、声で受け答えするAIを、会社の決まりに合わせて作ります。</p></li>
+        <li data-reveal><h3 class="aj-h3">SNSへの投稿の自動化</h3><p>動画・カルーセル・写真を、Instagram・Threads・YouTube へまとめて予約投稿できる仕組みを作ります。メールの配信や毎週の知らせも自動にします。</p></li>
+        <li data-reveal><h3 class="aj-h3">問い合わせに答えるAIエージェント</h3><p>よくある質問に答えるAIや、声で受け答えするAIを、会社の決まりに合わせて作ります。</p></li>
         <li data-reveal><h3 class="aj-h3">社内のくり返し作業</h3><p>フォームの内容を表にまとめる、毎週の報告を送るなど、毎回手でやっていることを自動にします。</p></li>
         <li data-reveal><h3 class="aj-h3">ウェブサイト</h3><p>日本語・英語・フランス語で作ります。携帯で開いた最初の一画面まで測り、公開後の直しもすぐに対応します。</p></li>
         <li data-reveal><h3 class="aj-h3">短い動画・AIの音声</h3><p>素材と言葉から、字幕（英語・フランス語）とナレーションをそろえます。研修や案内の音声もAIの声で作れます。</p></li>
