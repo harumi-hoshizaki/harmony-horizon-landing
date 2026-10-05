@@ -186,7 +186,7 @@ function showResult() {
   body.appendChild(h('div', { class: 'note' }, [
     h('p', { text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }),
     h('p', { text: '英語は、単語が\nつながったり、\n音が消えたりして、\n別の音に聞こえます。' }),
-    h('p', { text: `このコースでは、会話ごとに\nその理由を説明します。\n音のパターンは${st.patterns}種類。\n決まりを知ると、\n聞こえ方が変わります。` }),
+    h('p', { text: `このコースでは、会話ごとに\nその理由を説明します。\n説明は、${Math.floor(st.explanations / 100) * 100}以上。\n決まりを知ると、\n聞こえ方が変わります。` }),
   ]));
 
   body.appendChild(newsletterBlock(score, qs));
