@@ -26,12 +26,19 @@ OUT = os.path.join(HERE, '..', 'speakup', 'quiz')
 
 # 出題する4本。どの音(パターン)を試すかだけが、ここで決める編集の部分。
 # 英文・和訳・解説は、audio_id から本体のデータを引く。
+# 2026-10-05 英語講師の目で選び直した(HARU様指示)。基準:
+#  ・外国人に話しかけた時、実際に相手の口から出る短い文(4〜6語)
+#  ・単語は全部知っているのに、聞くと別の音になる(クイズの「えっ」)
+#  ・HARU様が柱にしている4つのパターンを1問ずつ。やさしい驚き→具体的な場面の順
+#  ・Q2とQ3は同じレッスン(駅の出口で道に迷った旅行者)=1つの小さな場面でつながる
+#  ・I-HELP-4 は LP に出る会話なので、音声は LP 品質で作り直してある
 QUESTIONS = [
-    ('I-INT-1_b2n1', '母音ドッキング'),
-    ('I-REST-4_b2n3', '消えるT'),
-    ('I-FROM-5_b2n3', 'Flap T'),
-    ('I-INT-1_b2n4', 'Toの弱形'),
+    ('I-FROM-1_b2n1', 'i-from-1', '母音ドッキング'),   # Have you ever been there?
+    ('I-HELP-4_b2n1', 'i-help-4', '消えるT'),         # Actually, I'm a bit lost.
+    ('I-HELP-4_b2n2', 'i-help-4', 'Toの弱形'),        # I'm going to this karaoke place.
+    ('I-HELP-6_b2n6', 'i-help-6', 'Flap T'),          # Right at the bank.
 ]
+HERO_SCENE = 'i-help-4'   # はじめの画面の写真(LPのカラオケへの道と同じ)
 
 # 本体からそのままコピーするファイル(クイズが使う部品だけ)。
 LIB_FILES = [
@@ -80,6 +87,7 @@ def main():
 
     # --- 2. データを本体から取り出す ---
     lines = {}          # audio_id -> partner dict
+    scene_of = {}       # scenario id -> (image, situation_ja)
     lesson_of = {}      # audio_id -> lesson json file
     all_partner = []    # (audio_id, ja, lesson)
     total_lessons = 0
@@ -88,6 +96,7 @@ def main():
     for f in sorted(glob.glob(os.path.join(spk, 'data/scenarios/i-*.json'))):
         total_lessons += 1
         d = json.load(open(f))
+        scene_of[os.path.basename(f)[:-5]] = (d.get('image'), d.get('situation_ja', ''))
         found = []
         walk_partner(d, found)
         seen = set()
@@ -107,7 +116,7 @@ def main():
                 label_lines[lab] += 1
 
     questions = []
-    for qi, (aid, primary) in enumerate(QUESTIONS):
+    for qi, (aid, sid, primary) in enumerate(QUESTIONS):
         p = lines[aid]
         assert primary in p['listening']['why'], (aid, primary)
         # はずれ: 他のレッスンの相手のセリフの和訳から。正解と似ていない物だけ、
@@ -132,9 +141,11 @@ def main():
             'id': aid, 'en': p['en'], 'ja': p['ja'],
             'heard': p['listening'].get('heard', ''), 'why': p['listening']['why'],
             'primary': primary, 'decoys': decoys,
+            'image': scene_of[sid][0], 'situation': scene_of[sid][1],
         })
 
     data = {
+        'hero': {'image': scene_of[HERO_SCENE][0], 'situation': scene_of[HERO_SCENE][1]},
         'questions': questions,
         'stats': {
             'lessons': total_lessons,
@@ -158,13 +169,18 @@ def main():
     json.dump(data, open(path, 'w'), ensure_ascii=False, indent=1)
 
     # --- 3. 音声(男女・ふつう・ゆっくり)をそのままコピー ---
-    for aid, _ in QUESTIONS:
+    for aid, _sid, _p in QUESTIONS:
         for voice in ('partner', 'partner-f'):
             for suf in ('', '_slow'):
                 rel = f'audio/{voice}/{aid}{suf}.mp3'
                 dst = os.path.join(OUT, 'lib', rel)
                 os.makedirs(os.path.dirname(dst), exist_ok=True)
                 shutil.copyfile(os.path.join(spk, rel), dst)
+    imgs = {q['image'] for q in questions} | {data['hero']['image']}
+    for rel in sorted(imgs):
+        dst = os.path.join(OUT, 'lib', rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copyfile(os.path.join(spk, rel), dst)
     for rel in SE_FILES:
         dst = os.path.join(OUT, 'lib', rel)
         os.makedirs(os.path.dirname(dst), exist_ok=True)

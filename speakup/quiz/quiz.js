@@ -9,7 +9,7 @@
 //   から出す。このファイルに、解説の文は1行も書いていない。
 import {
   h, clear, renderScreenHead, primaryButton, navRow, audioButton,
-  collapsibleVoiceSpeedControls, radioMark, tipAccordion, markedLead,
+  collapsibleVoiceSpeedControls, radioMark, tipAccordion, markedLead, sceneImage,
 } from './lib/js/ui.js';
 import { AudioCue, playOrPause, playSe } from './lib/js/audio.js';
 import { playerState } from './lib/js/playerState.js';
@@ -25,6 +25,18 @@ const host = document.createElement('main');
 host.className = 'screen-host';
 app.appendChild(headEl);
 app.appendChild(host);
+
+// 声は、まだ選んでいない人は女性から(男性の声は部屋の響きが気になる録音があるため)。
+// 選んだ声は本体と同じ仕組みで覚える(playerState)。
+try { if (!localStorage.getItem('etv.talk.voice')) playerState.voice = 'f'; } catch (_) { playerState.voice = 'f'; }
+
+/* 場面の写真+場面の文(本体の .scene-block と同じ組み方: 写真と文は12pxの1つの塊)。 */
+function sceneBlock(img, situation) {
+  return h('div', { class: 'scene-block' }, [
+    sceneImage({ src: img, situation }),
+    h('p', { class: 'body-text situation-line', text: situation }),
+  ]);
+}
 
 let DATA = null;
 const state = { answers: [], picked: [], cues: {} };
@@ -56,12 +68,23 @@ function optionsFor(q, i) {
   return list;
 }
 
-/* ---------- はじめに ---------- */
+/* ---------- はじめに(Welcome) ---------- */
 function showStart() {
   const body = screen({ brandLockup: true });
+  body.appendChild(sceneBlock(DATA.hero.image, DATA.hero.situation));
   body.appendChild(h('h2', { class: 'screen-title', text: '単語は知っているのに、\n聞き取れないのはなぜ？' }));
-  body.appendChild(markedLead('実際のコースの音声を、\n4本だけ聞いてみましょう。', 'body-text'));
-  body.appendChild(markedLead('聞き取れなかった理由を、\n{{音のパターン}}の名前で\n見せます。', 'body-text'));
+  body.appendChild(markedLead('原因は、英語の{{音のパターン}}です。\n実際のコースの音声で、\n4つ確かめてみましょう。', 'body-text'));
+  const flow = h('ol', { class: 'bridge-flow' });
+  ['音声を聞く。', '意味を選ぶ。', '聞き取れなかった理由を、\n音のパターンで知る。'].forEach((t, i) => {
+    flow.appendChild(h('li', {}, [
+      h('span', { class: 'onb-flow-n', text: String(i + 1) }),
+      h('span', { class: 'bridge-flow-text', text: t }),
+    ]));
+  });
+  body.appendChild(h('div', { class: 'bridge-flow-block' }, [
+    h('p', { class: 'bridge-flow-head', text: 'クイズの流れ' }),
+    flow,
+  ]));
   body.appendChild(h('div', { class: 'btn-row' }, [primaryButton('はじめる', () => show(0))]));
   body.appendChild(h('p', { class: 'muted-text', text: '全4問・無料' }));
 }
@@ -73,6 +96,7 @@ function showQuestion(i) {
   const answered = state.answers[i] !== undefined;
   const cue = cueFor(q);
 
+  body.appendChild(sceneBlock(q.image, q.situation));
   body.appendChild(h('h2', { class: 'screen-title', text: 'どんな意味だった？' }));
   body.appendChild(h('p', { class: 'body-text', text: '聞き取れなくても大丈夫。\nいちばん近いものを選んで。' }));
   // 声・速さは、最初に鳴る物(▶)のすぐ上(本体 CLAUDE.md「声・速さの置き場所は1つの決まりだけ」)。
