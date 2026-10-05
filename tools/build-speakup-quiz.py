@@ -38,6 +38,10 @@ QUESTIONS = [
     ('I-HELP-4_b2n2', 'i-help-4', 'Toの弱形'),        # I'm going to this karaoke place.
     ('I-HELP-6_b2n6', 'i-help-6', 'Flap T'),          # Right at the bank.
 ]
+# 聞こえ方の直し(HARU様 2026-10-05「べねぁ → べんねぁ」。「まずはクイズだけ直して」)。
+# 本体の台本(listening.py)にも同じ直しがある。本体の main に入ったら、この表は空にしてよい
+# (本体が直っていれば、置き換えは何も起きない)。
+HEARD_FIXES = [('べねぁ', 'べんねぁ')]
 HERO_SCENE = 'i-help-4'   # はじめの画面の写真(LPのカラオケへの道と同じ)
 
 # 本体からそのままコピーするファイル(クイズが使う部品だけ)。
@@ -137,9 +141,12 @@ def main():
             if len(decoys) == 2:
                 break
         assert len(decoys) == 2, aid
+        heard, why = p['listening'].get('heard', ''), p['listening']['why']
+        for old, new in HEARD_FIXES:
+            heard, why = heard.replace(old, new), why.replace(old, new)
         questions.append({
             'id': aid, 'en': p['en'], 'ja': p['ja'],
-            'heard': p['listening'].get('heard', ''), 'why': p['listening']['why'],
+            'heard': heard, 'why': why,
             'primary': primary, 'decoys': decoys,
             'image': scene_of[sid][0], 'situation': scene_of[sid][1],
         })
