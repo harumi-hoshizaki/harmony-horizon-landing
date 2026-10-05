@@ -1031,3 +1031,15 @@ body.is-ai .aj-en { font-size: clamp(32px, 5vw, 56px); max-width: 16em; }
 .aj-offer .aj-h3 { margin: 0; }
 .aj-offer p { margin: 0; font-size: 17px; line-height: 1.8; color: var(--aj-muted); max-width: 34em; }
 @media (min-width: 900px) { .aj-offer li { grid-template-columns: .8fr 1.2fr; gap: var(--s8); align-items: baseline; } }
+/* 黒い面は使わない（2026-10-05 HARU様「黒の背景の部分は私の焦茶のグラデーションで。黒は絶対に使わないで」）。
+   締めの帯とフッターを、英語学習ページのボタンと同じ焦茶のグラデーションにする。
+   上が明るい焦茶なので、フッターの文字は白寄りにして読みやすさを保つ。金のボタンはそのまま。 */
+body.is-ai { --aj-brown: linear-gradient(180deg, #5A514B 0%, #1F1B17 100%); }
+body.is-ai .aj-cta { background: var(--aj-brown); }
+body.is-ai .ftr { background: var(--aj-brown); color: rgba(255,255,255,.86); }
+body.is-ai .ftr .small,
+body.is-ai .ftr a,
+body.is-ai .ftr nav a,
+body.is-ai .ftr .ftr__mail { color: rgba(255,255,255,.86); }
+body.is-ai .ftr__k, body.is-ai .ftr__note { color: rgba(255,255,255,.72); }
+body.is-ai .ftr a:hover { color: #fff; }
