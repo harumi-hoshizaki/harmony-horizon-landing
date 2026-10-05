@@ -137,8 +137,10 @@ function showQuestion(i) {
 
   function mark(chosen) {
     buttons.forEach((b, k) => {
-      b.setAttribute('aria-pressed', String(k === chosen));
-      if (opts[k] === q.ja) b.appendChild(h('span', { class: 'chip', text: '正解' }));
+      const isAnswer = opts[k] === q.ja;
+      b.setAttribute('aria-pressed', String(isAnswer));
+      b.classList.toggle('quiz-ok', isAnswer);
+      b.classList.toggle('quiz-wrong', k === chosen && !isAnswer);
     });
   }
   function fillReveal() {

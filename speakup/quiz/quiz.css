@@ -1,0 +1,11 @@
+/* 答えたあとの印だけ、本体の「聞き取りクイズ」の約束を写した(本体 CLAUDE.md 2026-09-24):
+   正解 = 既にある「選択中」の金 + 印に ✓ / 選んで外した行 = 灰 + 印に ✗。赤は使わない。
+   新しい色は無し。部品(.option / .option-radio)は本体のまま。 */
+.option.quiz-ok .option-radio-dot,
+.option.quiz-wrong .option-radio-dot { display: none; }
+.option.quiz-ok .option-radio::after,
+.option.quiz-wrong .option-radio::after { font-size: 15px; font-weight: 700; line-height: 1; }
+.option.quiz-ok .option-radio::after { content: "✓"; color: var(--accent-text); }
+.option.quiz-wrong { color: var(--muted); }
+.option.quiz-wrong .option-radio { border-color: var(--neutral); }
+.option.quiz-wrong .option-radio::after { content: "✗"; color: var(--muted); }
