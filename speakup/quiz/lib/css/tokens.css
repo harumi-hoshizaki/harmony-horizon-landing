@@ -1,0 +1,247 @@
+/* EAR TO VOICE — Talk to a Visitor
+   2026-08-18: Harumi指示によりミント系配色に変更(モックアップ
+   「Speak Up Nala-Style Mockups」の F案を採用)。Eatoutとの色の統一は
+   ここで終了 — Speak Upはこの画面から独自の配色を持つ、という決定
+   だった。
+
+   2026-08-28: Harumi指示「Speak up redesign案をマージしてください」
+   により、この決定を色についてのみ覆す(書体はBIZ UDGothicのまま
+   —老眼の読み手への配慮として維持、との確認済み)。ミント一色は
+   姉妹プロダクト(LP/Eatout)と統一感がないという指摘を受け、実測
+   コントラスト比つきのEatout本番の金(eatout/listening/index.html)と、
+   LP本番の紙色(harmony-horizon/assets/home/site.css)をそのまま流用。
+   新しい色は作っていない。
+   コントラスト比(Eatout本番で実測済みの値をそのまま継承):
+     ink/paper 16.7:1超, accent-text/paper 7.03:1,
+     ink/accent-fill 7.20:1(--accent-fillの上は白ではなくinkを乗せる)。
+   構造(ボタンの厚み・カードの形など)は一切変えていない — トークンの
+   値だけの置き換えなので、main.cssはこの1ファイルの変更で全画面に
+   反映される。 */
+
+:root {
+  --ink:        #221D18;  /* 暖かい黒(Eatout/LP本番と同じ値)。紙に対して16.7:1超 */
+  /* 2026-08-28追加: Harumi指摘「安っぽい黄色になってます」。.btn-primary等
+     ボタンの塗りを、Eatout本番のホーム画面の主役ボタン(.cat-btn-next、
+     linear-gradient(180deg, var(--ink-light), var(--ink)))と全く同じ
+     濃色グラデーションに変更するために追加。値はEatout本番
+     (eatout/listening/index.html)の--ink-lightをそのまま持ってきた —
+     新しい色は作っていない。 */
+  --ink-light:  #5A514B;  /* --inkの22%明るい版。グラデーション上側専用 */
+  /* 2026-08-28 Harumi指摘「アプリのバックグラウンドの色も、この写真
+     (Speak Up リデザイン案)と同じ色に。今はすこしピンクが勝って見え
+     ます」— リデザイン案(speakup-redesign.htmlアーティファクト)の
+     --ground(#FDFCFA)をそのまま採用。以前の値(#FBF9F6)は同じ考え方の
+     暖色オフホワイトだが赤みがわずかに強く、実機だとピンクよりに見えて
+     いた。 */
+  --paper:      #FDFCFA;  /* 地。Speak Up リデザイン案の--groundと同じ値 */
+  --surface:    #FFFFFF;  /* カードの地。紙との段差で分ける(罫線に頼らない) */
+
+  --accent-fill: #E2A33D;  /* Eatout本番 --accent-fill と同じ値 */
+  --accent-fill-light: #E9BA6E;  /* 同 --accent-fill-light。.btn-primary/.btn-accent/.play-big/.mic-bigのグラデーション上側専用 */
+  --accent-line: #A3782D;  /* 同 --accent-line。罫線・アイコンのみ、文字には乗せない */
+  --accent-text: #694D11;  /* 同 --accent-text。紙の上で7.03:1 */
+  /* プロレビュー(2026-08-23)「聞くの枠の色が素人っぽい」: .btn-outline/
+     .btn-smallの枠が真っ黒に近い--inkで、パレットから浮いていた。
+     accent-textと同じ色にした上で、枠だけ薄く（文字は--accent-textの
+     まま濃く保つ）。2026-08-25 Harumi指示「枠もっと薄く」で80%→45%に。
+     この考え方(45%)はそのまま、色だけ新しいaccent-textに合わせる。 */
+  --accent-text-border: rgba(105, 77, 17, 0.45);  /* --accent-textの45% */
+  --accent-wash: #F3E4C6;  /* Eatout本番 --accent-wash と同じ値。選択中の下地・進捗の塗り */
+  --accent-tint: #F9F1E4;  /* accent-washよりさらに淡い金の地(tipsアイコン・チップ・発音チェックのカードなど) — Speak Up独自トークンなので同じ考え方で新色に合わせて作った */
+
+  /* ---- グレージュ: 押せる「面」の地(2026-08-30 Harumi承認「bで」) ----
+     これは金と並ぶ**もう1つの色ではない**。--ink #221D18 を紙の上に
+     6%だけ置いた、エスプレッソの一番淡い段。だから一色主義は崩れない
+     (「色は『金の濃淡』だけで作る」ルール参照)。
+     経緯: 淡い金(--accent-wash)を「★言えなかったフレーズ」のような
+     大きなボタンの地に敷くと、濃色ボタンと合わせて画面が黄色に染まり、
+     Harumi指摘 2026-08-30「今、黄色っぽい色を使ってますが」となった。
+     **金は「点」で使う**(★・矢印・罫線・バッジ・選択中の下地)、
+     **グレージュは「面」で使う**(押せる大きな箱・いま居るタブ)。
+     面積の小さい金ほど高価に見える、というのがこの分け方の理由。
+     --ink #221D18 を乗せて14.5:1。 */
+  --ink-wash: #F0EFEC;                  /* --ink 6% を紙に置いた地 */
+  --ink-hair: rgba(34, 29, 24, 0.14);   /* 同じ地に添える髪の毛の罫線 */
+  /* ★2026-09-30 Harumi報告(実機・つながる音Tipsのラベル)「淡く薄い黄色
+     っぽい」。--ink-washの地自体は黄色ではなく、この節のとおり「--ink
+     6%のグレージュ」——だが**金の文字(--accent-text)を乗せた小さな
+     バッジ**では、地の6%より文字の金の方が支配的に見え、バッジ全体が
+     「淡い黄色」に見えていた。地を紙にもっと近づけて、金の文字だけが
+     「点」として残るようにする(このファイル冒頭の「面積の小さい金ほど
+     高価に見える」の理屈をバッジの地にも当てはめた版)。
+     --ink-washを直書きで薄めない —— 面(.note・押せる箱)の地として
+     既に広く使われているので、そちらまで変わってしまう。**この段だけ**
+     別トークンにする。 */
+  --ink-wash-2: #F7F6F4;                /* --ink 3% を紙に置いた地。小さな金文字付きバッジの地専用 */
+
+  --muted-soft: #786F5E;  /* Order Up --muted-soft。◯☐の印の線だけに使う */
+  --accent-wash-light: #F9EFD9;  /* Order Up --accent-wash-light */
+  --muted:   #5C5548;  /* 紙の上7.0超。補足の文字はすべてこれ。LP --ink-softと同じ暖かい灰 */
+  --neutral: #A69C8C;  /* 文字に使わない。無効状態・装飾のみ */
+  --line:    #E8E1D4;  /* 罫線。暖色寄りの淡い灰 */
+  /* 焦茶(Order Upからの移植 2026-09-24。あちらの2026-09-23 HARU様指示
+     「数字もボックスも窮屈」「焦茶を使って」で入った色)。選択肢の番号に
+     だけ使う ——黒(--ink)だと数字が重く、金だと番号が「選ぶ印」に見える。
+     エスプレッソ(--ink #221D18)と同じ暖色の濃淡なので一色主義は崩れない。
+     白地で11.9:1。 */
+  --umber:   #4B3325;
+
+  /* Design System監査(2026-08-20)で見つかった、tokens.cssの外で直接
+     hexが書かれていた色をここに集約。 */
+  --success-text: #2E7D4F;  /* 発音チェック「合格」の文字色。accent-textとは
+                                別の意味(判定結果)なので独立トークンにした。 */
+  --success-wash: #F1F8F3;  /* 同、背景。accent-tintとほぼ同値だが意味が違う
+                                ので統合しない(判定結果 vs 一般的な強調)。 */
+  /* ※炎の色(--streak-on-dark #FF9142 / --streak-on-light #C1560A)は
+     2026-08-30に廃止した(Harumi承認)。パレットで唯一の別系統の色で、
+     画面で一番彩度が高く浮いていたため、連続日数は金の濃い方
+     (--accent-text)に揃えた。新しく「例外的な1色」を足さないこと。 */
+
+  /* 2026-08-19 Harumi指示: フォント比較モックアップ(Speak Up Nala-Style
+     Mockups「フォント案」ページ)の3案「BIZ UDゴシック」を採用していた
+     (60代・老眼の読み手への可読性優先)。
+     2026-08-28 Harumi指示「SpeakupのアプリのFontこの組み合わせで」—
+     app.harmonyhorizon.space(harmony-horizon/index.html)の
+     --display/--sansと全く同じ組み合わせに変更。値はそのまま
+     (harmony-horizon/assets/home/site.cssの--display/--sans)。
+     ロゴ「Ear to Voice」は指示により変更せず、main.css の
+     .brand-lockup-word が直接 'EB Garamond' を指定したまま(このトークン
+     は触らない)。 */
+  /* ★2026-09-25 Harumi指示「Order up looks 10 times clear and easy to read.
+     Can you copy the style, fonts, color, size, layout and spaces of Order up?」。
+     Order Up は **Webフォントを1つも読み込んでいない** —— 端末の標準書体
+     (iPhoneなら San Francisco ＋ ヒラギノ角ゴ)をそのまま使っている。
+     これが「10倍読みやすい」の正体で、色でも大きさでもない:
+     　・ヒラギノ角ゴは iOS が画面で読ませるために調整した書体。
+     　　Zen Kaku Gothic New は見出し向けの意匠で、本文の可読性では負ける
+     　・Webフォントは読み込みが終わるまで別の書体で描かれる(ちらつき)
+     　・Inter は日本語を持たないので、和英で2つの書体が混ざっていた
+     **3つのトークンとも同じ1つの並びにする。** 書体を混ぜない、が
+     Order Up の決まり(あちらは font-family の宣言が body の1行だけ)。
+     ★Webフォントの <link> を index.html から消したので、新しい書体を
+     足したくなったら、まずこの節を読むこと。 */
+  --font-display: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  --font-gothic:  -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+  /* 2026-08-28 Harumi決定「このアプリ全体のBodyの基本となる文字はこの
+     Fontにする」— 「会話をつづけるために」等に使われている--font-gothic
+     (homepageの--sansと同値)がBodyの基準。内容を読む文字(一覧の項目名・
+     ヒーローの文・和訳・選択肢・判定文・トースト)はすべて--font-gothic。
+     --font-display(明朝系)を使ってよいのは、画面の見出し(.screen-title)・
+     数字の演出(.home-stat-value)・Welcome back演出(.wb-text)だけ。
+     ロゴ「Ear to Voice」はEB Garamond固定(別ルール)。新しい文字要素を
+     作る時、本文相当なら--font-displayを使わない。 */
+  /* 2026-08-28 Harumi指摘「色んなfontが入り混じってます。homepageで
+     使われている同じフォントだけ使ってください」— JetBrains Mono
+     (--font-mono、ラベル・分数表示に使用)とLeague Spartan(Welcome
+     back!演出)は、app.harmonyhorizon.spaceのsite.cssに存在しない
+     フォントだったため廃止。ラベル類は--font-gothicに統一(homepage
+     自身の.eyebrowもvar(--sans)を使っており、専用のmono書体は
+     持っていない)。 */
+  /* Harumi指示 2026-08-20: 英語フレーズ本文だけの書体。BIZ UDGothicの
+     アルファベットは日本語の字幅に合わせた等幅寄りの形で、英文だけ見ると
+     素っ気ない印象になっていた。3案(Lora/Inter/Fraunces)のモックアップ
+     比較からInterを採用。日本語には使わない(--font-display/--gothicの
+     まま) — .phrase-target/.pron-target/.phrase-enの3箇所だけで使う。 */
+  --font-latin: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif;
+
+  /* ★2026-09-24 入れ物の角も四角にした(Order Upに揃えた)。
+     押せる物は2026-09-23に全部四角にしてあり、**丸いのは入れ物だけ**
+     という状態だった —— 画面の中に角が2種類あると、どちらが「押せる」の
+     合図なのか読めない。Order Up も実際に使っている入れ物は全部0
+     (.say-card / .clar-say-cue / .carousel-card / .bridge-map / .option-row)。
+     丸いまま残るのは**バッジ・印(999px / 50%)だけ** —— ピル形は
+     「押して選ぶ物ではない」の合図なので、意味が別(見た目の文法3)。
+     --radius-sm(6px)は畳んだ一覧(.tip-acc)だけに残す(Order Upも同じ)。 */
+  --radius: 0px;
+  --radius-sm: 6px;
+  /* ★2026-09-27 会話の吹き出しだけの角丸(「会話画面の再設計」。Harumi
+     「丸みのあるmessage bubbleを検討して」)。**新しい値ではない** ——
+     このアプリで唯一すでに丸くしてある吹き出し(.onb-reply-bubble、
+     2026-09-26「角は全部四角のただ一つの例外」)と同じ16pxを、トークンに
+     切り出して2箇所で共有する。「丸くすればチャットっぽくなる」の単純な
+     発想は避け、四角(--radius:0)が既定のこのアプリで**吹き出しにだけ**
+     許した例外だと分かるように、専用の名前を付けてある。 */
+  --radius-bubble: 16px;
+  /* ★2026-09-30 Harumi「丸い角の方がプロっぽい」—— 写真(場面・はじめの案内の
+     写真/動画)だけ丸くする。吹き出しと同じ16px(丸い物の値を1つにそろえる)。
+     ボタン・入れ物は「角は全部四角」のまま。 */
+  --radius-photo: var(--radius-bubble);
+
+  /* ---- 行間は3つだけ(2026-09-25 必須) ----
+     Harumi指示「**文字の行間スペースを今よりも入れて窮屈さを無くして**」。
+     同じ日に Order Up へそろえた時、地1.6・読む段落1.7 まで詰めた ——
+     英文まじりの短いラベルにはちょうどでも、**日本語の2行以上の文**は
+     詰まって見えた(読み手は50〜60代)。1段ずつ緩める。
+
+       --lh-heading … 見出し・問い・結論(2行に折れる太字)
+       --lh-base    … 地。ボタン・一覧の行・ラベル(たいてい1行)
+       --lh-read    … 読む段落(本文・注意書き・和訳・聞こえ方)
+
+     ★**直書きしない。** 行間が気になったらこの3つを動かす ——
+       41箇所に散らばっていた値を1箇所にまとめたのがこの表。
+     ★1.9一律には戻さない(2026-09-25より前の形)。短いラベルまで伸びて
+       「行が離れすぎ」になる —— 役目で分けるのが答え。
+     ★印・記号(.cat-mark / .option-radio / .choice-num-inline)と
+       ロゴ(.brand-lockup-word)は、字送りが仕事の一部なのでここに含めない。 */
+  --lh-heading: 1.5;
+  --lh-base: 1.8;
+  /* ★2026-09-29 2 → 1.9(Harumi指示「1.9にして」)。2.0 だと2行しかない
+     場面の文が「2つの別の行」に見えていた(実機スクリーンショット)。
+     日本語の本文は1.7〜1.9がふつう。窮屈(1.7)には戻さない。 */
+  --lh-read: 1.9;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Minimum sizes, same audit basis the rest of the series uses (readers
+     in their 50s, reading glasses): decorative/label text >= 0.78rem
+     (12.5px), content-bearing text >= 0.9rem (14.4px). Body text here is
+     set well above both floors already. */
+  /* ---- 文字の大きさ: 6段階だけ(2026-08-30 必須) ----
+     Harumi指摘 2026-08-30「文字のサイズ…統一されていないものを全て
+     洗い出して」。検査したところ **26種類** 使われていた —— 0.95rem と
+     0.98rem と 1rem のような、**誰にも見えない差**が大量にあり、それが
+     「なんとなく揃っていない」を作っていた。
+     新しい文字サイズを直書きしない。必ずこの6つ(＋演出用の3xl)から選ぶ。
+     どれにも当てはまらないと感じたら、たいていは役割の整理が先。 */
+  /* ★2026-09-23 Harumi指示「文字のフォントも、Speakupはほんとーーーーーに
+     読みにくい。やる気を失うぐらい目が疲れる、とのコメント。Order upと
+     全く同じ大きさで展開したい —— 本文を17→19px、見出しを19→26px、
+     主ボタンを56px・文字23pxに」。
+     **6段階のまま、ladder ごと1段ずつ上げた**(新しいサイズを足していない)。
+     指示の3つの数字は、そのまま既存の3つのトークンに乗る:
+       本文19 = --text-md / ボタン23 = --text-lg / 見出し26 = --text-xl
+     あわせて .screen-title を --text-lg → --text-xl に直した ——
+     tokens.css は前から「--text-xl = 画面の見出し」と書いてあるのに、
+     main.css だけ --text-lg を使っていた(前からの食い違い)。
+     ★上げたことで1行に入る字数が減る。CLAUDE.md「改行は『字数』で決める」
+     の上限も一緒に下がったので、\n を入れる文言を書く時は下の新しい
+     字数で数えること(17px時代の数字をそのまま使わない)。 */
+  --text-xs:   14px;  /* チップ・バッジ・極小ラベル */
+  --text-sm:   18px;  /* 補足・注釈・英文の添え（Order Up --fs-sub と同値） */
+  /* ★2026-09-29 19 → 20(Harumi決定「本文を20pxにそろえる」)。説明の文だけが
+     20px(直書き。Order Up の p.hint)で、ほかの本文は19px —— 1pxしか違わない
+     2種類の本文が並んでいた(このトークンの表が防ぎたかった「誰にも見えない差」)。
+     本文をまとめて20にし、直書きの20pxは全部このトークンに置き換えた。 */
+  --text-md:   20px;  /* 本文 */
+  --text-lg:   23px;  /* ボタン・選択肢・カードの見出し */
+  --text-xl:   26px;  /* 画面の見出し・判定 */
+  --text-2xl:  28px;  /* 到着・完了の見出し（Order Up --fs-display と同値） */
+  --text-3xl:  40px;  /* 演出(Welcome back!)と、言い方を選ぶの大きな番号(Order Up と同じ)・Home の「Day N」だけ */
+
+  /* ★2026-09-24 意図して足した7段目。**英語の1文だけ**の仕事。
+     Order Upからの移植(あちらの --fs-hero-en。2026-09-23 HARU様
+     「大きな英語 → 小さめの日本語」は、いまやこのアプリの視覚の核で、
+     好みの話ではない —— **英語＝入っていく世界、日本語＝道案内**)。
+     6段階の外に置いてあるのは、日本語の見出し(--text-2xl)と
+     はっきり差を付けるため。**この1つの仕事以外に使わない。** */
+  --text-hero-en: 32px;
+
+  --font-body: var(--text-md);
+  --font-phrase: var(--text-hero-en);
+}

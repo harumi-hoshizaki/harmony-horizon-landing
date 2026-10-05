@@ -1,0 +1,3838 @@
+/* EAR TO VOICE — Talk to a Visitor
+   Component *shapes* here still follow the pattern established by
+   HARU's other apps (topbar, play-big, tip accordions, phrase rows,
+   etc. — originally ported from harmony-horizon/eatout/listening/
+   index.html). The *colors* are Speak Up's own (see tokens.css) — every
+   value below reads through a CSS custom property or an rgba() tied to
+   --ink/--accent-fill/--accent-line, so this file never hardcodes a
+   brand color directly; retint the whole app by editing tokens.css alone. */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+
+/* ============================================================
+   文字の最小サイズ（harmony-horizon/eatout/listening/index.html の
+   2026-08-06監査ルールをそのまま採用。2026-08-17 Harumi指摘で発覚した
+   下回りを修正: .scene-holder-brief/.draft-banner/.phrase-num/
+   .phrase-hint/.audio-note/.brand-lockup-tagline）。
+
+   落とし穴: rem は body の 17px ではなく、ルート(html)の既定 16px を
+   基準に計算される。0.85rem は 14.5px ではなく 13.6px。
+
+   このアプリの読み手には70代・老眼鏡での閲覧を含む。下限:
+     飾りの文字(英字ラベル・番号など) ... 0.78rem (12.5px) 以上
+     内容を持つ文字(日本語の本文・説明文・指示) ... 0.9rem (14.4px) 以上
+   新しい文字を足す時は、この下限を下回らせないこと。
+   サイズを上げる時は、字間(letter-spacing)も同時に詰める。
+   ============================================================ */
+
+/* Every screen toggles visibility via the `hidden` attribute (buttons
+   that appear only after an action, panels revealed on tap, etc). Several
+   component classes below set `display: flex/block` at equal CSS
+   specificity to [hidden]'s UA-stylesheet rule, and author styles beat
+   the UA stylesheet on a tie — so without this, `hidden` would silently
+   fail on anything classed .btn-primary, .say-row, etc. This rule must
+   stay ahead of every other rule in this file. */
+[hidden] { display: none !important; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-gothic);
+  font-size: var(--font-body);
+  /* ★2026-09-25 Order Up の body からそのまま移した3つ。
+     ・antialiased … 標準書体を画面でなめらかに描く
+     ・word-break: keep-all … 日本語が**語の途中で折れない**。
+       「伝えたい」が「伝/えたい」になる事故(このアプリでも何度も
+       直してきた)が、CSS1行で起きなくなる
+     ・overflow-wrap: break-word … keep-all だけだと、句読点の無い
+       長い一続きが**箱からはみ出す**。最後の手段としてだけ割る、が対 */
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  /* ★2026-09-24 1.9 → 1.6(Order Up の body と同じ)。
+     1.9は**読む段落には正しい**が、ボタン・行・ラベル・チップにまで
+     一律にかかっていて、短い文字ほど行が間延びして見えていた。
+     Order Up は「**地は1.6・読む段落だけ1.8**」と使い分けている ——
+     下の .body-text / .muted-text / .note p / .chat-ja がその1.8。
+     **新しく「読む段落」のクラスを作ったら、必ず1.8を書く。** */
+  line-height: var(--lh-base);
+  min-height: 100vh;
+}
+
+button { font: inherit; color: inherit; }
+img { max-width: 100%; display: block; }
+
+#app {
+  /* ★2026-09-24 560 → 480(Order Up と同じ)。19pxの本文で560pxだと
+     1行が長く、目が行頭へ戻る距離が伸びる。
+     ※スマホ(390px)では効かない —— 効くのはタブレット・PCで見た時だけ。 */
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: var(--space-7);
+}
+
+/* ---- topbar (screen head: eyebrow/back/progress) ---- */
+
+/* 2026-08-19 Harumi指示「ヘッダーの色がモダンではない」。濃い地色の
+   ベタ塗りから、白地+ミントの太い下線に変更(モックアップ「ヘッダー案」
+   2番を採用)。文字色は地が明るくなった分すべて反転(--paper系→--ink/
+   --muted/--accent-text)。
+   2026-08-28 Harumi指摘「ヘッダーとの境に黄色い線がありますが削除して」
+   —ミントの頃は違和感が無かった下線が、金に変わって主張が強くなり
+   すぎていた。線を削除し、他のカード同様--surface(白)と--paper(地)の
+   段差だけで区切る(罫線に頼らない、このアプリの他の箇所と同じ考え方)。 */
+/* ★2026-09-30 Harumi報告(実機スクショ)「4:28」の時計が見出しの上に
+   重なっていた。.topbar は position:fixed ではなく、ただの本文の1段
+   (padding: max(18px, env(safe-area-inset-top))...)だったので、締めくくり
+   画面のように本文が画面より長い時に**ヘッダーごと下にスクロールして
+   消える** —— その時、いちばん上に来た見出し(.screen-body の padding-top
+   32px)はステータスバーの高さ(iPhoneで約44〜59px)より浅く、時計と重なった。
+   .listen-bar(main.css)は既に同じ理由で position:sticky; top:0 になって
+   いた —— こちらも同じ形にそろえる。 */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50; /* .tabbar と同じ(main.css)。.listen-bar(60)より下。 */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--surface);
+  padding: max(18px, env(safe-area-inset-top)) 24px 16px;
+}
+
+.topbar-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex: none;
+}
+
+/* header の左側。Eatoutと同じく常にボタンで、押すとどの画面からでも
+   Homeへ戻る（harmony-horizon/eatout/listening/index.html の #catLink）。
+   通常はカテゴリー名（.cat）、Home画面だけロゴのロックアップ（.brand-lockup）
+   に切り替わる。 */
+/* 2026-08-19 Harumi指摘「ヘッダーが素人っぽい、ロゴを入れた方が」。
+   文字だけのボタンから、Homeと同じ丸マーク＋文字に変えた。中の丸マーク
+   は.brand-lockup-markより小さく(22px)、控えめに。 */
+/* 2026-08-19 Harumi指摘「ロゴの位置が変」。以前はマーク単体に
+   margin-top:3pxの決め打ちで合わせていたが、隣の見出し語がbodyの
+   line-height:1.9を継いでいるぶん、行の中で文字の見た目の開始位置が
+   マークより数px下にずれていた。マーク＋見出し語を同じ行(.cat-top-row)
+   に入れてalign-items:centerでそろえる — フォントの行送りに関わらず
+   常に中央がそろう。 */
+.cat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.cat:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 3px; }
+.cat-top-row { display: flex; align-items: center; gap: 8px; }
+.cat-mark { flex: none; line-height: 0; }
+.cat-mark svg { width: 22px; height: 22px; display: block; }
+.cat-eyebrow {
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  line-height: 1.3;
+  letter-spacing: 0.03em;
+  color: var(--ink); /* 13.49:1 on --surface(白) */
+}
+/* 「何を鍛えているか」のタグ(js/ui.js kind)。**2語だけ**(リスニング /
+   スピーキング。js/copy.js の skillKind)。
+   2026-08-19: 幅によって折り返すかどうかが変わるflex-wrapをやめ、
+   見出し語→タグの2段を常に固定にした（Harumi指摘「Eyebrowがガタガタ
+   してて」。kindタグが無い画面は1段のまま）。
+   ★2026-09-23 .cat-kind(ヘッダーの小さい札)は削除した。
+   「リスニング / スピーキング」は本文の一番上に大きく出す(.mode-name)。
+   **復活させないこと** —— 同じ語を2回言うことになる。 */
+
+/* 外側のボタン（タップ領域）。中に「マーク+文字」の行と、商品名の行を
+   縦に積む。 */
+.brand-lockup-btn {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.brand-lockup-btn:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 3px; }
+
+.brand-lockup { display: flex; align-items: center; gap: 10px; }
+.brand-lockup-mark { flex: none; width: 30px; height: 30px; }
+.brand-lockup-text { display: flex; flex-direction: column; gap: 1px; }
+/* ロゴのワードマークだけは指示によりフォント・色とも変更しない対象
+   （Harumi指示 2026-08-19「ロゴのear to voiceはいつものフォントで」）。
+   EB Garamondのまま、地が白くなった分だけ色をinkに反転。
+   2026-08-28 Harumi指摘「ヘッダーとなる文字が大きすぎる。この写真
+   (Speak Up リデザイン案)と同じサイズに」— リデザイン案では、この
+   ロゴ文字(.name)とヒーロー見出し(.hero-title)が同じ--fs-2(20px)の
+   「画面タイトル」規格を共有していた。フォント(EB Garamond)は指示
+   により変えず、サイズだけその規格(1.25rem)に合わせる。 */
+.brand-lockup-word {
+  /* ★2026-09-25 Harumi指摘「Logo and its Ear to Voice font. It looks
+     really weak, so make it a bit more like attitude and statement」。
+     EB Garamond(細いセリフ・600)をやめ、**Order Up の .brand-lockup-word
+     と同じ**「標準書体・700・--text-lg」にした。あちらも 2026-09-23 に
+     HARU様「Ear to voice フォント嫌い」を受けて EB Garamond を外して
+     いる —— つまりこれは Order Up に揃えることと同じ向き。
+     字間を少しだけ詰める(-0.01em)と、語が1つの塊として立つ。
+     **EB Garamond に戻さないこと**(Webフォントの読み込みごと消した)。 */
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  font-size: var(--text-lg);
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.brand-lockup-tagline {
+  font-family: var(--font-gothic);
+  font-weight: 400;
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  color: var(--muted); /* 6.26:1 on --surface(白) */
+}
+
+/* 「X / Y」進捗表示の共通トーン(Design System監査 2026-08-20: ヘッダー・
+   ヒーロー・essentials行・モジュール行で4通りバラバラだった値を統一)。
+   同じ値を.today-hero-meta/.essentials-plain-frac/.cat-review-fracにも
+   使う — クラス名は画面ごとの既存のまま、値だけ揃えている。 */
+.progress {
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+/* 2026-08-19 Harumi指摘「素人っぽい」。下線付きの生のリンクに見えて
+   いたのが原因（<a>のデフォルト下線を消していなかった）。アプリの他の
+   丸いボタン・チップと同じ言語(pill形・淡い地・枠線)に揃えた。 */
+/* 2026-08-19 Harumi指摘「枠があるので素人っぽい」。枠を外し、淡い
+   塗りだけのチップにした。 */
+/* 2026-08-28 Harumi指摘「補助的なボタン(戻る・トグルなど)だけ角にしたい。
+   ホーム、一覧に戻るなど。長方形に統一」— 主役のCTA(.btn-primary等)は
+   すでに角丸ゼロなので、それに揃える。バッジ・チップ・トーストは
+   対象外のまま。 */
+.backlink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 40px;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 0;
+  background: var(--ink-wash);
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--accent-text); /* 6.09:1 on --surface(白) */
+  text-decoration: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.backlink:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+.backlink[hidden] { visibility: hidden; display: inline-flex !important; } /* keep layout height even when there's nowhere to go back to */
+
+/* 2026-08-30 監査①: 画面の入れ物は<main>直付けをやめ、遷移ごとに
+   作り直すdivになった(js/app.js _renderTop参照)。セレクタも要素名に
+   依存させない。<main>(.screen-host)は外側の枠として残る。 */
+.screen-host { flex: 1; display: flex; flex-direction: column; }
+.screen-body {
+  flex: 1;
+  padding: var(--space-6) var(--space-5) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  /* ★2026-09-24 24px → 32px(Order Upの .screen-body と同じ)。
+     あちらの2026-09-23 HARU様「スペースを倍に」。移植元のコメントが
+     理由をそのまま書いている ——「全部が一律の間隔だったのが、
+     **見出し・道具・学習内容・選択肢・CTAが全部同じ間隔**＝
+     『1つの組み上がった画面』ではなく『部品の一覧』に見える原因」。
+     **近づけたい物は入れ物(.scene-block / .next-block)で
+     束ねて、その中だけ狭くする** —— 子に margin-top を書かない
+     (「まとまりの中の余白は入れ物(gap)で決める」)。 */
+  gap: var(--space-6);
+}
+
+/* プロレビュー(2026-08-23)で発見: マイクだけ/再生ボタンだけのような
+   中身が少ない画面は、上詰めのままだと下半分が丸ごと空いて壊れて
+   見えていた。中身がその画面固有のもの(発音チェック・お手本リスニング・
+   相手の返事など)だけの時に画面側からこのクラスを足し、縦方向だけ
+   中央寄せにする。一覧・フォームなど中身が伸びる画面には付けない。 */
+.screen-body.is-compact {
+  justify-content: center;
+}
+
+/* ---- headings / text ---- */
+
+.eyebrow {
+  font-family: var(--font-gothic);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+}
+
+/* すべての画面見出しは装飾的フォント(Playfair Display)を使わず、
+   ゴシック体に統一（Harumi指示 2026-08-29: 「『必要なフレーズを選んで
+   ください』フォントを完全に使わないで」→「この明朝的フォントはゴシック
+   体に統一した方がいい」）。js/journey.js の統計カードは<p>で書かれて
+   いるため、セレクタはh1/h2/pを含める。 */
+h1.screen-title, h2.screen-title, p.screen-title {
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  /* ★2026-09-23 --text-lg(ボタンの段) → --text-xl(見出しの段)。
+     tokens.css は前から「--text-xl = 画面の見出し」と書いてあったのに、
+     ここだけ1段下を使っていた(前からの食い違い)。Harumi指示
+     「見出しを19→26px」で、本来の段に戻した。 */
+  font-size: var(--text-xl);
+  /* ★2026-09-25 2 → 1.25(Order Up h1.q-title と同値)。body の行間を
+     そのまま継いでいたので、太い見出しが**間延びして見えていた**
+     —— 2行に折り返した時にいちばん目立つ。下の余白は gap(32px)に
+     8px 足して、1行でも2行でも同じだけ空くようにする。 */
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-2) 0;
+  letter-spacing: 0;
+  /* 見出しは画面で一番大きく読まれる文字なので、折り返す位置を成り行きに
+     任せない(CLAUDE.mdキャプション改行ルールを見出しにも適用。実例:
+     「いつまでに、誰かに話しかけま/すか？」と単語の途中で割れていた)。
+     copy.js側で \n を入れた見出しだけが2行になる。 */
+  white-space: pre-line;
+}
+
+/* ★2026-09-09 締めくくり画面(js/ui.js stepDailyClosing)だけ、見出しを
+   1段大きく(--text-2xl)する。2026-09-01にAI英会話開放画面が使っていた
+   のと同じ形の状態修飾——新しいサイズ・新しい様式は足さない
+   (トークンの6段階のうち既にある1つを、この画面でも使うだけ)。
+   Harumi指示「今日は 大きく目立つように「これ」をカバーしました。」。 */
+h2.screen-title.is-hero { font-size: var(--text-2xl); }
+
+/* ★2026-09-25 Order Up の p.hint と同じ 20px/1.7 に。あちらは
+   2026-09-24 Harumi指示「この部分の文字を大きく。20ぐらい」で 18→20px
+   にしてある —— 説明・指示の文は「読ませたい中身」なので、6段階の
+   本文(19px)より1つ大きい。色も --muted ではなく --ink(2026-09-24)。 */
+.body-text { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); white-space: pre-line; }
+/* ★2026-09-06 完了画面の「次は「◯◯」です。」——行き先の名前だけ太字にして
+   目を引く(js/ui.js leadWithBoldName)。絵文字・点滅・新しい色を足す代わりに、
+   「太字は3つだけ」の②(見出し・ラベル)を、文全体ではなく名前だけに絞って
+   適用した。読む文(before/after)は.body-textの400のまま。 */
+.lead-name { font-weight: 700; }
+/* ★2026-09-28 文の中の大事な語だけに引く蛍光ペン(js/ui.js markedLead)。
+   下半分に金(--accent-fill-light)を敷き、太字にする。淡い金(--accent-wash)では
+   地の色に溶けて見えなかった(実測)。新しい色は無し ——
+   短い語句に引く線なので「金は点で使う」の範囲。 */
+.lead-mark {
+  font-weight: 700;
+  background: linear-gradient(transparent 45%, var(--accent-fill-light) 45%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  padding: 0 2px;
+}
+/* ★2026-09-09 締めくくり画面の「Have a good one!」——大きめの英語1文
+   (Harumi指示「Have a good oNE!って大きめに？」→「太字にしてください」)。
+   新しい色・フォントは足さず、--text-xl(既存の6段階)と--font-latin(既存。
+   .phrase-target/.pron-target と同じ英語フォント)をそのまま使う。
+   太字は写真(HIGH FIVE!)と並ぶ締めの一言として、Harumi指示で700にした
+   (「太字は3つだけ」の既定用途には無いが、ここは指示による例外)。 */
+.closing-farewell {
+  font-family: var(--font-latin);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--ink);
+  text-align: center;
+  margin: 0;
+}
+/* 2026-08-19 Harumi指摘「全てが薄い印象。老眼にはどうでしょうか」。
+   .muted-text/.footnote/.btn-smallにfont-weightの指定が無く、BIZ
+   UDGothicの標準(Regular)のまま出ていたのが原因。他の文字と同じ700に
+   揃えた。 */
+/* ★2026-09-24 --muted → --ink(Order Up の p.hint と同じ判断)。
+   あちらのコメントがそのまま理由 ——「この文は**本当に読ませたい中身**
+   (説明・注意・案内)を持っている。--muted は数字の上では7:1あるのに、
+   **実際には『薄い』と言われた**。**一次/二次の差は、色ではなく
+   大きさと太さで出す**」。Speak Up でも2026-08-19に
+   「全てが薄い印象。老眼にはどうでしょうか」の指摘を受けている。
+   ※薄いまま残すのは**読まなくても困らない物**だけ ——
+     件数・「あなた/相手」の話者名・›や鍵の印・行末の補足。 */
+.muted-text { font-size: var(--text-md); font-weight: 400; line-height: var(--lh-read); color: var(--ink); }
+
+/* 英語フレーズ本文はInter（Harumi指示 2026-08-20、モックアップ比較で
+   採用。tokens.css --font-latin参照）。日本語(--font-display)とは別扱い。 */
+/* ★2026-09-24 Order Up の .clar-en / .sentence-card .s-en を移植した。
+   あちらの2026-09-23 HARU様「大きな英語 → 小さめの日本語」——
+   **英語＝入っていく世界、日本語＝道案内**。このアプリは「耳から、声へ」
+   なのに、画面では日本語の方が主役に見えていた(実機で実測: 日本語19px・
+   英語23px)。ここが今日の山場だと、大きさ・太さ・金の縦線1本で言い切る。
+   ※金は**線1本(4px)**だけ。地にも文字にも敷かないので「金は点で使う」の
+     ままで、面はグレージュ、という約束も崩していない。 */
+.phrase-target {
+  font-family: var(--font-latin);
+  font-size: var(--font-phrase);
+  /* ★2026-09-25 1.2 → 1.3(Harumi指示「行間スペースを今よりも入れて
+     窮屈さを無くして」)。ここは**英文だけの見出し**なので、--lh-heading
+     (1.5。日本語の2行向け)ではなく、英字の見出しに合う幅にする ——
+     32pxで1.5にすると1行48pxになり、2行の英文が離れすぎる。 */
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  font-weight: 800;
+  color: var(--ink);
+  border-left: 4px solid var(--accent-fill);
+  padding-left: var(--space-3);
+  /* 長い文が「語の途中で1語だけ次の行」にならないようにする
+     (対応していないブラウザでは何も起きない)。 */
+  text-wrap: balance;
+}
+/* ※Order Up には「ヒーローの英語のすぐ下に和訳を、金の線のぶん字下げして
+   置く」という形(.sentence-card .s-ja)もあるが、Speak Up には
+   **英語が上・和訳が下**の並びが1つも無い(和訳はいつも問いとして上に来る)。
+   使う所が無いので、その字下げルールは足していない。 */
+
+/* 2026-08-31: 22px/700 から本文サイズへ。実機のスクリーンショットで、
+   見出し「どれで練習しますか？」と同じ強さで並び、**一番強い声が2つ**に
+   なっていた(CLAUDE.md「文字は6段階の大きさと3つの太字」5)。読む順は
+   見出し(22) > 伝えたいこと(17) の1本にする。中の「大丈夫ですか？」は
+   <b> のまま — そこが値だから。 */
+.ja-target {
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  line-height: var(--lh-read);
+  font-weight: 400;
+  color: var(--ink);
+}
+
+
+/* ---- 太字の使いどころ(2026-08-30 必須) ----
+   Harumi指摘 2026-08-30「無駄な太字」。この日の検査で、font-weightの
+   宣言54件のうち**52件が700**、400はたった1件だった —— 全部が太字なので
+   どれも目立っていなかった。太字を付けてよいのは次の3つだけ:
+
+     ① ボタンの文字   (.btn-primary 等のボタン一族/.option/
+                        .settings-toggle/.backlink)
+     ② 見出し・ラベル (.screen-title/.eyebrow/.section-label/
+                        .cat-review-name/.text-input-label など)
+     ③ 数値・バッジ・判定 (.progress/.cat-review-frac/.chip/
+                        .pron-verdict/.toast、選択中の状態)
+
+   **読む文には付けない**(補足・注釈・和訳・説明文・引用)。新しく
+   font-weight:700 を書く時は、上の3つのどれかに当てはまるか必ず確かめる。
+   ---------------------------------------------------------------- */
+
+/* ---- buttons ---- */
+
+/* 2026-08-19 Harumi指示「押せるものが物理的に押せそうに見える
+   （Duolingoの発明）」。下端だけを内側に暗くして、ボタン自体に厚みを
+   持たせる。:activeで薄くしつつ2px沈めて、実際に押し込まれたように
+   見せる。 */
+/* Harumi指示 2026-08-20: 「ホーム以外も変えなければ、アプリの統一感が
+   なくなる」。以前はink(ほぼ黒に近い深緑)地に紙色の文字だったが、
+   Homeのヒーローで採用した明るいミント(--accent-fill)にアプリ全体で
+   揃えた。文字色はコントラスト確保のためink（--accent-fill地に
+   --ink文字で5.71:1、.btn-accentと同じ組み合わせ）。navRow()や
+   primaryButton()等の共通関数を通っているボタンは、この1箇所の変更で
+   全画面に反映される。 */
+/* プロレビュー(2026-08-23):「平坦で安っぽい」。下側だけ濃い影を付けた
+   立体ボタン風(inset -4px)をやめ、上が少し明るいグラデーション+
+   ふんわりしたドロップシャドウにした。 */
+/* 2026-08-28 Harumi指摘(最終)「Speakupの多くのボタンの色を最終的に
+   この色にして欲しいです。エスプレッソグラデーションで、太すぎない
+   長方形で」— Redesign案(speakup-redesign.html)の.btn-primaryと
+   完全に一致させる: 濃色(--ink-light→--ink)グラデーション+白文字+
+   金の矢印(.btn-arrow)、角丸ゼロ、薄めの厚み(padding 16→13px、
+   min-height 54→48px)。この前は金グラデーション案(eatout LPの
+   「練習を始めよう→」)を試したが、これが最終決定。矢印は
+   js/ui.jsのwithArrow()で文言の後ろに自動で足す(呼び出し側は
+   変更不要)。 */
+/* ★2026-09-23 Harumi指示「ボタンも同じ色に変えて」(Order Upと同じに)。
+   移植元: harmony-horizon/orderup/index.html の .btn-primary
+   (HARU様 2026-09-23仕様)。値をそのまま持ってきた:
+     地 = 金(--accent-fill #E2A33D) / 文字 = --ink / 角丸ゼロ /
+     高さ56px / 文字 --text-lg(23px)/700 / 影 = 浮き上がり+上の光 /
+     押した時 scale(0.97) / 無効 = --neutral塗り
+   金の上の --ink は約7.6:1(白は2.2:1で不合格なので文字は必ず --ink)。
+
+   ★これは2026-08-30の決定「濃色ボタンの地を金・茶に寄せ直さない」
+   (エスプレッソのグラデーション)を、Harumi指示で**取り消した**もの。
+   Order Up と同じ見た目に揃えるための変更なので、
+   **エスプレッソに戻さないこと。** 戻す時は3アプリ一緒に。
+   金を大きな面に使うので「金は点で使う」の例外になる ——
+   だから**金の主ボタンは1画面に1つ**(Order Up「黄色が多すぎる」と同じ)。 */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  font-family: var(--font-gothic);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink);
+  background: var(--accent-fill);
+  border: none;
+  border-radius: 0;
+  padding: var(--space-2) 20px;
+  cursor: pointer;
+  min-height: 56px;
+  box-shadow: 0 3px 8px rgba(34, 29, 24, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary:active { transform: scale(0.97); }
+/* 無効の主ボタンは薄い金ではなく --neutral 塗り(Order Upと同じ。
+   Speak Upでも2026-08-28にHarumi承認済みの形)。 */
+.btn-primary:disabled, .btn-primary[disabled] { background: var(--neutral); color: var(--ink); box-shadow: none; cursor: default; }
+.btn-primary:disabled:active, .btn-primary[disabled]:active { transform: none; }
+/* 金の上では明るい金の矢印が溶けるので、文字と同じ --ink にする。 */
+.btn-primary .btn-arrow, .btn-accent .btn-arrow { color: var(--ink); }
+.btn-arrow { color: var(--accent-line); }
+.btn-accent-quiet .btn-arrow { color: var(--accent-line); }
+.btn-primary:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .btn-primary { transition: none; } }
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  font-family: var(--font-gothic);
+  /* ★2026-09-23 Order Up の .btn-outline と同じ: 19px・太字にしない。
+     金の主ボタンの隣で、控えめな方も太字だと2つとも主役に見える。 */
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink);
+  background: transparent;
+  border: 1.5px solid var(--ink-hair);
+  border-radius: 0;
+  padding: var(--space-2) 20px;
+  cursor: pointer;
+  min-height: 56px;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-outline:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 3px; }
+
+/* .btn-accent(特別な入口=AI英会話)も .btn-primary と同じ金に揃える。
+   同じ一族なので片方だけ別の色にしない(見た目の文法7b)。 */
+.btn-accent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  font-family: var(--font-gothic);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--ink);
+  background: var(--accent-fill);
+  border: none;
+  border-radius: 0;
+  padding: var(--space-2) 20px;
+  cursor: pointer;
+  min-height: 56px;
+  box-shadow: 0 3px 8px rgba(34, 29, 24, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-accent:active { transform: scale(0.97); }
+@media (prefers-reduced-motion: reduce) { .btn-accent { transition: none; } }
+.btn-accent-quiet {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  font-weight: 700;
+  /* 2026-08-30 Harumi承認(案B): 金ベージュ(--accent-wash)+金の枠+金の文字
+     をやめ、グレージュ(=エスプレッソ6%)+髪の毛の罫線+黒文字にした。
+     淡い金は面積が大きいと黄色が主役になり、濃色ボタンと合わせて画面が
+     染まっていた。金は★・矢印・罫線だけに残す(金は「点」で使う)。
+     罫線も1.5px→1pxに落とし、線が主張しないようにした。 */
+  color: var(--ink);
+  background: var(--ink-wash);
+  border: 1px solid var(--ink-hair);
+  border-radius: 0;
+  padding: 15px 20px;
+  cursor: pointer;
+  /* ★2026-09-23 濃色ボタンが56pxになったので、隣に並ぶ白・グレージュも
+     56px。navRow で横に並ぶので、ここが54のままだと段差が出る。 */
+  min-height: 56px;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-accent:focus-visible,
+.btn-accent-quiet:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ★2026-09-24 丸い再生ボタン(Order Up の .audio-btn をそのまま移植)。
+   Harumi承認「4,5,6,7」の⑦。**2026-08-30に「アイコンだけの大きな丸ボタン
+   (.play-big)」を消した決定とはぶつからない** —— あちらは*円の中にアイコン
+   だけ*で、何のボタンか読めなかった。こちらは**円の横に必ず文字**が付く
+   (「お手本を聞く」)ので、見た目の文法7「アイコンだけのボタンを作らない」を
+   満たしている。円が持つのは「押すと音が鳴る」の一点だけ。
+   地はエスプレッソのまま(--ink)。金は使わない ——
+   金の主ボタンは1画面に1つ(2026-09-23)で、その席は nav-row が持っている。
+   Order Up 2026-09-23 HARU様「浮き上がって見えるように影」「3Dに見えるように
+   立体感」: 光は左上から。上に細い光、右下に濃い影、下に2枚の落ち影。
+   押すと2px沈んで落ち影が短くなる。 */
+/* ★2026-09-24 Harumi指示「丸い再生ボタンは、真ん中センターにあるべきです。
+   丸い再生ボタンに文字はありません。センター寄せです。」
+   横に文字を置かないので、幅は丸の分だけ。flexの子として中央に置く。
+   左寄せ(align-self: flex-start)に戻さないこと —— すぐ下の「声・速さ」の
+   チップも中央寄せなので、左寄せにすると縦のラインが2本に割れる。 */
+.audio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-height: 56px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.audio-btn-circle {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 34% 28%, #7a6e64 0%, #4a413a 38%, var(--ink) 72%, #120e0b 100%);
+  box-shadow:
+    0 14px 28px rgba(34, 29, 24, 0.32),
+    0 5px 10px rgba(34, 29, 24, 0.28),
+    inset 0 2px 2px rgba(255, 255, 255, 0.28),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.38);
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
+}
+/* ▶は右向きなので、円の中では気持ち右へずらすと視覚的な中心に来る。 */
+.audio-btn-circle svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin-left: 3px;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.45));
+}
+.audio-btn:active .audio-btn-circle {
+  transform: translateY(2px) scale(0.97);
+  box-shadow:
+    0 6px 12px rgba(34, 29, 24, 0.30),
+    0 2px 4px rgba(34, 29, 24, 0.25),
+    inset 0 2px 2px rgba(255, 255, 255, 0.22),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.42);
+}
+/* 鳴っている間は金の輪を1本。既存の .playing の約束(2026-08-31)をそのまま
+   使う —— 新しい状態クラスは作らない。 */
+.audio-btn.playing .audio-btn-circle {
+  box-shadow:
+    0 0 0 6px var(--accent-wash),
+    0 14px 28px rgba(34, 29, 24, 0.32),
+    0 5px 10px rgba(34, 29, 24, 0.28),
+    inset 0 2px 2px rgba(255, 255, 255, 0.28),
+    inset 0 -6px 12px rgba(0, 0, 0, 0.38);
+}
+.audio-btn:disabled { opacity: 0.45; cursor: default; }
+.audio-btn:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .audio-btn-circle { transition: none; } }
+/* Order Up 2026-09-23 HARU様「ボタンが小さすぎるのでは？ 耳から声へです」:
+   その画面で一番大事な「聞く」は80px・文字も一段大きく。
+   補助的な聞き直し(一覧の行末の▶など)は56pxのまま。 */
+.audio-btn.audio-lg .audio-btn-circle { width: 80px; height: 80px; }
+.audio-btn.audio-lg .audio-btn-circle svg { width: 34px; height: 34px; margin-left: 4px; }
+
+/* Home末尾の「★ 聞き逃したフレーズ」「あなたのフレーズ」。並びの中で
+   浮くよう、直前のカードリストと少し間を空ける（Eatoutも一覧の最後で
+   ここだけ塗りのボタンにして目立たせている）。 */
+.phrase-index-link { margin-top: 6px; }
+.phrase-index-link + .phrase-index-link { margin-top: 10px; }
+
+.btn-small {
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent-text);
+  background: none;
+  /* --lineは罫線用の薄い色で、ボタンの縁取りに使うと存在感が消えて
+     見える。.btn-outlineと同じ、はっきり見える縁取りに変更
+     （Harumi指摘 2026-08-19「全てが薄い印象」）。2026-08-23プロレビュー
+     「枠の色が素人っぽい」で、真っ黒に近い--inkから、緑パレットの
+     --accent-text(80%)に変更。 */
+  border: 1.5px solid var(--accent-text-border);
+  border-radius: 0;
+  padding: 9px 18px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-small:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+.btn-small[aria-pressed="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-weight: 700;
+}
+
+.btn-primary[disabled], .btn-outline[disabled], .btn-accent[disabled], .btn-accent-quiet[disabled] {
+  opacity: 0.45;
+  cursor: default;
+}
+/* 2026-08-28 Harumi指摘「目標を決めたのボタンが読みにくい」— 濃色
+   グラデーションのボタンをopacityで薄めると、白文字ごと灰色の地に
+   溶けて読めなくなる(特に目標画面の、日付未入力の間の「目標を決めた」)。
+   濃色ボタンだけは透明度をやめ、無効状態専用のトークン--neutral
+   (「文字に使わない。無効状態・装飾のみ」)の塗り+--inkの文字にする。
+   --ink on --neutral は実測約6.3:1でAAを満たし、無効でも読める。
+   薄い地のボタン(.btn-outline/.btn-accent-quiet)は文字が濃色なので
+   従来のopacityのままでよい。 */
+.btn-primary[disabled], .btn-accent[disabled] {
+  opacity: 1;
+  background: var(--neutral);
+  color: var(--ink);
+  box-shadow: none;
+}
+.btn-primary[disabled] .btn-arrow,
+.btn-accent[disabled] .btn-arrow {
+  color: var(--ink);
+  opacity: 0.55;
+}
+
+.btn-row { display: flex; flex-direction: column; gap: var(--space-3); }
+@media (min-width: 480px) {
+  .btn-row.is-inline { flex-direction: row; }
+}
+
+/* ---- 下部の「戻る/次へ」----
+   harmony-horizon/eatout/listening/index.html の .nav-row と同じ形。
+   ヘッダー上部の「戻る」は押しにくい・見にくいという指摘があり、
+   画面下にも同じ操作を置く（Harumi指示 2026-08-17）。 */
+.nav-row {
+  display: flex;
+  /* ★2026-09-25 Order Up と同じ値にそろえた(gap 12px は --space-3 と同値
+     だが直書きだった / 上の余白は 24px → 32px)。押す物は本文より一段
+     離す —— .screen-body の gap(32px)と合わせて64pxになり、
+     CLAUDE.md「問いかけ ↔ ボタン 48px」より広い。 */
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+/* 画面の中へ運ぶ時(js/ui.js revealNavRow)に、下端に固定されたタブバーの
+   下へ潜り込ませない。scrollIntoView は既定で「要素の下端＝画面の下端」に
+   合わせるが、この画面の下端64pxはタブバーが覆っているので、そのぶんの
+   余白を先に宣言しておく(2026-08-31)。 */
+body.has-tabbar .nav-row { scroll-margin-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 12px); }
+/* ★2026-09-05 丸い時計の帯も同じ。写真を足したぶん、場面の文が3行になる
+   セリフでは時計がタブバーに触れる —— 見えていない時だけ画面の中へ運ぶ
+   (js/reactionDrill.js)。宣言が無いと scrollIntoView が「要素の下端＝画面の
+   下端」に合わせ、固定タブバーの下に潜る。 */
+body.has-tabbar .note.is-countdown { scroll-margin-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 12px); }
+/* ★2026-09-29 会話の練習の「聞き取れましたか？／言えた」のまとまり(.next-block)も同じ。
+   宣言が無いと、運んでもボタンの下半分がタブバーの下に残っていた(実測)。 */
+body.has-tabbar .next-block { scroll-margin-bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 12px); }
+
+/* ---- 予告の箱＋それを押すボタン = 1つのまとまり (2026-09-04) ----
+   Harumi「プロの設計になってますか？」。実測すると、予告の .note は
+   上の道具から24px・**紹介する相手のボタンまで48px**で、
+   **近づけたい相手から一番遠かった**(CLAUDE.md「余白は『揃える』のでは
+   なく『意味のまとまりで差をつける』」への違反)。
+   `.scene-block`(写真＋場面の文)と同じ形で包み、中だけ12pxにする。
+   .screen-body の gap(24px) は、この入れ物の**外**に効く。
+   ※負のマージンは使わない。新しい色・様式も足していない。 */
+/* 予告の箱と、それを押すボタンは**1つのまとまり**(2026-09-04)。中は12px・
+   外は24px(.screen-body の gap)。
+   ★2026-09-08 中の12pxを **入れ物側(gap)** で決めるよう直した。
+   前は `.next-block .nav-row { margin-top: 12px }` と**子の名前を名指し**
+   していたので、2026-09-08に発音タブが同じ `.next-block` に `.btn-row` を
+   入れた時、**12pxが1つも効かず、濃色ボタンが箱にぴったりくっついて**
+   いた(Harumi報告・実機。実測 note下端178 / ボタン上端178 = 0px)。
+   gap なら、中に何を入れても必ず12pxになる ——
+   **子を名指しする書き方に戻さないこと。**
+   `.nav-row` は自分で margin-top を持っているので、ここで0にして
+   gap と二重にならないようにする。 */
+.next-block { display: flex; flex-direction: column; gap: var(--space-4); }
+.next-block > * { margin-top: 0; }
+/* ★2026-09-27 Harumi指摘「基本的にボタンの前後のスペースが足りてません。
+   一定の規則に基づき置かれてますか？」。Order Up(harmony-horizon/
+   orderup/index.html)の実物を確認したところ、nav-rowの上の余白は
+   **一律ではなく画面の性質で変わる**規則だった:
+     .say-practice > .nav-row { margin-top: var(--space-4); }  16px(押す直前)
+     .hear-body    > .nav-row { margin-top: var(--space-7); }  48px(選ぶ/見る)
+     .bridge-body  > .nav-row { margin-top: var(--space-7); }  48px(地図/案内)
+   Speak Upの`.next-block`は**すべての用途を12pxに一律**にしていた
+   (js/branches.js・js/lesson.jsの「言えた」ボタン=Order Upの
+   .say-practiceに当たる産出直前の画面と、js/phraseBank.js・
+   js/earToVoice.jsの「予告 → 戻る/練習する」=Order Upの.hear-body/
+   .bridge-bodyに当たる選ぶ画面、という**性質の違う2つ**が同じ12pxだった)。
+   → **nav-rowを持つ方(選ぶ画面)だけ**24pxへ広げる。「言えた」の産出
+   ボタン(status+.btn-row。nav-rowを持たない)は、Order Upの
+   .say-practiceと同じ**16px**(`.say-practice > .nav-row`)に合わせる ——
+   広げるのは「選んで確認してから進む」画面だけで、「読んだらすぐ押す」
+   画面ではない、という区別そのものは変えていない。
+   ★同じ日、Harumi再指摘(実機スクリーンショット)「ボタンの前後の
+   スペースに気をつけてますか？」——実測すると、note↔ボタンの間は
+   確かに詰まって**見えていた**が、その理由は「12pxしか無いから」では
+   なかった。実際は**上の文で自分が引用した Order Up の値(16px)を、
+   コードでは`12px`のまま直し忘れていた**(このコメントは16pxと
+   書きながら、下の宣言はvar(--space-3)相当の12pxだった)。
+   → `.next-block`本体の既定gapを`var(--space-4)`(16px)に修正し、
+   引用した値と実装を一致させた。**据え置き先を12pxと書いた記述は
+   誤りだったので、この段落で訂正する。** */
+.next-block:has(> .nav-row) { gap: var(--space-5); }
+/* ★2026-09-29 聞き返すを選ぶ画面(縦並びのカード)も「選ぶ画面」なので24px。
+   開始ボタンが .btn-row になり、上の :has(> .nav-row) から外れて16pxだった。 */
+.next-block:has(> .pick-need) { gap: var(--space-5); }
+/* 2026-08-29 Harumi指摘(スクリーンショット)「発音チェックへ ＞」が
+   狭い画面で「発音チェックへ / ＞」の2行に折り返っていた —
+   戻る/次への2ボタンを均等flex:1にしていたせいで、「戻る」の短い
+   文字にも「次へ」と同じ幅を割いていた。「戻る」はflex:0(内容に
+   合わせた最小幅)に変え、空いた分を次への長いラベルに回す。 */
+/* .btn-outline/.btn-primaryのwidth:100%がflex-basisにもそのまま
+   使われ、flex:0 1 autoだけでは両方とも「行の全幅」を基準に等しく
+   縮んでしまい、狭くならなかった(実測で確認)。width:autoに上書きして
+   flex-basisを内容量にする。 */
+/* ★2026-09-30 Harumi報告(実機スクショ・止まって練習の「言えた」待ち)
+   「次へのボタンがいつもと違いますよ」。実測すると、幅を決めていた
+   セレクタが**色の見た目(.btn-outline/.btn-primary)**を見ていたため、
+   「金色は、いま押してほしい1つだけ」(2026-09-29)で「次へ」を一時的に
+   .btn-outlineへ下げている間(js/branches.js setNavNextGold(false)。
+   js/lesson.js・js/pausePractice.jsも同じ関数を使う)、「次へ」まで
+   「戻る」と同じ狭い96pxになり、行の右側が丸ごと空いていた——「言えた」を
+   押していない待ち時間**全部**で起きていた(会話の練習・状況ページ・
+   止まって練習など、setNavNextGoldを呼ぶ全画面が対象)。
+   → 幅は色ではなく**役目**(`data-back`。navRow/backRowが必ず付ける)で
+   決める。「戻る」だけ狭く、それ以外(色が何であっても)は残りいっぱい。 */
+.nav-row > [data-back] { flex: 0 0 auto; width: auto; min-width: 96px; margin-top: 0; }
+.nav-row > button:not([data-back]) { flex: 1 1 auto; width: auto; margin-top: 0; }
+.nav-row.is-back-only > [data-back] { flex: none; }
+
+/* segmented control 本体（My Book filter「すべて/要復習」も、下の
+   「声・速さのトグル」もこの1つを共有する。定義はこのファイル後半、
+   声・速さのトグルの節にまとめてある — 同じ見た目の部品を2箇所に
+   書き写さない）。 */
+
+/* ---- options (自己認識 / 意図を選ぶ) ---- */
+
+/* 自己認識の3択は <ul><li> で組んでいる（読み上げソフトで「3個中1個目」の
+   ように数えてもらうため）が、そのままだとブラウザ既定の黒丸(・)と
+   字下げが付く。ボタン自体がすでに選択肢の見た目を持っているので、
+   リストとしての飾りは消す。 */
+.options { display: flex; flex-direction: column; gap: var(--space-2); text-align: left; list-style: none; margin: 0; padding: 0; }
+.options li { margin: 0; padding: 0; }
+
+.option {
+  display: block;
+  width: 100%;
+  font-family: var(--font-gothic);
+  /* ★2026-09-24 Order Upの選択肢(.quiz-option)にそろえた。
+     あちらの2026-09-23の直し(HARU様承認)は「lighter and calmer」——
+     太字をやめ、枠を細くし、余白と行間を広げる。太字＋大きさ＋枠の
+     3つで同じことを言うのをやめ、**何個選べるか**は左の印(◯/☐)が、
+     **押せる**ことは高さと余白が語る。 */
+  font-weight: 400;
+  font-size: var(--text-md);
+  line-height: var(--lh-base);
+  text-align: left;
+  /* 文言側の\nを改行として効かせる(CLAUDE.mdキャプション改行ルール。
+     状況ページの「言えた/言えない」の2行ラベルで使用、
+     Harumi指定 2026-08-29)。 */
+  white-space: pre-line;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  /* 2026-08-30 Harumi指摘「この影付きの丸いカーブの角のボタンがなん度も
+     出てきますが、これが統一性を乱しているようです」。実測すると、
+     押せる部品の角は**9個が四角(0)・丸いのは2個だけ**で、.option は
+     その例外の1つだった。しかも「言い方を選ぶ」の1行には
+     .option(角10px) / .chip(角6px) / .btn-small(角0) が並び、
+     **1行の中に3種類の角**があった。
+     角は何の仕事もしていない —— 「押せそうに見える厚み」は下の
+     box-shadow が作っているので、角を落としても意味は失われない。 */
+  border-radius: 0;
+  padding: var(--space-5) var(--space-3);
+  cursor: pointer;
+  min-height: 76px;
+  /* ★2026-08-31 Harumi指摘「影付きのボックスも素人っぽい」。
+     下端の厚み(2026-08-19 Duolingo方式)を外した。「押せる」を語る仕事は
+     **左の印(◯/☐)**が引き取ったので、影は装飾として残るだけになる ——
+     影＋枠＋太字＋大きさの4つで同じことを言っていたのが「素人っぽい」の
+     正体だった。厚みを戻さないこと。
+     一覧の行と区別しているのも、いまは厚みではなく**印の有無**。 */
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  transition: border-color 0.1s ease, background 0.1s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 押した手応えは地の色だけ。Order Upと同じく**何も動かさない**
+   (大きさ・太さ・折り返しを変えない)。translateYに戻さないこと。
+   ※Speak Upの--accent-fill-lightは金(グラデーションの上端)で、
+     Order Upの同名トークン(淡い灰)とは別物。押した時の淡い地は
+     グレージュの--ink-washを使う(新しい色を足さない)。 */
+.option:active { background: var(--ink-wash); }
+.option-label { flex: 1 1 auto; min-width: 0; white-space: pre-line; }
+/* ★2026-09-23 文字を大きくしたら、行内の「おすすめ」バッジが押し潰されて
+   2行に折れていた(実機・言い方を選ぶ)。バッジは**幅を譲らない**物なので
+   flex:none + nowrap を明示する(CLAUDE.md「幅を譲らない部品の隣に、
+   縮めない部品を置かない」)。譲るのはラベルの側。 */
+.option .chip { flex: none; white-space: nowrap; }
+.option:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 3px; }
+/* accent-wash is documented in tokens.css as "selected-state background" —
+   used here exactly for that, on 意図を選ぶ's multi-select and 自己認識's pick. */
+.option[aria-pressed="true"] {
+  border-color: var(--accent-line);
+  background: var(--accent-tint);
+  /* 枠を太くすると1pxぶん中身が動くので、内側の細い輪(inset shadow)で
+     選択中を語る(Order Upと同じ)。 */
+  box-shadow: inset 0 0 0 1px var(--accent-line);
+}
+@media (prefers-reduced-motion: reduce) { .option { transition: none; } }
+
+/* 「聞き返す」の複数選択チェックリスト（js/clarification.js）。和訳を
+   主役にして、下にカジュアル/丁寧を小さく添える。 */
+
+/* 複数選択チェックリスト専用（js/phraseBank.js）。他の単一選択の
+   .option（自己認識・言い方を選ぶ、次へボタンを兼ねる）とは見た目を
+   はっきり変える — チェックボックスを付けて「複数選べる」と一目で
+   伝える（Harumi指摘 2026-08-19: 「見た目が同じで区別がつかない」）。 */
+/* チェックの印は「選ぶ物」であって主役ではない。2pxの濃い枠だと文字より
+   目立ち、行が並ぶほど点々がうるさくなる(2026-08-30「ごちゃごちゃ」)。
+   枠を細くし、大きさも文字に合わせる。押した時は従来どおり金で塗る。 */
+/* 「1つだけ選ぶ」の印。四角の.option-checkbox(いくつでも選ぶ)と、
+   大きさ・線の太さ・色を完全に揃える —— **違うのは丸か四角かだけ**。
+   その1点だけで「何個選べるか」を語らせるのが、この形の狙い
+   (2026-08-31 Harumi指摘「◻︎があった方がいいのでは？他のページと統一
+   した方がいい。プロはどうする？」)。 */
+.option-radio {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--muted-soft);  /* ★2026-09-25 Order Up .quiz-option .box と同値 */
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.1s ease;
+}
+.option-radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.1s ease;
+}
+.option[aria-pressed="true"] .option-radio { border-color: var(--accent-line); }
+.option[aria-pressed="true"] .option-radio-dot { background: var(--accent-text); }
+
+.option-checkbox {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  /* 一覧のチェック印も四角に(2026-08-30)。押せる部品は全部四角。 */
+  border-radius: 0;
+  border: 1.5px solid var(--muted-soft);  /* ★2026-09-25 ◯と同じ線の色にそろえた */
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
+}
+.option.is-multi[aria-pressed="true"] .option-checkbox,
+.select-row[aria-pressed="true"] .option-checkbox {
+  background: var(--accent-fill);
+  border-color: var(--accent-line);
+  color: var(--ink);
+}
+
+/* 聞き返す・相槌の選択リスト。質問用の.option(浮き出るボタン)を並べる
+   のをやめ、他の一覧(Home/★聞き逃したフレーズ)と同じ「平らな行＋細い
+   罫線」に統一(Harumi指摘 2026-08-30「このページが他のページに比べて
+   統一感がない」)。チップは右端の同じ行。 */
+.select-list { display: flex; flex-direction: column; margin-bottom: var(--space-2); }
+/* 2026-08-30 Harumi指摘「ごちゃごちゃ見えます」— 相槌は56行あり、
+   「うん」のような2文字の行まで58pxの高さを取っていたため、意味の
+   まとまりより「行の数」が目に入っていた。行を詰め(58→48px前後)、
+   代わりに**まとまり(見出し)の前後を広く**して、目が段落単位で
+   休めるようにする。指の当たりは48px以上を保つ。 */
+.select-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  padding: 9px 6px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* まとまりの見出し(section-label)は、直前のまとまりから十分離す。 */
+.select-list + .section-label { margin-top: var(--space-6); }
+.select-row:last-child { border-bottom: none; }
+/* 「今日の5つ」は見せるだけの行(押して選ぶ操作が無い)。同じ行の文法を
+   使いつつ、押せるように見えないよう手の形と手応えだけ外す。 */
+.select-row-plain { cursor: default; }
+/* accent-wash: tokens.cssの用途どおり「選択中の下地」 */
+.select-row[aria-pressed="true"] { background: var(--accent-wash); }
+/* 押した瞬間の手応え(2026-08-30)。56行の一覧では「押せたのか」が
+   一番の不安なので、指を離す前に地の色が変わる。 */
+.select-row:active { background: var(--accent-tint); }
+/* 2026-08-30 Harumi指摘「これら太字ですか？直して。」— ここに並ぶのは
+   短いラベルではなく「読む文」なので、太字だと1行ずつが重く、13行が
+   全部強調されているように見えていた。並字にする(読みやすさは大きさ
+   1.08remと--inkの濃さで確保。太字はHomeのモジュール名のような短い
+   ラベルに残す)。あわせて \n で折り返し位置を決められるように
+   pre-lineを入れる(下のjaWithBreaks参照)。 */
+/* ★2026-09-26 Order Up の .hear-set-text を移植したが、中身が違っていた。
+   Order Up の .hear-set-label は「言い方 1」のような**短い固定ラベル**
+   (flex:none; white-space:nowrap)で、長い文が入ることは無い。バッジと
+   合わせても1〜2行の短い塊がflex-wrapで自然に折り返るだけ ——
+   Order Upのソース(el('span','hear-set-label','言い方 '+(i+1)))を
+   読み直して確認した。
+
+   ★2026-09-27 Harumi報告(実機スクリーンショット)「カジュアルとかの位置が
+   一流のプロのデザインに思えない」——そのとおりで、Speak Up の
+   select-row-ja は**実際の長い言い回し(2行に折り返ることがある)**。
+   `flex-wrap: wrap` + `align-items: center` のままだと、テキストが
+   2行になった時だけチップが**2行ぶんの高さの真ん中に浮く**(1行の時は
+   下に落ちる)——**同じ部品なのに、文の長さで見た目が変わる**という
+   一貫性のない結果になっていた(flexboxの折り返し判定が、内部で
+   折り返す長文アイテムに対しては安定しないため)。
+
+   → **`flex-direction: column`で決め打ちの縦積みにした。** 和訳が
+   長かろうが短かろうが必ず「和訳 → (あれば)チップ」の順で積むので、
+   常に同じ見た目になる。`align-items: stretch`(既定値)で和訳は
+   親の全幅まで伸びて自然に折り返り、チップだけ`align-self: flex-start`
+   (下のルール)で自分のpill幅のまま左寄せに戻す。 */
+.select-row-text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-1);
+}
+.select-row-ja {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  color: var(--ink);
+  white-space: pre-line;
+  /* ★2026-09-29 --lh-read → --lh-base。一覧の行(読む段落ではない)で、
+     聞き返すのカード(.pick-card-text)とも同じ行間にそろえる。 */
+  line-height: var(--lh-base);
+}
+/* チップ(カジュアル/丁寧)は添え物なので、一段小さく詰める(2026-08-30)。
+   色・角はそのまま(新しい様式は作らない)。
+   ★2026-09-27 `align-self: flex-start` を追加 —— 親が縦積みになった
+   ぶん、チップが横幅いっぱいに伸びないよう自分のpill幅のまま止める。 */
+.select-row .chip { flex: none; align-self: flex-start; font-size: var(--text-xs); padding: 1px 6px; }
+/* 和訳が同じ行が2つ以上ある時だけ添える英文(js/phraseBank.js needsEn)。
+   主役は和訳のままなので、小さく・淡く・英文用の書体で。 */
+.select-row-en {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-latin);
+  font-size: var(--text-sm);
+  color: var(--muted);
+}
+.select-row .option-checkbox { margin-top: 0; }
+/* ★2026-09-29 相槌ドリルの答え合わせ(見出し→一覧→「他の相槌例」→注記)。
+   入れ物に gap が無く、見出しと一覧が0pxで接していた。聞き返すの
+   .carousel-group と同じ12pxを入れ物側で決める。 */
+.answer-group { display: flex; flex-direction: column; gap: var(--space-3); }
+.answer-group > * { margin-top: 0; }
+/* ★2026-09-29 margin-top:0 も書く —— 後に書いてある .btn-link { margin-top: 8px }
+   が .answer-group > * より勝ち、一覧→リンクだけ 12+8=20px になっていた。 */
+.answer-group > .btn-link { align-self: flex-start; margin-top: 0; }
+/* ★2026-09-29 一覧の下の margin(8px)が gap(12px)に足されて、一覧→リンクだけ
+   20pxになっていた。入れ物の gap 1つで決める。 */
+.answer-group > .select-list { margin-bottom: 0; }
+/* ★2026-09-29 Harumi決定「③ 定番だけ大きく」。行の形(余白・▶の位置・罫線)は
+   ふつうの行と同じで、英語だけ .phrase-target(32px・800・金の縦線)。
+   和訳とチップは、英語の書き出し(金の線4px＋12px)に頭をそろえる。
+   英語→和訳は8px(32pxの文の下で4pxは詰まって見える)。 */
+.select-row.is-hero .select-row-text { gap: var(--space-2); }
+.select-row.is-hero .phrase-target { display: block; margin: 0; }
+.select-row.is-hero .select-row-ja,
+.select-row.is-hero .chip { margin-left: calc(4px + var(--space-3)); }
+/* 畳んだ行(hidden)のせいで、見えている最後の行に罫線が残らないようにする。 */
+.select-list > .select-row:not(:has(~ .select-row:not([hidden]))) { border-bottom: none; }
+
+/* ---- generic card (no direct Eatout equivalent — Eatout's cards are all
+   single-purpose (.pron-card, .my-phrase-card, .sentence-card); a few
+   spots here (awareness reply reveal, alt-phrase list, unlock tiers,
+   RECOVER panel) need a plain bordered box, built from the same
+   --surface/--line/--radius tokens as everything else) ---- */
+
+/* 2026-08-19 Harumi指摘「フレーズとボタンの間にスペースを入れた方が
+   プロっぽく見れる」。中の要素がただ積み重なって間が詰まって見えて
+   いたので、縦並びのflexにして隙間を持たせた（他の.card利用箇所にも
+   同じ効果がある）。 */
+/* ★2026-09-24 練習する文の囲みを外した(js/earToVoice.js appendInlineReveal)。
+   Order Up の決まり ——「学ぶ内容そのものは**入れ物を持たない**。
+   大きさ・太さ・まわりの余白で主役にする」。白い枠の中に入れると、
+   画面の中の「同じ重さの箱のひとつ」になってしまう。
+   入れ物ではなく**間隔だけ**の入れ物にする(負のマージンを使わない)。 */
+.reveal-block { display: flex; flex-direction: column; gap: var(--space-3); }
+/* ★2026-09-24 Order Up の .title-audio-group。押すボタンと「声・速さ」は
+   どちらも**これから学ぶための道具**なので、8pxで1つの塊にし、
+   その下(学ぶ内容との間)は .screen-body の32pxのまま空ける。
+   余白は「揃える」のではなく「意味のまとまりで差をつける」の続き。 */
+/* ★2026-09-25 Order Up .title-audio-group と同値(gap 4px ＋ 下に12px)。 */
+/* ★2026-09-29 .tool-group は廃止(声・速さを▶に4pxでくっつけていた)。
+   いまは CLAUDE.md「声・速さの置き場所は1つの決まりだけ」: 声・速さは
+   最初に鳴る物のすぐ上に、独立した1行(上下とも .screen-body の32px)。
+   **復活させないこと。** */
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  /* ★2026-09-26 Harumi指摘(実機・「ホーム画面に追加」画面)「スペース
+     入れて。窮屈」。中の段(見出し・本文・手順・ボタン)のあいだを
+     16px(--space-4)→24px(--space-5)に広げた。.card は
+     js/onboarding.js(この画面)と js/aiConversation.js(講評の
+     カード)の3箇所でしか使っていない(実測済み) —— 共有部品を直せば
+     3箇所とも自動で効く。 */
+  gap: var(--space-5);
+}
+/* 2026-08-28 Harumi報告(再発)「目標を入れるボックスが、日にちを入れると
+   また枠からはみ出す」— .text-input(下記)には既にmin-width:0+
+   overflow:hiddenの対策が入っているが、それは「個別のinputにこの
+   クラスを付け忘れない」という人間の注意力に依存していた。ここで
+   .card配下の入力要素全般に安全網として同じ対策を効かせ、今後
+   .text-inputを付け忘れた新しいinputを作っても構造的にはみ出さない
+   ようにする(何度も同じ修正を繰り返さないための恒久対策。CLAUDE.md
+   「ネイティブの入力欄がカードからはみ出す」ルール参照)。 */
+.card input {
+  min-width: 0;
+  overflow: hidden;
+  /* 2026-08-28 第3報で判明した真因(下の.text-inputのコメント参照):
+     iOSのネイティブ描画はwidth指定を無視するので、安全網にも
+     appearance:noneと最大幅を入れておく — カード内のinputは
+     何であれ、カードより広くは絶対に描けない。 */
+  -webkit-appearance: none;
+  appearance: none;
+  max-width: 100%;
+}
+
+/* 自己認識(あなたならどうしますか？)の画面と.awareness-reveal一式は
+   廃止(Harumi指示 2026-08-29「自己認識は、削除して」)。 */
+
+/* AI英会話の開始前に見せる「振り返りがもらえる」という売り文句
+   （Harumi指摘 2026-08-28「ここも売りの言葉なので他の文章に埋もれ
+   ないようにして」）。muted-textの地の文に混ぜると他の説明と同じ
+   重さになって埋もれるため、.awareness-revealと同じ強調カード
+   （accent-tintの地・accent-lineの縁・アイコン付き）で切り出す —
+   新しい見せ方は作らず、既存の「ここは大事」パターンを流用。 */
+
+/* ---- scene image (situation / Confidence Check — no Eatout equivalent
+   since Eatout has no scene photography; kept in the same card idiom) ---- */
+
+/* ★2026-09-02 写真の比率を 16:9 に。2026-08-31の実測で、4:3(257px)だと状況ページの
+   「＜戻る／この場面で練習する」がタブバーの下に潜った —— その時は**札だけ**を
+   16:9に縮めて逃げたが、本物の写真が入れば同じことが起きる。写真も札も 16:9 で
+   揃える(README の「横長16:9」とも一致)。生成する画像も 16:9 で作ること。 */
+.scene-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: var(--radius-photo);
+  background: var(--line);
+}
+
+/* 写真がまだ無い間の札。写真が入ったら、この箱の中身が <img> に変わるだけで
+   まわりの余白は動かない（aspect-ratio を同じにしてある）。 */
+/* 状況ページの2つの段落。既定(.body-text)より上下を詰めて、写真のある
+   画面でも進むボタンが画面に入るようにする(2026-08-31 実測)。 */
+/* ★2026-09-04 写真と場面の文は**同じ塊**。.screen-body の gap(24px)の外に
+   出して、中の間だけ12pxにする —— 近いものは近く、遠いものは遠く。
+   以前は gap 24px の上に margin-top 14px が重なって39px空き、写真と文が
+   セットに見えていなかった(区切り線の二重引きと同じ形の、余白版の事故)。 */
+.scene-block { display: block; }
+.scene-block .situation-line { margin: 12px 0 0; }
+.situation-line { margin: 0; }
+
+/* ★2026-09-05 相槌ドリル・会話の練習にも場面(写真＋文)を置いた経緯。
+   1. 小さく横並び(.is-compact)で出した→Harumi「プロが写真をこうやって
+      小さくするとは思いません」。
+   2. 写真だけ・幅いっぱい(.is-photo-only。文はimgのaltへ)に寄せた。
+   3. ★Harumi「状況説明の一文を戻して。書いてあった方がわかりやすい
+      です」——素人っぽく見えていた原因は**写真を小さく縮めていたこと**で、
+      幅いっぱいの写真+文なら状況ページ(js/lesson.js)と同じ形になり
+      問題は無い。→ **`.is-photo-only` は使わず、素の `.scene-block` に
+      戻した**(is-photo-only の定義自体は下の互換記録として残す。
+      新しく作る画面でこの2案を再現しないこと —— 文を消すなら消したいと
+      Harumiが指示した時だけ、縮めるくらいなら状況ページと同じ幅いっぱい
+      +文で作る)。
+   相槌ドリルは幅いっぱい16:9(201px)で丸い時計の下端が548→761pxとなり
+   タブバー(600px)の下に潜る箇所があった(390×664実測)→ 見えていない時
+   だけ画面の中へ運ぶ処理(revealNavRow(status) + .note.is-countdown の
+   scroll-margin)で担保している(js/reactionDrill.js参照)。 */
+.scene-block.is-photo-only { display: block; }
+.scene-block.is-photo-only .situation-line { display: none; }
+
+.scene-holder {
+  width: 100%;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+}
+.scene-holder.is-empty {
+  /* 写真が入るまでの仮の面。★2026-08-31: 4/3(257px)だと、状況ページの
+     「＜戻る／この場面で練習する」がタブバーの下に潜っていた(実測)。
+     ここは**写真ではなく札**なので、写真と同じ縦横比を取る必要はない。
+     16/9(192px)に縮めて、進むボタンが画面に入るようにした。
+     ※写真が入った時はこのクラスが付かないので、写真自体の比率は変えて
+       いない(4:3のまま作って問題ない)。 */
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: var(--space-5);
+  text-align: center;
+  /* 写真が入るまでの大きな空き面。金地だと一番目立つ黄色の塊になる
+     ので、押せる面と同じグレージュに寄せた(2026-08-30 案B)。 */
+  background: var(--ink-wash);
+  border: 1px solid var(--ink-hair); /* 破線は一点物だった(2026-08-30統一) */
+}
+.scene-holder-label {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--accent-text);
+}
+.scene-holder-brief {
+  /* 写真の指示は内容を持つ文字。0.86rem=13.8pxはEatoutの下限14.4pxを
+     割っていた。老眼鏡で読む前提の下限を守る（下の draft-banner・
+     audio-note・phrase-hint も同じ理由で直した）。 */
+  font-size: var(--text-sm);
+  line-height: var(--lh-read);
+  color: var(--muted);
+  max-width: 34em;
+}
+
+/* ---- placeholders: content not yet supplied by HARU ---- */
+
+.placeholder-missing {
+  color: var(--muted);
+  font-family: var(--font-gothic);
+  font-size: 0.85em;
+  border: 1px dashed var(--neutral);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  display: inline-block;
+}
+
+.draft-banner {
+  background: var(--accent-fill);
+  color: var(--ink);
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  letter-spacing: 0.03em;
+  text-align: center;
+  padding: 6px 12px;
+  line-height: var(--lh-base);
+}
+
+/* ミッションのバナー(.mission-banner系)は2026-08-31に削除。
+   機能そのものを廃止したため(js/storage.js の Missions の節を参照)。 */
+
+/* ---- 英文を見る画面の下の小さい任意リンク（「別の言い方もチェック」）
+   ---- 強制ステップではなく寄り道なので、ボタンではなくリンクの見た目
+   にする。押しやすさのため最小フォントは floor(0.9rem) を守る。 */
+.btn-link {
+  display: inline-block;
+  background: none;
+  border: none;
+  color: var(--accent-text);
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  padding: var(--space-2) 0;
+  margin-top: var(--space-2);
+  cursor: pointer;
+}
+/* ★2026-09-29 画面の本文に直に置いた時は gap(32px)だけ(8px足して40pxになっていた)。 */
+.screen-body > .btn-link { margin-top: 0; }
+
+/* ---- toast (no Eatout equivalent — styled in the same chip idiom as
+   .say-cap / .pron-step: peach fill, coral border, accent-text) ---- */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-line);
+  color: var(--accent-text);
+  padding: var(--space-3) var(--space-5);
+  /* pill型(999px)は複数行になると楕円に見えるため、カードと同じ角丸に
+     (2026-08-29、下の折り返し対応とセット)。 */
+  border-radius: var(--radius);
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  /* 2026-08-29 Harumi報告「メッセージが全部見えない」— 長い文言が
+     1行のまま画面からはみ出していた。画面幅に収め、文言側の\nで
+     折り返す(CLAUDE.mdキャプション改行ルール)。 */
+  max-width: calc(100vw - 40px);
+  white-space: pre-line;
+  text-align: center;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  box-shadow: 0 8px 20px rgba(34, 29, 24, 0.16);
+}
+.toast.is-visible { opacity: 1; }
+
+/* ---- Welcome back（Homeを開くたびに一瞬。js/welcomeBack.js）----
+   案3「じんわりロング」で確定（Harumi指示 2026-08-19）。文字は画面
+   ちょうど中央（.wb-scrimのflex中央寄せ）。動きを減らす設定では
+   紙吹雪もクラッカーも出さず、文字だけ静かに出す(.is-static)。 */
+.wb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+}
+.wb-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.wb-scrim {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(34, 29, 24, 0);
+  opacity: 0;
+}
+.wb-scrim.is-playing {
+  background: rgba(34, 29, 24, 0.2);
+  opacity: 1;
+  transition: background 550ms ease, opacity 550ms ease;
+  animation: wb-scrim-fade 2600ms ease forwards;
+}
+.wb-scrim.is-static { background: rgba(34, 29, 24, 0.2); opacity: 1; }
+/* ★2026-09-25 文字を出さない時(はじめの案内⑥「さぁ、始めよう！」)は、
+   暗幕も張らない。暗幕は「Congratulations!」を浮かせるためにある ——
+   文字が無いと、画面が灰色にくすむだけ(実測)。紙吹雪だけが上に降る。 */
+.wb-scrim.is-clear,
+.wb-scrim.is-clear.is-playing,
+.wb-scrim.is-clear.is-static { background: none; animation: none; }
+.wb-text {
+  /* 2026-08-28 Harumi指摘「Speakupのアプリには色んなfontが入り混じって
+     ます。homepageで使われている同じフォントだけ使ってください」—
+     League Spartan(このためだけの単独フォント)をやめ、他の見出しと
+     同じ--font-displayに統一する。 */
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-3xl);
+  letter-spacing: 0.01em;
+  color: var(--paper);
+  /* 「もっとポップ/カジュアル/キュートに」（Harumi指示 2026-08-19）:
+     平らな黒影の代わりに、はっきりした縁取り＋暖色のグロー(絵文字色に
+     寄せた黄〜オレンジ)でステッカーっぽい弾ける印象にする。 */
+  text-shadow: 0 3px 0 rgba(0, 0, 0, 0.18), 0 0 26px rgba(255, 179, 64, 0.6);
+  opacity: 0;
+  transform: scale(0.3);
+}
+.wb-scrim.is-playing .wb-text { animation: wb-pop-in 2600ms ease-in-out forwards; }
+.wb-scrim.is-static .wb-text { opacity: 1; transform: none; }
+/* 「1つ終えた」のお祝い(2026-09-01)。Welcome back! と同じ紙吹雪・同じ文字の
+   作りを使い、長さだけ短くする(繰り返し出るので2.6秒は長い)。狭い画面で
+   はみ出さないよう、1段小さく。新しい色は足していない。 */
+.celebrate-text { font-size: var(--text-2xl); padding: 0 24px; text-align: center; }
+.wb-scrim.is-playing .celebrate-text { animation: wb-pop-in 2200ms ease-in-out forwards; }
+
+@keyframes wb-scrim-fade {
+  0% { background: rgba(34, 29, 24, 0); }
+  10% { background: rgba(34, 29, 24, 0.2); }
+  60% { background: rgba(34, 29, 24, 0.2); }
+  100% { background: rgba(34, 29, 24, 0); }
+}
+/* Pop → Pulse → Fade（Harumi指示 2026-08-19: 「安っぽい、Popじゃない。
+   Pop upして、Pulseして、Fadeする感じで」）。回転の揺れは無くし、
+   3幕構成をはっきり分ける: ①勢いよく飛び出す ②画面中央で2回、
+   脈打つように呼吸する ③スーッと消える。 */
+@keyframes wb-pop-in {
+  /* ① Pop up */
+  0%   { opacity: 0; transform: scale(0.3); }
+  9%   { opacity: 1; }
+  16%  { transform: scale(1.18); }
+  24%  { transform: scale(1); }
+  /* ② Pulse ×2 */
+  38%  { transform: scale(1.1); }
+  48%  { transform: scale(1); }
+  62%  { transform: scale(1.1); }
+  72%  { transform: scale(1); }
+  /* ③ Fade */
+  82%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.05); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wb-scrim.is-playing, .wb-scrim.is-playing .wb-text { animation: none !important; }
+}
+
+/* ---- big audio button (5a 聞く) ---- */
+
+/* Harumi指示 2026-08-20:「録音する部分、音声再生のボタン色も」。
+   .btn-primary等と同じ地に揃えた。色を変えるだけでAudioCue/playerState
+   の再生ロジックには触れていない。2026-08-28: .btn-primaryと同じ値
+   (エスプレッソグラデーション)に揃える(上のコメント参照)。 */
+
+/* ---- 声・速さのトグル ----
+   harmony-horizon/eatout/listening/index.html の .seg / .controls-row の
+   そのままの移植（クラス名・数値とも同じ）。色はトークン経由なので、
+   すでに揃えた配色にそのまま乗る。
+   2026-08-28 Harumi指摘「補助的なボタン(戻る・トグルなど)だけ角にしたい。
+   長方形に統一」— 主役CTA(角丸ゼロ)に揃え、pill形をやめた。 */
+/* 2026-08-30 Harumi指摘「センターのなく、左に寄ってます / 色の使い方も
+   先ほど決めた色のスキームと違います」:
+   (1) width:290px の固定幅だったので、他の部品(全部100%)の中でここだけ
+       左に取り残されていた。100%にして他と同じ幅に揃える。
+   (2) 選択中が --accent-fill(パレットで一番強い金)だった。この部品は
+       「どの一覧を見ているか」の切り替え＝下タブと同じ仕事なので、
+       同じグレージュ+エスプレッソにする(「面はグレージュ、金は点」)。
+   (3) 罫線も1.5px --line → 1px --ink-hair に揃えた。 */
+.seg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--ink-hair);
+  border-radius: 0;
+  padding: 3px;
+  gap: 2px;
+}
+.seg-btn {
+  border: none;
+  background: none;
+  border-radius: 0;
+  padding: 8px 10px;
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.3; /* ★2026-09-29 1.35 → ボタンと同じ1.3 */
+  min-width: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.seg-btn .seg-sub {
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  letter-spacing: 0.08em;
+  opacity: 0.75;
+}
+.seg-btn[aria-checked="true"] {
+  background: var(--ink-wash);
+  color: var(--ink);
+  font-weight: 700;
+}
+.seg-btn:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+}
+.controls-row .seg {
+  width: auto;
+  flex: 1 1 150px;
+  max-width: 210px;
+}
+.controls-row .seg-btn { padding: 10px 4px; }
+.controls-row .seg-label { font-size: var(--text-md); white-space: nowrap; }
+.controls-row .seg-sub { white-space: nowrap; }
+
+/* ---- 声・速さ：畳んだ設定（3回発話ページ限定）----
+   Harumi指示 2026-08-19:「常時大きく表示するのをやめ、小さいアイコンに
+   して、タップした時だけ展開する」。毎回使うものではなく「必要な人だけ
+   調整する設定」として、ボタン列より一段控えめに置く。 */
+.settings-collapsible {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* ★2026-09-29 margin-top 18px を外した。.screen-body の中では gap 32 と
+     足し算で50px、.tool-group の中では(後に書いてあるこちらが勝って)
+     .tool-group > * { margin-top: 0 } を打ち消し、4pxのはずが22pxに
+     なっていた。余白は入れ物の gap だけで決める。 */
+}
+.settings-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  border-radius: 0;
+  padding: 7px 14px;
+  font-family: var(--font-gothic);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+}
+.settings-toggle:active { transform: scale(0.97); }
+.settings-toggle:focus-visible { outline: 2px solid var(--accent-line); outline-offset: 2px; }
+.settings-toggle[aria-expanded="true"] {
+  border-color: var(--accent-line);
+  color: var(--accent-text);
+  background: var(--accent-tint);
+}
+.settings-toggle-icon { width: 16px; height: 16px; flex-shrink: 0; }
+/* ★2026-09-04 音の道具は1本の帯にまとめる(js/ui.js
+   collapsibleVoiceSpeedControls)。「声・速さ」と「スピーカーから直します」を
+   同じ形・同じ大きさで横に並べる —— 以前は5行の相談窓口が、押すボタンと
+   練習する文の**間**に居座っていた(Harumi報告 2026-09-04)。
+   新しい色・様式は足していない(どちらも既存の .settings-toggle)。 */
+.audio-tools-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.audio-fix[hidden] { display: none; }
+/* 「鳴らなかった」とアプリが気づいた時だけ濃くする(1つの部品・2つの状態)。
+   色は既存の「開いている設定」と同じ組み合わせ。新しい色は作らない。 */
+.audio-fix.is-alert {
+  border-color: var(--accent-line);
+  color: var(--accent-text);
+  background: var(--accent-tint);
+}
+.audio-fix-hint { margin: 8px 0 0; text-align: center; }
+.audio-fix-hint[hidden] { display: none; }
+
+/* §A-8 受話口からの復帰(js/ui.js earpieceRecoveryBlock)。AI英会話の通話画面
+   だけがこの大きい形を使う(練習画面は上の帯にまとめた)。 */
+.earpiece-recovery { width: 100%; margin-top: 12px; text-align: center; }
+.earpiece-recovery .footnote { margin: 0 0 6px; font-size: var(--text-xs); }
+.earpiece-recovery .btn-small { padding: 6px 12px; }
+.settings-toggle-label { white-space: nowrap; }
+.settings-toggle-chevron {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.settings-toggle[aria-expanded="true"] .settings-toggle-chevron { transform: rotate(180deg); }
+.settings-panel {
+  width: 100%;
+  margin-top: 12px;
+  animation: settings-panel-in 0.18s ease;
+}
+.settings-panel .controls-row { margin-top: 0; }
+@keyframes settings-panel-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .settings-toggle, .settings-toggle-chevron { transition: none; }
+  .settings-panel { animation: none; }
+}
+
+/* ①②③のタップ丸ボタン(.say/.say-row)は廃止(Harumi指摘 2026-08-29
+   「その意味がわからない。余計なボタンに思える」)。
+   js/earToVoice.js stepRepeat参照。 */
+
+/* ---- mic / pronunciation check (5c 発音チェック) ----
+   Eatout本体と同じ3段階(great/close/again — Harumi承認 2026-08-19、
+   js/speech.js の judgePronunciation() 参照)。closeは既定の
+   accent-line/accent-tintのままでよい（Eatout本体もcloseは特別な色を
+   持たず、通常の枠色のまま）。againだけ.is-againで少し落ち着いた色に
+   する（「まだ全然」ではなく「もう一度」という温度感の失敗色。新しい
+   色は増やさず、既存の--neutralを使う）。 */
+
+/* ★2026-09-24 削除: micPulse(録音中のパルス)と .mic-caption
+   (マイクの下の一行)。Harumi指示「発音チェックは、やめようと思います」で
+   マイクを開く練習画面が1つも無くなったため。**復活させないこと。** */
+
+/* §A-6(3) 「押しても音が出ない」時の復帰ボタン。iOSのAudioContextは
+   ユーザー操作の中でしか復帰できないので、案内文だけでは絶対に直らない。 */
+.audio-stuck {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 60;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: var(--text-sm);
+  box-shadow: 0 10px 26px rgba(34, 29, 24, 0.3);
+}
+.audio-stuck[hidden] { display: none; }
+
+/* ---- 下タブ3つ(学ぶ / フレーズ / わたし)。js/tabs.js ---- */
+/* Harumi承認 2026-08-30。見えるのは各タブのトップだけ(練習中は出さない)。
+   アイコンは足さず文字だけ(見た目の文法5・7)。色・角・影は
+   tokens.cssのトークンだけを使い、新しい様式は作らない(同7b)。 */
+/* 2026-08-30 Harumi指摘「フッターのタブの存在感が薄すぎませんか？」—
+   最初の版は地の色と同じ塗り・1pxの線・--mutedの文字で、本文の続きに
+   見えて「ここが行き先の切り替えだ」と伝わっていなかった。
+   アイコンは足さず(見た目の文法5・7)、**面・高さ・濃さ**で存在感を出す:
+   ・白い面 + 上に薄い影 → 本文の上に浮いている板に見せる
+   ・高さ 56 → 64px、文字 1rem → 1.05rem
+   ・選ばれていない文字も --muted から --ink へ(押せる物だと分かる濃さ)
+   ・選ばれているタブは金の下地 + 上辺の太い線 + 太字 */
+.tabbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  margin: 0 auto;
+  max-width: 560px;
+  display: flex;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -6px 18px rgba(34, 29, 24, 0.08);
+  /* iPhoneのホームバーぶんを空ける(指がタブに届かなくならないように)。 */
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.tabbar[hidden] { display: none; }
+.tabbar-btn {
+  flex: 1;
+  min-height: 64px;
+  padding: 12px 4px;
+  background: none;
+  border: none;
+  /* 選ばれているタブの上辺に線を出す。線ぶんの高さを常に確保しておき、
+     切り替えで文字が上下に動かないようにする。 */
+  border-top: 3px solid transparent;
+  margin-top: -1px;
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* いま居るタブもグレージュ(2026-08-30 案B)。上辺の線と文字は
+   エスプレッソ —— タブは「行き先」であって選択肢ではないので、
+   金(選択中の下地)ではなく面の色で示す。 */
+.tabbar-btn[aria-selected='true'] {
+  border-top-color: var(--ink);
+  background: var(--ink-wash);
+  color: var(--ink);
+  font-weight: 700;
+}
+.tabbar-btn:active { background: var(--ink-wash); }
+
+/* タブが出ている画面では、本文の一番下がタブに隠れないよう下を空ける
+   (タブは fixed なので、本文の高さには含まれない)。 */
+body.has-tabbar #app { padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+/* 「音を出しなおす」(復帰ボタン)もタブの上に浮かせる。 */
+body.has-tabbar .audio-stuck { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+
+/* ★2026-09-24 削除: .pron-card / .pron-target / .pron-result(+is-pass /
+   is-again) / .pron-verdict / .pron-heard / .pron-advice。
+   発音チェックの判定を見せていた一式で、画面ごと廃止した。
+   **復活させないこと。** */
+
+/* ---- tips accordion (単語 / 文法 / 発音 / つながる音) ---- */
+
+.tip-stack { display: flex; flex-direction: column; gap: 10px; }
+.tip-acc {
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(34, 29, 24, 0.05);
+}
+.tip-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  background: none;
+  border: none;
+  padding: 13px 16px;
+  font-family: var(--font-gothic);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tip-toggle:focus-visible { outline: 2px solid var(--accent-line); outline-offset: -2px; }
+.tip-toggle-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.tip-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-family: var(--font-gothic);
+  font-size: var(--text-xs);
+}
+.tip-toggle-title { font-weight: 700; font-size: var(--text-md); color: var(--ink); }
+/* ★2026-10-02 Harumi「›の位置は Well aligned?」。›は文字なので、親の行の高さ(36px)をそのまま
+   受けると、18pxの箱の中で文字が約10px下へずれていた(実測)。箱の中の真ん中に置き、行の高さを 1 に。
+   開いた時の90度回転も、真ん中が合っていないと位置がずれる。 */
+.tip-chevron { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; line-height: 1; color: var(--muted); transition: transform 0.2s ease, color 0.2s ease; flex-shrink: 0; }
+.tip-toggle[aria-expanded="true"] .tip-chevron { transform: rotate(90deg); color: var(--accent-text); }
+@media (prefers-reduced-motion: reduce) { .tip-chevron { transition: none; } }
+.tip-body { font-size: var(--text-md); color: var(--ink); line-height: var(--lh-read); padding: 0 16px 16px; border-top: 1px solid var(--line); }
+
+/* ★2026-09-08 `.tip-acc > .tip-done`(カード最下段の「次へ ›」の行。
+   2026-09-07〜08)は削除した。吹き出しの真下に**同じ白・同じ枠線・同じ幅**
+   の箱として並び、吹き出しと1つの塊に見えていた(Harumi指摘「上のボックスに
+   くっついてる」)。出口は js/branches.js の `.btn-link.chat-under`
+   (「意味と英文を見る」と同じ小さな文字リンク)。**行を戻さないこと。** */
+.tip-body > p { padding-top: 12px; margin: 0; white-space: pre-line; }
+/* ★2026-09-07 「なぜ聞き取れない？」の中身(Harumi指摘「改行も箇条書きでも
+   なく非常に読みにくい」)。聞こえ方を主役にし、理由は1件ずつの行にする。
+   使っているのは既存トークンだけ —— 新しい色・角丸・影は1つも無い。 */
+.tip-listen { padding-top: 12px; }
+.tip-listen-cap { display: block; font-size: var(--text-xs); color: var(--muted); }
+.tip-listen-kana { margin: 2px 0 0; font-size: var(--text-lg); color: var(--ink); line-height: var(--lh-read); }
+.tip-listen-list { list-style: none; margin: 0; padding: 0; }
+/* 行同士を仕切る罫線だけが、行に付いてよい罫線(「区切り線を二重に引かない」)。*/
+.tip-listen-item { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--ink-hair); }
+/* ★2026-09-29 Harumi指摘(Eat Outのスクリーンショット)「Tipsのカテゴリーを
+   淡いバックグラウンドで囲ってあるの見えますか？これが書き方のルール
+   だったはず」。直す前はラベルが自分の行(display:block)を持つ、色だけの
+   文字で、Eat Outが持つ淡い地のチップ(.chip)の囲みが無かった
+   (harmony-horizon/eatout の tipAccordion は【ラベル】を span.chip に
+   変えて文中にそのまま流し込んでいる)。
+   **Speak Upの既存 .chip(999px・金の地)は再利用しない** —— あれは
+   「定番/口調」の**選ぶ印**という別の意味を持つ部品で、聞き取りの
+   分類ラベルにも使うと「これが正解」のように誤読させる。同じ塗りの
+   考え方(囲み+太字)だけを借り、色・形は別にする:
+   地は--ink-wash-2(下記参照)・角は--radius-sm(.tip-accと同じ6px)・
+   文字色はそのまま--accent-text。
+   **文字の大きさは変えていない**(--text-xs のまま。「これ以上小さくしない」)。
+   ★2026-09-30 Harumi報告(実機)「淡く薄い黄色っぽい」+「内容は改行して
+   から加える」——2点直した:
+   ・地を --ink-wash(6%) → **--ink-wash-2(3%)** へ。金の文字(--accent-text)
+     を乗せた小さなバッジは、地の6%より文字の金の方が支配的に見え、
+     バッジ全体が「淡い黄色」に見えていた(tokens.cssの当該コメント参照)。
+   ・**display: inline-block → block(幅は fit-content)に戻した。**
+     Eat Outは文中に流し込む形だったが、実機で複数行にわたる説明文だと
+     1行目だけチップの分だけ字下げされた「ノッチ」ができ、2行目以降だけ
+     左端が揃う不格好な折り返しになっていた。**ラベルは自分の行、
+     説明はその下の行から幅いっぱいで始まる**形に戻す(以前の
+     「ラベル→改行→説明」の2行構成 + 今回のチップの見た目、の合わせ技)。 */
+.tip-listen-label {
+  display: block;
+  width: fit-content;
+  font-weight: 700;
+  font-size: var(--text-xs);
+  color: var(--accent-text);
+  background: var(--ink-wash-2);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  margin: 0 0 var(--space-2) 0;
+}
+.tip-listen-text { margin: 0; font-size: var(--text-md); color: var(--ink); line-height: var(--lh-read); }
+/* 発音解説は北米英語基準(Harumi指示「Speak upでも、北米の発音だってことも
+   注意書きした方が良さそう」)。Eat Out の .tip-scope をそのまま移した ——
+   このブランドが教えるのは北米英語だけ、と1回だけ書く(開くたびに繰り返す
+   と解説の邪魔になるため)。
+   ★2026-09-30 Harumi指摘「どこかみんな通るチュートリアルでいいんじゃ
+   ない？常に書くんじゃなくて」。以前は Tips が出るたびに毎回添えていた
+   (speakingTips・会話の練習の初回ターン)が、それでも「毎回」に見えた
+   ので撤回。いまは js/ui.js modeBridge(「この練習の流れ」の橋。
+   生まれて初めてその練習に入った1回だけ・端末に永続)の中、
+   copy.bridge.mimic/speaking の pronScope が true の時にだけ出す。
+   **speakingTips・branches.jsへ戻さないこと。** */
+.tip-scope {
+  margin-top: var(--space-3);
+  /* align-self/width は .chat-col(flex column)の中でだけ効く —— .say-tips
+     (card内の普通のブロック)では<p>が元から親いっぱいの幅なので無害。
+     1つのクラスで両方の置き場所に効かせる(場所ごとにmodifierを作らない)。 */
+  align-self: stretch;
+  width: 100%;
+  text-align: center;
+  font-size: var(--text-sm);
+  line-height: var(--lh-base);
+  color: var(--muted);
+  white-space: pre-line;
+}
+
+/* ★2026-09-08 自分が言う文の「言うときのコツ」(js/ui.js speakingTips)。
+   **枠も地色も持たない** —— この一覧はカード(.card)の中の英文の下に入るので、
+   .tip-acc のような枠付きの箱にすると「箱の中の箱」になる。
+   区切りは .tip-listen-item が自分で持っている罫線1本だけ ——
+   ここに border-top を足すと、見出しのすぐ下で線が2本になる
+   (「区切り線を二重に引かない」)。中身の行は上の .tip-listen-* をそのまま
+   使い回しているので、**新しい色・角丸・影・様式は1つも足していない**。 */
+.say-tips { margin-top: 14px; }
+
+/* ---- My Book / Confidence Check phrase rows ---- */
+
+/* Harumi指示 2026-08-20: 「画面全体のデザイン(カード形式など)」を
+   Homeの新しいフラットリスト(essentials-plain-row/cat-review-row-plain)
+   と揃えてほしい、との指摘を受け、My Book・★聞き逃したフレーズ(どちらも
+   この.phrase-rowを共有)を、白い枠付きカードから罫線1本の行に変更。 */
+.phrase-list { display: flex; flex-direction: column; }
+
+/* プロレビュー(2026-08-23): Your Journeyが同じ見た目の白いカードを
+   5枚+3枚、縦一列に並べているだけで単調に見えた。ストリークだけは
+   すでに主役の見せ方(暖色の炎+大きい数字)なので単独のまま残し、
+   残りの数字カードは2〜3列のグリッドにして「積み上げた記録の一覧」
+   だとひと目で分かる形にする。中身の作り方(.card/screen-title)は
+   変えていない — 並べ方だけを変えている。 */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+.stat-grid .card { padding: var(--space-4); gap: var(--space-1); }
+.phrase-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  padding: 16px 2px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.phrase-row:last-child { border-bottom: none; }
+.phrase-row:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 2px; }
+.phrase-body { min-width: 0; flex: 1; }
+.phrase-ja { font-size: var(--text-md); font-weight: 400; color: var(--ink); }
+.phrase-star { color: var(--accent-text); margin-right: 4px; }
+.phrase-en { font-family: var(--font-latin); font-size: var(--text-md); color: var(--muted); margin-top: 4px; }
+
+/* ---- ★聞き逃したフレーズ（全レッスンの索引）---- */
+
+.phrase-section-label {
+  /* ★2026-09-29 20px/4px(トークン外)→ 32 / 12(相槌の一覧と同じ)。 */
+  margin: var(--space-6) 2px var(--space-3);
+  /* ★2026-09-29 18 → --text-md。相槌の一覧の区切り(.section-label)と同じ役目
+     なのに1px違っていた(Harumi決定「そろえる」)。 */
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--muted);
+}
+.phrase-section-label:first-of-type { margin-top: 0; }
+
+.phrase-num {
+  /* Eatoutの .phrase-num は32px/1rem。老眼向けの下限に合わせて同じ
+     大きさにそろえる（丸の中の数字は装飾ではなく「何番目か」という
+     内容なので、内容文字の下限14.4pxを守る）。 */
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--line);
+  color: var(--muted);
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.phrase-row.done .phrase-num, .phrase-row-split.done .phrase-num { background: var(--accent-fill); color: var(--ink); }
+
+/* 行動ボタン(actionButton)の中の絵。2026-08-30 Harumi報告
+   「ボタンがタイトルのように見えてボタンに見えなかった」への対応で、
+   ▶(聞く)・マイク(言う)を文字の直前に置く。文字を消してアイコンだけに
+   しないこと(見た目の文法7)。色はボタンの文字色をそのまま継ぐので、
+   新しい色は増えない。 */
+.action-icon {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  /* 老眼の読み手に「絵がある」と分かる大きさ。小さすぎると番号の丸の
+     おまけに見えて効かない。 */
+  width: 22px;
+  height: 22px;
+  margin-right: 2px;
+}
+.action-icon svg { width: 100%; height: 100%; display: block; }
+
+.phrase-hint { font-size: var(--text-sm); color: var(--muted); margin-top: 4px; }
+
+/* プロレビュー(2026-08-23)Harumi指示: ★聞き逃したフレーズの行は、
+   本文タップ(英文を見るだけ)と›タップ(実際に挑戦する)を別々の
+   ボタンに分ける。.phrase-rowは今もMy Book(1行1ボタン)で使うので、
+   そちらの見た目に影響しないよう別クラスにした。 */
+.phrase-row-split {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  border-bottom: 1px solid var(--line);
+}
+.phrase-row-split:last-child { border-bottom: none; }
+/* 行末の小さな操作は行の高さに引き伸ばさない(2026-08-31。「本番のように
+   話す」のふりかえりで、英文が2行になると「聞く」が縦に伸びていた)。
+   .phrase-row-split の中で .btn-small を使うのはこの画面だけ。 */
+.phrase-row-split .btn-small { align-self: center; }
+.phrase-row-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 16px 2px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.phrase-row-body:focus-visible { outline: 3px solid var(--accent-line); outline-offset: -2px; }
+/* ★2026-09-06: My Book の本文は「ページ遷移を持たないただのdiv」
+   だったが(2026-08-26)、Harumi指摘「クリックするとそのエクササイズに
+   飛ぶようにしてくれませんか」で押せる行に変えた(js/mybook.js
+   goToSource)。押せる行の印は、Homeのモジュール一覧と同じ
+   `.cat-review-chev-plain`の›を流用する。行末に本物の<button>(▶)が
+   並ぶため、行自体は<button>ではなく role="button" の<div>のまま
+   (js/phraseBank.js .select-row と同じ形)。
+   ★同日 Harumi決定「★を消していい」で☆と絞り込みごと削除したので、
+   **いまは全部の行が押せる** —— `.phrase-row-body-static`(押せない行の
+   指の形)と `.mybook-row-controls`(☆の入れ物)も一緒に消した。
+   **復活させないこと。** */
+.phrase-row-body > .cat-review-chev-plain { flex: none; align-self: center; }
+.phrase-row-chev {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  background: none;
+  border: none;
+  /* ★2026-09-30(3) Harumi報告(実機)「それでもやっぱり小さい/薄い。もっと
+     大きい方が、音が出るってわかりやすい。今は、音が聞こえないと思って
+     いる人が続出」。★2026-09-24⑤で薄い灰の説明文を --ink に戻した時と
+     **同じ理由**(「--muted は数字の上では7:1あるのに、実際に"薄い"と
+     言われた」)がここにも当てはまったので、同じ直し方をする——色を
+     var(--muted) → var(--ink) にして、濃さで語る。 */
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color 0.15s ease;
+}
+/* Harumi指示 2026-08-26: マイクが小さいので大きくして欲しい。押しやすさの
+   ため.phrase-row-chev自体(44px)は変えず、中のアイコンだけ大きくする。
+   ★2026-09-30(3) 26px→32px。上と同じ報告への対応(押せる幅44pxはそのまま。
+   44pxの中に収まる範囲でアイコンだけ、もう一段大きくした)。 */
+.phrase-row-chev span { width: 32px; height: 32px; }
+.phrase-row-chev:focus-visible { outline: 3px solid var(--accent-line); outline-offset: -2px; }
+.phrase-row-chev:active { color: var(--accent-text); }
+
+/* Confidence Check's answer-reveal (SPEC.md section 8) reuses this on
+   whichever element needs it, not just .phrase-en. */
+.blurred { filter: blur(5px); user-select: none; -webkit-user-select: none; transition: filter 0.2s ease; }
+.blurred.is-revealed { filter: none; }
+
+/* Eatout本体(.angle-peek/.peek-cap)の移植（Harumi指示 2026-08-19: 「見る
+   をボタンに入れると素人っぽい。Eatoutと同じに」）。見た目の箱は付けず
+   （Eatout側コメント「.card の中の1要素として溶け込む」）、ぼかし文＋
+   キャプションをまとめてタップ対象にする。文の一行だけに付けると、
+   ぼかしがにじむ範囲とタップ判定がずれる（Eatout側★2026-08-14の実機
+   報告からの教訓）ので、ラップ全体にリスナーを付ける。 */
+.reveal-peek { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.reveal-peek.is-open { cursor: default; }
+/* ★2026-09-24 8px → 32px(Order Up の .say-card .clar-peek-cap)。
+   あちらの理由がそのまま当てはまる ——「**ぼかしは文字の外へにじむ**ので、
+   8pxだと英文にくっついて見える」。英文が32pxになったぶん、にじみも広い。 */
+.peek-cap { color: var(--muted); font-size: var(--text-md); margin-top: var(--space-6); white-space: pre-line; }
+
+/* ★2026-09-06 削除: .star-btn(一覧の☆)。★ごと消した。復活させないこと。 */
+
+/* ---- ホーム画面に追加の手順(Harumi指示 2026-08-26: 「Webサイトだと
+   アドレスを忘れてしまう」対策。オンボーディング3枚目)----
+   .options と同じ縦積み+gapだが、こちらは番号の意味があるので
+   list-styleは消さずdecimalのまま残す。 */
+/* ============ はじめの案内(5枚) js/onboarding.js ============
+   ★2026-09-25 Harumi指示「このEatoutの5つのページをSpeak upにも加えて」。
+   形は Eat Out(eatout/listening/index.html の .onb-*)から、**寸法と色は
+   Speak Up の物**に置き換えてある:
+     ・角は全部四角(2026-09-24「角は全部四角」)。丸いのは番号の印だけ
+     ・新しい色は1つも足していない(--accent-tint / --accent-text /
+       --ink / --line / --surface / --ink-wash)
+     ・文字は6段階から選ぶ。この案内の段は
+         手段(onb-line) 20px → 気持ち/問い 23px → 名前 26px
+       で、**いちばん大きい字は「だから、耳から、声へ。」1つだけ** */
+/* ★2026-09-26 Harumi指示「会話バブル丸くして。それとスペースに余裕を
+   くわえて」——①字幕の「答えたあとの受け」(.onb-reply-bubble。吹き出し
+   の形で「Awesome! Great job!」のように出る箱)を指しての指摘。
+   ・**丸いのは番号の印だけ**(2026-09-24)の例外を、この吹き出しにだけ
+     足す。写真の枠(.onb-video-holder)・1〜3の帯(.onb-flow-row)は
+     引き続き四角のまま——「会話バブル」と名指しされたのはこの1つだけ。
+   ・「スペースに余裕」は (a).onb-screen の段のあいだ 16px→24px と
+     (b)吹き出しの内側の余白 16px/24px→24px/24px の2箇所。 */
+
+/* 1枚ぶんの入れ物。★2026-09-26 段のあいだを24px(space-5)に広げた
+   (直す前は16px。「スペースに余裕をくわえて」)。.screen-body の 32px は
+   押す物とのあいだにだけ効かせる。 */
+.onb-screen { display: flex; flex-direction: column; gap: var(--space-5); }
+
+/* 絵の枠。動画が置かれるまでは写真、写真も無ければ「写真がここに入ります」
+   の札(js/ui.js onbVisual)。どの段でも高さが変わらないよう、枠の方で
+   16:9の場所を取る(.scene-holder と同じ考え方)。 */
+.onb-video-holder {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  border-radius: var(--radius-photo);
+  overflow: hidden;
+  background: var(--ink-wash);
+}
+.onb-video-holder video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* 問い・②③の見出し。画面の見出し(h2.screen-title)と同じ太さ・同じ
+   行間にそろえる —— 見出しのリズムをこの案内だけ別に作らない。 */
+.onb-ask {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  color: var(--ink);
+  white-space: pre-line;
+}
+/* 手段の一行(「紙使ってなら、通じるかも？」)。本文と同じ。 */
+.onb-line {
+  margin: 0;
+  font-size: var(--text-md);
+  font-weight: 400;
+  line-height: var(--lh-read);
+  color: var(--ink);
+  white-space: pre-line;
+  word-break: normal;
+  line-break: strict;
+}
+/* 気持ちの一行(「でも本当は、相手の顔を見て話したい。」)。 */
+.onb-line-lead { font-size: var(--text-lg); font-weight: 700; line-height: var(--lh-heading); }
+/* 結論＝アプリの名前(「だから、耳から、声へ。」)。この画面でいちばん大きい。 */
+.onb-line-name { font-size: var(--text-xl); font-weight: 700; line-height: var(--lh-heading); }
+
+/* はい/いいえ。**見た目に強弱を付けない** —— 片方が正解に見えると、
+   選ぶ手が止まる。どちらも .btn-outline で、横に半分ずつ。 */
+.onb-yesno { display: flex; gap: var(--space-3); }
+.onb-yesno > * { flex: 1 1 0; margin-top: 0; }
+
+/* 答えたあとの受け。吹き出しの形にする —— アプリが一瞬だけ字幕を付け、
+   次の画面で「現実には字幕がありません」と取り上げる。見た目そのものが
+   話の筋になる。
+   ★幅は中の字数で変えない(枠いっぱい)。3枚続けて見た時に、同じ位置の
+     箱が毎回ちがう幅で出ると画面の縦線が崩れる。 */
+.onb-reply-row {
+  display: flex;
+  flex-direction: column;
+  /* しっぽ(13px)が下の物に触れないよう、箱に戻してから間を取る。 */
+  padding-bottom: var(--space-4);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.26s ease, transform 0.34s cubic-bezier(0.2, 0.9, 0.3, 1.25);
+}
+.onb-reply-row.is-shown { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .onb-reply-row { transition: none; } }
+/* ★2026-09-26 角丸16px(=--space-4)にした——「角は全部四角」の
+   ただ一つの例外。これは会話の吹き出しを演じる箱なので、四角のままだと
+   「会話」に見えない、という指摘どおり。タブ(下のtriangle)は左から26px
+   離れているので、16pxの丸みとぶつからない。 */
+.onb-reply-bubble {
+  position: relative;
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  /* ★2026-09-27 16pxの決め打ちを --radius-bubble トークンへ切り出した
+     (会話の吹き出し.chat-bubbleと同じ値を共有するため。tokens.css参照)。
+     値そのものは変えていない。 */
+  border-radius: var(--radius-bubble);
+  /* ★2026-09-26 内側の余白を広げた(直す前は縦16px・横24px)。
+     「スペースに余裕をくわえて」。 */
+  padding: var(--space-5) var(--space-5);
+  text-align: center;
+}
+.onb-reply-bubble::before,
+.onb-reply-bubble::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+.onb-reply-bubble::before { left: 26px; width: 22px; height: 13px; background: var(--line); }
+.onb-reply-bubble::after { left: 27px; width: 19px; height: 11px; margin-top: -1px; background: var(--surface); }
+/* 相づちも**読む文**なので並字(太字は ①ボタン ②見出し・ラベル
+   ③数値・バッジ・判定 の3つだけ)。太字に戻さないこと。 */
+.onb-reply { margin: 0; font-size: var(--text-lg); font-weight: 400; line-height: var(--lh-read); color: var(--ink); }
+
+/* 1 聞く / 2 分かる / 3 声にする。 */
+.onb-flow { display: flex; flex-direction: column; gap: var(--space-2); }
+.onb-flow-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: var(--space-3) var(--space-4);
+}
+/* 丸いのはこの印だけ(数字のバッジ。押す物ではない)。 */
+.onb-flow-n {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.onb-flow-ja { font-size: var(--text-md); font-weight: 700; color: var(--ink); }
+
+.install-steps {
+  display: flex;
+  flex-direction: column;
+  /* ★2026-09-26 手順どうしのあいだも12px→16pxに広げた(「スペース
+     入れて。窮屈」と同じ指摘)。 */
+  gap: var(--space-4);
+  text-align: left;
+  margin: 0;
+  padding-left: 1.5em;
+  color: var(--ink);
+  font-size: var(--font-body);
+}
+.install-steps li { padding-left: 4px; }
+.install-share-icon {
+  display: inline-block;
+  vertical-align: -4px;
+  color: var(--accent-line);
+  margin: 0 2px;
+}
+.install-share-icon svg { width: 18px; height: 18px; display: block; }
+
+/* ---- home tiles (レッスンを選ぶ / My Book / 復習モード / 鍵を入力する) ---- */
+
+/* ---- Your Journey（js/journey.js）のストリーク行が引き続き使う分だけ
+   残した共有クラス。Home画面側の使用箇所はv2再設計で.today-hero*に
+   置き換わった（下記参照）。 */
+/* 炎はアプリ唯一の例外色（Harumi確認 2026-08-19）。緑のままだと
+   「火」に見えない、という理由でここだけ暖色を使う。 */
+
+.cat-review-list { display: flex; flex-direction: column; gap: 8px; }
+.cat-review-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 14px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  font-family: var(--font-gothic);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.cat-review-row:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 2px; }
+/* 2026-08-28 Harumi指摘「ボックスの上にゴールドの線を入れて目立たせて」
+   — AI英会話だけ他の一覧行に埋もれさせない。Eatout本番の
+   design-rules §8(白カード+上辺3pxの金ライン、重要な入口専用。
+   .rule-card/.gate-callと同じ考え方)をそのまま適用する。 */
+.cat-review-row-highlight {
+  border-top: 3px solid var(--accent-line);
+  box-shadow: 0 10px 26px rgba(34, 29, 24, 0.07);
+}
+/* 2026-08-19 Harumi指摘「復習モードの字が薄すぎて読めない」。opacity で
+   行全体を薄くすると、白地の上でも実測3.4:1/2.47:1までコントラストが
+   落ち、老眼の読み手には読めなくなる(WCAG AAの4.5:1を割る)。ロックされて
+   いる、という合図は透明度ではなく、地の色・破線・鍵アイコンで伝える —
+   文字色はアクティブな行とまったく同じ(--ink/--muted、どちらも6:1超)
+   ままにする。 */
+.cat-review-row[disabled] {
+  cursor: default;
+  background: var(--ink-wash);
+  border-style: dashed;
+}
+.cat-review-text { flex: 1; min-width: 0; }
+.cat-review-name { display: block; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
+/* 2026-08-19 Harumi指摘「文字がcondensedすぎる・小さすぎる」。
+   0.95rem→1.05remに上げ、字間を少し開けてBIZ UDGothicの詰まった
+   印象を和らげた。 */
+.cat-review-sub {
+  display: block;
+  font-size: var(--text-md);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: var(--lh-base);
+  color: var(--muted);
+  margin-top: 4px;
+  /* 文言側の\nを改行として効かせる(CLAUDE.mdキャプション改行ルール。
+     AI英会話の説明の折り返し位置はHarumi指定 2026-08-29)。 */
+  white-space: pre-line;
+}
+.cat-review-chev { flex: none; color: var(--muted); font-size: var(--text-lg); }
+.cat-review-lock { flex: none; color: var(--muted); display: flex; align-items: center; }
+/* 2026-08-28 Harumi指摘「AI英会話の『残り20回』が文章の一部に見える。
+   ちゃんと20回を知らせる必要がある」— 説明文に地続きで足していたのを
+   やめ、独立した金地のバッジにした。用途は違うが見た目は既存の.chipと
+   同じ考え方(--accent-wash地+--accent-text文字)を流用し、新しい色は
+   作っていない。 */
+.cat-review-badge {
+  flex: none;
+  background: var(--accent-wash);
+  color: var(--accent-text);
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  white-space: nowrap;
+  border-radius: 999px;
+  padding: 5px 12px;
+}
+
+/* ---- misc chips / notes ---- */
+
+/* ★2026-09-23 Order Up の .badge-recommend と同じ形に揃えた
+   (Harumi「全てのサイズ、スタイルはorder upと同じに変えていきます」)。
+   ピル形はバッジ・情報表示専用なので見た目の文法3に反しない。
+   2026-08-30に四角へ変えたのは、同じ行に10px/6px/0の**3種類の角**が
+   並んでいたから —— いまは .option が角ゼロ、バッジがピルの2種類だけで、
+   役目(押す物 / 情報)と1対1に対応している。 */
+.chip {
+  display: inline-block;
+  flex: none;
+  white-space: nowrap;
+  background: var(--accent-wash);
+  color: var(--accent-text);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.4;
+  border-radius: 999px;
+  /* 透明の枠を持たせて、塗り(.chip)と枠線(.chip-outline)で寸法が
+     ずれないようにする(Order Upの .badge-recommend / .badge-register と
+     同じ作り)。 */
+  border: 1.5px solid transparent;
+  padding: 4px 12px;
+}
+/* Order Up の .badge-register。**塗り=定番(これを選べばいい) /
+   枠線=口調(カジュアル・丁寧)** の2種類だけ、という約束をそのまま移した。
+   新しい色は足していない —— 文字も枠も金の濃い方(--accent-text /
+   --accent-line)で、「金は点で使う」のまま。 */
+.chip-outline { background: transparent; border-color: var(--accent-line); }
+
+/* 注意書き・案内の共通部品(2026-08-30 監査⑨: 3種類あった注意書きの
+   見た目を1つに統一)。accent-tintの地 + accent-lineの縁 + 共通の角丸。 */
+.note {
+  /* 2026-08-30: 淡い金の地をやめグレージュへ(「大きな面に淡い金を
+     敷かない」)。注意書きは画面のあちこちに出る大きな面なので、
+     ここが金だと画面全体が黄色く見えていた。 */
+  background: var(--ink-wash);
+  border: 1px solid var(--ink-hair);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+}
+/* 注意書きも折り返す位置を自分で決める(CLAUDE.mdキャプション改行
+   ルール)。copy.js側で \n を入れた文だけが複数行になる。 */
+.note p { margin: 0; font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); white-space: pre-line; }
+.note p + p { margin-top: 4px; }
+/* 「聞いて、言う」の指示(js/earToVoice.js。Order Up の .cue-do/.cue-why)。
+   することは太字、なぜは並字で1段あける。新しい色・部品は足していない。 */
+.note p.cue-do { font-weight: 700; }
+.note p.cue-why { margin-top: var(--space-4); }
+
+.footnote {
+  color: var(--muted);
+  font-size: var(--text-sm);
+  font-weight: 400;
+  line-height: var(--lh-read);
+  text-align: center;
+}
+
+.rep-counter {
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  color: var(--muted);
+  text-align: center;
+}
+
+hr.divider { border: none; border-top: 1px solid var(--line); margin: var(--space-2) 0; }
+
+/* ---- text input (unlock key entry) — ported from Eatout's .password-input ---- */
+
+.text-input {
+  /* 2026-08-28 第3報(Harumi実機スクリーンショット): min-width:0 +
+     overflow:hidden を入れた後も、実機のiOS Safariでは空欄のまま
+     カードから右へはみ出し、縦にも異常に大きかった。真因は、iOSの
+     input[type=date]のネイティブ描画(-webkit-appearance)が、こちらの
+     width/box-sizing指定を無視して自分の内部レイアウトの寸法で
+     描くこと。だからwidth:100%やoverflowをいくら足しても効かない。
+     appearance:noneでネイティブ描画そのものを無効化し、ただの
+     箱として自分のCSSだけで寸法を決める — これが根本の一手。
+     (Chromiumはこの挙動を再現しないため、Playwrightでは常に「直って
+     見える」— CLAUDE.mdの該当ルール参照。) */
+  -webkit-appearance: none;
+  appearance: none;
+  display: block;
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  padding: 12px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 100%;
+  /* appearance:noneにすると、空欄のdate入力は中身が無くなり高さが
+     潰れることがあるため、最小の高さを明示しておく(タップ標的の
+     確保も兼ねる)。 */
+  min-height: 48px;
+  /* .cardはflexなので、flexアイテムの既定min-width:autoのままだと
+     input[type=date]のiOS内部レイアウトの最小幅がカードの横幅を超えて
+     はみ出す(Harumi報告 2026-08-28、目標日の入力欄)。min-width:0で
+     カードの幅まで縮められるようにする。 */
+  min-width: 0;
+  /* input内部の描画がボックスより広くなっても、見た目には絶対に
+     はみ出さないよう、この要素自身でoverflow:hiddenして切る。 */
+  overflow: hidden;
+  color: var(--ink);
+  background: var(--surface);
+}
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent-line);
+  box-shadow: 0 0 0 3px rgba(163, 120, 45, 0.1);
+}
+
+/* 空欄のinput[type=date]は実機で何の手がかりも無いため(Harumi報告
+   2026-08-28)、直上に添えるラベル。 */
+.text-input-label {
+  display: block;
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--muted);
+  margin-bottom: -4px;
+}
+
+/* 音声がまだ無い時の一言。画面いちばん上に静かに出す。
+   ファイルを置けば出なくなるので、消す作業は要らない。 */
+.audio-note {
+  margin: 0;
+  padding: 8px 16px;
+  text-align: center;
+  font-size: var(--text-sm);
+  line-height: var(--lh-read);
+  color: var(--accent-text);
+  background: var(--accent-wash);
+  border-bottom: 1px solid var(--accent-line);
+}
+
+/* ============================================================
+   Home再設計 v2（Harumi指示 2026-08-19第2弾）: ブランドサイト／
+   ゲーミフィケーション／英語教材／Webアプリの4つのデザイン言語が
+   混在していたのをやめ、白い余白の中に必要な部分だけ濃い緑を残す、
+   1つのプロダクト体験に統一した。
+   ============================================================ */
+
+/* ★2026-09-29 AI英会話の振り返りカード(.review-*)は削除した —— AI英会話をSpeak Upから外したため。 */
+
+/* ★2026-09-23 Harumi指示「目標を決める 削除」——
+   .hero-goal-caption* / .goal-place-chip* を削除した。**復活させないこと。** */
+/* ★2026-09-27 削除: .goal-line/.goal-line-text/.goal-line-chev
+   (「次はここ」の一行リンク。2回目以降のHomeで大きなボタンの代わりに
+   出していた地味なCTA)。Harumi指摘「この『はじめる』という文字、
+   小さいですよね。これが迷う原因。オーダーアップのやり方をコピーして
+   ください」——js/home.jsでCTAを常に`.btn-primary today-hero-cta`に
+   統一したので、この地味な一行リンクは呼び出し元が無くなった。
+   **復活させないこと。** */
+
+.today-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  /* 2026-08-30: すき間を flex の gap と各要素の margin の**足し算**で
+     作っていたため、CTAの上だけ 4(gap)+16(margin)+6(pの既定) = 26px と
+     物差し(--space-*)から外れていた。gapを0にして、すき間は各要素の
+     margin-top に**トークン1つ**で書く。足し算をやめると、どこを見ても
+     「なぜその数字か」が読んで分かる。 */
+  gap: 0;
+  /* ★2026-09-29 下の padding 24 + margin 24 を外した。.screen-body の
+     gap(32px)と足し算になり、「はじめる」→地図が 80px(トークン外)に
+     なっていた。塊と塊の間は gap の32pxだけで決める。 */
+  padding: 6px 0 0;
+  /* ★2026-09-26 削除: border-bottom(「はじめる」の下の罫線)。
+     Harumi指摘「始めるの下に線が入ってますけどこの線ラインは必要ない」。
+     地図(lessonMap)がすぐ下に続くので、ヒーローと地図の区切りは
+     margin-bottomの余白だけで十分——CLAUDE.md「区切り線を二重に引かない」
+     と同じ発想で、意味の無い1本を消した。**復活させないこと。** */
+}
+.today-hero-greeting {
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  color: var(--muted);
+  margin: 0;
+}
+/* 2026-08-28 Harumi指摘「今日はこれをやってみよう。（少し大きめに書いて）」
+   — resumeの時は.today-hero-title(下記)を出さなくなったぶん、この行が
+   ヒーローの主な見出しになる場面が増えたため、font-weightも足して
+   見出しらしく強めた。 */
+/* 2026-08-30: この行を --text-lg から --text-xl に上げた。実測すると
+   ヒーローの中に **19px/700 が3つ**(あと◯日 / この行 / CTAの文字)あり、
+   一番強い声が3人いる状態だった —— どれを先に読めばいいか決まらず、
+   「3つの無関係な塊」に見えていたのはこれが原因。要素は1つも足さず、
+   声の大きさに順番を付けただけ(この行=22px > CTA=19px > 目標=17px)。 */
+.today-hero-lead {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-gothic);
+  /* ★2026-09-23 文字を上げたので、この1行は \n で折り返す位置を
+     自分で決める(CLAUDE.mdキャプション改行ルール)。pre-lineが無いと
+     \n はただの空白として無視される。 */
+  white-space: pre-line;
+  font-size: var(--text-xl);
+  font-weight: 700;
+  /* ★2026-09-29 見出しなので --lh-heading(地の1.8を継いで間延びしていた)。 */
+  line-height: var(--lh-heading);
+  /* 2026-08-29 Harumi指摘「文字の大きさ・見せ方を総合的に見て」で発覚:
+     この行はヒーローの主見出し(「今日はこれをやってみよう。」)なのに
+     --mutedのまま残っていた。アプリの他の箇所は「大事な文字=--ink、
+     補足=--muted」で一貫しているので、ここもそれに合わせる。 */
+  color: var(--ink);
+}
+/* 2026-08-28 Harumi指摘「ヘッダーとなる文字が大きすぎる。この写真
+   (Speak Up リデザイン案アーティファクト)と同じサイズに」— リデザイン
+   案の.hero-title/.name(ヘッダーのロゴ文字)は同じ--fs-2(20px)を共有する
+   「画面タイトル」規格だった。ここもその値(1.25rem)・weight 600に
+   合わせる(以前は1.8rem→1.55remと2段階に分けて縮めていたが、今回で
+   リデザイン案と数値まで一致させる)。 */
+/* .today-hero-title / .today-hero-desc は廃止(Harumi指示 2026-08-28
+   「削除『聞き返す 聞き取れなかったときに』」— ヒーローにモジュール名・
+   説明文を出さなくなった。js/home.js pickHero参照)。 */
+/* 2026-08-28 Harumi指摘「丸っぽいボタンではなく、Redesign案のように
+   長方形フルのボタンにできませんか」— ピル状(border-radius: 999px)+
+   自動幅(width: auto)の上書きをやめ、他の.btn-primaryと同じ長方形
+   (var(--radius))・全幅に戻す。塗り色は.btn-primary本体側で管理済み
+   なので、ここでは余白とアクティブ時の押し込み影だけ残す。 */
+/* ★2026-09-26 削除: .today-hero-what/.today-hero-what-label/
+   .today-hero-what-name(CTAの下の「次はここ / ◯◯」)。すぐ下の地図
+   (lessonMap)が既に「済んだ物だけ実名、いまの1本は隠す」を守っている
+   のに、ここだけ行き先の実名を先に言ってしまい、同じ画面の中で矛盾
+   していた(Harumi指摘)。js/home.js pickHero()直前のコメント参照。
+   **復活させないこと。** */
+.today-hero-cta {
+  margin-top: var(--space-5);
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.12);
+}
+.today-hero-cta:active { box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.1); }
+
+/* ★2026-09-30 20日間コース(js/course.js)。ヒーローの中の「今日の分」。
+   Home の見本(Harumi承認)どおり: 見出し(Day N / 20・約◯分) → 20マスの帯 →
+   (初回だけ写真) → 今日の分 → 金のボタン。新しい色は無し(金・墨・罫線・灰)。
+   灰色の面は使わない —— 主役は金のボタン1つ。
+   ヒーローは gap 0・margin-top で間を作る決まりなので、塊の間は margin-top。 */
+.course-head { display: flex; flex-direction: column; gap: var(--space-3); width: 100%; }
+.course-label { margin: 0; font-size: var(--text-sm); font-weight: 700; color: var(--muted); line-height: var(--lh-base); }
+.course-day { margin: 0; display: flex; align-items: baseline; gap: var(--space-2); font-variant-numeric: tabular-nums; }
+.course-day-n { font-size: var(--text-3xl); font-weight: 800; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; }
+.course-day-of { font-size: var(--text-lg); font-weight: 700; color: var(--neutral); }
+.course-day-min { margin-left: auto; font-size: var(--text-sm); color: var(--muted); white-space: nowrap; }
+/* 20マスの帯。5日ずつの組。復習の日(5・10・15・20日目)は丸。
+   済=金 / 今日=墨で少し太く / まだ=罫線の色。 */
+.course-strip { display: flex; align-items: center; gap: var(--space-2); width: 100%; margin-top: var(--space-1); }
+.course-week { flex: 1; display: flex; align-items: center; gap: 3px; min-width: 0; }
+.course-seg { flex: 1; height: 6px; background: var(--line); }
+.course-seg.is-done { background: var(--accent-fill); }
+.course-seg.is-today { background: var(--ink); height: 10px; }
+.course-rv { flex: none; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--neutral); background: var(--paper); box-sizing: border-box; }
+.course-rv.is-done { background: var(--accent-fill); border-color: var(--accent-fill); }
+.course-rv.is-today { width: 14px; height: 14px; background: var(--ink); border-color: var(--ink); }
+.course-legend { margin: 0; align-self: flex-end; display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-xs); color: var(--muted); line-height: var(--lh-base); }
+.course-legend-mark { width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--neutral); box-sizing: border-box; }
+.today-hero > .course-head + .scene-holder,
+.today-hero > .course-head + .scene-image { margin-top: var(--space-5); }
+.course-today { display: flex; flex-direction: column; gap: var(--space-2); width: 100%; margin-top: var(--space-5); }
+.course-name { margin: 0; font-size: var(--text-2xl); font-weight: 800; color: var(--ink); line-height: var(--lh-heading); }
+.course-desc { margin: 0; font-size: var(--text-md); color: var(--ink); line-height: var(--lh-read); white-space: pre-line; }
+.course-list-h { margin: 0; font-size: var(--text-xs); font-weight: 700; color: var(--muted); line-height: var(--lh-base); }
+.course-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.course-row { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) 2px; border-bottom: 1px solid var(--line); font-size: var(--text-md); line-height: var(--lh-base); color: var(--ink); }
+.course-row.is-done, .course-row.is-later { color: var(--muted); }
+.course-row.is-now { font-weight: 700; }
+.course-row-name { min-width: 0; }
+.course-mark {
+  flex: none; width: 22px; height: 22px; border-radius: 50%; box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: var(--text-xs); font-weight: 700; color: var(--ink); line-height: 1;
+}
+.course-mark.is-done { background: var(--accent-fill); }
+.course-mark.is-now { border: 7px solid var(--ink); }
+.course-mark.is-later { border: 1.5px dashed var(--neutral); }
+.course-here { margin-left: auto; font-size: var(--text-xs); font-weight: 700; color: var(--accent-text); white-space: nowrap; }
+
+/* 復習の日を聞き終えた締め(js/listen.js showReviewDone)。 */
+.listen-done { display: flex; flex-direction: column; gap: var(--space-4); }
+.listen-done[hidden] { display: none; }
+/* 2026-08-28 Harumi指示「Your Journeyも消しましょう」— この行は
+   Your Journeyへのボタンだったが、今は連続日数(炎)を見せるだけの
+   ただの表示(js/home.js参照)。押せないのでcursor:pointerは外した。 */
+/* ★2026-09-23 Harumi指示「連続何日は削除」——
+   .today-hero-meta / .today-hero-streak* を削除した。**復活させないこと。** */
+
+
+/* ★2026-09-25 essentials(聞き返す・相槌の旧カード型一覧)のCSSは削除した。
+   Homeのモジュール一覧が地図(js/ui.js lessonMap)に変わり、essentials専用の
+   行を描く場所が無くなったため(js/home.js renderAiRow/essentialsToShow
+   ごと削除)。.essentials-plain-* クラスを足す場所は無い——復活させないこと。 */
+
+/* ---- セクションラベル：本文と同じ強さの黒太字h2をやめる（ただし
+   小さくしすぎない。「文字が60代には小さすぎる」の指摘を受け、
+   essentials-plain-labelと同じ1remに統一）。 ---- */
+.section-label {
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  /* ★2026-09-29 26px/6px(トークン外)→ まとまりの間32 / 見出し→行12
+     (聞き返すの .carousel-group と同じ12)。 */
+  margin: var(--space-6) 0 var(--space-3);
+}
+
+/* ---- モジュール一覧（会話を始める／広げる／終える）：カード→フラット
+   リストにし、「はじめる→」の定型文言を外して分数だけ出す。 ---- */
+.cat-review-list-plain { display: flex; flex-direction: column; }
+.cat-review-row-plain {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  padding: 16px 2px;
+  cursor: pointer;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+}
+.cat-review-row-plain:last-child { border-bottom: none; }
+/* ---- AI英会話の「これまでにできたこと」(2026-09-06) ----
+   押せない一覧(Harumi/ChatGPT承認「5つ全部をボタンにするとダッシュボード
+   感が強くなる」)。新しい部品・色は足していない —— Homeのモジュール一覧と
+   同じ行をそのまま使い、「押せない」ことと「まだの行」だけを足す。
+   「済」(.done-stamp)と「次はここ」(.cat-review-badge)もHomeと同じもの。 */
+.cat-review-row-plain .cat-review-name { font-family: var(--font-gothic); font-size: var(--text-lg); font-weight: 700; color: var(--ink); }
+.cat-review-meta { display: flex; align-items: center; gap: 8px; }
+.cat-review-frac { font-family: var(--font-gothic); font-size: var(--text-md); font-weight: 700; letter-spacing: 0.04em; color: var(--muted); }
+.cat-review-chev-plain { color: var(--neutral); font-size: var(--text-lg); }
+
+/* ★2026-09-25 鍵のかかった行(is-locked)のCSSは削除した。Homeのモジュール
+   一覧が押せる行(鍵つき)から押せない地図(lessonMap)に変わり、AI英会話の
+   カードもタブへ移ったため、.is-locked を付ける場所が無くなった
+   (.cat-review-row / .cat-review-row-highlight / .cat-review-row-plain の
+   is-locked系はすべてJSから参照0件)。復活させないこと。
+   .cat-review-row-plain 自体(js/aiConversation.js / js/mybook.js が使用)は
+   残す——is-locked の**無い**通常の行スタイルは引き続き必要。 */
+.cat-review-row-plain .cat-review-text { display: flex; flex-direction: column; gap: 2px; }
+
+/* 練習済みの印「済」(2026-09-01)。数字(1 / 9)ではなく印で示すのは
+   「9個ぜんぶやらなきゃ」に見せないため。
+   ★最初はチェックマーク(✓)にしたが、Harumi指摘「チェックマークだと
+     見過ごします。済って入れたらどうですか？」で**文字**に変えた。
+     読み手は50〜60代で、記号より文字の方が速い。
+   ★枠付きにしたのは、同じ行の口調チップ(カジュアル/丁寧。塗りつぶし・角0)と
+     一目で別物にするため —— **判子**の見た目。色は金の既存トークンだけで、
+     新しい色は足していない。 */
+.done-stamp {
+  flex: none;
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent-text);
+  border: 1.5px solid var(--accent-line);
+  border-radius: var(--radius-sm);
+  padding: 1px 7px;
+  letter-spacing: 0.08em;
+}
+
+/* 行の名前と「次はここ」バッジを1行に並べる(2026-09-01)。 */
+.row-title-line { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+/* いま押すべき行。金は「点」(バッジ)、面はグレージュ —— 既存の使い分けの
+   ままで、新しい色は足していない(CLAUDE.md「面はグレージュ、金は点」)。 */
+.essentials-plain-row.is-next,
+.cat-review-row-plain.is-next {
+  background: var(--ink-wash);
+  border-radius: var(--radius);
+  padding-left: 12px;
+  padding-right: 12px;
+  border-bottom-color: transparent;
+}
+
+/* ★2026-09-25 .cat-review-lockline(「◯◯を終えると開きます」の説明行)は
+   削除した。Homeのモジュール一覧が押せる行から地図(lessonMap)に変わり、
+   鍵の説明文を行の中に書く場所が無くなったため。復活させないこと。 */
+
+/* ---- 会話の枝: チャット型1画面(Harumi承認 2026-08-30) ----
+   LINEと同じ文法: 相手は左・自分は右。過去の吹き出しはいつでもタップで
+   聞き直せるので、「どんな音だったっけ？」の戻り往復が構造ごと消える。 */
+.chat-lead {
+  font-size: var(--text-sm);
+  color: var(--muted);
+  white-space: pre-line; /* \nで意味の切れ目に改行(CLAUDE.mdキャプション改行ルール) */
+  margin: 0 0 4px;
+}
+.chat-thread { display: flex; flex-direction: column; gap: var(--space-4); } /* ★2026-09-29 14px → 16px(トークン) */
+/* ★2026-09-30 止まって練習・復習の日(js/pausePractice.js)。会話と会話の
+   あいだに置く、会話の名前だけの小さな区切り。.listen-group(場面から選ぶ、
+   と同じ小さな見出し)をそのまま使い、.chat-thread の中でだけ中央寄せにする。 */
+.chat-divider { text-align: center; margin: 0; }
+/* ★2026-09-27 作り直した。Harumi指摘「人のアイコンが変なのでやり直して。
+   『あなた』とアイコンがalignするべきなのに、できてないし、同じ人が
+   話すときは名前を出し続けない」。
+
+   何が起きていたか(2026-09-26の初版): アイコンを.chat-rowの外側
+   (avatar+colの2列)に置き、margin-top:20pxで.chat-senderの高さぶん
+   下げて吹き出しの上端に揃えようとしていた —— だが --text-sm/--lh-base
+   を上げた後の実測は 18px×1.8+margin ≈ 35px で、20pxでは足りず、
+   アイコンが名前の途中の高さに浮いて、名前にも吹き出しにも揃っていな
+   かった。名前も無条件に毎回出していた(js/reactionDrill.jsだけ
+   line.lead_jaの有無で手動に外していたが、実際の直前の行を見ていない
+   場当たりの判定だった)。
+
+   直した形: **アイコンと名前を同じ行(chat-head)にflexで横並び**にし、
+   align-items:centerで自動的に揃える(固定pxは使わない)。この行は
+   「直前の.chat-rowと話者が違う時」だけ出す(判定はjs/ui.jsの
+   bubbleRow()が持つ。1箇所にまとめてbranches.js/reactionDrill.jsの
+   両方に同じ形で効かせる)。連続する同じ話者の2行目以降は chat-head を
+   出さず、.chat-colにアイコン分の余白(36px=28px+8pxgap)だけ残す
+   (.is-followup) —— LINE等と同じ、列は揃ったまま名前だけ省かれる形。 */
+/* ★2026-09-27 会話画面の再設計(Harumi「会話している感覚をデザインする」)。
+   ここまでの左右・アイコン・名前の骨組みは変えていない —— 変えたのは
+   3つだけ:
+   ① **登場のモーション**(fade-in + わずかに上へ)。「messageが突然画面に
+      現れるのではなく」という指示への答え。値ははじめの案内の
+      .onb-reply-row(2026-09-26)と同じ系統(0.2〜0.3秒・数px)を流用 ——
+      **新しい動きの言語を1つ増やさない**。`@keyframes` は要素が
+      生まれた瞬間に自動で1回だけ走るので、.onb-reply-rowのような
+      rAFでの`is-shown`切り替えは要らない(このアプリの画面は毎回
+      作り直しなので、既に見た吹き出しが再アニメーションする心配は無い)。
+   ② **同じ話者が続く時は行間を詰める**(is-followup を .chat-row 自身にも
+      付ける。以前は .chat-col だけが持っていた)。名前・アイコンを省く
+      だけでなく、間隔そのものも一段近づけることで「1人がまとめて
+      話している」まとまりが目でも分かる —— 会話のキャッチボール
+      (話者が変わる所)は今までどおりの間隔のまま、粒を作らない。
+   ③ 控えめに抑える(prefers-reduced-motionでは丸ごと止める)。 */
+.chat-row {
+  display: flex;
+  animation: chatRowIn 0.26s cubic-bezier(0.2, 0.9, 0.3, 1.05) both;
+}
+.chat-row.is-followup { margin-top: -8px; } /* .chat-thread の gap:16px と合わせて実質8px */
+.chat-row.is-partner { justify-content: flex-start; }
+.chat-row.is-you { justify-content: flex-end; }
+@keyframes chatRowIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chat-row { animation: none; }
+}
+/* ★2026-09-29 アイコンを40pxにし、**アイコンの幅ぶんの溝(48px)を列が常に持つ**
+   形にした。前は2つ目からの吹き出しだけ36px下げていたので、1つ目と2つ目以降で
+   吹き出しの端が揃っていなかった(実機スクリーンショット)。いまは
+   アイコンだけが溝に出て、名前と吹き出しは全部同じ線に揃う。
+   溝のぶん列を広げる(82% → 溝込みで92%)ので、文が入る幅はほぼ変わらない。 */
+.chat-col { max-width: 92%; min-width: 0; display: flex; flex-direction: column; padding-left: 48px; }
+.chat-row.is-you .chat-col { align-items: flex-end; padding-left: 0; padding-right: 48px; }
+.chat-head { display: flex; align-items: center; gap: var(--space-2); margin: 0 0 var(--space-1) -48px; }
+.chat-row.is-you .chat-head { margin: 0 -48px var(--space-1) 0; }
+.chat-row.is-you .chat-head { flex-direction: row-reverse; } /* アイコンは常に列の外側 */
+.chat-avatar {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  overflow: hidden; /* 肩を丸の下端で切る */
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.chat-avatar.is-partner { background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+.chat-avatar.is-you { background: var(--ink); color: var(--surface); }
+/* ★2026-09-27 Harumi指摘(実機スクリーンショット)「人の形のアイコンが、
+   人の形が小さすぎて変じゃない？」。Playwrightで実測すると、SVGは
+   16×16pxへ正しく収まっていた(欠けも overflow も無い) —— つまり
+   「CSSが効いていない」不具合ではなく、**16pxという大きさ自体が、この
+   アイコン(小さな頭の円＋肩のシルエット)の細部を読ませるには単純に
+   小さすぎた**(実機のような高精細画面では、頭の円が数pxまで潰れて
+   輪郭がぼやけ、「人」より先に「小さな染み」に見える)。
+   → 28pxの円は変えず、中のアイコンだけ16→20pxへ(円との比が57%→71%)。
+   28-20=8px、左右4pxずつの余白はまだ十分残る。 */
+.chat-avatar-icon { width: 100%; height: 100%; display: block; } /* ★2026-09-29 丸いっぱい */
+.chat-sender { font-family: var(--font-gothic); font-size: var(--text-sm); color: var(--muted); margin: 0; }
+/* 2026-08-31: 吹き出しの余白を少し広げた(12/14 → 14/16)。Harumi指摘
+   「ゆとりがない」。文字の吹き出しも同じだけ息をする。
+   ★2026-09-27 さらに一段(14/16 → 16/18)。丸みを付けた分、角が内側へ
+   少し食い込んで見えるので、そのぶんだけ余白を足す(「丸くすれば
+   チャットっぽくなる」だけでは終わらせず、丸めた形に合わせて他の値も
+   一緒に見直す)。**角丸は var(--radius) ではなく専用の --radius-bubble**
+   —— このアプリの既定(角は全部四角)から吹き出しだけを外す、という
+   意図がトークン名から分かるようにしてある(tokens.css参照)。 */
+.chat-bubble { border-radius: var(--radius-bubble); padding: 16px 18px; border: 1px solid var(--line); }
+/* ★2026-09-29 句読点の無い長い和文(「ここまでの日本滞在は気に入ってますか？」)が
+   word-break: keep-all で1語扱いになり、吹き出しが画面の左へはみ出して
+   文頭が切れていた(相槌ドリル・会話の練習の「あなた」側)。
+   anywhere は**入りきらない時だけ**折る —— 入る文の折れ方は今までと同じ。 */
+.chat-bubble { overflow-wrap: anywhere; }
+
+/* ---- タイピングインジケーター(相手が話し始める前の「……」) ----
+   ★2026-09-27 新設。Harumi指示「会話の相手が次の文章を話す前に、
+   …のようなtyping indicatorが短時間表示され、その後message bubbleが
+   自然に出てくるような動きを検討してください」+「3つのdotがsubtleに
+   動く程度で構いません。派手なアニメーションは必要ありません」。
+   js/branches.js の partnerTurn() が、実際の吹き出しを作る**前**に
+   これを差し込み、短い間だけ見せてから取り除く(js/ui.js
+   typingIndicator())。
+   ・**新しい色は足していない** —— 点は --neutral(「文字に使わない。
+     無効状態・装飾のみ」と最初からtokens.cssに書いてある色で、
+     まさにこの用途)。
+   ・**aria-hidden**(装飾)。実際の案内は既存の状態バー
+     (.note「相手が話しています。」)が同じ瞬間に出るので、二重に
+     読み上げない(js/branches.js で setStatus をここに合わせて移した)。
+   ・**動きは上下4pxだけ**。目立たせるための演出ではなく、「いま入力中」
+     と感じてもらうための、無いと物足りない程度の最小限の動き。 */
+.chat-typing {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  /* この吹き出しだけ、質問文書の角丸(16px)より丸いカプセル形にする ——
+     「これは本物のメッセージではなく、束の間の合図」という違いが形でも
+     伝わるように。押す物ではない印(.chat-avatar/.option-radioと同じ
+     999pxの扱い)なので、見た目の文法3(ピル形は押す物に使わない)には
+     当たらない。 */
+  border-radius: 999px;
+  padding: 14px 16px;
+}
+.typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--neutral);
+  animation: chatTypingDot 1.1s ease-in-out infinite;
+}
+.typing-dot:nth-child(2) { animation-delay: 0.15s; }
+.typing-dot:nth-child(3) { animation-delay: 0.3s; }
+@keyframes chatTypingDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.45; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .typing-dot { animation: none; opacity: 0.7; }
+}
+
+/* 声のメッセージ(相手のひとこと)。英文を見せない＝中に文字が無いので、
+   ▶と波形を**横いっぱいに伸ばして**メッセージの形にする。
+   LINE/WhatsApp/Messengerの音声メッセージと同じ形 —— 見た瞬間に
+   「これは音、押すと鳴る」と分かり、文字の吹き出しと同じ幅のリズムで並ぶ。
+   吹き出しそのものが押す場所なので、中に小さなボタンを置かない
+   (CLAUDE.md「1つの行に押せる物を2つ置かない」)。 */
+/* 声のある吹き出しは、内容の幅に縮ませず**幅いっぱい**にする。
+   縮むと「ゆとりがない小さな箱」に戻ってしまう(2026-08-31 Harumi指摘)。
+   相手・自分の**両方**に付けるので、左右の幅が揃って会話らしく並ぶ。 */
+.chat-row.is-voice-row .chat-col { width: 92%; } /* ★2026-09-29 溝48px込み */
+/* .chat-col は is-you 側で align-items:flex-end のため、中の吹き出しは
+   内容の幅に縮む。声のある吹き出しだけは幅いっぱいに伸ばす。 */
+.chat-row.is-voice-row .chat-bubble { width: 100%; }
+/* 「押すと鳴る」1行。★2026-08-31 Harumi指摘「相手も私のテキスト風表示は
+   統一したのがいいのでは？」——以前は自分の吹き出しだけ**枠付きの小さな
+   ボタン**で、「箱の中の箱」になっていた。両側とも枠も地も持たない
+   この1行に統一し、置き場所も**文の下・吹き出しの一番下**で揃える。 */
+.chat-voice {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 吹き出しの中で一番上に来る時(相手の、まだ意味を出していない状態)は、
+   上の余白を作らない。 */
+.chat-voice:first-child { margin-top: 0; }
+.chat-voice:disabled { cursor: default; }
+.chat-voice-label {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--accent-text);
+  white-space: nowrap;
+}
+.chat-voice-label .action-icon { width: 18px; height: 18px; margin-right: 0; }
+/* ★2026-09-02 Harumi報告(実機)「音声の波が、ズレてる」——波形が吹き出しの
+   **外に16pxはみ出していた**(実測)。真因はこちらの直し: ラベルを
+   「もう一度聞く」→「相手のことばを聞く」と長くした時、ラベルは flex:none で
+   幅を譲らないので、波形に残る幅が94pxまで縮んだ。ところが波形の最小幅は
+   **26本×2px + 25すき間×3px = 127px** で、縮めない分がそのまま外へ出ていた。
+   → 本数を20に、すき間を2pxに(最小78px)。さらに overflow:hidden を安全網に
+   張り、**今後ラベルを長くしても二度と外へ出ない**ようにする。 */
+.chat-wave { flex: 1 1 auto; display: flex; align-items: center; gap: 2px; height: 24px; min-width: 0; overflow: hidden; }
+.chat-wave i { flex: 1 1 0; min-width: 2px; border-radius: 2px; background: var(--ink-hair); }
+/* 鳴っている間だけ金に(既存の .playing の約束をそのまま使う)。 */
+.chat-voice.playing .chat-wave i { background: var(--accent-line); }
+/* 吹き出しの下に添える小さなリンク(タイムスタンプと同じ位置づけ)。 */
+.chat-under { align-self: flex-start; margin: 6px 0 0 4px; }
+/* ★2026-09-29 吹き出しの下の文字のリンク2つ(聞き取れなかった ・ 意味と英文を見る)。
+   毎回の「聞き取れましたか？」の質問とボタンはやめた(js/branches.js partnerTurn)。 */
+/* 2つは吹き出しの幅(390pxで263px)に横に入らない(実測 約290px)ので、縦に2行。
+   ボタンの上下の余白は詰めて、1つのまとまりに見せる。 */
+.chat-under-links { display: flex; flex-direction: column; align-items: flex-start; gap: 0; }
+.chat-under-links[hidden] { display: none; }
+.chat-under-links .btn-link { padding: 4px 0; }
+/* 「聞き取れなかった」だけ押しやすい枠付き(指で押せる44px以上)。リンクとは8px離す。 */
+/* 吹き出しの下に幅いっぱいで置く添え物(「なぜ聞き取れない？」)。
+   .chat-col は is-you 側で align-items:flex-end なので stretch が要る。 */
+.chat-under-block { align-self: stretch; width: 100%; margin-top: 8px; }
+/* ★2026-09-24 しっぽ(4pxの角)は外した —— 入れ物の角を全部0にしたので、
+   ここだけ1つの角が4pxだと取り残された丸に見える。誰の発言かは
+   左右の寄せと「あなた/相手」の名前が既に言っている。 */
+.chat-bubble.is-partner { background: var(--surface); }
+.chat-bubble.is-you { background: var(--ink-wash); }
+.chat-bubble.is-said { border-color: var(--accent-fill); }
+.chat-bubble.is-skipped { opacity: 0.85; }
+/* 2026-08-31: 相手の吹き出しから「もう一度聞く」を外した(会話が自動で
+   流れるようになり、押す物は「やめる」だけになったため)。残したのは
+   「意味と英文を見る」1つ —— 音を鳴らさないので、マイクが開いている
+   最中に押されても邪魔にならず、★聞き取れなかったフレーズの唯一の
+   入力なので消せない(js/branches.js 参照)。
+   .chat-controls / .chat-mic-caption / .chat-links / .chat-cap /
+   .chat-replay は同日に廃止。復活させないこと。 */
+/* ★2026-09-29 返しに添える「ことばのメモ」(content/translations.py POOL_NOTE_JA)。
+   「言うときのコツ」(.tip-listen-*)と**同じ形**のはずが、説明文まで
+   --text-xs(14px)にしていて「補足は主役より小さく」という別の理屈を
+   後付けしていた —— 実際の .tip-listen-label/.tip-listen-text は
+   「語=小さな見出し(--text-xs) / 説明=--text-md(本文と同じ20px)」で、
+   小さいのは見出しだけ。★2026-09-30 Harumi報告(実機)「小さすぎて読めない
+   人続出です」で発覚。説明文を.tip-listen-textと同じ--text-md/--lh-readに
+   揃えた(「同じ仕事をする部品は、必ず同じ形にする」)。 */
+.chat-word-note { margin: 12px 0 0; padding-top: 12px; border-top: 1px solid var(--ink-hair); }
+/* ★2026-09-30 Harumi指摘(実機)「『one』の部分。ここにくる単語は小さすぎる。
+   ルール守ってないですよね」。見出しを「言うときのコツ」の分類ラベル
+   (.tip-listen-label・14px)と同じ扱いにしていたのが間違い —— あちらは
+   【母音ドッキング】のような**分類の札**だが、ここの見出しは**覚える英語
+   そのもの**(one / take care)。学ぶ中身を本文より小さくしない
+   (「迷ったら大きい方に倒す」)。本文20pxより一段大きい --text-lg(23px)。
+   説明文との間は 8px(同じまとまり)。 */
+.chat-word-note-word { margin: 0; font-weight: 700; line-height: var(--lh-heading); display: flex; flex-wrap: wrap; align-items: baseline; column-gap: var(--space-2); }
+.chat-word-note-en { font-family: var(--font-latin); font-size: var(--text-lg); color: var(--accent-text); }
+/* ＝意味 は「この場面での答え」。見出しと同じ太さ・本文と同じ大きさ・地の文字色
+   (金は英語の見出しだけ —— 金を2つ並べない)。 */
+.chat-word-note-mean { font-size: var(--text-md); color: var(--ink); }
+.chat-word-note-must { margin: 0 0 var(--space-2); line-height: 1; } /* ★2026-09-29 MUSTの札(案3・見出しの上) */
+.chat-word-note-text { margin: var(--space-2) 0 0; font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); white-space: pre-line; }
+.chat-ja-meaning { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); margin: 6px 0 0; }
+.chat-ja { font-family: var(--font-gothic); font-size: var(--text-md); line-height: var(--lh-read); font-weight: 400; color: var(--ink); margin: 0; }
+/* 2026-08-30: チャットの英文だけ日本語のゴシックで描かれていた。
+   ここは「聞いて、口に出す対象」＝画面の主役なので、他の英文
+   (.phrase-target/.phrase-en)と同じ英文用の書体に揃える。
+   ラテン文字は同じpxでも日本語より小さく見えるため、一段大きくする。 */
+/* 相手のセリフの英文。これは**聞き取れなかった人の読む助け**であって、
+   自分が言う1文ではないので、ヒーローにしない(下の is-you を参照)。 */
+.chat-en {
+  font-family: var(--font-latin);
+  font-size: var(--text-lg);
+  line-height: var(--lh-base);
+  color: var(--ink);
+  margin: 6px 0 0;
+}
+/* ★2026-09-24 **自分が言う1文だけ**を Order Up の .clar-en と同じ
+   ヒーローにした。あちらの決まり「同じ1文は、どの画面に出ても同じ重さで
+   出す」を、Speak Up では「**その画面で自分が口に出す1文**」に当てる ——
+   会話の練習で答えが出る瞬間は、このアプリで一番「英語が主役」に
+   なるべき所なのに、ここだけ23px・並字だった。
+   ※相手のセリフまでヒーローにすると、**言う文と聞く文の区別が消える**
+     (実測: 一番長い相手のセリフは32pxだと吹き出しの中で6行・230px)。 */
+.chat-bubble.is-you .chat-en {
+  font-size: var(--font-phrase);
+  /* ★2026-09-25 .phrase-target と同じ値にそろえる(同じ仕事の文字)。 */
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  font-weight: 800;
+  border-left: 4px solid var(--accent-fill);
+  padding-left: var(--space-3);
+  text-wrap: balance;
+  margin: var(--space-3) 0 0;
+}
+.chat-verdict { font-family: var(--font-gothic); font-weight: 700; color: var(--ink); margin: 8px 0 0; }
+.chat-verdict.is-pass { color: var(--accent-text); }
+.chat-advice { font-size: var(--text-sm); color: var(--muted); margin: 4px 0 0; }
+.chat-link { font-size: var(--text-sm); }
+/* ★2026-09-05 .chat-note は削除した(js/branches.js 参照)。会話の締めの
+   案内は共通の`.note`(17px・--ink)に統一 —— 画面専用の小さく薄い様式を
+   新設していたのが「字が小さい」の原因だった。**復活させないこと。** */
+/* ============ 言い方を選ぶ(カルーセル) js/earToVoice.js ============
+   ★2026-09-25 Harumi指示「1枚ずつめくるカルーセル(‹ ›)＋『これにする ＞』で
+   確定する方法を、Speak upにも導入する」。形は Order Up の .say-carousel から、
+   寸法と色は Speak Up の物(角は四角・新しい色はゼロ)。
+   ★丸いのは ‹ › と ▶ だけ —— どれも**押す物ではなく操作の印**に近い丸で、
+     Order Up も同じ形(見た目の文法3のピル形の話とは別)。 */
+.say-carousel { display: flex; flex-direction: column; gap: var(--space-5); }
+.carousel-card {
+  position: relative;
+  background: var(--ink-wash);
+  border-radius: 0;
+  /* 余白はOrder Upより1段詰めてある —— あちらに下タブは無く、Speak Upは
+     60pxぶん縦が狭い。‹ ▶ › が画面の中に入ることの方が大事(390×664で実測)。 */
+  /* ★2026-09-30 16 → 24px。‹ ▶ › はもともと390×664でタブの裏に入って
+     いて(実測629–685px)少しスクロールする画面なので、詰める理由が無い。 */
+  padding: var(--space-5);
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-5);
+}
+/* 番号の行＋和訳 =「どの言い方か」の1つの塊。 */
+.carousel-head { display: flex; flex-direction: column; gap: var(--space-3); }
+/* 大きい番号と、その右にバッジ。「いま何枚目か」を1つだけで言う
+   (小さい点を並べるのと、番号の札を浮かせるのを、両方やめた形)。 */
+.choice-pos-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.choice-pos { margin: 0; color: var(--umber); line-height: 1; }
+/* ★2026-09-29 直書きの40px → トークン(見た目は同じ)。 */
+.choice-pos-n { font-size: var(--text-3xl); font-weight: 700; }
+/* ★2026-09-30 「/ 3」は細字。太いのは今の番号だけ(強い声は1つ)。 */
+.choice-pos-of { font-size: var(--text-md); font-weight: 400; }
+.choice-pos-row .badge-row { display: flex; gap: var(--space-2); flex-wrap: wrap; justify-content: flex-end; }
+/* 全部を重ねて置き、見えている1枚だけ .is-on。‹ › を押しても高さが変わらない。 */
+.carousel-stack { display: grid; grid-template-columns: minmax(0, 1fr); }
+.carousel-slide {
+  min-width: 0;
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--space-4);
+  visibility: hidden;
+}
+.carousel-slide.is-on { visibility: visible; }
+/* ★2026-09-30 めくった時だけ、0.2秒で入れ替える(位置は動かさない)。 */
+.carousel-slide { opacity: 0; transition: opacity 0.2s ease, visibility 0.2s; }
+.carousel-slide.is-on { opacity: 1; }
+@media (prefers-reduced-motion: reduce) { .carousel-slide { transition: none; } }
+.carousel-gloss {
+  margin: 0;
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* ‹ ▶ › の1行。カードの中の押す物はこの3つだけで、どれも「いま見ている
+   1枚を変える／聞く」。**進むのはカードの外の濃色ボタン1つ**。 */
+.carousel-nav { display: flex; justify-content: center; align-items: center; gap: var(--space-5); margin: 0; }
+.carousel-nav .audio-btn { margin: 0; }
+.carousel-arrow {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  background: var(--surface);
+  border: 1px solid var(--ink-hair);
+  border-radius: 50%;
+  font-size: var(--text-xl);
+  line-height: 1;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+.carousel-arrow:active { background: var(--ink-wash); }
+.carousel-arrow:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 3px; }
+/* ★2026-09-29 「›」の合図(js/earToVoice.js stepChoosePhrase の armArrowHint)。
+   1枚目が鳴り終わった瞬間に、札の modeGlow と同じ金の輪が外へ広がって消える —— 3回だけで止まる。
+   新しい動き・色は足さない。大きくする・色を変える・揺らすもしない(Harumi指定)。 */
+.carousel-arrow.is-hint { animation: modeGlow 1.2s ease-out 3; }
+@media (prefers-reduced-motion: reduce) { .carousel-arrow.is-hint { animation: none; } }
+
+/* ★2026-09-29 聞き取りクイズ(.chat-quiz)は削除した(js/branches.js askHeard)。 */
+
+/* ★2026-09-29 空のあいだは出さない。空でも .screen-body の gap を1つ
+   ぶん取り(＋margin 8px)、会話の練習だけ nav-row の上が104px になっていた。 */
+.chat-tail:empty { display: none; }
+/* ★2026-09-29 会話の練習の締めのまとまり: 締めの文 → (余裕があれば)リンク → ボタン → ＜戻る｜終わる＞。
+   1つの話なので中は24px。最後の吹き出しとの間は .screen-body の gap(32px)。
+   子の margin はここで0にする(.btn-link の8px・.nav-row の32px が足されないように)。 */
+.chat-tail { display: flex; flex-direction: column; gap: var(--space-5); }
+.chat-tail > * { margin-top: 0; margin-bottom: 0; }
+
+/* 言い方を選ぶ: 質問部品(.option)+隣に小さな「聞く」(2026-08-30 監査③:
+   濃色の主ボタンが1画面に3つ並んでいたのを解消)。 */
+/* .choose-row(選択肢＋右の「聞く」の2列)は2026-08-31に廃止。
+   行の中に押せる物が2つあり、押せそうに見える方が進まないという
+   逆転が起きていた。今は行そのものが1つの押し場所(タップ=鳴る+選ぶ)。 */
+
+/* 聞く/言うの文字ボタン(Harumi提案 2026-08-30)は既存の一族を使う:
+   聞く=.btn-outline / 言う=.btn-accent-quiet / チャット内=.btn-small。
+   新しいボタン様式は作らない(Harumi指示 2026-08-30「統一感を維つには、
+   新しいボタンのスタイルを追加しないように」)。以下は既存クラスに付く
+   「状態」だけ: 再生中(.playing)。
+   ★2026-09-24 録音中(.is-listening)は削除した —— 発音チェックの廃止で
+   マイクが開く練習画面が1つも無くなったため。**復活させないこと。** */
+.btn-outline.playing, .btn-small.playing { background: var(--accent-wash); }
+/* 2026-08-31 削除: .note.is-listening(「本番のように話す」の“あなたの番”の
+   点滅)。マイクをレッスンから外したので、録音中の点滅を出す注意書きが
+   無くなった。復活させないこと —— .is-listening は「マイクが開いている」
+   という意味なので、カウントダウンのような別の待ちに流用しない。 */
+
+/* \nを改行として効かせる汎用クラス(CLAUDE.mdキャプション改行ルール)。
+   専用クラスを持たない.muted-text等の一文に付ける。 */
+.pre-line { white-space: pre-line; }
+/* 言い方を選ぶ: 選択肢の中(ラベル+おすすめバッジ)のレイアウト。
+   新しいボタン様式ではなく、.optionの中身の並べ方だけ。 */
+/* 言い方を選ぶ の行: 「おすすめ」のバッジは、それが指すラベルのすぐ横に
+   置く(離して右端に飛ばすと、どれに掛かっているか読み取りにくい)。 */
+.option .option-choose-label + .chip { margin-left: 10px; vertical-align: middle; }
+/* ★2026-09-24 Order Up の .choice-num-inline。丸数字(①②③)をやめ、
+   焦茶の素の数字にした(Harumi指示「①の書き方や…order upのように」)。
+   丸数字は1文字の中に「丸」と「数字」が入っていて、すぐ左の◯(1つだけ
+   選ぶ印)と丸が2つ並んで見える —— 印の仕事を番号が薄めていた。 */
+.choice-num-inline {
+  flex: none;
+  min-width: 1.1em;
+  color: var(--umber);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: 1.2;
+}
+/* 番号のあとに並ぶバッジ。行の右端の▶は margin-left:auto で離れる。 */
+.option .chip + .chip { margin-left: 6px; }
+/* 「押すと音が鳴る行」の印(2026-08-31 Harumi提案「統一して再生▶️アイコンを
+   加えるように」)。★一覧(.phrase-row-chev)と同じ▶を、同じ行末に置く ——
+   これで「▶が見えたら音が鳴る」がアプリ全体で1つの意味になる。
+   ※▶は印であってボタンではない。行の中の押せる物は今も.option 1つだけで、
+     ▶を押しても行を押しても同じことが起きる(2026-08-31に直した「押せそうに
+     見える方が進まない」逆転を作り直さないため)。
+   ※新しい色・角・影は足していない。既存の.optionに並べ方(flex)と
+     既存の.action-iconを1つ足しただけ(見た目の文法7b)。 */
+.option-sound-icon { margin-left: auto; margin-right: 0; color: var(--muted); }
+.option[aria-pressed="true"] .option-sound-icon { color: var(--accent-text); }
+
+/* ★2026-09-29 .btn-small-play(smallPlayButton)は部品ごと削除した。 */
+
+/* 丸いカウントダウン(2026-08-31 Harumi提案「まるいチャートカウントダウン/
+   時計カウントダウン。ビジュアル的に10秒経ってるって見える方法」)。
+   帯ではなく円にしたのは、**円＝時計の文字盤**で説明なしに時間だと分かる
+   から。数字も必ず一緒に出す —— 50〜60代には形より数字の方が速い。
+   新しい色は1つも足していない: 地は--ink-hair、減る弧は金(--accent-line)、
+   数字は本文色。 */
+.countdown { position: relative; flex: none; width: 56px; height: 56px; }
+.countdown-svg { width: 100%; height: 100%; display: block; transform: rotate(-90deg); }
+.countdown-track { fill: none; stroke: var(--ink-hair); stroke-width: 4; }
+.countdown-bar {
+  fill: none;
+  stroke: var(--accent-line);
+  stroke-width: 4;
+  stroke-linecap: round;
+  /* 1秒ごとに値を入れ替えるだけで、ここが滑らかに繋ぐ。 */
+  transition: stroke-dashoffset 1s linear;
+}
+/* 「もう一度聞く」で満タンに戻す一瞬だけ、逆回りに伸びて見えないよう切る。 */
+.countdown-bar.is-instant { transition: none; }
+.countdown-num {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-gothic);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--ink);
+}
+/* 丸を左、案内を右に並べる .note の修飾(新しい部品ではなく並べ方だけ)。 */
+.note.is-countdown { display: flex; align-items: center; gap: 14px; }
+.note.is-countdown p { margin: 0; text-align: left; }
+@media (prefers-reduced-motion: reduce) {
+  .countdown-bar { transition: none; }
+}
+
+
+/* ---- いまここ: 「リスニング / スピーキング」の札 と レッスンの地図 ----
+   ★2026-09-23 Harumi指示「Order upみたいに、地図があった方がいいです。
+   同じやり方をspeak upにも実装して」「リスニング／スピーキング って
+   order upと同じようにTOPに加えて」。
+   値は Order Up 本番(harmony-horizon/orderup/index.html)から**そのまま**。
+   新しい色は1つも足していない(金の濃淡＋グレージュだけ)。
+   旧 .route-row / .route-step(状況›言い方›会話 の細い1行)は、この地図に
+   役目を譲って削除した。**復活させないこと。** */
+.journey-mode { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin: 0; }
+/* ★2026-09-29 margin-bottom 4px を外した(.screen-body の gap と足し算で36px)。 */
+.mode-name {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 18px;
+  border-radius: 999px;
+  background: var(--accent-tint);
+  color: var(--accent-text);
+  font-family: var(--font-gothic);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: 1.6;
+  /* ★2026-09-30 「リスニング＆スピーキング」(12字)が360pxで2行に割れた。
+     札は1行で一目で読ませる物なので折らない(340pxでも収まることを実測)。 */
+  white-space: nowrap;
+}
+
+/* ★2026-09-30 札の動き(js/ui.js modeRow の説明を参照)。
+   入り方は吹き出しの chatRowIn と同じ系統(少し動いて現れる)、輪は自分の番の
+   yourTurnGlow と同じ金の広がり —— 動きの言葉はこの2つだけ。 */
+.mode-name.is-enter { animation: modeIn 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both, modeGlow 1.2s ease-out 300ms 1; }
+.mode-name.is-enter.is-changed { animation: modeIn 360ms cubic-bezier(0.2, 0.8, 0.2, 1) both, modeGlow 1.2s ease-out 300ms 2; }
+@keyframes modeIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.92); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes modeGlow {
+  0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-fill) 60%, transparent); }
+  100% { box-shadow: 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .mode-name.is-enter { animation: none; } }
+
+/* レッスンの地図(状況ページだけ)。Order Up の .bridge-map と同じ値。 */
+.bridge-map { background: var(--ink-wash); padding: var(--space-5) var(--space-4); }
+.bridge-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+/* ★2026-09-25 flex-wrap:wrap → nowrap に変更。Homeの地図(lessonMap再利用)で
+   長いモジュール名(「困ってない人に声をかけてみる」等)を渡すと、
+   wrapだと**行ごと**折り返して、丸・番号が付いていない孤立した2行目に
+   見えていた(実測で発見)。nowrapなら、名前(bridge-step-name)自身が
+   flex:1 1 auto; min-width:0 で**その場で**折り返す——丸・番号の右に
+   ぶら下がったまま2行目が来る。状況ページの地図(短い名前しか使わない)
+   には影響しない。align-itemsをcenterのままにすると2行名の時に丸が
+   縦の真ん中でズレるので flex-start にした(1行の時は元と同じ見た目)。 */
+.bridge-step { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: var(--space-1) var(--space-3); font-size: var(--text-sm); color: var(--muted); min-height: 32px; }
+.bridge-step-mark {
+  flex: none; width: 24px; height: 24px; border-radius: 50%;
+  border: 1.5px solid var(--neutral);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+/* ★2026-09-29 Harumi指摘「数字とチェックマークズレてる」。
+   以前は文字の方に padding-top:3px(いまここは1px)を足して丸に合わせていたが、
+   行間を上げた(2026-09-25)ので1行の高さが 18px×1.8=32px になり、文字の中心が
+   丸の中心より約7px下にずれていた —— **固定pxで他の要素の高さを追いかけた**事故。
+   いまは丸の方を「1行目の真ん中」に置く。1行の高さはトークンから計算する
+   (文字の大きさ×行間)ので、トークンが変わってもずれない。
+   ・ふつうの行: --text-sm × --lh-base / いまここ: --text-md × --lh-base
+   ・「← いまここ」は小さい字なので、大きい字の1行の真ん中に下げる。 */
+.bridge-step-mark { margin-top: calc((var(--text-sm) * var(--lh-base) - 24px) / 2); }
+.bridge-step.is-now .bridge-step-mark { margin-top: calc((var(--text-md) * var(--lh-base) - 24px) / 2); }
+.bridge-step.is-now .bridge-step-here { margin-top: calc((var(--text-md) - var(--text-sm)) * var(--lh-base) / 2); }
+.bridge-step.is-done { color: var(--ink); }
+.bridge-step.is-done .bridge-step-mark { background: var(--accent-line); border-color: var(--accent-line); }
+.bridge-step.is-now { color: var(--ink); font-weight: 700; font-size: var(--text-md); }
+/* いまここの印だけ濃い焦茶＋金のにじみ。Order Up が実機で選んだ値
+   (#4B3325 は電話で黒に見え、#6F4A33 は薄すぎた)。 */
+.bridge-step.is-now .bridge-step-mark { background: #5E3F2C; border-color: #5E3F2C; box-shadow: 0 0 0 5px var(--accent-tint); }
+.bridge-step-num { flex: none; min-width: 1.2em; font-weight: 700; color: #4B3325; }
+.bridge-step-name { flex: 1 1 auto; min-width: 0; }
+.bridge-step-here { flex: none; font-size: var(--text-sm); color: var(--accent-text); font-weight: 700; white-space: nowrap; }
+.bridge-step.is-later { color: var(--muted); }
+.bridge-step.is-later .bridge-step-mark { border-style: dashed; }
+@media (max-width: 360px) { .bridge-map { padding: var(--space-4); } }
+
+/* モードの橋(js/lesson.js stepModeBridge)。移植元は Order Up の
+   .bridge-title / .bridge-line / .bridge-why(orderup/index.html)。
+   ★余白は**入れ物(gap)**で決める —— 子に margin-top を書かない
+     (CLAUDE.md「まとまりの中の余白は入れ物(gap)で決める」)。
+     見出し / 説明の塊 / 地図 / nav は .screen-body の 32px で離れ、
+     説明の中(何をする・どうやる・なぜ)だけ .bridge-msg の 16px。
+   ★新しい色・様式は1つも足していない(地は --ink-wash、
+     文字は --ink、大きさは 6段階のまま)。 */
+.bridge-msg { display: flex; flex-direction: column; gap: var(--space-4); }
+.bridge-line { margin: 0; font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); white-space: pre-line; }
+.bridge-why { padding: var(--space-5); background: var(--ink-wash); }
+/* ★2026-09-28 「この練習の流れ」(js/ui.js modeBridge)。番号の帯は、はじめの
+   案内の .onb-flow-row と同じ見た目(白地・細い枠・角ゼロ・金の丸い番号)。
+   手順は読む文なので並字(太字は見出しの「この練習の流れ」だけ)。
+   見出しと帯の間は入れ物の gap で決める(子の margin にしない)。 */
+.bridge-flow-block { display: flex; flex-direction: column; gap: var(--space-3); }
+.bridge-flow-head { margin: 0; font-size: var(--text-sm); font-weight: 700; color: var(--ink); }
+.bridge-flow { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.bridge-flow li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: var(--space-3) var(--space-4);
+}
+.bridge-flow .onb-flow-n { margin-top: 2px; }
+.bridge-flow-text { font-size: var(--text-md); line-height: var(--lh-base); color: var(--ink); white-space: pre-line; }
+.bridge-why-head { margin: 0 0 var(--space-2); font-size: var(--text-sm); font-weight: 700; color: var(--ink); }
+.bridge-why-text { margin: 0; font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); white-space: pre-line; }
+
+/* ★2026-09-04 鎖(モジュール一覧)の入れ物。中身が無い間は場所を取らない ——
+   `.screen-body` は gap を持つので、空の div でも1つ20pxずつ画面を伸ばす。
+   「この先の練習」を畳んだ時に、3段の空の入れ物で60px損していた。 */
+.chain-host:empty { display: none; }
+
+/* ★2026-09-06 「フレーズ」タブの一覧を、モジュールごとのカテゴリーに畳む
+   (js/mybook.js)。Harumi指示「全部ばーっと並ぶと圧倒される。どのカテゴリーを
+   見れば自分のフレーズが見つかるかが分かる並びに」。
+   **新しい部品・色・様式は作っていない** —— 見出しの行はHomeのモジュール
+   一覧と同じ `.cat-review-row-plain`(平らな行＋細い罫線。見た目の文法1)で、
+   ここで足しているのは「開いているかどうか」の状態だけ。›を90度回すのは
+   発音Tipsの `.tip-chevron` と同じ約束をそのまま借りたもの。 */
+.phrase-group-body { display: flex; flex-direction: column; }
+/* 開いた分の最後の行にも罫線を残す —— 次のカテゴリーの見出しとの間が
+   1本も無いと、どこまでが同じカテゴリーか読めなくなる。 */
+.phrase-group-body > .phrase-row-split:last-child { border-bottom: 1px solid var(--line); }
+/* ★2026-09-08 Homeの「場面の一覧」(モジュールの下に畳んである行)。
+   足したのは**字下げだけ** —— 色・角・影・新しい様式は1つも作っていない。
+   モジュールの行の中に入っていることを、位置だけで示す。 */
+/* ★2026-09-25 .scene-index-head/.scene-index-row(完了済みモジュールの
+   中の場面索引。押すとその場面へ直行)は削除した。Homeから個別の場面への
+   直接ジャンプを無くしたため(復習は「フレーズ」タブの一覧から)。
+   復活させないこと。 */
+.cat-review-row-plain.is-group-head .cat-review-chev-plain {
+  display: inline-block;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.cat-review-row-plain.is-group-head[aria-expanded="true"] .cat-review-chev-plain {
+  transform: rotate(90deg);
+  color: var(--accent-text);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cat-review-row-plain.is-group-head .cat-review-chev-plain { transition: none; }
+}
+
+/* ★2026-09-28 聞き返すを選ぶ画面のカルーセル(js/phraseBank.js stepSelect)。
+   「言い方を選ぶ」と同じ .carousel-card に、いくつでも選べる☐の
+   「この言い方を選ぶ」(.option.is-multi)を1つ置く。新しい色・様式は無し。
+   カードの地(グレージュ)の上で白い箱に見えるよう、.option の既定のまま。 */
+/* ★2026-09-30 聞き返す・相槌の「選ぶ画面」(js/phraseBank.js stepSelect)。
+   Harumi決定「C案」: まとまりの見出し → まとまりごとに**1枚の面** → その中に
+   フレーズを**細い罫線**で並べる。1行ごとの箱(旧 .pick-card)は作らない。
+   2つの画面で同じ部品を使う(情報の優先順位だけ、聞き返す=和訳が主 /
+   相槌=英語が主 と分かれる)。
+   ・余白: まとまり同士48 / 見出し→面12 / 行の中16(12/24/48のルールのまま)
+   ・金は「選んだ行」と「練習する」ボタンだけ。口調のバッジ・▶・見出しは金にしない。 */
+.pick-groups { display: flex; flex-direction: column; gap: var(--space-7); }
+.pick-group { display: flex; flex-direction: column; gap: var(--space-3); }
+/* 見出しは2画面とも20px・黒・太字(相槌ドリルの .group-title 23px は触らない)。 */
+.pick-group > .group-title { font-size: var(--text-md); }
+.pick-panel { background: var(--surface); border: 1px solid var(--line); }
+.pick-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 72px;
+  /* 右は▶の押せる幅(44px)が受け持つので0。 */
+  padding: var(--space-4) 0 var(--space-4) var(--space-4);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.12s ease;
+}
+.pick-row + .pick-row { border-top: 1px solid var(--line); }
+.pick-row:active { background: var(--ink-wash-2); }
+.pick-row:focus-visible { outline: 3px solid var(--accent-line); outline-offset: -3px; }
+.pick-row > .option-checkbox { flex: none; margin: 0; }
+/* 選んだ状態: ☐を金で塗る＋行の地をいちばん淡い金。金の外枠は付けない。 */
+.pick-row[aria-pressed="true"] { background: var(--accent-tint); }
+.pick-row[aria-pressed="true"] .option-checkbox {
+  background: var(--accent-fill);
+  border-color: var(--accent-line);
+  color: var(--ink);
+}
+.pick-row-text { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+/* 主(聞き返す=和訳 / 相槌=英語)。 */
+.pick-row-main {
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  line-height: var(--lh-base);
+  color: var(--ink);
+  white-space: pre-line;
+}
+/* 補足(相槌の和訳)と口調のバッジ。 */
+.pick-row-sub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1) var(--space-2);
+  font-size: var(--text-sm);
+  line-height: var(--lh-base);
+  color: var(--muted);
+}
+/* 口調のバッジ: 形は今のまま(枠線のピル)、金を外して灰色。フレーズより目立たせない。 */
+.pick-row-sub .chip {
+  font-size: var(--text-xs);
+  font-weight: 400;
+  padding: 1px 6px;
+  background: transparent;
+  border-color: var(--neutral);
+  color: var(--muted);
+}
+/* 「済」は補足の行に、バッジと同じ大きさで(右の列に置くと文の幅を取る)。 */
+.pick-row-sub .done-stamp { font-size: var(--text-xs); line-height: 1.4; padding: 1px 6px; }
+/* ★2026-09-30 Harumi指示「『済』は金色から控えめな灰色に」。この画面の金は
+   「選んだ物」と「選んだ◯つを練習する」だけに集める。済は口調と同じ脇役。
+   (ほかの画面の「済」は金のまま。この選ぶ画面の中だけ) */
+.pick-row-sub .done-stamp { color: var(--muted); border-color: var(--neutral); }
+/* ★2026-09-30 削除: ▶を18px・var(--neutral)まで小さく・薄くしていた
+   このpick-row専用の上書き。Harumi報告(実機)「Play button小さすぎない？」。
+   2026-08-26に一度「マイクが小さいので大きくして」で44px押せる幅・26px・
+   var(--muted)に直した`.phrase-row-chev`の既定(1911行目)を、この選ぶ画面
+   **だけ**あとから18px・var(--neutral)へ戻してしまっていた ——
+   「同じ意味の物は同じ部品で描く」に反していたので、既定に揃えて削除した。
+   押せる幅(44px)はもともと変えていない。 */
+.pick-row > .phrase-row-chev { align-self: stretch; }
+@media (prefers-reduced-motion: reduce) { .pick-row { transition: none; } }
+/* 0個で開始ボタンを押した時だけ、ボタンのすぐ上に小さく出す。 */
+.pick-need { margin: 0; font-size: var(--text-sm); color: var(--ink); }
+.group-title {
+  margin: 0;
+  font-family: var(--font-gothic);
+  font-size: var(--text-lg);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  color: var(--ink);
+  text-wrap: balance;
+}
+/* ★2026-09-29 文節の最後の2文字＋句読点(js/ui.js jaText)。非常用の折り返しでも
+   「すか？」が一緒に動く —— 「？」だけの行を作らない。CLAUDE.md「日本語は文節で改行する」 */
+.nb { white-space: nowrap; }
+
+/* ★2026-09-29 Homeの地図: いまのまとまりの中のレッスン(js/ui.js lessonMap の nowSub)。
+   頭は番号の位置にそろえる(丸24px ＋ すき間)。印は1段小さい18px。新しい色は無し。 */
+.bridge-step.has-sub .bridge-step-mark { box-shadow: none; }
+.bridge-step-count { flex: none; font-size: var(--text-sm); font-weight: 400; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums;
+  margin-top: calc((var(--text-md) - var(--text-sm)) * var(--lh-base) / 2); }
+.bridge-sub-wrap { list-style: none; padding-left: calc(24px + var(--space-3)); }
+.bridge-sub { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.bridge-sub-step { display: flex; flex-wrap: nowrap; align-items: flex-start; gap: var(--space-3); font-size: var(--text-sm); line-height: var(--lh-base); color: var(--ink); }
+.bridge-sub-mark {
+  flex: none; width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid var(--neutral);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700; color: #fff;
+  margin-top: calc((var(--text-sm) * var(--lh-base) - 18px) / 2);
+}
+.bridge-sub-name { flex: 1 1 auto; min-width: 0; }
+.bridge-sub-step.is-done .bridge-sub-mark { background: var(--accent-line); border-color: var(--accent-line); }
+.bridge-sub-step.is-now { font-weight: 700; }
+.bridge-sub-step.is-now .bridge-sub-mark { background: #5E3F2C; border-color: #5E3F2C; box-shadow: 0 0 0 4px var(--accent-tint); }
+.bridge-sub-step.is-now .bridge-step-here { margin-top: 0; }
+.bridge-sub-step.is-later { color: var(--muted); }
+.bridge-sub-step.is-later .bridge-sub-mark { border-style: dashed; }
+
+/* ★2026-09-29 会話の練習「自分の番」の合図(Harumi「あなたアイコンがネオンのように光って」)。
+   ・光らせるのはアイコンだけ。なんかしら言ったを押すまで光り続ける(2026-09-29 HARU様
+     「光が弱すぎて気がつかない」、LPと同じ)。
+   ・吹き出しは動かさない(揺らす・跳ねるは子どもっぽく見え、読みにくい)。
+     吹き出しは枠を金にするだけ(新しい色は無し。--accent-line)。
+   ・動きを減らす設定の人には光を出さず、輪だけ。 */
+/* ★2026-09-29 HARU様「光が弱すぎて気がつかない」→ LP(harmony-horizon-landing 6f15a2f)から
+   1文字も変えずに写した。輪は4px、その外に半透明の金の輪(12px)とぼかした光が1.6秒で1回
+   ふくらんで戻る(点滅ではない)。押して is-your-turn が外れたら止まる。
+   yourTurnGlow は .sim-row(はじめてガイドの見本)がまだ使っているので残す。 */
+.chat-row.is-your-turn .chat-avatar { box-shadow: 0 0 0 4px var(--accent-fill); animation: yourTurnBreath 1.6s ease-in-out infinite; }
+@keyframes yourTurnBreath {
+  0%, 100% { box-shadow: 0 0 0 4px var(--accent-fill), 0 0 0 4px color-mix(in srgb, var(--accent-fill) 0%, transparent), 0 0 0 0 color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+  50%      { box-shadow: 0 0 0 4px var(--accent-fill), 0 0 0 12px color-mix(in srgb, var(--accent-fill) 45%, transparent), 0 0 20px 14px color-mix(in srgb, var(--accent-fill) 55%, transparent); }
+}
+.chat-row.is-your-turn .chat-bubble { border-color: var(--accent-line); }
+.chat-row.is-your-turn .chat-sender { color: var(--accent-text); font-weight: 700; }
+@keyframes yourTurnGlow {
+  0%   { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 0 color-mix(in srgb, var(--accent-fill) 60%, transparent); }
+  100% { box-shadow: 0 0 0 3px var(--accent-fill), 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .chat-row.is-your-turn .chat-avatar { animation: none; } }
+
+/* ============================================================
+   聞き流し(2026-09-29) —— Eat Out の聞き流し(eatout/listening/index.html
+   .listen-* 3981〜4315 / 5190〜5246)を、寸法だけ Speak Up のトークンに
+   置き換えて移した。新しい色は1つも足していない。
+   ・角は四角(Speak Up「角は全部四角」)。
+   ・フレーズタブの一番上の箱(.listen-hero)は、上辺の金の線だけで分ける
+     (Eat Out と同じ)。影は付けない(Speak Up「影は外した」)。
+   ============================================================ */
+.listen-hero {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--accent-line);
+  padding: var(--space-5);
+}
+.listen-hero-title {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  margin: 0 0 var(--space-2);
+}
+.listen-hero-sub {
+  font-size: var(--text-md);
+  line-height: var(--lh-read);
+  white-space: pre-line;
+  color: var(--ink);
+  margin: 0 0 var(--space-3);
+}
+.listen-hero-sub:last-child { margin-bottom: 0; }
+/* ★2026-09-29 聞き流しタブのトップ。タブの画面そのものなので箱にしない(箱の中の箱を作らない)。 */
+.listen-hero.is-tab { background: none; border: none; padding: 0; }
+.listen-group {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin: var(--space-5) 0 0;
+}
+.listen-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-2) var(--space-1);
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  color: var(--ink);
+  font-family: var(--font-gothic);
+  line-height: var(--lh-base);
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.listen-row:last-child { border-bottom: none; }
+.listen-row.is-weak {
+  background: var(--accent-tint);
+  border: 1px solid var(--accent-line);
+  padding: var(--space-3);
+  margin-top: var(--space-2);
+}
+.listen-row.is-through {
+  margin-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  border-bottom: none;
+}
+.listen-row:active { background: var(--ink-wash); }
+.listen-row:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 2px; }
+.listen-row-left { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.listen-row-name { font-size: var(--text-md); font-weight: 700; }
+.listen-row-meta { font-size: var(--text-xs); color: var(--muted); font-variant-numeric: tabular-nums; }
+.listen-row-play { flex: 0 0 auto; width: 22px; height: 22px; color: var(--accent-text); }
+.listen-row-play svg { width: 100%; height: 100%; display: block; }
+
+/* 再生画面 —— 字幕式(窓と巻物)。見えているのは常に3文。 */
+.listen-script {
+  height: 40vh;
+  min-height: 156px;
+  max-height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+.listen-reel { position: relative; transition: transform 0.32s ease; }
+.listen-line {
+  display: flex;
+  gap: var(--space-3);
+  align-items: baseline;
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  color: var(--muted-soft);
+  opacity: 0; /* Eat Out と同じ例外: 聞き流しの鳴っていない行だけ、薄さで「読ませない」 */
+  transition: opacity 0.28s ease, background 0.2s ease, color 0.2s ease;
+}
+.listen-line.is-near { opacity: 0.18; }
+.listen-line.is-now {
+  opacity: 1;
+  color: var(--ink);
+  background: var(--ink-wash);
+  font-weight: 700;
+}
+.listen-who {
+  flex: 0 0 3.6em;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.listen-line-you .listen-who { color: var(--accent-text); }
+.listen-en { flex: 1; font-size: var(--text-lg); line-height: 1.5; color: inherit; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+  .listen-reel, .listen-line { transition: none; }
+}
+.listen-big { display: flex; align-items: center; justify-content: center; gap: var(--space-2); }
+.listen-big .listen-big-icon, .listen-big svg { width: 22px; height: 22px; flex: 0 0 auto; }
+.secondary-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.secondary-row .btn-small { flex: 1 1 auto; min-height: 44px; }
+.listen-repeat.is-on { border-color: var(--accent-line); background: var(--accent-tint); }
+
+/* ★2026-09-30 聞き流しタブの「聞き流す ｜ 止まって練習」(js/listen.js modeSwitch)。
+   部品は .seg のまま。見出し → 切り替え → その説明 を1つの塊にする(中は8px)。 */
+.listen-mode { display: flex; flex-direction: column; gap: var(--space-2); margin: var(--space-3) 0 var(--space-4); }
+.listen-mode .listen-hero-sub { margin: 0; }
+.listen-mode .seg-btn { font-size: var(--text-md); padding: 10px 8px; }
+
+/* 止まって練習の「あなた」の行。新しい色は無し(金の4段階とエスプレッソだけ)。
+   ・日本語が主役(練習する問い)。英文と「英語で、声に出して」は同じ場所に重ねる
+     (.listen-slot は grid の1マスに2つ重ねる)—— どちらが見えても行の高さは変わらない。
+   ・あなたの番(is-waiting): 行の地を淡い金、左に金の線。名前は「あなたの番」に替わる。
+     「選んでいる状態は淡い金」「自分の番は金」と同じ言葉づかい。 */
+.listen-line.is-practice { align-items: flex-start; }
+.listen-body { flex: 1; display: flex; flex-direction: column; gap: var(--space-1); min-width: 0; }
+.listen-ja { font-size: var(--text-lg); line-height: 1.5; color: inherit; }
+.listen-slot { display: grid; }
+.listen-slot > * { grid-area: 1 / 1; }
+.listen-line.is-practice .listen-en { font-size: var(--text-md); font-weight: 700; visibility: hidden; }
+.listen-cue { font-size: var(--text-sm); font-weight: 700; color: var(--accent-text); visibility: hidden; }
+.listen-line.is-practice.is-said .listen-en { visibility: visible; }
+.listen-line.is-practice.is-waiting .listen-cue { visibility: visible; }
+.listen-who-turn { display: none; }
+.listen-line.is-waiting .listen-who-you { display: none; }
+.listen-line.is-waiting .listen-who-turn { display: inline; font-weight: 700; color: var(--accent-text); }
+.listen-line.is-now.is-waiting {
+  background: var(--accent-tint);
+  box-shadow: inset 3px 0 0 var(--accent-line);
+}
+/* 「言えた」に変わった瞬間、金の輪を1回だけ広げる(yourTurnGlow と同じ動き)。 */
+.listen-big.is-turn { animation: listenSayGlow 1.4s ease-out 1; }
+@keyframes listenSayGlow {
+  /* 主ボタン自身の影(.btn-primary)を残したまま、外側に輪を重ねる。 */
+  0% { box-shadow: 0 3px 8px rgba(34, 29, 24, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 0 0 0 color-mix(in srgb, var(--accent-fill) 70%, transparent); }
+  100% { box-shadow: 0 3px 8px rgba(34, 29, 24, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 0 0 14px color-mix(in srgb, var(--accent-fill) 0%, transparent); }
+}
+@media (prefers-reduced-motion: reduce) { .listen-big.is-turn { animation: none; } }
+
+/* 聞き流しの画面の外で、鳴っている間だけ上に出る帯(Eat Out listen-bar)。 */
+.listen-bar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: 0 auto;
+  max-width: 480px;
+  padding: max(var(--space-3), env(safe-area-inset-top)) var(--space-4) var(--space-3);
+  background: var(--accent-tint);
+  border-bottom: 1px solid var(--accent-line);
+}
+.listen-bar.is-playing { background: var(--accent-wash); }
+.listen-bar[hidden] { display: none; }
+.listen-bar-text {
+  font-weight: 700;
+  font-size: var(--text-md);
+  line-height: var(--lh-heading);
+  color: var(--ink);
+  margin: 0;
+  min-width: 0;
+}
+.listen-bar-stop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 0 0 auto;
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--accent-line);
+  border-radius: 0;
+  background: none;
+  font-family: var(--font-gothic);
+  font-weight: 700;
+  font-size: var(--text-md);
+  color: var(--ink);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.listen-bar-stop svg { width: 20px; height: 20px; flex: 0 0 auto; }
+.listen-bar-stop:active { background: var(--accent-tint); }
+.listen-bar-stop:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+
+/* ============================================================
+   はじめてガイド(★2026-09-30 js/guide.js)
+   Eat Out の .tutorial-* と同じ作り。z-index はタブバー・帯(50〜100)より上。
+   ★暗幕は4枚(.guide-shield)。影で穴を開けると画面の端で崩れる(Eat Out 実機)。
+   ★濃さは30%。Eat Out で HARU様「全体図が全く見えない」から74%→30%に下げた値。
+   ★位置の動き(top/left の transition)を付けない。枠が遅れて追いかけると、
+     文と枠が別の所を指す(Eat Out「ハイライトズレてる」)。消える/出るだけ。
+   ============================================================ */
+.guide-shield { position: fixed; z-index: 1000; background: rgba(34, 29, 24, 0.30); }
+.guide-spot { position: fixed; z-index: 1001; background: transparent; transition: opacity .15s ease; }
+.guide-ring {
+  position: fixed;
+  z-index: 1002;
+  border: 3px solid var(--accent-line);
+  pointer-events: none;
+  transition: opacity .15s ease;
+  animation: guidePulse 1.4s ease-in-out infinite;
+}
+/* 脈の色は枠と対で直す(片方だけ直すと、脈の途中で色が変わって見える)。 */
+@keyframes guidePulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(163, 120, 45, .45); }
+  50% { box-shadow: 0 0 0 10px rgba(163, 120, 45, 0); }
+}
+.guide-card {
+  position: fixed;
+  z-index: 1003;
+  background: var(--paper);
+  padding: var(--space-4) var(--space-4) var(--space-2);
+  box-shadow: 0 10px 30px rgba(34, 29, 24, 0.25);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  transition: opacity .15s ease;
+}
+.guide-lead { margin: 0 0 var(--space-1); font-size: var(--text-lg); font-weight: 700; line-height: var(--lh-heading); color: var(--ink); }
+.guide-body { margin: 0; font-size: var(--text-md); line-height: var(--lh-base); color: var(--ink); white-space: pre-line; }
+/* 「次へ」はアプリの主ボタン(.btn-primary)と同じ金・同じ文字。 */
+.guide-next {
+  display: block;
+  width: 100%;
+  min-height: 52px;
+  margin-top: var(--space-4);
+  border: none;
+  border-radius: 0;
+  background: var(--accent-fill);
+  color: var(--ink);
+  font-family: var(--font-gothic);
+  font-size: var(--text-md);
+  font-weight: 700;
+  cursor: pointer;
+}
+.guide-next:focus-visible, .guide-skip:focus-visible { outline: 3px solid var(--accent-line); outline-offset: 2px; }
+.guide-skip {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-family: var(--font-gothic);
+  font-size: var(--text-sm);
+  text-decoration: underline;
+  padding: var(--space-2) 0;
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) { .guide-ring { animation: none; } }
+
+/* 学ぶタブの一番下「使い方をもう一度見る」。部品は .btn-link のまま、
+   目立たせない(押せる物はヒーローの「はじめる」1つ、を崩さないため)。 */
+.guide-replay { align-self: flex-start; color: var(--muted); }
+
+/* ---- 会話の練習の動くお手本(js/guide.js simDemoBlock) ----
+   新しい色は足していない(吹き出し・アイコン・金の輪は、本物の会話と同じ値)。
+   箱は四角(--radius 0)・吹き出しだけ --radius-bubble。高さを決めておき、
+   中身が動いても下の手順がガタつかないようにする。 */
+/* ★2026-09-30 見本のページ: 「見本」の一言＋案内 / 見本の枠＋字幕。
+   見本の一言は小さな札(地の文より小さく太く)、字幕は枠のすぐ下(8px)。 */
+.sim-intro { display: flex; flex-direction: column; gap: var(--space-1); }
+.sim-label { margin: 0; font-size: var(--text-sm); font-weight: 700; line-height: var(--lh-base); color: var(--accent-text); }
+.sim-stage { display: flex; flex-direction: column; gap: var(--space-2); }
+.sim-caption {
+  margin: 0;
+  min-height: calc(var(--text-md) * var(--lh-base));
+  font-size: var(--text-md);
+  font-weight: 700;
+  line-height: var(--lh-base);
+  color: var(--ink);
+}
+.sim-caption { display: flex; align-items: flex-start; gap: var(--space-2); }
+/* 番号の丸は、字幕の1行目の真ん中にそろえる(固定pxで追いかけない)。 */
+.sim-caption .onb-flow-n { margin-top: calc((var(--text-md) * var(--lh-base) - 28px) / 2); }
+.sim-caption-text { flex: 1 1 auto; min-width: 0; }
+/* 番号の分だけ幅が減り、狭い画面(360px)では2行になる字幕がある。字幕ごとに高さが
+   変わって下のボタンが上下しないよう、狭い画面だけ2行ぶんの高さを取っておく。 */
+@media (max-width: 379px) {
+  .sim-caption { min-height: calc(var(--text-md) * var(--lh-base) * 2); }
+}
+.sim-caption.is-in { animation: simCaptionIn .25s ease both; }
+/* ★2026-09-30 見本は▶を押すと始まる。表紙(止まった1枚)は少し薄くし、真ん中に丸い▶。 */
+.sim-demo.is-poster .sim-thread,
+.sim-demo.is-poster .sim-low { opacity: 0.45; }
+.sim-play { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; }
+.sim-again { align-self: flex-start; margin-top: 0; }
+/* 何の練習かの説明と「見本」は別のまとまり。32px 離す(見本の中は 4・12・8px のまま)。 */
+.bridge-msg:has(> .sim-block) { gap: var(--space-6); }
+@keyframes simCaptionIn { from { opacity: 0; } to { opacity: 1; } }
+.sim-demo {
+  position: relative;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  overflow: hidden;
+}
+.sim-thread {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  overflow: hidden;
+}
+.sim-row { display: flex; gap: var(--space-2); align-items: flex-start; animation: chatRowIn .26s ease both; }
+.sim-row.is-you { flex-direction: row-reverse; }
+.sim-col { display: flex; flex-direction: column; gap: var(--space-1); max-width: 78%; }
+.sim-row.is-you .sim-col { align-items: flex-end; }
+.sim-av {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.sim-av.is-partner { background: var(--surface); border: 1px solid var(--line); color: var(--muted); }
+.sim-av.is-you { background: var(--ink); color: var(--surface); }
+.sim-av-icon { width: 100%; height: 100%; display: block; }
+.sim-row.is-turn .sim-av { box-shadow: 0 0 0 3px var(--accent-fill); animation: yourTurnGlow 1.4s ease-out 2; }
+.sim-bub {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-bubble);
+  padding: var(--space-2) var(--space-3);
+}
+.sim-row.is-you .sim-bub { background: var(--ink-wash); border-color: var(--ink-wash); }
+.sim-row.is-turn .sim-bub { border-color: var(--accent-line); }
+.sim-bub.is-dots { border-radius: 999px; }
+.sim-en { margin: 0; font-size: var(--text-sm); font-weight: 800; line-height: 1.3; color: var(--ink); border-left: 3px solid var(--accent-fill); padding-left: var(--space-2); }
+.sim-ja { margin: var(--space-1) 0 0; font-size: var(--text-xs); line-height: var(--lh-base); color: var(--ink); }
+.sim-ja.is-big { margin: 0; font-size: var(--text-sm); }
+.sim-wave { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); font-weight: 700; color: var(--accent-text); white-space: nowrap; }
+.sim-row.is-you .sim-wave { margin-top: var(--space-1); }
+.sim-wave i { display: inline-flex; gap: 2px; align-items: center; height: 18px; font-style: normal; }
+.sim-wave b { width: 2px; height: 6px; border-radius: 2px; background: var(--neutral); }
+.sim-wave.is-on b { background: var(--accent-fill); animation: simWave .6s ease-in-out infinite alternate; }
+.sim-wave.is-on b:nth-child(2n) { animation-delay: .15s; }
+.sim-wave.is-on b:nth-child(3n) { animation-delay: .3s; }
+@keyframes simWave { from { height: 4px; } to { height: 17px; } }
+.sim-dots { display: flex; gap: 5px; padding: 4px 2px; }
+.sim-dots b { width: 6px; height: 6px; border-radius: 999px; background: var(--neutral); animation: chatTypingDot 1.1s ease-in-out infinite; }
+.sim-dots b:nth-child(2) { animation-delay: .15s; }
+.sim-dots b:nth-child(3) { animation-delay: .3s; }
+.sim-miss { font-size: var(--text-xs); color: var(--accent-text); text-decoration: underline; }
+.sim-low { display: flex; flex-direction: column; gap: var(--space-2); padding: 0 var(--space-3) var(--space-3); }
+.sim-band { min-height: 52px; background: var(--ink-wash); padding: var(--space-2) var(--space-3); font-size: var(--text-xs); line-height: var(--lh-base); color: var(--ink); }
+.sim-band p { margin: 0; white-space: pre-line; }
+.sim-said {
+  visibility: hidden;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-fill);
+  color: var(--ink);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.sim-said.is-show { visibility: visible; }
+.sim-tap {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent-fill) 35%, transparent);
+  border: 2px solid var(--accent-fill);
+  pointer-events: none;
+  opacity: 0;
+}
+.sim-tap.is-show { opacity: 1; animation: simTap .6s ease; }
+@keyframes simTap { 0% { transform: scale(.6); } 60% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .sim-row, .sim-wave.is-on b, .sim-dots b, .sim-tap.is-show, .sim-row.is-turn .sim-av, .sim-caption.is-in { animation: none; }
+}
+/* 札の説明(名前＋説明の組)。名前だけ太字、説明はその下に少し下げて。 */
+.guide-items { margin: 0; display: flex; flex-direction: column; }
+.guide-items dt { font-size: var(--text-md); font-weight: 700; line-height: var(--lh-base); color: var(--ink); }
+.guide-items dd { margin: 0 0 var(--space-2) var(--space-4); font-size: var(--text-md); line-height: var(--lh-base); color: var(--ink); }
+.guide-items dd:last-child { margin-bottom: 0; }
+/* 帯は、あなたの番の間だけ地を敷く(空の灰色の箱を残さない)。 */
+.sim-band:empty { background: transparent; }
+
+/* ★2026-09-30 入口のパスワード(js/pass.js)。ラベル → 入力欄 → 案内 を1つのまとまり(中8px)。 */
+.pass-form { display: flex; flex-direction: column; gap: var(--space-2); }
+.pass-msg { margin: 0; }
+/* ★2026-09-30(2) Harumi「これを使わない理由は？」(Eat Outの写真をぼかした
+   背景+中央カード)。レッスンの写真(help-01.jpg。新しい素材は作らない)を
+   ぼかして敷き、既定の--inkを0.45の薄さで重ねる(Eat Out側の指摘「後の
+   背景を明るめに」も踏まえた値。Eat Outの0.8・紺色は--inkと無関係だった)。
+   カードは共有部品.card(角は全部四角)をそのまま使う —— Eat Outの丸い
+   影付きカードは移植しない(このアプリの「角は全部四角」に反するため)。 */
+.screen-body.is-pass-gate { position: relative; overflow: hidden; }
+.screen-body.is-pass-gate::before {
+  content: '';
+  position: absolute;
+  inset: -24px;
+  background: var(--pass-photo) center/cover;
+  filter: blur(22px);
+  transform: scale(1.08);
+  z-index: 0;
+}
+.screen-body.is-pass-gate::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(34, 29, 24, 0.45); /* --ink(#221D18)を0.45で */
+  z-index: 0;
+}
+.screen-body.is-pass-gate > .pass-card { position: relative; z-index: 1; }
+/* 浮かせる影は新しい値を作らず、.toast と同じ値を使う(main.css)。 */
+.pass-card { width: 100%; max-width: 360px; margin: 0 auto; box-shadow: 0 8px 20px rgba(34, 29, 24, 0.16); }
+
+/* ★2026-09-29 会話の締め「Well done!」。LP(harmony-horizon-landing
+   speakup/index.html 600〜609行の .try-done)から1文字も変えずに写した。
+   直す時はLPと両方そろえる。 */
+.try-done { text-align: center; display: flex; flex-direction: column; align-items: center; gap: var(--space-3); border-top: 1px solid var(--ink-hair); padding-top: var(--space-7); animation: chatRowIn 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.05) both; }
+.try-done p { margin: 0; }
+.try-done-en { font-family: var(--font-latin); font-size: var(--text-3xl); font-weight: 700; line-height: 1.2; letter-spacing: -0.01em; color: var(--ink); }
+.try-done-title { font-size: var(--text-xl); font-weight: 700; line-height: var(--lh-heading); color: var(--ink); }
+.try-done-sub { font-size: var(--text-md); line-height: var(--lh-read); color: var(--muted); }
+/* 360px幅だけ1行に入らないので、意味の切れ目で折る(「。」だけが次の行に落ちないように)。 */
+.try-done-br { display: none; }
+@media (max-width: 370px) { .try-done-br { display: inline; } }
+@media (prefers-reduced-motion: reduce) { .try-done { animation: none; } }
