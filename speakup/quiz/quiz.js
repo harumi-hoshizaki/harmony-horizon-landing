@@ -61,7 +61,7 @@ function showStart() {
   const body = screen({ brandLockup: true });
   body.appendChild(h('h2', { class: 'screen-title', text: '単語は知っているのに、\n聞き取れないのはなぜ？' }));
   body.appendChild(markedLead('実際のコースの音声を、\n4本だけ聞いてみましょう。', 'body-text'));
-  body.appendChild(markedLead('聞き取れなかった理由を、\n{{音のパターン}}の名前で見せます。', 'body-text'));
+  body.appendChild(markedLead('聞き取れなかった理由を、\n{{音のパターン}}の名前で\n見せます。', 'body-text'));
   body.appendChild(h('div', { class: 'btn-row' }, [primaryButton('はじめる', () => show(0))]));
   body.appendChild(h('p', { class: 'muted-text', text: '全4問・無料' }));
 }
@@ -161,7 +161,7 @@ function showResult() {
 
   body.appendChild(h('div', { class: 'note' }, [
     h('p', { text: `コースの相手のセリフ\n${st.partner_lines}本のうち、${st.tipped_lines}本に\n解説があります。` }),
-    h('p', { text: `解説は${st.patterns}種類の\nパターンで整理されています。` }),
+    h('p', { text: `解説は${st.patterns}種類の\nパターンに\n分けてあります。` }),
   ]));
 
   body.appendChild(newsletterBlock(score, qs));
