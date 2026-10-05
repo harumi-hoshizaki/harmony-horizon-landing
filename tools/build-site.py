@@ -75,6 +75,7 @@ SHELL = '''<!DOCTYPE html>
 <meta property="og:image" content="https://www.harmonyhorizon.space/assets/site/hero.jpg">
 <meta property="og:image:width" content="2048">
 <meta property="og:image:height" content="1152">
+<link rel="icon" type="image/svg+xml" href="/assets/site/favicon.svg">
 <link rel="stylesheet" href="/assets/site/fonts.css">
 <link rel="stylesheet" href="/assets/site/site.css">
 <script>document.documentElement.className = "js";</script>{jsonld}

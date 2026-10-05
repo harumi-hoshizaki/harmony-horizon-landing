@@ -1043,3 +1043,16 @@ body.is-ai .ftr nav a,
 body.is-ai .ftr .ftr__mail { color: rgba(255,255,255,.86); }
 body.is-ai .ftr__k, body.is-ai .ftr__note { color: rgba(255,255,255,.72); }
 body.is-ai .ftr a:hover { color: #fff; }
+/* 2026-10-05 HARU様「速さを伝えて」「企業が頼みたい自動化をもっと」。
+   速さの一行（確かめた事実だけ）、使った道具の札、自動化の一覧。 */
+.aj-work--peach { align-items: center; }
+.aj-work--auto { background: var(--aj-tint); display: grid; gap: var(--s4); }
+@media (min-width: 900px) { .aj-work--auto { grid-template-columns: .9fr 1.1fr; align-items: center; } }
+.aj-work p.aj-fast { display: flex; gap: 10px; align-items: baseline; font-size: 17px; font-weight: 700; color: var(--aj-ink); margin: var(--s3) 0 var(--s2); }
+.aj-fast::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #E2A33D; transform: translateY(-2px); }
+.aj-work p.aj-stack { font-size: 16px; font-weight: 600; letter-spacing: .02em; color: var(--aj-tint-ink); margin: 0 0 var(--s2); }
+.aj-auto { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.aj-auto li { background: #fff; border-radius: 18px; padding: var(--s3); display: grid; gap: 4px; }
+.aj-auto b { font-size: 16px; color: var(--aj-tint-ink); }
+.aj-auto span { font-size: 17px; line-height: 1.7; color: var(--aj-ink); font-weight: 600; }
+.aj-auto small { font-size: 16px; color: var(--aj-muted); }
