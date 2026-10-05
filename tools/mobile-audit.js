@@ -24,15 +24,16 @@ const SPEC_LEGAL = { h1: [20, 34], h2: [15, 22], h3: [14, 18], body: [14, 18], m
    ★アプリの段を変える時は、ここも一緒に変えること。 */
 const SPEC_APP = { h1: [28, 40], h2: [23, 28], h3: [16, 20], body: [18, 20] };
 /* 2026-10-04: build-site.py の全ページも Speak Up の段に（HARU様）。 */
-const APP_SCALE = ['/speakup/', '/eatout/lesson/', '/', '/programs.html', '/student-voices.html', '/contact.html', '/ai-journey/contact/'];
+const APP_SCALE = ['/speakup/', '/eatout/lesson/', '/', '/programs.html', '/student-voices.html', '/contact.html', '/ai-journey/contact/', '/ai-journey/en/contact/', '/ai-journey/fr/contact/'];
 /* 2026-10-04 HARU様「AI Journey は一流の文字の大きさ・余白に」。見出しを大きく取る
    独自の段（site.css の .aj-*）。本文の下限 16px は他と同じ。 */
 const SPEC_AI = { h1: [40, 84], h2: [24, 52], h3: [18, 22], body: [16, 20] };
-const AI_SCALE = ['/ai-journey/'];
+const AI_SCALE = ['/ai-journey/', '/ai-journey/en/', '/ai-journey/fr/'];  // 2026-10-05 3か国語
 /* 2026-08-27: 販売LP2枚がこの一覧に入っていなかった。**売っているページを
    一度も測っていなかった。** 「すべて合格」と出ていたのに、実機では
    中央揃えののこぎり状で読みにくい状態だった（HARU様の指摘）。 */
 const PAGES = ['/', '/programs.html', '/student-voices.html', '/contact.html', '/ai-journey/', '/ai-journey/contact/',
+               '/ai-journey/en/', '/ai-journey/en/contact/', '/ai-journey/fr/', '/ai-journey/fr/contact/',
                '/eatout/', '/eatout/lesson/', '/immigration/', '/speakup/',
                '/legal/privacy/', '/legal/terms/', '/legal/tokushoho/'];
 /* 法務ページは寸法の例外（追補3 §152）。法律の文章は読むもので、掲げるものではない。 */
