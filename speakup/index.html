@@ -695,6 +695,13 @@
   }
   .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-deep); margin-top: 15px; }
   .card-list p { margin: 0; font-size: var(--text-md); line-height: 1.8; }
+  /* HARU の紹介(2026-10-05)。色・大きさは既存の値だけ。 */
+  .haru-intro { display: flex; align-items: center; gap: 20px; margin: 28px 0 8px; }
+  .haru-intro img { width: 112px; height: 112px; object-fit: cover; object-position: 50% 25%; border-radius: 50%; display: block; }
+  .haru-name { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: var(--text-sm); color: var(--stone-deep); letter-spacing: .12em; }
+  .haru-lead { margin: 4px 0 0; font-weight: 700; font-size: var(--text-md); line-height: 1.6; color: var(--ink); }
+  .haru-voices-cap { margin: 32px 0 0; font-size: var(--text-sm); font-weight: 700; color: var(--ink-soft); }
+  .haru-voice-name { display: block; margin-top: 6px; font-size: var(--text-xs); color: var(--ink-soft); }
 
   /* ---------------- Method (steps) ---------------- */
   /* 2026-08-08 Harumi指摘: 暗い背景のセクションが多すぎた(hero/method/
@@ -858,7 +865,7 @@
       <span class="eyebrow eyebrow-product">Ear to Voice ｜外国人に話しかける20日間</span>
       <p class="hero-pain">読める。書ける。<br>でも、<wbr>聞き取れない。<wbr>話せない。</p>
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
-      <p class="lede">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。20日間で、よくある場面を練習しておきます。</p>
+      <p class="lede">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。20日間で、よくある場面を練習しておきます。<br><strong style="color:#FFFFFF;word-break:keep-all;">1日10〜15分、<wbr>スマホで、<wbr>自分のペースで。</strong></p>
       <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">コースに<wbr>申し込む&nbsp;→</a>
       <div class="hero-note">申込締切：10月24日(土)23:59<br>コース開始：10月26日(月)</div>
     </div>
@@ -1049,8 +1056,30 @@
   </div>
 </section>
 
-<!-- WHO -->
+<!-- CURRICULUM: 20日間の中身(HARU様 2026-10-05「20日間がネックかも」)。
+     場面名・数・日の割り振りは harmonyhorizon.foreigners speakup/js/course.js の SCHEDULE と
+     data/scenarios/index.json の topic_ja そのまま。コース側を直したら、ここも直す。 -->
 <section style="background:var(--cream-soft);">
+  <div class="container">
+    <span class="eyebrow">What You'll Practice</span>
+    <h2>43の場面を、<br>20日間で。</h2>
+    <p class="lede" style="word-break:keep-all;">1日10〜15分。<wbr>日付で<wbr>先に進めなく<wbr>なることは<wbr>ありません。<br>終えた分だけ<wbr>進むので、<wbr>休んだ日が<wbr>あっても<wbr>大丈夫です。<br>コースの期間が<wbr>終わったあとも、<wbr>見返せます。</p>
+    <div class="method-steps">
+      <div class="row"><span class="n">1〜2日目</span><span class="t">聞き返す・相槌</span><span class="d">聞き取れなかった時の聞き返し方と、話を聞いている時の相槌。</span></div>
+      <div class="row"><span class="n">3〜6日目</span><span class="t">困っている人に声をかける<span class="nw">(8場面)</span></span><span class="d">駅・コンビニ・ホテルへの道、券売機、山手線、<span class="nw">改札 など</span></span></div>
+      <div class="row"><span class="n">6〜9日目</span><span class="t">困ってない人に声をかけてみる<span class="nw">(8場面)</span></span><span class="d">展望台、神社の大鳥居、桜並木、カフェの相席、<span class="nw">観光地の記念写真 など</span></span></div>
+      <div class="row"><span class="n">9〜12日目</span><span class="t">出身・旅行<span class="nw">(8場面)</span></span><span class="d">出身地、日本に来てからの日数、泊まっている所、<span class="nw">次の行き先 など</span></span></div>
+      <div class="row"><span class="n">13〜14日目</span><span class="t">食べもの<span class="nw">(5場面)</span></span><span class="d">定食屋のカウンター、居酒屋の隣のテーブル、<span class="nw">ラーメン屋の行列 など</span></span></div>
+      <div class="row"><span class="n">14〜17日目</span><span class="t">日本について<span class="nw">(5場面)</span></span><span class="d">ホテルの朝食会場、日本で驚いたこと、<span class="nw">空港のロビー など</span></span></div>
+      <div class="row"><span class="n">17〜18日目</span><span class="t">好きなもの・趣味<span class="nw">(4場面)</span></span><span class="d">アニメの話、新幹線の隣の席、<span class="nw">スポーツ中継 など</span></span></div>
+      <div class="row"><span class="n">18〜19日目</span><span class="t">別れの挨拶<span class="nw">(5場面)</span></span><span class="d">交差点で別れる、バスターミナル、<span class="nw">駅のホーム など</span></span></div>
+      <div class="row"><span class="n">5・10・15・20日目</span><span class="t">復習の日</span><span class="d">終えた場面の会話を聞き流して、耳に残します。</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO -->
+<section>
   <div class="container">
     <span class="eyebrow">Who Is This For</span>
     <h2>こんな方に<br>おすすめです。</h2>
@@ -1062,6 +1091,32 @@
       <div class="who-item"><span class="mark">05</span><p>学校で習った英語は分かるのに、<br>口から出てこない方</p></div>
     </div>
     <p class="who-note">英語を<wbr>ほとんど<br class="br-xs">習ったことが<wbr>ない方には、<br class="br-phone">まだ<wbr>難しい<wbr>コースです。</p>
+  </div>
+</section>
+
+<!-- HARU: このコースを作った人(HARU様 2026-10-05)。文はトップページ index.html の
+     「HARU について」、声は student-voices.html の文をそのまま使う(作らない)。
+     声はマンツーマンレッスンの受講者のもの。このコースの声ではないので、見出しにそう書く。 -->
+<section style="background:var(--cream-soft);">
+  <div class="container" style="max-width:740px;">
+    <span class="eyebrow">About HARU</span>
+    <h2>このコースを<br>作った人</h2>
+    <div class="haru-intro">
+      <picture>
+        <source srcset="/assets/site/haru.webp" type="image/webp">
+        <img src="/assets/site/haru.jpg" alt="HARU" width="560" height="700" loading="lazy" decoding="async">
+      </picture>
+      <div>
+        <p class="haru-name">HARU</p>
+        <p class="haru-lead">フランスに1年、<br>カナダに25年以上。</p>
+      </div>
+    </div>
+    <p class="lede">フランス語、英語、スペイン語。海外で暮らしながら、自分自身がいくつもの言語を学んできました。教わる側として、つまずく場所も、そこを抜けたときの感じも、知っています。</p>
+    <p class="haru-voices-cap">HARUのレッスンを受けた方の声</p>
+    <div class="card-list">
+      <div class="item"><span class="dot"></span><p>英語の音がどうつながっているのか、なぜ聞き取れなかったのかが、初めて腑に落ちました。音の仕組みが分かるようになってから、話すこと自体が楽しくなりました。<br><span class="haru-voice-name">F.M.</span></p></div>
+      <div class="item"><span class="dot"></span><p>以前は「正しく話さなければ」というプレッシャーで、英語がストレスの原因でした。今は間違いを恐れず、会話そのものを楽しめるようになりました。<br><span class="haru-voice-name">Y.K.</span></p></div>
+    </div>
   </div>
 </section>
 
@@ -1102,6 +1157,14 @@
       <details class="faq-item" open>
         <summary>英語に自信がなくても大丈夫ですか?<span class="sign">+</span></summary>
         <div class="a">学校で習った英語(中学レベル)が分かる方が対象です。会話に出てくる英文は短く、難しい単語はほとんどありません。ただ、英語を聞いて声に出す練習が中心なので、英語をほとんど習ったことがない方には、まだ難しいコースです。ご自分に合うかどうかは、上の「実際のレッスンを体験してみる」で、購入前にお試しください。</div>
+      </details>
+      <details class="faq-item">
+        <summary>毎日できなくても大丈夫ですか?<span class="sign">+</span></summary>
+        <div class="a">大丈夫です。日付で先に進めなくなることはなく、終えた分だけ進みます。休んだ日があっても、次に開いた時に続きから始められます。1日の目安は10〜15分です。</div>
+      </details>
+      <details class="faq-item">
+        <summary>コースの期間が終わったら、見られなくなりますか?<span class="sign">+</span></summary>
+        <div class="a">期間が終わったあとも、見返せます。</div>
       </details>
       <details class="faq-item">
         <summary>いつまでに申し込めばいいですか?<span class="sign">+</span></summary>
