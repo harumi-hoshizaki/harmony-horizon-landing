@@ -42,6 +42,16 @@ QUESTIONS = [
 # 本体の台本(listening.py)にも同じ直しがある。本体の main に入ったら、この表は空にしてよい
 # (本体が直っていれば、置き換えは何も起きない)。
 HEARD_FIXES = [('べねぁ', 'べんねぁ')]
+# はずれの選択肢(HARU様 2026-10-05「選択肢がつまらない」)。ランダムではなく、
+# 聞き間違えそうな訳を問いごとに決めた。並びは HARU様の指定(正解の位置は quiz.js の ANSWER_AT)。
+#  Q1 been を「存在した」と取る / 似た場面の質問 ・ Q2 lost=負けた / Actually, I'm を人名に
+#  Q3 going を歌のタイトルに / karaoke を「カラッと」に ・ Q4 Right=正しい / Right at を人名に
+DECOYS = {
+    'I-FROM-1_b2n1': ['あなたは、存在したことがありますか？', 'よくここに来るんですか？'],
+    'I-HELP-4_b2n1': ['実はさぁ、負けちゃってさぁ。', 'アシュリーは、ちょっとラストです。'],
+    'I-HELP-4_b2n2': ['カラオケで「Going」歌いたいんです。', '明日の天気はカラッと快晴、オッケー。'],
+    'I-HELP-6_b2n6': ['正しくは銀行です。', 'ライラは銀行にいる。'],
+}
 HERO_SCENE = 'i-help-4'   # はじめの画面の写真(LPのカラオケへの道と同じ)
 
 # 本体からそのままコピーするファイル(クイズが使う部品だけ)。
@@ -140,6 +150,7 @@ def main():
             decoys.append(dja)
             if len(decoys) == 2:
                 break
+        decoys = list(DECOYS.get(aid, decoys))
         assert len(decoys) == 2, aid
         heard, why = p['listening'].get('heard', ''), p['listening']['why']
         for old, new in HEARD_FIXES:

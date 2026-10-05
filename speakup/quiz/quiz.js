@@ -16,7 +16,7 @@ import { playerState } from './lib/js/playerState.js';
 
 const TOTAL = 4;
 /* 正解の位置は散らす(本体 CLAUDE.md「答えがいつもAなので」)。 */
-const ANSWER_AT = [1, 2, 0, 1];
+const ANSWER_AT = [2, 1, 0, 1];
 
 const app = document.getElementById('app');
 const headEl = document.createElement('div');
