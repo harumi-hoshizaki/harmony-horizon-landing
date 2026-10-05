@@ -920,6 +920,7 @@ body.is-ai .aj-h3 { font-size: 22px; font-weight: 700; line-height: 1.45; letter
 .aj-sub { font-size: clamp(22px, 2.6vw, 28px); font-weight: 700; letter-spacing: -0.01em; margin: 0 0 var(--s3); color: var(--aj-ink); }
 .aj-lede { font-size: 18px; line-height: 1.85; color: var(--aj-muted); max-width: 34em; margin: 0; }
 @media (min-width: 900px) { .aj-lede { font-size: 19px; } }
+@media (min-width: 900px) { .aj-lede--wide { max-width: none; } }
 .aj-note { font-size: 16px; line-height: 1.8; color: var(--aj-muted); margin: 0; max-width: 20em; }
 
 /* ヒーロー */
