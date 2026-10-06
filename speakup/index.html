@@ -772,7 +772,8 @@
      だから上品に見えている（追補4 §170-B）。
      中央に置いてよいのは、**折り返さない短いもの**だけ。 */
   .cta-band { text-align: left; }
-  .cta-band .lede { max-width: 480px; margin-left: auto; margin-right: auto; }
+  /* 2026-10-06 HARU様「PCで左寄せと中央がまばら」: 帯を左揃えにした後もこの段落だけ margin auto で中央に残っていた。 */
+  .cta-band .lede { max-width: 480px; margin-left: 0; margin-right: 0; }
   /* 2026-08-08: 「暗すぎる」の指摘を受けhero含め全体を明るくしたが、
      引き締めの一箇所として最後のCTAだけ濃色に戻す(Harumi了承)。 */
   .cta-band.on-dark {
@@ -1103,7 +1104,7 @@
 <section>
   <div class="container" style="max-width:740px;">
     <span class="eyebrow">About HARU</span>
-    <h2>このコースを<br>作った人</h2>
+    <h2 style="word-break:keep-all;">このコースを<wbr>作った人</h2>
     <div class="haru-intro">
       <picture>
         <source srcset="/assets/site/haru.webp" type="image/webp">
@@ -1111,10 +1112,10 @@
       </picture>
       <div>
         <p class="haru-name">HARU</p>
-        <p class="haru-lead">フランスに1年、<br>カナダに25年以上。</p>
+        <p class="haru-lead" style="word-break:keep-all;">フランスに<wbr>1年、<br>カナダに<wbr>25年以上。</p>
       </div>
     </div>
-    <p class="lede">フランス語、英語、スペイン語。海外で暮らしながら、自分自身がいくつもの言語を学んできました。教わる側として、つまずく場所も、そこを抜けたときの感じも、知っています。</p>
+    <p class="lede" style="word-break:keep-all;">フランス語、<wbr>英語、<wbr>スペイン語。<wbr>海外で<wbr>暮らしながら、<wbr>自分自身が<wbr>いくつもの<wbr>言語を<wbr>学んできました。<wbr>教わる側として、<wbr>つまずく場所を<wbr>経験したからこその<wbr>学習法で、<wbr>みなさんの<wbr>Transformationを<wbr>お手伝い<wbr>しています。</p>
     <p class="haru-voices-cap">HARUのレッスンを受けた方の声</p>
     <div class="card-list">
       <div class="item"><span class="dot"></span><p>英語の音がどうつながっているのか、なぜ聞き取れなかったのかが、初めて腑に落ちました。音の仕組みが分かるようになってから、話すこと自体が楽しくなりました。<br><span class="haru-voice-name">F.M.</span></p></div>
