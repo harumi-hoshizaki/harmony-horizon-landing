@@ -154,7 +154,12 @@ function showQuestion(i) {
       label: 'もう一度聞く',
       onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
     }));
-    reveal.appendChild(markedLead(`聞こえ方の決まりは、\n{{${q.primary}}}です。`, 'body-text'));
+    // 決まりは、1つの問題に複数あることが多い。説明の【ラベル】を全部並べる(1つだけ言うと、ほかの原因を無視することになる)。
+    const labels = [...new Set([...q.why.matchAll(/【([^】]+)】/g)].map((m) => m[1]))];
+    reveal.appendChild(h('div', { class: 'reveal-block' }, [
+      h('p', { class: 'body-text', text: labels.length > 1 ? '聞こえ方の決まりは、\n次の' + labels.length + 'つです。' : '聞こえ方の決まりは、\nこれです。' }),
+      h('div', { class: 'quiz-labels' }, labels.map((l) => h('span', { class: 'tip-listen-label', text: l }))),
+    ]));
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
       h('p', { class: 'phrase-target', text: q.en }),
       h('p', { class: 'body-text', text: q.ja }),
@@ -163,14 +168,6 @@ function showQuestion(i) {
     reveal.appendChild(stack);
     const toggle = stack.querySelector('.tip-toggle');
     if (toggle) toggle.click(); // 説明がこのクイズの主役なので、開いたまま見せる
-    // 画面が長くなりすぎないよう、理由は1つ目だけ見せ、残りは「ほかの理由」で開く。
-    const items = [...stack.querySelectorAll('.tip-listen-item')];
-    if (items.length > 1) {
-      items.slice(1).forEach((li) => { li.hidden = true; });
-      const more = h('button', { class: 'btn-link', type: 'button', text: 'ほかの理由も見る' });
-      more.addEventListener('click', () => { items.forEach((li) => { li.hidden = false; }); more.remove(); });
-      stack.querySelector('.tip-listen').appendChild(more);
-    }
     topPlay.hidden = true; // ▶が2つ並ばないように、答えたら上の▶は隠す
   }
   if (answered) {

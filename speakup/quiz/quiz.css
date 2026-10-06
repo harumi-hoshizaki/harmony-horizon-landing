@@ -19,3 +19,6 @@
 /* 選択肢の◯が左に寄りすぎて窮屈だったので、このクイズでは左の余白と◯→文字のすき間を16pxに広げる
    (本体の .option は12px。選択肢の文が短い1行なので、ゆとりを取っても折り返さない)。 */
 .options .option { padding-left: var(--space-4); gap: var(--space-4); }
+
+/* 決まりの名前(複数)を、説明の見出しと同じ小さな札で並べる。 */
+.quiz-labels { display: flex; flex-wrap: wrap; gap: var(--space-2); }
