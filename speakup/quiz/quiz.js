@@ -50,7 +50,7 @@ function sceneBlock(img, situation) {
 }
 
 let DATA = null;
-const state = { answers: [], cues: {} };
+const state = { answers: [], cues: {}, weak: '' };
 const source = new URLSearchParams(location.search).get('v') || '';
 
 /* 声(男性/女性)は本体と同じ決め方: f → partner-f / m → partner。ゆっくりは
@@ -201,12 +201,14 @@ function showResult() {
   const st = DATA.stats;
   const body = screen({ eyebrow: '結果' });
   body.appendChild(h('h2', { class: 'screen-title', text: missed.length ? '聞き取れなかった文と、\n考えられる理由。' : '4問とも、\nすぐ聞き取れました。' }));
+  let topLabel = '';
   if (missed.length) {
     // 診断は「文」単位。1つの文には理由が複数あるので、どれが原因かは決めつけず、全部並べる。
     // 同じ理由が2つ以上の文に出ていれば、それを「特に多い」と言う。
     const count = {};
     missed.forEach((q) => labelsOf(q).forEach((l) => { count[l] = (count[l] || 0) + 1; }));
     const top = Object.keys(count).sort((x, y) => count[y] - count[x])[0];
+    topLabel = top;
     body.appendChild(markedLead(
       count[top] >= 2
         ? `特に多い理由は、\n{{${top}}}です。`
@@ -231,14 +233,31 @@ function showResult() {
     ]));
   }
 
-  body.appendChild(newsletterBlock(score, qs));
-  body.appendChild(h('div', { class: 'note' }, [
-    h('p', { text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }),
-    h('p', { text: `このコースでは、会話ごとに\nその理由を説明します。\n説明は、${Math.floor(st.explanations / 100) * 100}以上。` }),
-  ]));
-  body.appendChild(h('div', { class: 'btn-row' }, [
-    h('a', { class: 'btn-link', href: '/speakup/', text: 'コースの内容を見る' }),
-  ]));
+  // どの音が苦手か、は本人に選んでもらう(自己診断は「文」までしか分からないので、決めつけない)。
+  // 選んだ音は、メールの「あなたの苦手な音は〇〇でしたね」に使う。選ばなくても登録はできる。
+  const choices = [...new Set(missed.flatMap(labelsOf))];
+  state.weak = '';
+  if (choices.length) {
+    body.appendChild(h('p', { class: 'body-text', text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }));
+    const ul = h('ul', { class: 'options' });
+    const btns = choices.map((label) => {
+      const b = h('button', { class: 'option', type: 'button', 'aria-pressed': 'false' },
+        [radioMark(), h('span', { class: 'option-label', text: label })]);
+      ul.appendChild(h('li', {}, [b]));
+      b.addEventListener('click', () => {
+        state.weak = label;
+        playSe('audio/se_tick.mp3', 0.35);
+        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      });
+      return b;
+    });
+    body.appendChild(h('div', { class: 'answer-group' }, [
+      h('h3', { class: 'group-title', text: 'どの音が、\nいちばん苦手でしたか？' }),
+      ul,
+    ]));
+  }
+
+  body.appendChild(newsletterBlock(score, qs, topLabel));
   body.appendChild(navRow({
     onBack: () => show(TOTAL - 1),
     onNext: () => { state.answers = []; show(0); },
@@ -247,10 +266,9 @@ function showResult() {
   }));
 }
 
-function newsletterBlock(score, qs) {
+function newsletterBlock(score, qs, fallbackWeak) {
   const nl = DATA.newsletter || {};
-  const missed = [...new Set(qs.filter((_, i) => state.answers[i] !== 0).flatMap(labelsOf))];
-  const input = h('input', { class: 'text-input', type: 'email', id: 'quizEmail', name: 'email', autocomplete: 'email', inputmode: 'email', required: 'required' });
+    const input = h('input', { class: 'text-input', type: 'email', id: 'quizEmail', name: 'email', autocomplete: 'email', inputmode: 'email', required: 'required' });
   const msg = h('p', { class: 'muted-text', hidden: true });
   const submit = primaryButton('コツをメールで受け取る', onSubmit);
   const form = h('div', { class: 'next-block' }, [
@@ -269,9 +287,9 @@ function newsletterBlock(score, qs) {
     try {
       const fd = new FormData();
       fd.append('fields[email]', email);
-      fd.append('fields[quiz_score]', String(score));
-      fd.append('fields[quiz_missed]', missed.join(','));
-      if (source) fd.append('fields[quiz_source]', source);
+      // 苦手な音。選んでいなければ、聞き取れなかった文にいちばん多く出た理由(先頭)を送る。
+      const weak = state.weak || fallbackWeak;
+      if (weak) fd.append('fields[quiz_weak]', weak);
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
