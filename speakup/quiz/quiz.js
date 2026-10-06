@@ -104,8 +104,8 @@ function showQuestion(i) {
   const cue = cueFor(q);
 
   body.appendChild(sceneBlock(q.image, q.situation));
-  body.appendChild(h('h2', { class: 'screen-title', text: 'どう聞こえた？' }));
-  body.appendChild(h('p', { class: 'body-text', text: '音声を聞いて、\nいちばん近いものを選んで。\n正解は、ありません。' }));
+  body.appendChild(h('h2', { class: 'screen-title', text: '聞き取れた？' }));
+  body.appendChild(h('p', { class: 'body-text', text: '音声を聞いて、\n近いものを選んでください。' }));
   // 声・速さは、最初に鳴る物(▶)のすぐ上(本体 CLAUDE.md「声・速さの置き場所は1つの決まりだけ」)。
   body.appendChild(collapsibleVoiceSpeedControls());
   const topPlay = audioButton({
