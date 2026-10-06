@@ -165,6 +165,14 @@ function showQuestion(i) {
     reveal.appendChild(stack);
     const toggle = stack.querySelector('.tip-toggle');
     if (toggle) toggle.click(); // 説明がこのクイズの主役なので、開いたまま見せる
+    // 画面が長くなりすぎないよう、理由は1つ目だけ見せ、残りは「ほかの理由」で開く。
+    const items = [...stack.querySelectorAll('.tip-listen-item')];
+    if (items.length > 1) {
+      items.slice(1).forEach((li) => { li.hidden = true; });
+      const more = h('button', { class: 'btn-link', type: 'button', text: 'ほかの理由も見る' });
+      more.addEventListener('click', () => { items.forEach((li) => { li.hidden = false; }); more.remove(); });
+      stack.querySelector('.tip-listen').appendChild(more);
+    }
     topPlay.hidden = true; // ▶が2つ並ばないように、答えたら上の▶は隠す
   }
   if (answered) {
@@ -217,13 +225,11 @@ function showResult() {
     ]));
   }
 
+  body.appendChild(newsletterBlock(score, qs));
   body.appendChild(h('div', { class: 'note' }, [
     h('p', { text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }),
-    h('p', { text: '英語は、単語が\nつながったり、\n音が消えたりして、\n別の音に聞こえます。' }),
-    h('p', { text: `このコースでは、会話ごとに\nその理由を説明します。\n説明は、${Math.floor(st.explanations / 100) * 100}以上。\n決まりを知ると、\n聞こえ方が変わります。` }),
+    h('p', { text: `このコースでは、会話ごとに\nその理由を説明します。\n説明は、${Math.floor(st.explanations / 100) * 100}以上。` }),
   ]));
-
-  body.appendChild(newsletterBlock(score, qs));
   body.appendChild(h('div', { class: 'btn-row' }, [
     h('a', { class: 'btn-link', href: '/speakup/', text: 'コースの内容を見る' }),
   ]));
