@@ -203,19 +203,10 @@ function showResult() {
   const st = DATA.stats;
   const body = screen({ eyebrow: '結果' });
   body.appendChild(h('h2', { class: 'screen-title', text: missed.length ? '聞き取れなかった文と、\n考えられる理由。' : '4問とも、\nすぐ聞き取れました。' }));
-  let topLabel = '';
   if (missed.length) {
-    // 診断は「文」単位。1つの文には理由が複数あるので、どれが原因かは決めつけず、全部並べる。
-    // 同じ理由が2つ以上の文に出ていれば、それを「特に多い」と言う。
-    const count = {};
-    missed.forEach((q) => labelsOf(q).forEach((l) => { count[l] = (count[l] || 0) + 1; }));
-    const top = Object.keys(count).sort((x, y) => count[y] - count[x])[0];
-    topLabel = top;
-    body.appendChild(markedLead(
-      count[top] >= 2
-        ? `特に多い理由は、\n{{${top}}}です。`
-        : `今回は{{${missed.length}つ}}の文が、\n聞き取れませんでした。`,
-      'body-text'));
+    // 診断は「文」単位。1つの文には理由が複数あり、どれが原因かは本人にしか分からないので、
+    // 「特に多い理由」のような決めつけは書かない(事実だけ: 何問聞き取れなかったか)。
+    body.appendChild(markedLead(`今回は{{${missed.length}つ}}の文が、\n聞き取れませんでした。`, 'body-text'));
     const rows = h('ul', { class: 'tip-listen-list' });
     missedQ.forEach(([q, i]) => {
       rows.appendChild(h('li', { class: 'tip-listen-item' }, [
@@ -259,7 +250,7 @@ function showResult() {
     ]));
   }
 
-  body.appendChild(newsletterBlock(score, qs, topLabel));
+  body.appendChild(newsletterBlock(score, qs));
   body.appendChild(navRow({
     onBack: () => show(TOTAL - 1),
     onNext: () => { state.answers = []; show(0); },
@@ -268,7 +259,7 @@ function showResult() {
   }));
 }
 
-function newsletterBlock(score, qs, fallbackWeak) {
+function newsletterBlock(score, qs) {
   const nl = DATA.newsletter || {};
     const input = h('input', { class: 'text-input', type: 'email', id: 'quizEmail', name: 'email', autocomplete: 'email', inputmode: 'email', required: 'required' });
   const msg = h('p', { class: 'muted-text', hidden: true });
@@ -289,9 +280,8 @@ function newsletterBlock(score, qs, fallbackWeak) {
     try {
       const fd = new FormData();
       fd.append('fields[email]', email);
-      // 苦手な音。選んでいなければ、聞き取れなかった文にいちばん多く出た理由(先頭)を送る。
-      const weak = state.weak || fallbackWeak;
-      if (weak) fd.append('fields[quiz_weak]', weak);
+      // 苦手な音は、本人が選んだ時だけ送る(選ばなかった人に「苦手でしたね」と言わないため)。
+      if (state.weak) fd.append('fields[quiz_weak]', state.weak);
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
