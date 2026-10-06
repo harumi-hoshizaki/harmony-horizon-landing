@@ -289,10 +289,12 @@ function newsletterBlock(score, qs) {
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
-      clear(form);
-      // 登録できた喜びは、灰色の箱ではなく、見出し(大きく)と紙吹雪・効果音で伝える
-      // (紙吹雪と音は本体の完了画面と同じ部品。文字は出さない)。
-      form.appendChild(h('div', { class: 'reveal-block' }, [
+      // 登録できたら、メール登録の欄(見出し・説明・入力・ボタン・注意書き)を丸ごと入れ替える。
+      // 「登録した人の画面」と「まだの人の画面」を、はっきり別物にする(結果メールの箱と同じ淡い金の丸い箱)。
+      const group = form.closest('.quiz-signup') || form;
+      clear(group);
+      group.appendChild(h('div', { class: 'quiz-done' }, [
+        h('span', { class: 'quiz-done-mark', 'aria-hidden': 'true', text: '✓' }),
         h('h3', { class: 'group-title', text: '登録ありがとうございます！' }),
         markedLead('{{メール}}を送りました。\n届いたメールを、ご確認ください。', 'body-text'),
       ]));

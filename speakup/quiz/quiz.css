@@ -50,3 +50,10 @@
 .quiz-fine .btn-link { display: inline; padding: 0; margin: 0; }
 .quiz-signup { gap: var(--space-4); }
 .quiz-signup > .next-block { margin-top: var(--space-2); }
+
+/* 登録できたあとの箱(HARU様 2026-10-06「ボックスに入れた方がプロっぽい」)。
+   結果メールの「苦手な音」の箱と同じ、淡い金・丸い角。✓は金の丸。 */
+.quiz-done { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-5); background: var(--accent-wash); border-radius: var(--radius-bubble); }
+.quiz-done .group-title { margin: 0; }
+.quiz-done .body-text { margin: 0; }
+.quiz-done-mark { display: inline-flex; align-items: center; justify-content: center; align-self: flex-start; width: 40px; height: 40px; border-radius: 50%; background: var(--accent-fill); color: var(--ink); font-size: var(--text-lg); font-weight: 700; line-height: 1; }
