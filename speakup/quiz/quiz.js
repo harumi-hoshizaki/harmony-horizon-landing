@@ -92,7 +92,7 @@ function showStart() {
   // ボタンは最初の一画面に入れる(LP の決まり: 393×659 で下端が画面に収まる)。
   body.appendChild(h('div', { class: 'next-block' }, [
     primaryButton('クイズをはじめる', () => show(0)),
-    h('p', { class: 'muted-text', text: '全4問・約3分・無料\n登録なしで、結果が見られます。' }),
+    h('p', { class: 'muted-text quiz-fine', text: '全4問・約3分・無料\n登録なしで、結果が見られます。' }),
   ]));
 }
 
