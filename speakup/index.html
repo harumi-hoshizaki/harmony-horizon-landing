@@ -703,7 +703,7 @@
      白をこれ以上白くはできないので、細い線と、はっきりした影で縁を見せる。 */
   .card-list .item {
     display: flex; gap: 14px; align-items: flex-start; background: #FFFFFF; border-radius: 14px;
-    padding: 18px 22px; border: 1px solid var(--line);
+    padding: 17px 21px; border: 1px solid var(--line); /* 線1px分だけ内側を減らし、中の文字の幅は前と同じ */
     box-shadow: 0 1px 3px rgba(26,20,16,0.06), 0 6px 18px -6px rgba(26,20,16,0.16);
   }
   .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-deep); margin-top: 15px; }
