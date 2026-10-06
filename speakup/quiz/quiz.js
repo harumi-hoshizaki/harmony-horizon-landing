@@ -165,7 +165,7 @@ function showQuestion(i) {
       }),
     ]));
     // 決まりは、1つの問題に複数あることが多い。説明の【ラベル】を全部並べる(1つだけ言うと、ほかの原因を無視することになる)。
-    const labels = [...new Set([...q.why.matchAll(/【([^】]+)】/g)].map((m) => m[1]))];
+    const labels = labelsOf(q);
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
       h('h3', { class: 'group-title', text: '聞き取れない理由' }),
       h('div', { class: 'quiz-labels' }, labels.map((l) => h('span', { class: 'tip-listen-label', text: l }))),
@@ -184,6 +184,11 @@ function showQuestion(i) {
   body.appendChild(nav);
 }
 
+/* 1つの文にある理由(説明の【ラベル】)を、重複なしで全部返す。 */
+function labelsOf(q) {
+  return [...new Set([...q.why.matchAll(/【([^】]+)】/g)].map((m) => m[1]))];
+}
+
 /* ---------- 結果 ---------- */
 function showResult() {
   const qs = DATA.questions;
@@ -195,34 +200,34 @@ function showResult() {
   const score = caught.length;
   const st = DATA.stats;
   const body = screen({ eyebrow: '結果' });
-  body.appendChild(h('h2', { class: 'screen-title', text: missed.length ? 'あなたの耳が、\n聞き逃した音。' : '4問とも、\nすぐ聞き取れました。' }));
+  body.appendChild(h('h2', { class: 'screen-title', text: missed.length ? '聞き取れなかった文と、\n考えられる理由。' : '4問とも、\nすぐ聞き取れました。' }));
   if (missed.length) {
-    // 診断: 聞き逃した音のパターンを数える。同じ型が2回以上なら「特に」と言い切る。
-    // 聞こえ方の文は各問でもう見ているので、結果では繰り返さない(型の名前と、どの問題かだけ)。
+    // 診断は「文」単位。1つの文には理由が複数あるので、どれが原因かは決めつけず、全部並べる。
+    // 同じ理由が2つ以上の文に出ていれば、それを「特に多い」と言う。
     const count = {};
-    missed.forEach((q) => { count[q.primary] = (count[q.primary] || 0) + 1; });
+    missed.forEach((q) => labelsOf(q).forEach((l) => { count[l] = (count[l] || 0) + 1; }));
     const top = Object.keys(count).sort((x, y) => count[y] - count[x])[0];
     body.appendChild(markedLead(
       count[top] >= 2
-        ? `特に聞き逃しやすいのは、\n{{${top}}}です。`
-        : `今回は{{${missed.length}つ}}の音を、\n聞き逃しました。`,
+        ? `特に多い理由は、\n{{${top}}}です。`
+        : `今回は{{${missed.length}つ}}の文が、\n聞き取れませんでした。`,
       'body-text'));
     const rows = h('ul', { class: 'tip-listen-list' });
     missedQ.forEach(([q, i]) => {
       rows.appendChild(h('li', { class: 'tip-listen-item' }, [
-        h('p', { class: 'tip-listen-label', text: q.primary }),
         h('p', { class: 'tip-listen-text', text: `${i + 1}問目「${q.en}」` }),
+        h('div', { class: 'quiz-labels' }, labelsOf(q).map((l) => h('span', { class: 'tip-listen-label', text: l }))),
       ]));
     });
     body.appendChild(h('div', { class: 'answer-group' }, [
-      h('h3', { class: 'group-title', text: '聞こえなかった音は、これです' }),
+      h('h3', { class: 'group-title', text: '聞き取れなかった文' }),
       rows,
     ]));
   }
   if (caught.length) {
     body.appendChild(h('div', { class: 'answer-group' }, [
-      h('h3', { class: 'group-title', text: '聞き取れた音' }),
-      h('p', { class: 'body-text', text: caught.map((q) => q.primary).join('\n') }),
+      h('h3', { class: 'group-title', text: '聞き取れた文' }),
+      h('p', { class: 'body-text', text: caughtQ.map(([q, i]) => `${i + 1}問目「${q.en}」`).join('\n') }),
     ]));
   }
 
@@ -244,7 +249,7 @@ function showResult() {
 
 function newsletterBlock(score, qs) {
   const nl = DATA.newsletter || {};
-  const missed = qs.filter((_, i) => state.answers[i] !== 0).map((q) => q.primary);
+  const missed = [...new Set(qs.filter((_, i) => state.answers[i] !== 0).flatMap(labelsOf))];
   const input = h('input', { class: 'text-input', type: 'email', id: 'quizEmail', name: 'email', autocomplete: 'email', inputmode: 'email', required: 'required' });
   const msg = h('p', { class: 'muted-text', hidden: true });
   const submit = primaryButton('コツをメールで受け取る', onSubmit);
