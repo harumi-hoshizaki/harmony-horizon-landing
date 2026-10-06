@@ -294,7 +294,7 @@ function newsletterBlock(score, qs) {
       // (紙吹雪と音は本体の完了画面と同じ部品。文字は出さない)。
       form.appendChild(h('div', { class: 'reveal-block' }, [
         h('h3', { class: 'group-title', text: '登録ありがとうございます！' }),
-        markedLead('届いたメールの{{リンクを押して}}、\n登録を完了してください。', 'body-text'),
+        markedLead('{{結果のメール}}を送りました。\n届いたメールを、ご確認ください。', 'body-text'),
       ]));
       playCelebrate({ text: null });
     } catch (e) {
