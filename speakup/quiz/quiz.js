@@ -157,8 +157,9 @@ function showQuestion(i) {
     // 決まりは、1つの問題に複数あることが多い。説明の【ラベル】を全部並べる(1つだけ言うと、ほかの原因を無視することになる)。
     const labels = [...new Set([...q.why.matchAll(/【([^】]+)】/g)].map((m) => m[1]))];
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
-      h('p', { class: 'body-text', text: labels.length > 1 ? '聞こえ方の決まりは、\n次の' + labels.length + 'つです。' : '聞こえ方の決まりは、\nこれです。' }),
+      h('p', { class: 'body-text', text: '聞き取れない理由は、' }),
       h('div', { class: 'quiz-labels' }, labels.map((l) => h('span', { class: 'tip-listen-label', text: l }))),
+      h('p', { class: 'body-text', text: 'です。' }),
     ]));
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
       h('p', { class: 'phrase-target', text: q.en }),

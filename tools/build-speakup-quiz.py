@@ -42,6 +42,12 @@ QUESTIONS = [
 # 本体の台本(listening.py)にも同じ直しがある。本体の main に入ったら、この表は空にしてよい
 # (本体が直っていれば、置き換えは何も起きない)。
 HEARD_FIXES = [('べねぁ', 'べんねぁ')]
+# 説明の追加(HARU様 2026-10-06「been の i も重要」)。型は本体 listening.py の定型文
+# 【い/えの中間音】と同じ。並びは「母音の音 → ほかの発音 → つながる音」なので先頭に足す。
+# 本体の台本にも同じ一文を足してもらう必要がある(足されたら、この表は空にしてよい)。
+WHY_PREPEND = {
+    'I-FROM-1_b2n1': '【い/えの中間音】"been" の i は、日本語の「い」ではなく、「え」と「い」の中間のような音です。そのため、知っている単語でも別の音に聞こえることがあります。',
+}
 # はずれの選択肢(HARU様 2026-10-05「選択肢がつまらない」)。ランダムではなく、
 # 聞き間違えそうな訳を問いごとに決めた。並びは HARU様の指定(正解の位置は quiz.js の ANSWER_AT)。
 #  Q1 been を「存在した」と取る / 似た場面の質問 ・ Q2 lost=負けた / Actually, I'm を人名に
@@ -155,6 +161,8 @@ def main():
         heard, why = p['listening'].get('heard', ''), p['listening']['why']
         for old, new in HEARD_FIXES:
             heard, why = heard.replace(old, new), why.replace(old, new)
+        if aid in WHY_PREPEND and WHY_PREPEND[aid][:6] not in why:
+            why = WHY_PREPEND[aid] + why
         questions.append({
             'id': aid, 'en': p['en'], 'ja': p['ja'],
             'heard': heard, 'why': why,
