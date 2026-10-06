@@ -646,7 +646,7 @@
   @media (max-width: 370px) { .try-done-br { display: inline; } }
   .try-done .try-done-cta { margin-top: var(--space-6); text-decoration: none; word-break: keep-all; }
   /* 終了画面のボタンはページ内の値段(#price)へ運ぶ(HARU様 2026-09-29)。固定ヘッダーの下に「PRICE」が隠れないよう少し余白を取る。 */
-  #price { scroll-margin-top: 24px; }
+  #price, #try-it { scroll-margin-top: 24px; } /* #try-it: 一番上の「まずは無料で体験する」から飛んだ時、見出しがヘッダーに接していた */
   /* 「コースでもっと挑戦する」は狭い画面で「挑／戦」と語の途中で折れないよう、<wbr>(コースで の後)でだけ折る。 */
   @media (prefers-reduced-motion: reduce) { .try-done { animation: none; } }
   /* speakup/js/ui.js voiceSpeedControls・segControl・
@@ -865,7 +865,7 @@
         <div class="brand-tag">耳から、声へ</div>
       </div>
     </a>
-    <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold btn-small">申し込む</a>
+    <a href="#price" class="btn btn-gold btn-small">申し込む</a><!-- 2026-10-06 HARU様: 中身を読む前に支払い画面(¥3,980だけ)へ飛ばさない。値段のカードへ -->
   </div>
 </header>
 
@@ -884,7 +884,7 @@
       <p class="hero-pain">読める。書ける。<br>でも、<wbr>聞き取れない。<wbr>話せない。</p>
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede"><strong style="color:#FFFFFF;word-break:keep-all;">1日10分ぐらい。<br><span class="nw">できる日に、少しずつ。</span><br>忘れかけたころに、<wbr>もう一度。<br>だから、口に残る。</strong><br><br>駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。よくある場面を<span class="nw">練習しておきます。</span></p>
-      <a href="https://buy.stripe.com/9B6fZhaD4cvK0EE2WeeEo0e" target="_blank" rel="noopener" class="btn btn-gold">コースに<wbr>申し込む&nbsp;→</a>
+      <a href="#try-it" class="btn btn-gold">まずは<wbr>無料で<wbr>体験する&nbsp;→</a><!-- 2026-10-06 HARU様: 最初は「買って」より「試して」。支払いは値段のカードと最後の帯から -->
       <div class="hero-note">申込締切：10月24日(土)23:59<br>コース開始：10月26日(月)</div>
     </div>
   </div>
