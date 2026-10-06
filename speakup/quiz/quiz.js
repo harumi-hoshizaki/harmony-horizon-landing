@@ -170,19 +170,31 @@ function showQuestion(i) {
 /* ---------- 結果 ---------- */
 function showResult() {
   const qs = DATA.questions;
-  const caught = qs.filter((_, i) => state.answers[i] === 0);
-  const missed = qs.filter((_, i) => state.answers[i] !== 0);
+  const idx = (list) => qs.map((q, i) => [q, i]).filter(([, i]) => list(state.answers[i]));
+  const caughtQ = idx((a) => a === 0);
+  const missedQ = idx((a) => a !== 0);
+  const caught = caughtQ.map(([q]) => q);
+  const missed = missedQ.map(([q]) => q);
   const score = caught.length;
   const st = DATA.stats;
   const body = screen({ eyebrow: '結果' });
   body.appendChild(h('h2', { class: 'screen-title', text: missed.length ? 'あなたの耳が、\n聞き逃した音。' : '4問とも、\nすぐ聞き取れました。' }));
   if (missed.length) {
-    body.appendChild(markedLead(`今回は{{${missed.length}つ}}の音を、\n聞き逃しました。`, 'body-text'));
+    // 診断: 聞き逃した音のパターンを数える。同じ型が2回以上なら「特に」と言い切る。
+    // 聞こえ方の文は各問でもう見ているので、結果では繰り返さない(型の名前と、どの問題かだけ)。
+    const count = {};
+    missed.forEach((q) => { count[q.primary] = (count[q.primary] || 0) + 1; });
+    const top = Object.keys(count).sort((x, y) => count[y] - count[x])[0];
+    body.appendChild(markedLead(
+      count[top] >= 2
+        ? `特に聞き逃しやすいのは、\n{{${top}}}です。`
+        : `今回は{{${missed.length}つ}}の音を、\n聞き逃しました。`,
+      'body-text'));
     const rows = h('ul', { class: 'tip-listen-list' });
-    missed.forEach((q) => {
+    missedQ.forEach(([q, i]) => {
       rows.appendChild(h('li', { class: 'tip-listen-item' }, [
         h('p', { class: 'tip-listen-label', text: q.primary }),
-        h('p', { class: 'tip-listen-text', text: `「${q.en}」は、\n「${q.heard}」のように\n聞こえることがあります。` }),
+        h('p', { class: 'tip-listen-text', text: `${i + 1}問目「${q.en}」` }),
       ]));
     });
     body.appendChild(h('div', { class: 'answer-group' }, [
