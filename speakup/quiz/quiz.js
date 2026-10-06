@@ -51,7 +51,7 @@ function sceneBlock(img, situation) {
 }
 
 let DATA = null;
-const state = { answers: [], cues: {}, weak: '' };
+const state = { answers: [], cues: {}, weak: [] };
 const source = new URLSearchParams(location.search).get('v') || '';
 
 /* 声(男性/女性)は本体と同じ決め方: f → partner-f / m → partner。ゆっくりは
@@ -229,23 +229,27 @@ function showResult() {
   // どの音が苦手か、は本人に選んでもらう(自己診断は「文」までしか分からないので、決めつけない)。
   // 選んだ音は、メールの「あなたの苦手な音は〇〇でしたね」に使う。選ばなくても登録はできる。
   const choices = [...new Set(missed.flatMap(labelsOf))];
-  state.weak = '';
+  state.weak = [];
   if (choices.length) {
     body.appendChild(h('p', { class: 'body-text', text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }));
     const ul = h('ul', { class: 'options' });
-    const btns = choices.map((label) => {
-      const b = h('button', { class: 'option', type: 'button', 'aria-pressed': 'false' },
-        [radioMark(), h('span', { class: 'option-label', text: label })]);
+    // 複数選べる(◯ではなく☐。本体の「いくつでも選ぶ」と同じ印)。
+    const check = () => h('span', { class: 'option-checkbox', 'aria-hidden': 'true' }, [
+      h('span', { class: 'option-checkbox-mark', text: '✓' }),
+    ]);
+    choices.forEach((label) => {
+      const b = h('button', { class: 'option is-multi', type: 'button', 'aria-pressed': 'false' },
+        [check(), h('span', { class: 'option-label', text: label })]);
       ul.appendChild(h('li', {}, [b]));
       b.addEventListener('click', () => {
-        state.weak = label;
+        const on = b.getAttribute('aria-pressed') !== 'true';
+        b.setAttribute('aria-pressed', String(on));
+        state.weak = on ? [...state.weak, label] : state.weak.filter((x) => x !== label);
         playSe('audio/se_tick.mp3', 0.35);
-        btns.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
       });
-      return b;
     });
     body.appendChild(h('div', { class: 'answer-group' }, [
-      h('h3', { class: 'group-title', text: 'どの音が、\nいちばん苦手でしたか？' }),
+      h('h3', { class: 'group-title', text: '苦手だった音は、\nどれですか？\n(いくつでも)' }),
       ul,
     ]));
   }
@@ -280,8 +284,8 @@ function newsletterBlock(score, qs) {
     try {
       const fd = new FormData();
       fd.append('fields[email]', email);
-      // 苦手な音は、本人が選んだ時だけ送る(選ばなかった人に「苦手でしたね」と言わないため)。
-      if (state.weak) fd.append('fields[quiz_weak]', state.weak);
+      // 苦手な音は、本人が選んだ時だけ送る(複数は「、」でつなぐ)(選ばなかった人に「苦手でしたね」と言わないため)。
+      if (state.weak.length) fd.append('fields[quiz_weak]', state.weak.join('、'));
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
