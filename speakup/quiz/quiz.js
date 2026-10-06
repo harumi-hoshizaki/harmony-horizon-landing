@@ -302,7 +302,7 @@ function newsletterBlock(score, qs) {
       msg.hidden = false; msg.textContent = '送れませんでした。通信を確かめて、もう一度お試しください。';
     }
   }
-  return h('div', { class: 'answer-group' }, [
+  return h('div', { class: 'answer-group quiz-signup' }, [
     h('h3', { class: 'group-title', text: '聞き取りのコツを、メールで' }),
     h('p', { class: 'body-text', text: '音のパターンを1つずつ、\n聞き取りのコツといっしょに\n週1回ほどお届けします。' }),
     form,
