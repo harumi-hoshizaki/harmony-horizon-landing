@@ -700,6 +700,8 @@
   .haru-intro img { width: 112px; height: 112px; object-fit: cover; object-position: 50% 25%; border-radius: 50%; display: block; }
   .haru-name { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: var(--text-sm); color: var(--stone-deep); letter-spacing: .12em; }
   .haru-lead { margin: 4px 0 0; font-weight: 700; font-size: var(--text-md); line-height: 1.6; color: var(--ink); }
+  /* おさらいの仕組みの小見出し(2026-10-06)。h2 より小さく、本文より大きく。既存の値だけ。 */
+  .review-head { margin: 40px 0 0; font-size: var(--text-lg); line-height: 1.5; color: var(--ink); word-break: keep-all; }
   .haru-voices-cap { margin: 32px 0 0; font-size: var(--text-sm); font-weight: 700; color: var(--ink-soft); }
   .haru-voice-name { display: block; margin-top: 6px; font-size: var(--text-xs); color: var(--ink-soft); }
 
@@ -1069,8 +1071,18 @@
       <h2>1週間で終わらせたら、<br>口は覚えていると<br>思いますか？</h2>
       <p class="lede" style="word-break:keep-all;">一度できると、<wbr>人は「もう大丈夫」と<wbr>思ってしまいます。<br>でも、<wbr>聞き取れた音も、<wbr>言えたフレーズも、<br>くり返さなければ<wbr>数日で<wbr>薄れていきます。</p>
       <p class="lede" style="word-break:keep-all;">長く残る記憶を作るのは、<br>一度にたくさん<wbr>やることではなく、<br><strong style="color:var(--ink);">日を空けて、<wbr>何度も聞いて、<wbr>何度も声に出すこと。</strong></p>
-      <p class="lede" style="word-break:keep-all;">だから、<wbr>毎日<wbr>少しずつ、<wbr>20日分。<br><strong style="color:var(--ink);">始めは<wbr>1日10分<wbr>ぐらいですが、<wbr>慣れてくると、<wbr>もっと短くなります。</strong><br>5日ごとに<wbr>復習の日があり、<br>前に練習した場面を、<wbr>もう一度<wbr>耳と口に通します。</p>
+      <p class="lede" style="word-break:keep-all;">だから、<wbr>毎日<wbr>少しずつ、<wbr>20日分。<br><strong style="color:var(--ink);">始めは<wbr>1日10分<wbr>ぐらいですが、<wbr>慣れてくると、<wbr>もっと短くなります。</strong></p>
       <p class="lede" style="word-break:keep-all;">本番で、<wbr>考えなくても<wbr>言葉が出てくるように。</p>
+      <!-- おさらいの仕組み(HARU様 2026-10-06「この仕組みを一言も言っていない。書かないと20日は長いだけになる」)。
+           中身は harmonyhorizon.foreigners の js/course.js(5・10・15・20日目)と js/listen.js reviewRowsFor
+           (1回5本まで・苦手な会話が先・止まって練習)のとおり。コース側を変えたら、ここも直す。 -->
+      <h3 class="review-head">3日で終わらせたコース。<br>3週間後、<wbr>口から出てきますか？</h3>
+      <p class="lede" style="word-break:keep-all;">達成感は<wbr>あっても、<wbr>くり返さなければ<wbr>忘れていきます。<br>このコースは、<wbr><strong style="color:var(--ink);">忘れかけたころに、<wbr>同じ会話が<wbr>もう一度<wbr>戻ってきます。</strong></p>
+      <div class="card-list">
+        <div class="item"><span class="dot"></span><p><strong style="color:var(--ink);word-break:keep-all;">5日ごとに、<wbr>おさらいの日</strong><br>5・10・15日目は、それまでに練習した会話を。20日目は、これまで全部の中から。</p></div>
+        <div class="item"><span class="dot"></span><p><strong style="color:var(--ink);word-break:keep-all;">苦手な会話から、<wbr>先に出てくる</strong><br>聞き取れなかった会話や、思い出せなかった会話は、次のおさらいで最初に出てきます。</p></div>
+        <div class="item"><span class="dot"></span><p><strong style="color:var(--ink);word-break:keep-all;">聞くだけでなく、<wbr>自分で言う</strong><br>日本語を見て、英語を自分で思い出して言います。お手本は、言ったあとに聞きます。</p></div>
+      </div>
       <!-- 根拠の6項目(HARU様 2026-10-05)。文は harmonyhorizon.foreigners の copy.home.methodItems
            (2026-09-05 追加・09-09 にHomeから削除。git b2676fb^)のまま。「このアプリ」→「このコース」、
            1日1レッスン→1日1〜3レッスン、字幕なし→まず文字なし、だけ今のコースに合わせて直した。 -->
@@ -1097,7 +1109,7 @@
       <div class="row"><span class="n">14〜17日目</span><span class="t">日本について<span class="nw">(5場面)</span></span><span class="d">ホテルの朝食会場、日本で驚いたこと、<span class="nw">空港のロビー など</span></span></div>
       <div class="row"><span class="n">17〜18日目</span><span class="t">好きなもの・趣味<span class="nw">(4場面)</span></span><span class="d">アニメの話、新幹線の隣の席、<span class="nw">スポーツ中継 など</span></span></div>
       <div class="row"><span class="n">18〜19日目</span><span class="t">別れの挨拶<span class="nw">(5場面)</span></span><span class="d">交差点で別れる、バスターミナル、<span class="nw">駅のホーム など</span></span></div>
-      <div class="row"><span class="n">5・10・15・20日目</span><span class="t">復習の日</span><span class="d">終えた場面の会話を聞き流して、耳に残します。</span></div>
+      <div class="row"><span class="n">5・10・15・20日目</span><span class="t">おさらいの日</span><span class="d">日本語を見て、英語を自分で思い出して言います。思い出せなかった会話は、次のおさらいで先に出てきます。</span></div>
     </div>
   </div>
 </section>
