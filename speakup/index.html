@@ -567,6 +567,8 @@
   .chat-ja-meaning { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); margin: 6px 0 0; }
   .chat-voice { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .chat-voice:first-child { margin-top: 0; }
+  /* コース本体 main.css と同じ(2026-10-06): 前の兄弟が隠れているだけの時も上を空けない(相手の吹き出しの▶聞くが下寄りだった) */
+  .chat-voice:not(:not([hidden]) ~ .chat-voice) { margin-top: 0; }
   .chat-voice:disabled { cursor: default; }
   .chat-voice-label { flex: none; display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-gothic); font-size: var(--text-sm); font-weight: 700; color: var(--accent-text); white-space: nowrap; }
   .chat-voice-label svg { width: 18px; height: 18px; margin-right: 0; }
