@@ -26,7 +26,7 @@ const CHOICES = [
 const REACTIONS = [
   ['聞き取れましたね。', 'この音の決まりを知ると、\nもっと楽になります。'],
   ['音は聞こえても、\n意味が追いつかない。', 'それは、よくあることです。'],
-  ['聞き取れなくて、当然です。', '理由は、この音にあります。'],
+  ['聞き取れなくて、当然です。', ''],
 ];
 
 const app = document.getElementById('app');
@@ -153,21 +153,22 @@ function showQuestion(i) {
     const [rHead, rSub] = REACTIONS[state.answers[i]];
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
       h('h3', { class: 'group-title', text: rHead }),
-      h('p', { class: 'body-text', text: rSub }),
+      ...(rSub ? [h('p', { class: 'body-text', text: rSub })] : []),
     ]));
-    reveal.appendChild(audioButton({
-      label: 'もう一度聞く',
-      onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
-    }));
+    // 聞き直す▶は、その音の英文のすぐ下(英文・和訳と1つの塊)。
+    reveal.appendChild(h('div', { class: 'reveal-block' }, [
+      h('p', { class: 'phrase-target', text: q.en }),
+      h('p', { class: 'body-text', text: q.ja }),
+      audioButton({
+        label: 'もう一度聞く',
+        onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
+      }),
+    ]));
     // 決まりは、1つの問題に複数あることが多い。説明の【ラベル】を全部並べる(1つだけ言うと、ほかの原因を無視することになる)。
     const labels = [...new Set([...q.why.matchAll(/【([^】]+)】/g)].map((m) => m[1]))];
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
       h('h3', { class: 'group-title', text: '聞き取れない理由' }),
       h('div', { class: 'quiz-labels' }, labels.map((l) => h('span', { class: 'tip-listen-label', text: l }))),
-    ]));
-    reveal.appendChild(h('div', { class: 'reveal-block' }, [
-      h('p', { class: 'phrase-target', text: q.en }),
-      h('p', { class: 'body-text', text: q.ja }),
     ]));
     const stack = tipAccordion({ listening: { heard: q.heard, why: q.why } }, ['listening']);
     reveal.appendChild(stack);
