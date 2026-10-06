@@ -146,18 +146,16 @@ function showQuestion(i) {
   }
   function fillReveal() {
     clear(reveal);
-    // 意味のまとまりで差をつける: まとまりの中は12px、まとまりのあいだは32px(.screen-body と同じ)。
-    //  ① 答えへの一言 + もう一度聞く(聞き直しはここだけ。上の▶は答えたら隠す)
-    //  ② 決まりの名前 + 英文 + 和訳  ③ なぜ聞き取れない？
+    // 聞き直しの▶はここだけ(上の▶は答えたら隠す)。
+    // 5つの塊は全部32px離す(一言 / もう一度聞く / 決まりの名前 / 英文+和訳 / 理由)。
+    // 英文と和訳だけは、1つのフレーズなので12pxでくっつける。
+    reveal.appendChild(h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }));
+    reveal.appendChild(audioButton({
+      label: 'もう一度聞く',
+      onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
+    }));
+    reveal.appendChild(markedLead(`聞こえ方の決まりは、\n{{${q.primary}}}です。`, 'body-text'));
     reveal.appendChild(h('div', { class: 'reveal-block' }, [
-      h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }),
-      audioButton({
-        label: 'もう一度聞く',
-        onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
-      }),
-    ]));
-    reveal.appendChild(h('div', { class: 'reveal-block' }, [
-      markedLead(`聞こえ方の決まりは、\n{{${q.primary}}}です。`, 'body-text'),
       h('p', { class: 'phrase-target', text: q.en }),
       h('p', { class: 'body-text', text: q.ja }),
     ]));
