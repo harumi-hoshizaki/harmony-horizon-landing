@@ -108,12 +108,13 @@ function showQuestion(i) {
   body.appendChild(h('p', { class: 'body-text', text: '音声を聞いて、\nいちばん近いものを選んで。\n正解は、ありません。' }));
   // 声・速さは、最初に鳴る物(▶)のすぐ上(本体 CLAUDE.md「声・速さの置き場所は1つの決まりだけ」)。
   body.appendChild(collapsibleVoiceSpeedControls());
-  body.appendChild(audioButton({
+  const topPlay = audioButton({
     label: 'この音声を聞く',
     onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
-  }));
+  });
+  body.appendChild(topPlay);
 
-  const reveal = h('div', { class: 'reveal-block', hidden: !answered });
+  const reveal = h('div', { class: 'quiz-reveal', hidden: !answered });
   const nav = navRow({
     onBack: () => show(i === 0 ? 'start' : i - 1),
     onNext: () => show(i === TOTAL - 1 ? 'result' : i + 1),
@@ -145,19 +146,26 @@ function showQuestion(i) {
   }
   function fillReveal() {
     clear(reveal);
-    reveal.appendChild(h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }));
-    // 答えたあとに、もう一度聞ける(音を聞き直しながら、理由を読む)。
-    reveal.appendChild(audioButton({
-      label: 'もう一度聞く',
-      onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
-    }));
-    reveal.appendChild(markedLead(`聞こえ方の決まりは、\n{{${q.primary}}}です。`, 'body-text'));
-    reveal.appendChild(h('p', { class: 'phrase-target', text: q.en }));
-    reveal.appendChild(h('p', { class: 'body-text', text: q.ja }));
+    // 意味のまとまりで差をつける: まとまりの中は12px、まとまりのあいだは32px(.screen-body と同じ)。
+    //  ① 答えへの一言 + もう一度聞く(聞き直しはここだけ。上の▶は答えたら隠す)
+    //  ② 決まりの名前 + 英文 + 和訳  ③ なぜ聞き取れない？
+    reveal.appendChild(h('div', { class: 'reveal-block' }, [
+      h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }),
+      audioButton({
+        label: 'もう一度聞く',
+        onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
+      }),
+    ]));
+    reveal.appendChild(h('div', { class: 'reveal-block' }, [
+      markedLead(`聞こえ方の決まりは、\n{{${q.primary}}}です。`, 'body-text'),
+      h('p', { class: 'phrase-target', text: q.en }),
+      h('p', { class: 'body-text', text: q.ja }),
+    ]));
     const stack = tipAccordion({ listening: { heard: q.heard, why: q.why } }, ['listening']);
     reveal.appendChild(stack);
     const toggle = stack.querySelector('.tip-toggle');
     if (toggle) toggle.click(); // 説明がこのクイズの主役なので、開いたまま見せる
+    topPlay.hidden = true; // ▶が2つ並ばないように、答えたら上の▶は隠す
   }
   if (answered) {
     mark(state.answers[i]);
