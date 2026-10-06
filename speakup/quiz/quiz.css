@@ -40,3 +40,6 @@
   border-radius: 999px;
   padding: var(--space-1) var(--space-3);
 }
+
+/* 登録のお礼は、上の説明から一段離す。 */
+.answer-group > .reveal-block { margin-top: var(--space-5); }

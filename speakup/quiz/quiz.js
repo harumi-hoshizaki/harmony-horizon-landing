@@ -13,6 +13,7 @@ import {
 } from './lib/js/ui.js';
 import { AudioCue, playOrPause, playSe } from './lib/js/audio.js';
 import { playerState } from './lib/js/playerState.js';
+import { playCelebrate, stopCelebrate } from './lib/js/celebrate.js';
 
 const TOTAL = 4;
 /* 3つの選択肢は「正解」ではなく自己診断(HARU様 2026-10-06「日本語の三択は想像がつくので、
@@ -70,6 +71,7 @@ function screen(headOpts) {
   body.className = 'screen-body';
   host.appendChild(body);
   window.scrollTo(0, 0);
+  stopCelebrate();
   return body;
 }
 
@@ -294,7 +296,13 @@ function newsletterBlock(score, qs, fallbackWeak) {
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
       clear(form);
-      form.appendChild(h('div', { class: 'note' }, [h('p', { text: 'ありがとうございます。\n届いたメールをご確認ください。' })]));
+      // 登録できた喜びは、灰色の箱ではなく、見出し(大きく)と紙吹雪・効果音で伝える
+      // (紙吹雪と音は本体の完了画面と同じ部品。文字は出さない)。
+      form.appendChild(h('div', { class: 'reveal-block' }, [
+        h('h3', { class: 'group-title', text: '登録ありがとうございます！' }),
+        markedLead('届いたメールの{{リンクを押して}}、\n登録を完了してください。', 'body-text'),
+      ]));
+      playCelebrate({ text: null });
     } catch (e) {
       submit.disabled = false;
       msg.hidden = false; msg.textContent = '送れませんでした。通信を確かめて、もう一度お試しください。';
