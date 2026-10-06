@@ -243,7 +243,7 @@ function newsletterBlock(score, qs) {
     h('h3', { class: 'group-title', text: '聞き取りのコツを、メールで' }),
     h('p', { class: 'body-text', text: '音のパターンを1つずつ、\n聞き取りのコツといっしょに\n週1回ほどお届けします。' }),
     form,
-    h('p', { class: 'muted-text' }, [
+    h('p', { class: 'muted-text quiz-fine' }, [
       'いつでも配信を止められます。送信すると、',
       h('a', { class: 'btn-link', href: '/legal/privacy/', text: 'プライバシーポリシー' }),
       'に同意したことになります。',

@@ -9,3 +9,6 @@
 .option.quiz-wrong { color: var(--muted); }
 .option.quiz-wrong .option-radio { border-color: var(--neutral); }
 .option.quiz-wrong .option-radio::after { content: "✗"; color: var(--muted); }
+
+/* 登録欄の注意書き(配信停止・同意)は補足なので、本体の最小の段(--text-xs)にする */
+.quiz-fine, .quiz-fine .btn-link { font-size: var(--text-xs); }
