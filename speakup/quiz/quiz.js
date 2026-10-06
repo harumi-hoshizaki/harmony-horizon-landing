@@ -51,6 +51,23 @@ function sceneBlock(img, situation) {
 }
 
 let DATA = null;
+// 苦手な音の「例」。クイズの文の解説(データベース由来)から、その音の最初の引用を取る。
+// 例: 【母音ドッキング】"Have you ever" は…「へぁvゅえvぁ」 → 「Have you ever → へぁvゅえvぁ」
+// その解説の最後の(3文字以上の)「」が聞こえ方。無ければ引用だけ。新しく文を書かない。
+function exampleOf(label) {
+  for (const q of DATA.questions) {
+    const m = q.why.match(new RegExp('【' + label.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&') + '】([^【]*)'));
+    if (!m) continue;
+    const phrase = (m[1].match(/"([^"]+)"/) || [])[1];
+    if (!phrase) continue;
+    // 聞こえ方は3文字以上の「」(「い」「ら行」のような短い説明語は除く)
+    const heards = [...m[1].matchAll(/「([^」]{3,})」/g)];
+    const heard = heards.length ? heards[heards.length - 1][1] : '';
+    return heard ? phrase + ' → ' + heard : phrase;
+  }
+  return '';
+}
+
 const state = { answers: [], cues: {}, weak: [] };
 const source = new URLSearchParams(location.search).get('v') || '';
 
@@ -290,7 +307,11 @@ function newsletterBlock(score, qs) {
       // 何も選ばなかった人の1行目には一文を入れる)。quiz_weak は読点つなぎで残す(絞り込み用)。
       if (state.weak.length) fd.append('fields[quiz_weak]', state.weak.join('、'));
       const weakItems = state.weak.length ? state.weak : ['まだ決まっていません。レッスンの中で、一緒に見つけましょう'];
-      weakItems.slice(0, 6).forEach((w, i) => fd.append('fields[quiz_w' + (i + 1) + ']', '・' + w));
+      weakItems.slice(0, 6).forEach((w, i) => {
+        fd.append('fields[quiz_w' + (i + 1) + ']', '・' + w);
+        const ex = state.weak.length ? exampleOf(w) : '';
+        if (ex) fd.append('fields[quiz_e' + (i + 1) + ']', ex);
+      });
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
