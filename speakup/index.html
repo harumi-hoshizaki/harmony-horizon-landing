@@ -1872,7 +1872,7 @@
       function (i) { state.voice = i === 1 ? 'm' : 'f'; }
     ));
     row.appendChild(segControl(
-      [{ label: 'ふつう', sub: '1.0x' }, { label: 'ゆっくり', sub: '0.7x' }],
+      [{ label: 'ふつう' }, { label: 'ゆっくり' }],  /* 2026-10-06 HARU様: 「1.0x」「0.7x」の小さい字は出さない(コース本体 ui.js と同じ) */
       function (i) { return (i === 1) === (state.rate === 0.7); },
       function (i) {
         state.rate = i === 1 ? 0.7 : 1;
