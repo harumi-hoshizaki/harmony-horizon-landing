@@ -22,10 +22,11 @@ const CHOICES = [
   '音だけ聞こえた',
   '分からない',
 ];
+/* 答えへの返事。[見出し(大きく), 説明(本文)]。枠も背景もつけない(箱は注意書きの部品なので)。 */
 const REACTIONS = [
-  '聞き取れましたね。\nこの音の決まりを知ると、もっと楽になります。',
-  '音は聞こえても、意味が追いつかない。\nそれは、よくあることです。',
-  '聞き取れなくて、当然です。\n理由は、この音にあります。',
+  ['聞き取れましたね。', 'この音の決まりを知ると、\nもっと楽になります。'],
+  ['音は聞こえても、\n意味が追いつかない。', 'それは、よくあることです。'],
+  ['聞き取れなくて、当然です。', '理由は、この音にあります。'],
 ];
 
 const app = document.getElementById('app');
@@ -149,7 +150,11 @@ function showQuestion(i) {
     // 聞き直しの▶はここだけ(上の▶は答えたら隠す)。
     // 5つの塊は全部32px離す(一言 / もう一度聞く / 決まりの名前 / 英文+和訳 / 理由)。
     // 英文と和訳だけは、1つのフレーズなので12pxでくっつける。
-    reveal.appendChild(h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }));
+    const [rHead, rSub] = REACTIONS[state.answers[i]];
+    reveal.appendChild(h('div', { class: 'reveal-block' }, [
+      h('h3', { class: 'group-title', text: rHead }),
+      h('p', { class: 'body-text', text: rSub }),
+    ]));
     reveal.appendChild(audioButton({
       label: 'もう一度聞く',
       onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
