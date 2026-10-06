@@ -719,6 +719,17 @@
      カードの見出しなのに注記に見えていた。カードの太字と同じ 20px・--ink にそろえる。 */
   .haru-voices-cap { margin: 32px 0 0; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
   .haru-voice-name { display: block; margin-top: 6px; font-size: var(--text-xs); color: var(--ink-soft); }
+  /* 受講者の声(2026-10-06 HARU様「一流のプロは生徒のコメントをこんな軽く置く？」)。
+     箇条書きの点をやめ、引用符・本人の言葉の中の一番大事な一文を太字・名前を下に。
+     文は student-voices.html のまま(足さない・作らない)。 */
+  .voice-list { display: flex; flex-direction: column; gap: 16px; margin: 20px 0 0; }
+  .voice { margin: 0; background: #FFFFFF; border: 1px solid var(--line); border-left: 4px solid var(--gold-bright);
+    border-radius: 14px; padding: 22px 21px 20px; box-shadow: 0 1px 3px rgba(26,20,16,0.06), 0 6px 18px -6px rgba(26,20,16,0.16); }
+  .voice-mark { display: block; font-size: 48px; line-height: 0.6; height: 22px; color: var(--gold-bright); font-weight: 700; }
+  .voice blockquote { margin: 0; font-size: var(--text-md); line-height: 1.9; color: var(--ink); }
+  .voice blockquote strong { font-weight: 700; background: linear-gradient(transparent 60%, #F3E4C6 60%); }
+  .voice figcaption { margin-top: 12px; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
+  .voice figcaption span { display: block; font-size: var(--text-xs); font-weight: 400; color: var(--stone-deep); }
 
   /* ---------------- Method (steps) ---------------- */
   /* 2026-08-08 Harumi指摘: 暗い背景のセクションが多すぎた(hero/method/
@@ -1122,9 +1133,9 @@
     </div>
     <p class="lede" style="word-break:keep-all;">フランス語、<wbr>英語、<wbr>スペイン語。<wbr>海外で<wbr>暮らしながら、<wbr>自分自身が<wbr>いくつもの<wbr>言語を<wbr>学んできました。<wbr>教わる側として、<wbr>つまずく場所を<wbr>経験したからこその<wbr>学習法で、<wbr>みなさんの<wbr>Transformationを<wbr>お手伝い<wbr>しています。</p>
     <p class="haru-voices-cap">HARUのレッスンを受けた方の声</p>
-    <div class="card-list">
-      <div class="item"><span class="dot"></span><p>英語の音がどうつながっているのか、なぜ聞き取れなかったのかが、初めて腑に落ちました。音の仕組みが分かるようになってから、話すこと自体が楽しくなりました。<br><span class="haru-voice-name">F.M.</span></p></div>
-      <div class="item"><span class="dot"></span><p>以前は「正しく話さなければ」というプレッシャーで、英語がストレスの原因でした。今は間違いを恐れず、会話そのものを楽しめるようになりました。<br><span class="haru-voice-name">Y.K.</span></p></div>
+    <div class="voice-list">
+      <figure class="voice"><span class="voice-mark" aria-hidden="true">“</span><blockquote>英語の音がどうつながっているのか、<strong>なぜ聞き取れなかったのかが、初めて腑に落ちました。</strong>音の仕組みが分かるようになってから、話すこと自体が楽しくなりました。</blockquote><figcaption>F.M.さん<span>HARUのマンツーマンレッスン受講</span></figcaption></figure>
+      <figure class="voice"><span class="voice-mark" aria-hidden="true">“</span><blockquote>以前は「正しく話さなければ」というプレッシャーで、英語がストレスの原因でした。<strong>今は間違いを恐れず、会話そのものを楽しめるようになりました。</strong></blockquote><figcaption>Y.K.さん<span>HARUのマンツーマンレッスン受講</span></figcaption></figure>
     </div>
   </div>
 </section>
