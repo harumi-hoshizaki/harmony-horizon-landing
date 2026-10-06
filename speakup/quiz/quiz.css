@@ -31,3 +31,12 @@
 .quiz-reveal .reveal-block > .audio-btn { margin-top: var(--space-2); }
 .quiz-labels { gap: var(--space-3); }
 .screen-body > .answer-group { margin-top: var(--space-4); }
+
+/* 理由の札(HARU様 2026-10-06「薄い黄色い丸の背景に戻して。灰色の長方形はルールにない」)。
+   灰色の四角(--ink-wash-2・角6px)をやめ、本体の .chip と同じ「淡い金の丸」にする。
+   このクイズの中の、理由の札は全部これ(答え欄・説明の見出し・結果の画面)。 */
+.tip-listen-label {
+  background: var(--accent-wash);
+  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+}
