@@ -304,9 +304,9 @@ export const copy = {
     minutes: '約{m}分',
     // ★2026-09-30 Home の見本(Harumi承認「入れてください」)。
     // 「今日は{n}つです。」の1行は削除 —— 名前・一覧・ボタンで同じことを3回言っていた。
-    reviewLabel: '今日は復習の日',
+    reviewLabel: '今日は思い出す日',
     of: '/ {total}',
-    reviewLegend: '復習の日',
+    reviewLegend: '思い出す日',
     listHead: '今日の{n}つ',
     later: 'あと{n}つ',
     hereMark: '← いまここ',
@@ -323,12 +323,12 @@ export const copy = {
     // ★2026-09-30 復習の日は「止まって練習」で開く(聞き流しだけではなく、自分で言う)。
     reviewDesc: '練習した{n}本の会話を、\nもう一度たどります。\nあなたの番で止まります。',
     reviewAll: 'これまでの会話',
-    reviewTitle: '復習：{name}',
+    reviewTitle: '思い出す日：{name}',
     start: 'はじめる',
     resume: '続きからはじめる',
-    reviewStart: '復習をはじめる',
+    reviewStart: '思い出してみる',
     // 完了画面の「次は「◯◯」です。」と、締めくくり画面で使う(次の日が復習の日の時)。
-    reviewDayName: '復習の日',
+    reviewDayName: '思い出す日',
     courseDone: 'コースを、\n最後まで終えました。',
   },
   listen: {
