@@ -15,8 +15,18 @@ import { AudioCue, playOrPause, playSe } from './lib/js/audio.js';
 import { playerState } from './lib/js/playerState.js';
 
 const TOTAL = 4;
-/* 正解の位置は散らす(本体 CLAUDE.md「答えがいつもAなので」)。 */
-const ANSWER_AT = [2, 1, 0, 1];
+/* 3つの選択肢は「正解」ではなく自己診断(HARU様 2026-10-06「日本語の三択は想像がつくので、
+   聞き取れた？だけでいい」)。0 = すぐ分かった / 1 = 音だけ / 2 = まったく分からない。 */
+const CHOICES = [
+  '聞き取れて、意味もすぐ分かった',
+  '音はなんとなく聞き取れた。意味はすぐ分からない',
+  'まったく分からない',
+];
+const REACTIONS = [
+  '聞き取れましたね。\nこの音の決まりを知ると、もっと楽になります。',
+  '音は聞こえても、意味が追いつかない。\nそれは、よくあることです。',
+  '聞き取れなくて、当然です。\n理由は、この音にあります。',
+];
 
 const app = document.getElementById('app');
 const headEl = document.createElement('div');
@@ -39,7 +49,7 @@ function sceneBlock(img, situation) {
 }
 
 let DATA = null;
-const state = { answers: [], picked: [], cues: {} };
+const state = { answers: [], cues: {} };
 const source = new URLSearchParams(location.search).get('v') || '';
 
 /* 声(男性/女性)は本体と同じ決め方: f → partner-f / m → partner。ゆっくりは
@@ -60,12 +70,6 @@ function screen(headOpts) {
   host.appendChild(body);
   window.scrollTo(0, 0);
   return body;
-}
-
-function optionsFor(q, i) {
-  const list = q.decoys.slice();
-  list.splice(ANSWER_AT[i], 0, q.ja);
-  return list;
 }
 
 /* ---------- はじめに(Welcome) ----------
@@ -100,8 +104,8 @@ function showQuestion(i) {
   const cue = cueFor(q);
 
   body.appendChild(sceneBlock(q.image, q.situation));
-  body.appendChild(h('h2', { class: 'screen-title', text: 'どんな意味だった？' }));
-  body.appendChild(h('p', { class: 'body-text', text: '聞き取れなくても大丈夫。\nいちばん近いものを選んで。' }));
+  body.appendChild(h('h2', { class: 'screen-title', text: 'どう聞こえた？' }));
+  body.appendChild(h('p', { class: 'body-text', text: '音声を聞いて、\nいちばん近いものを選んで。\n正解は、ありません。' }));
   // 声・速さは、最初に鳴る物(▶)のすぐ上(本体 CLAUDE.md「声・速さの置き場所は1つの決まりだけ」)。
   body.appendChild(collapsibleVoiceSpeedControls());
   body.appendChild(audioButton({
@@ -118,16 +122,14 @@ function showQuestion(i) {
   });
   const nextBtn = nav.lastElementChild;
 
-  const opts = optionsFor(q, i);
   const ul = h('ul', { class: 'options' });
-  const buttons = opts.map((label, k) => {
+  const buttons = CHOICES.map((label, k) => {
     const b = h('button', { class: 'option', type: 'button', 'aria-pressed': 'false' },
       [radioMark(), h('span', { class: 'option-label', text: label })]);
     ul.appendChild(h('li', {}, [b]));
     b.addEventListener('click', () => {
       if (state.answers[i] !== undefined) return;
-      state.answers[i] = label === q.ja;
-      state.picked[i] = k;
+      state.answers[i] = k;
       playSe('audio/se_tick.mp3', 0.35);
       mark(k);
       fillReveal();
@@ -139,16 +141,11 @@ function showQuestion(i) {
   body.appendChild(ul);
 
   function mark(chosen) {
-    buttons.forEach((b, k) => {
-      const isAnswer = opts[k] === q.ja;
-      b.setAttribute('aria-pressed', String(isAnswer));
-      b.classList.toggle('quiz-ok', isAnswer);
-      b.classList.toggle('quiz-wrong', k === chosen && !isAnswer);
-    });
+    buttons.forEach((b, k) => b.setAttribute('aria-pressed', String(k === chosen)));
   }
   function fillReveal() {
     clear(reveal);
-    reveal.appendChild(h('p', { class: 'body-text', text: state.answers[i] ? '正解です。' : '正解は、こちらでした。' }));
+    reveal.appendChild(h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }));
     reveal.appendChild(h('p', { class: 'phrase-target', text: q.en }));
     reveal.appendChild(h('p', { class: 'body-text', text: q.ja }));
     const stack = tipAccordion({ listening: { heard: q.heard, why: q.why } }, ['listening']);
@@ -157,7 +154,7 @@ function showQuestion(i) {
     if (toggle) toggle.click(); // 説明がこのクイズの主役なので、開いたまま見せる
   }
   if (answered) {
-    mark(state.picked[i]);
+    mark(state.answers[i]);
     fillReveal();
   }
   body.appendChild(reveal);
@@ -167,24 +164,32 @@ function showQuestion(i) {
 /* ---------- 結果 ---------- */
 function showResult() {
   const qs = DATA.questions;
-  const score = state.answers.filter(Boolean).length;
+  const caught = qs.filter((_, i) => state.answers[i] === 0);
+  const missed = qs.filter((_, i) => state.answers[i] !== 0);
+  const score = caught.length;
   const st = DATA.stats;
   const body = screen({ eyebrow: '結果' });
-  body.appendChild(h('h2', { class: 'screen-title', text: `4問中 ${score}問、\n聞き取れました。` }));
-
-  const rows = h('ul', { class: 'tip-listen-list' });
-  qs.forEach((q, i) => {
-    rows.appendChild(h('li', { class: 'tip-listen-item' }, [
-      h('p', { class: 'tip-listen-text' }, [
-        h('span', { class: 'tip-listen-label', text: q.primary }),
-        state.answers[i] ? '聞き取れました。' : '聞き逃しました。',
-      ]),
+  body.appendChild(h('h2', { class: 'screen-title', text: missed.length ? 'あなたの耳が、\n聞き逃した音。' : '4問とも、\nすぐ聞き取れました。' }));
+  if (missed.length) {
+    body.appendChild(markedLead(`今回は{{${missed.length}つ}}の音を、\n聞き逃しました。`, 'body-text'));
+    const rows = h('ul', { class: 'tip-listen-list' });
+    missed.forEach((q) => {
+      rows.appendChild(h('li', { class: 'tip-listen-item' }, [
+        h('p', { class: 'tip-listen-label', text: q.primary }),
+        h('p', { class: 'tip-listen-text', text: `「${q.en}」は、\n「${q.heard}」のように\n聞こえることがあります。` }),
+      ]));
+    });
+    body.appendChild(h('div', { class: 'answer-group' }, [
+      h('h3', { class: 'group-title', text: '聞こえなかった音は、これです' }),
+      rows,
     ]));
-  });
-  body.appendChild(h('div', { class: 'answer-group' }, [
-    h('h3', { class: 'group-title', text: '今回の4つの音' }),
-    rows,
-  ]));
+  }
+  if (caught.length) {
+    body.appendChild(h('div', { class: 'answer-group' }, [
+      h('h3', { class: 'group-title', text: '聞き取れた音' }),
+      h('p', { class: 'body-text', text: caught.map((q) => q.primary).join('\n') }),
+    ]));
+  }
 
   body.appendChild(h('div', { class: 'note' }, [
     h('p', { text: '聞き取れないのは、\nあなたの耳のせいでは\nありません。' }),
@@ -198,7 +203,7 @@ function showResult() {
   ]));
   body.appendChild(navRow({
     onBack: () => show(TOTAL - 1),
-    onNext: () => { state.answers = []; state.picked = []; show(0); },
+    onNext: () => { state.answers = []; show(0); },
     nextLabel: 'もう一度やる',
     nextClass: 'btn-outline',
   }));
@@ -206,7 +211,7 @@ function showResult() {
 
 function newsletterBlock(score, qs) {
   const nl = DATA.newsletter || {};
-  const missed = qs.filter((_, i) => !state.answers[i]).map((q) => q.primary);
+  const missed = qs.filter((_, i) => state.answers[i] !== 0).map((q) => q.primary);
   const input = h('input', { class: 'text-input', type: 'email', id: 'quizEmail', name: 'email', autocomplete: 'email', inputmode: 'email', required: 'required' });
   const msg = h('p', { class: 'muted-text', hidden: true });
   const submit = primaryButton('コツをメールで受け取る', onSubmit);
