@@ -22,3 +22,12 @@
 
 /* 決まりの名前(複数)を、説明の見出しと同じ小さな札で並べる。 */
 .quiz-labels { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+
+/* 余白の見直し(HARU様 2026-10-06「窮屈」)。全部が32px・中は12pxの一律だったので、
+   意味の大きさで段をつける: 答え欄の塊のあいだ 48px / 塊の中 16px / ▶は英文から24px。
+   (本体の「近いものは近く、遠いものは遠く」を、このクイズの中だけ一段広げた) */
+.quiz-reveal { gap: var(--space-7); margin-top: var(--space-4); }
+.quiz-reveal .reveal-block { gap: var(--space-4); }
+.quiz-reveal .reveal-block > .audio-btn { margin-top: var(--space-2); }
+.quiz-labels { gap: var(--space-3); }
+.screen-body > .answer-group { margin-top: var(--space-4); }
