@@ -395,8 +395,12 @@
   /* スマホでは本体の画面と同じ幅にする(.screen-body の左右24pxだけ)。LPの余白(--pad)と
      カードの余白が重なると、本体より約40px狭くなり、32pxの英文(convenience など)が
      1語に収まらず途中で折れていた。 */
+  /* 2026-10-06 HARU様「携帯では、クイズがWebサイトの一部のように見える。Webはうまくできている」:
+     角・左右の線を消して画面いっぱいにしていたため、白い帯=ページの続きに見えていた。
+     PCと同じ「浮いたカード」にする。幅は、画面の端から8px+線1px+中15px=左右24pxずつで、
+     前と同じ(中身の幅は変わらない)。 */
   @media (max-width: 599px) {
-    .try-card { margin-left: calc(-1 * var(--pad)); margin-right: calc(-1 * var(--pad)); border-radius: 0; border-left: 0; border-right: 0; padding: 32px 24px; }
+    .try-card { margin-left: calc(8px - var(--pad)); margin-right: calc(8px - var(--pad)); border-radius: 18px; padding: 28px 15px; }
   }
   /* ---- ここから下の .try-card 内は、harmonyhorizon.foreigners
      speakup/css/tokens.css のトークンを**値ごとそのまま**カードに置き、
