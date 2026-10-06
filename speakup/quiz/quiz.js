@@ -146,6 +146,12 @@ function showQuestion(i) {
   function fillReveal() {
     clear(reveal);
     reveal.appendChild(h('p', { class: 'body-text', text: REACTIONS[state.answers[i]] }));
+    // 答えたあとに、もう一度聞ける(音を聞き直しながら、理由を読む)。
+    reveal.appendChild(audioButton({
+      label: 'もう一度聞く',
+      onClick: (btn) => playOrPause(cue, { rate: playerState.rate, btn }),
+    }));
+    reveal.appendChild(markedLead(`聞こえ方の決まりは、\n{{${q.primary}}}です。`, 'body-text'));
     reveal.appendChild(h('p', { class: 'phrase-target', text: q.en }));
     reveal.appendChild(h('p', { class: 'body-text', text: q.ja }));
     const stack = tipAccordion({ listening: { heard: q.heard, why: q.why } }, ['listening']);
