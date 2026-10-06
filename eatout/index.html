@@ -578,6 +578,16 @@
   .who-item { display: flex; gap: 14px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 16px; }
   .who-item .mark { font-family: var(--font-display); font-weight: 500; color: var(--stone-deep); font-size: 1.125rem; min-width: 22px; }
   .who-item p { margin: 0; font-size: 16px; }
+  /* 使った方の声(2026-10-06 HARU様「Eat Out に入れて」)。/speakup/ の .voice と同じ形
+     (引用符・要の一文を太字・名前を下に)。値はこのページの .card-list に合わせた。 */
+  .voice-cap { margin: 48px 0 0; font-size: 18px; font-weight: 700; color: var(--ink); }
+  .voice { margin: 16px 0 0; max-width: 680px; background: #FFFFFF; border: 1px solid var(--line); border-left: 4px solid var(--gold-bright);
+    border-radius: 14px; padding: 22px 21px 20px; box-shadow: 0 1px 3px rgba(26,20,16,0.06), 0 6px 18px -6px rgba(26,20,16,0.16); }
+  .voice-mark { display: block; font-size: 48px; line-height: 0.6; height: 22px; color: var(--gold-bright); font-weight: 700; }
+  .voice blockquote { margin: 0; font-size: 17px; line-height: 1.9; color: var(--ink); }
+  .voice blockquote strong { font-weight: 700; background: linear-gradient(transparent 60%, #F3E4C6 60%); }
+  .voice figcaption { margin-top: 12px; font-size: 17px; font-weight: 700; color: var(--ink); }
+  .voice figcaption span { display: block; font-size: 13px; font-weight: 400; color: var(--stone-deep); }
 
   /* ---------------- Price ---------------- */
   .price-card {
@@ -1075,6 +1085,11 @@
       <div class="who-item"><span class="mark">✓</span><p>旅行前に、<br>最低限の英語だけ準備したい</p></div>
       <div class="who-item"><span class="mark">✓</span><p>カフェやレストランくらいは、<br>自信を持って利用したい</p></div>
     </div>
+    <!-- 「AI英会話アップデート フィードバックフォーム」(Google ドライブ、2026-09-21)の回答。掲載許可あり・
+         表記は本人の希望「junjun」。最後の一文「とても楽しく勉強ができるアプリだと思います。」は、
+         お客さん向けの文に「アプリ」と書かない決まりのため省いた(言い換えはしない)。 -->
+    <p class="voice-cap">使った方の声</p>
+    <figure class="voice"><span class="voice-mark" aria-hidden="true">“</span><blockquote>AI会話を1回やってみました。すごく楽しかったです。私の言い間違いや、会話が重なった時のやり取りも含めて、<strong style="word-break:keep-all;">本当に<wbr>海外で<wbr>注文している<wbr>リアル感が<wbr>ありました。</strong>また、フィードバックが詳しくてびっくりです。</blockquote><figcaption>junjunさん<span>AI英会話チャレンジを体験</span></figcaption></figure>
   </div>
 </section>
 
