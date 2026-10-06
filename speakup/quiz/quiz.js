@@ -285,10 +285,12 @@ function newsletterBlock(score, qs) {
       const fd = new FormData();
       fd.append('fields[email]', email);
       // 苦手な音は、本人が選んだ時だけ送る(複数は「、」でつなぐ)(選ばなかった人に「苦手でしたね」と言わないため)。
-      // メールの箇条書き用に、1つずつ <li> にして送る(メール側は <ul>{$quiz_weak}</ul>)。
-      // 何も選ばなかった人にも、空の箱にならない一文を入れる。
+      // 苦手な音は、メールの中で繰り返せないので、1つずつ別の欄(quiz_w1〜quiz_w6)に入れる。
+      // 「・」は値の頭に付ける。空の欄はメール側で何も出ない(箱が空にならないよう、
+      // 何も選ばなかった人の1行目には一文を入れる)。quiz_weak は読点つなぎで残す(絞り込み用)。
+      if (state.weak.length) fd.append('fields[quiz_weak]', state.weak.join('、'));
       const weakItems = state.weak.length ? state.weak : ['まだ決まっていません。レッスンの中で、一緒に見つけましょう'];
-      fd.append('fields[quiz_weak]', weakItems.map((w) => '<li>' + w + '</li>').join(''));
+      weakItems.slice(0, 6).forEach((w, i) => fd.append('fields[quiz_w' + (i + 1) + ']', '・' + w));
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
       await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
