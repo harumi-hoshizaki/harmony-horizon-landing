@@ -699,9 +699,12 @@
   /* 2026-10-06 削除: #try-it + section { padding-top: 0; }。Try It の下が同じ地色の Problem だった頃の物。
      今は白い Why It Sticks が来るので、上の余白が0で詰まって見えていた(HARU様「上と下にもっとスペースを」)。 */
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
+  /* 2026-10-06 HARU様「カードが背景と同じ色にしか見えない」: カードは元から白(#FFF)、地は #FDFCFA でほぼ同じ白。
+     白をこれ以上白くはできないので、細い線と、はっきりした影で縁を見せる。 */
   .card-list .item {
     display: flex; gap: 14px; align-items: flex-start; background: #FFFFFF; border-radius: 14px;
-    padding: 18px 22px; box-shadow: 0 2px 12px -7px rgba(26,20,16,0.14);
+    padding: 18px 22px; border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(26,20,16,0.06), 0 6px 18px -6px rgba(26,20,16,0.16);
   }
   .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-deep); margin-top: 15px; }
   .card-list p { margin: 0; font-size: var(--text-md); line-height: 1.8; }
@@ -756,7 +759,7 @@
 
   /* ---------------- FAQ ---------------- */
   .faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: 36px; }
-  .faq-item { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+  .faq-item { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; box-shadow: 0 1px 3px rgba(26,20,16,0.06), 0 6px 18px -6px rgba(26,20,16,0.16); } /* .card-list .item と同じ影(2026-10-06) */
   .faq-item summary {
     list-style: none; cursor: pointer; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;
     font-weight: 500; font-size: var(--text-md); color: var(--ink);
