@@ -712,7 +712,9 @@
   .haru-lead { margin: 4px 0 0; font-weight: 700; font-size: var(--text-md); line-height: 1.6; color: var(--ink); }
   /* おさらいの仕組みの小見出し(2026-10-06)。h2 より小さく、本文より大きく。既存の値だけ。 */
   .review-head { margin: 40px 0 0; font-size: var(--text-lg); line-height: 1.5; color: var(--ink); word-break: keep-all; }
-  .haru-voices-cap { margin: 32px 0 0; font-size: var(--text-sm); font-weight: 700; color: var(--ink-soft); }
+  /* 2026-10-06 HARU様「文字の大きさルール守ってる？」: 18px・灰で、下のカード(20px・--ink)より小さく薄く、
+     カードの見出しなのに注記に見えていた。カードの太字と同じ 20px・--ink にそろえる。 */
+  .haru-voices-cap { margin: 32px 0 0; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
   .haru-voice-name { display: block; margin-top: 6px; font-size: var(--text-xs); color: var(--ink-soft); }
 
   /* ---------------- Method (steps) ---------------- */
