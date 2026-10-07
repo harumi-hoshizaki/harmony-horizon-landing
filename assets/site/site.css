@@ -942,7 +942,8 @@ body.is-ai .aj-h3 { font-size: 22px; font-weight: 700; line-height: 1.45; letter
 }
 /* 顔写真は控えめに（HARU様 2026-10-07：元の半分以下） */
 .aj-hero__photo { width: 100%; max-width: 200px; justify-self: center; }
-@media (max-width: 899px) { .aj-hero__photo { max-width: 170px; justify-self: start; } }
+/* 携帯では上の丸い顔写真だけにする（同じ写真を2回出さない。HARU様 2026-10-07） */
+@media (max-width: 899px) { .aj-hero__photo { display: none; } }
 .aj-hero__photo::before { display: none; }
 .aj-hero__photo .aj-badge { position: relative; left: auto; bottom: auto; display: inline-block; margin-top: 16px; white-space: nowrap; }
 @media (min-width: 900px) {
@@ -1014,7 +1015,7 @@ body.is-ai .aj-cta .aj-h2 { color: #fff; }
 /* 携帯：大きい写真は下に回るので、最初の一画面に顔を出す */
 .aj-me { display: flex; align-items: center; gap: 12px; margin-bottom: var(--s3); }
 .aj-me .aj-tag { margin: 0; }
-.aj-me__img { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--aj-peach); }
+.aj-me__img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 20%; box-shadow: 0 0 0 3px #fff, 0 0 0 4px var(--aj-peach); }
 @media (min-width: 900px) { .aj-me picture { display: none; } }
 /* 携帯：「作ってみませんか。」を1行に収める（「か。」だけの行を出さない） */
 @media (max-width: 899px) {
