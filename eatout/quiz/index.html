@@ -430,6 +430,17 @@ h2{font-family:var(--font-display);font-weight:700;color:var(--navy-deep);
        target="_blank" rel="noopener">コツを見てみる →</a>
     <p class="center" style="margin-top:18px">
       <button class="tlink" id="again" type="button">もう一度クイズをやる</button></p>
+    <!-- ★2026-10-07 サイト監査（成長役）「Reelの行き先に10/15レッスンへの道が無い」。
+         申込締切(10/14 24:00 JST = 10/14 15:00 UTC)を過ぎたら自動で消える。 -->
+    <div class="lesson-invite" data-until="2026-10-14T15:00:00Z" style="margin-top:30px;padding-top:24px;border-top:1px solid var(--line)">
+      <p class="lede" style="margin-bottom:10px"><span style="white-space:nowrap">10/15（木）21:30（日本時間）から、</span><span style="white-space:nowrap">Zoomで90分の</span><span style="white-space:nowrap">グループレッスンがあります。</span><span style="white-space:nowrap">なぜ聞き取れないのかを、</span><span style="white-space:nowrap">音のルール4つで練習します。</span></p>
+      <a class="tlink" href="/eatout/lesson/" style="min-height:44px;line-height:44px">レッスンの詳細を見る →</a>
+    </div>
+    <script>
+      document.querySelectorAll('[data-until]').forEach(function (el) {
+        if (Date.now() > Date.parse(el.getAttribute('data-until'))) el.remove();
+      });
+    </script>
     <p class="foot">© 2026 Harmony Horizon ・
       <a href="/eatout/">Eat Out について詳しく見る</a></p>
   </div>
@@ -1043,5 +1054,6 @@ $('again').addEventListener('click', function () {
   idx = 0; score = 0; show('s-quiz'); render();
 });
 </script>
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cbce8f1a5efe454ca00b354ec0f02307"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
