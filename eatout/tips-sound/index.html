@@ -19,7 +19,7 @@
      playClip(音の鳴らし方)                  … eatout/quiz 699〜735行
    iOSの受話口対策は ../audio-fix.js。
    書体は www の決まり(ヒラギノを含む端末標準、DESIGN-006)。
-   音声は Eat Out コース本体と同じ ElevenLabs の女性の声。
+   音声は 飲食店コース本体と同じ ElevenLabs の女性・男性の声。
    ══════════════════════════════════════════════════════════════ */
 :root{
   --navy-deep:#1D1610; --cream:#FAF3E6; --gold-bright:#E2A33D;
@@ -59,6 +59,15 @@ h1{font-size:24px;font-weight:700;line-height:1.5;margin:8px 0 24px}
 @keyframes rvring{0%{box-shadow:0 0 0 0 rgba(226,163,61,.55)}
   100%{box-shadow:0 0 0 14px rgba(226,163,61,0)}}
 @media (prefers-reduced-motion:reduce){.rv-slow.playing{animation:none}}
+/* eatout/quiz の .toggle(声の切り替え)。押す物なので字は16px */
+.toggles{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+.toggle{display:flex;border:1px solid var(--line);border-radius:999px;
+  overflow:hidden;background:#FFFFFF}
+.toggle button{flex:1;border:none;background:transparent;padding:12px 8px;
+  font-family:var(--font);font-size:1rem;font-weight:700;color:var(--ink-soft);
+  cursor:pointer;transition:background .15s ease,color .15s ease;
+  -webkit-tap-highlight-color:transparent}
+.toggle button.on{background:var(--navy-deep);color:var(--cream);border-radius:999px}
 .solo-link{display:none}
 /* メールの #1 #2 #3 から来た時は、その通の音だけを出す(押す回数を減らす) */
 body:has(.card:target) .card:not(:target){display:none}
@@ -73,6 +82,13 @@ body:has(.card:target) .solo-link{display:block}
 <body>
 <main>
   <h1>音を聞いてみる</h1>
+
+  <div class="toggles" role="group" aria-label="声の設定">
+    <div class="toggle">
+      <button type="button" class="on" data-voice="f">女性の声</button>
+      <button type="button" data-voice="m">男性の声</button>
+    </div>
+  </div>
 
   <section class="card" id="1">
     <span class="num">1通目の音</span>
@@ -147,9 +163,19 @@ function playClip(src, btn) {
     p['catch'](function () { if (btn) btn.classList.remove('playing'); });
   }
 }
+var voice = 'f';
+function srcOf(b) { return b.getAttribute('data-src').replace(/_f(_slow)?\.mp3$/, '_' + voice + '$1.mp3'); }
 var btns = document.querySelectorAll('[data-src]');
 for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener('click', function () { playClip(this.getAttribute('data-src'), this); });
+  btns[i].addEventListener('click', function () { playClip(srcOf(this), this); });
+}
+/* eatout/quiz の声の切り替え。ここでは切り替えるだけで、押すまで鳴らさない */
+var vb = document.querySelectorAll('[data-voice]');
+for (var j = 0; j < vb.length; j++) {
+  vb[j].addEventListener('click', function () {
+    voice = this.getAttribute('data-voice');
+    for (var k = 0; k < vb.length; k++) vb[k].classList.toggle('on', vb[k] === this);
+  });
 }
 </script>
 </body>
