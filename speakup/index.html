@@ -321,7 +321,7 @@
      もっと余白を。携帯だけ(卓上は900px以上のルールで元に戻す)。 */
   .hero .lede { max-width: 30em; margin: 12px 0 28px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
   /* 2026-10-07 導入文の後半はボタンの下へ(ボタンを最初の画面に入れるため)。大きさ・色は導入文と同じ */
-  .hero-more { max-width: 30em; margin: 20px 0 0; font-size: var(--text-md); line-height: 1.7; color: rgba(251,249,246,0.92); }
+  .hero-more { max-width: 30em; margin: 20px 0 0; word-break: keep-all; font-size: var(--text-md); line-height: 1.7; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; text-align: left; }
   /* 2026-10-02 HARU様: 見出しの上に悩みを2行。悩みは小さく薄く、約束(h1)を大きく。
      色は .hero-note と同じ値、大きさは .lede と同じ。新しい色は足さない。 */
@@ -861,6 +861,7 @@
      見出し」という部品自体が無いので合わせる先が無く、このページ固有の
      問題としてここだけ縮める。値はアプリの段の1つ(--text-2xl)を使う —
      新しいサイズは作らない。 */
+  /* 2026-10-07 携帯・タブレット(〜899px)はすべて28px。他の販売LPと同じ境目 */
   @media (max-width: 899px) {
     .hero h1 { font-size: var(--text-2xl); }
   }
@@ -905,7 +906,7 @@
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
       <p class="lede"><strong style="color:#FFFFFF;word-break:keep-all;">1日10分ぐらい。<br><span class="nw">できる日に、少しずつ。</span><br>忘れかけたころに、<wbr>もう一度。<br>だから、口に残る。</strong></p>
       <a href="#try-it" class="btn btn-gold">まずは<wbr>無料で<wbr>体験する&nbsp;→</a><!-- 2026-10-06 HARU様: 最初は「買って」より「試して」。支払いは値段のカードと最後の帯から -->
-      <p class="hero-more">駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。よくある場面を<span class="nw">練習しておきます。</span></p>
+      <p class="hero-more">駅で、<wbr>道で、<wbr>観光地で。<wbr>外国人に<wbr>自分から<wbr>話しかけ、<wbr>会話を<wbr>広げられるように。<wbr>よくある場面を<wbr>練習しておきます。</p>
       <div class="hero-note">申込締切：10月24日（土）23:59<br>コース開始：10月26日（月）</div>
     </div>
   </div>
