@@ -53,11 +53,14 @@
           また「同じ濃さが3つ」に戻ります）。 */
     --espresso-light:#5A514B;   /* グラデの上端だけ。本体の --ink-light と同値 */
     --espresso-lift: #2C2620;   /* 一段明るいこげ茶。旧 --navy / --deep-lift */
-    --cream:      #FBF9F6;
+    /* 2026-10-07 HARU様「サイト全体を1つの決まりにそろえる」。紙色・金を
+       /speakup/ と同じ値(アプリ本体 speakup/css/tokens.css)に。
+       以前の銅(#9C5C33 / #C98A5C / #E9B98C)はこのページと入国審査だけに残っていた。 */
+    --cream:      #FDFCFA;
     --cream-soft: #F4F0E9;
-    --gold:       #9C5C33;
-    --gold-bright:#C98A5C;
-    --gold-pale:  #E9B98C;
+    --gold:       #694D11;
+    --gold-bright:#E2A33D;
+    --gold-pale:  #E9BA6E;
     --ink:        #221E19;
     /* 静かな札のための灰。これが無いと、番号・チェック・矢印まで
        全部が銅色になる。実測で銅は 40 か所（トップページは 16 か所）。
@@ -80,6 +83,16 @@
     --font-display: var(--sans);
     --font-body:    var(--sans);
 
+    /* 文字の大きさは /speakup/ と同じアプリの6段階だけを使う(2026-10-07)。
+       新しいサイズは作らない。 */
+    --text-xs:  14px;
+    --text-sm:  18px;
+    --text-md:  20px;
+    --text-lg:  23px;
+    --text-xl:  26px;
+    --text-2xl: 28px;
+    --text-3xl: 40px;
+
     --max-w: 1120px;
     --pad: clamp(20px, 5vw, 48px);
     --section-pad: clamp(64px, 9vw, 120px);
@@ -98,7 +111,7 @@
     background: var(--cream);
     color: var(--ink);
     font-family: var(--font-body);
-    font-size: 17px;
+    font-size: var(--text-md);
     line-height: 1.75;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
@@ -113,19 +126,19 @@
 
   .eyebrow {
     display: inline-flex; align-items: center; gap: 10px;
-    font-size: 12.5px; letter-spacing: 0.22em; text-transform: uppercase;
+    font-size: var(--text-xs); letter-spacing: 0.22em; text-transform: uppercase;
     color: var(--gold); font-weight: 500; margin: 0 0 16px;
   }
   /* 商品名の行は大文字化しない(名前の綴りを保つ) */
-  .eyebrow-product { text-transform: none; letter-spacing: 0.08em; font-size: 13px; }
+  .eyebrow-product { text-transform: none; letter-spacing: 0.08em; font-size: var(--text-xs); }
   .eyebrow::before { content: ''; width: 22px; height: 1px; background: var(--gold); }
 
   h1, h2, h3 { font-family: var(--font-display); font-weight: 700; color: var(--ink); margin: 0 0 0.5em; letter-spacing: -0.01em; }
-  h2 { font-size: clamp(1.75rem, 3.4vw, 2.5rem); line-height: 1.35; }
+  h2 { font-size: var(--text-xl); line-height: 1.35; }
   .on-dark h1, .on-dark h2, .on-dark h3 { color: var(--cream); }
 
   p { margin: 0 0 1em; }
-  .lede { color: var(--ink-soft); font-size: 1.0625rem; line-height: 1.9; }
+  .lede { color: var(--ink-soft); font-size: var(--text-md); line-height: 1.9; }
   /* ★2026-09-19 ここは #FBF9F6 でした。このページのクリームは
      --cream(#FBF9F6)で、#FBF9F6 は**コース本体側の古い値**が
      紛れ込んだものです（6か所）。目では見分けられない差ですが、
@@ -142,47 +155,31 @@
      ★カード(.trio-card / .price-card / .faq-item)と札(.chip)は
        **丸のまま**です。本体もカードは10px、札は999pxで丸い ——
        角ゼロは「押す物」だけの決まりです。 */
+  /* 2026-10-07 ボタンを /speakup/ と同じ形に(アプリ本番の .btn-primary)。
+     地=フラットな金 #E2A33D・文字=--ink・角ゼロ。以前の焦茶のグラデ+暗い面での
+     反転はこのページと入国審査だけに残っていて、サイトの他のボタンと別物に見えていた。
+     金は明るい面でも暗い面でも同じ色で読めるので、反転の規則は要らない。 */
   .btn {
     display: inline-flex; align-items: center; gap: 10px; padding: 16px 34px; border-radius: 0;
-    font-size: 16px; letter-spacing: 0.02em; font-weight: 500; cursor: pointer; border: none;
-    transition: transform 0.3s cubic-bezier(.4,0,.2,1), box-shadow 0.3s ease;
+    font-size: var(--text-lg); font-weight: 700; letter-spacing: 0; cursor: pointer; border: none;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+    word-break: keep-all; overflow-wrap: anywhere;
   }
-  /* サイト共通のボタン。明るい面では濃い炭に紙色の文字、
-     暗い面では反転させる。以前の淡い金は、レッスンのページや
-     法務ページのボタンと別物に見えていた（追補4 §169）。 */
-  /* ★2026-09-19 べた塗り → 焦茶のグラデーション（本体の .btn-primary と同じ）。
-     内側の上端に細い白を1本入れると、面が起きて見えます。
-     ★暗い面（ヘッダー下の締めの帯・ヒーロー）は下で反転させているので、
-       ここは明るい面のボタンだけに効きます。 */
+  @media (max-width: 899px) {
+    .btn:not(.btn-small) { padding: 13px 26px; font-size: var(--text-md); }
+  }
   .btn-gold {
-    background: linear-gradient(180deg, var(--espresso-light) 0%, var(--espresso) 100%);
-    color: var(--cream);
-    box-shadow: 0 14px 34px -14px rgba(31,27,23,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
+    background: var(--gold-bright); color: var(--ink);
+    box-shadow: 0 3px 8px rgba(34,29,24,0.28), inset 0 1px 0 rgba(255,255,255,0.10);
   }
-  .btn-gold:hover { background: var(--gold); transform: translateY(-3px); box-shadow: 0 18px 40px -14px rgba(31,27,23,0.5); }
-  /* 暗い面（ヘッダー・締めの帯）では反転させる。
-     ここを忘れると、暗い地に暗いボタンで見えなくなる。 */
-  /* ★2026-09-19 HARU様「『今すぐ練習を始める →』ボタンが茶色下地の黒ボタンで
-     見えにくい」。原因はこの行の**末尾のコンマ**でした。
-         .on-dark .btn-gold,        ← このコンマの次が @media だったため
-         @media (hover: hover) { … }
-     セレクタの並びとして壊れ、**ブラウザがこの規則を丸ごと捨てて**いました
-     (ホバーの分も一緒に消えていた。document.styleSheets を読んで確認)。
-     つまり暗い面での反転が一度も効いておらず、締めの帯では
-     地 #1F1B17 の上に地 #1F1B17 のボタン —— **コントラスト 1.14:1**、
-     帯の下のほうでは 1.00:1(完全に同色)。枠線も0pxなので、
-     ボタンの形が見えていませんでした。
-     上の注意書きが、まさにこの事故を予言していました。
-     反転の中身は、同じく暗い面にある .hero .btn-gold に合わせています。 */
-  .on-dark .btn-gold { background: var(--cream); color: var(--espresso); }
-  /* 指で触るとホバーが貼り付く（iOS）。ホバーできる装置だけに当てる。 */
+  .btn-gold:active { transform: scale(0.97); }
   @media (hover: hover) {
-    .on-dark .btn-gold:hover { background: var(--gold-pale); color: var(--espresso); }
+    .btn-gold:hover { box-shadow: 0 6px 14px rgba(34,29,24,0.34), inset 0 1px 0 rgba(255,255,255,0.14); }
   }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
-  .btn-outline:hover { background: var(--espresso); color: var(--cream); }
-  .btn-small { padding: 12px 22px; font-size: 16px; border-radius: 0; }
+  @media (hover: hover) { .btn-outline:hover { background: var(--espresso); color: var(--cream); } }
+  .btn-small { padding: 12px 22px; font-size: var(--text-sm); border-radius: 0; }
   /* 狭い画面ではボタンの左右の余白を詰める。字は詰めない（16px を守る）。 */
   @media (max-width: 460px) { .btn-small { padding: 12px 15px; } }
   /* ロゴの側も少し詰める。ただし「耳から、声へ」は 13px のまま。
@@ -190,7 +187,7 @@
   @media (max-width: 400px) {
     .site-header .brand { gap: 10px; }
     .site-header .brand-mark { width: 28px; height: 28px; }
-    .site-header .brand-word { font-size: 16px; }
+    .site-header .brand-word { font-size: var(--text-xs); }
   }
   /* さらに狭い画面では「で始める」を落とし、価格だけにする。
      ボタン全体が押せるので、動詞が無くても意味は通る。 */
@@ -229,10 +226,10 @@
      (speakup/index.html のコメントに「この2ページは影響しない」と書いてある)。
      ここで3ページそろえる。
      ★--brand はこのページでは .brand-word だけが使う。 */
-  .brand-word { font-family: var(--brand); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
+  .brand-word { font-family: var(--brand); font-weight: 700; font-size: var(--text-sm); letter-spacing: -0.01em; color: var(--ink); line-height: 1.15; }
   /* 「耳から、声へ」は日本語。英字の全大文字用の字間をかけると崩れるし、
      10px では老眼鏡でも読めない。 */
-  .brand-tag { font-size: 13px; letter-spacing: 0.04em; color: var(--gold); font-weight: 500; line-height: 1.4; }
+  .brand-tag { font-size: var(--text-xs); letter-spacing: 0.04em; color: var(--gold); font-weight: 500; line-height: 1.4; }
 
   /* ---------------- Hero ----------------
      www のトップページと同じ組み方に揃える（追補4 §154-B）。
@@ -253,7 +250,7 @@
        実機の Safari は下に操作バーが出るので、iPhone 14 で見えているのは
        852px ではなく 659px。文字塊の実測値を svh から引く。
        **活字の寸法を変えたら、必ずここを測り直す。** */
-    --hero-text: 404px;
+    --hero-text: 468px;   /* 2026-10-07 文字を6段階に上げたので測り直した(404→468) */
     --hero-band: min(calc(100vw * 1.15), max(180px, calc(100svh - var(--hero-text))), 520px);
   }
   .hero__media {
@@ -285,15 +282,12 @@
      実機の Safari は字送りの丸めが少し違うので、そこで折り返して
      「る。」だけの行が出ていた（HARU様の指摘 2026-08-27）。
      30px なら 330px で、23px の余裕ができる。 */
-  .hero h1 { font-size: clamp(1.875rem, 4.5vw, 2.75rem); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
+  .hero h1 { font-size: var(--text-3xl); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
   /* 見出しの中の強調。濃い銅（--gold）は写真の上で 1.4:1 しか出ず、
      大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero h1 em { color: var(--gold-pale); }
-  .hero .lede { max-width: 30em; margin: 0 0 34px; font-size: 1.0625rem; color: rgba(251,249,246,0.92); }
-  .hero-note { font-size: 16px; color: rgba(251,249,246,0.74); margin-top: 16px; }
-  /* 暗い地に濃いボタンでは見えない。ヘッダーと同じく反転させる。 */
-  .hero .btn-gold { background: var(--cream); color: var(--espresso); }
-  .hero .btn-gold:hover { background: var(--gold-pale); color: var(--espresso); }
+  .hero .lede { max-width: 30em; margin: 0 0 34px; font-size: var(--text-md); color: rgba(251,249,246,0.92); }
+  .hero-note { font-size: var(--text-sm); color: rgba(251,249,246,0.74); margin-top: 16px; }
 
   @media (min-width: 900px) {
     /* 卓上：横幅があるので帯をやめて全面に敷く。
@@ -404,7 +398,7 @@
   .addon {
     text-align: left; margin: 0 0 26px; padding: 14px 16px;
     background: var(--cream-soft); border: 1px solid var(--line);
-    font-size: 16px; line-height: 1.8; color: var(--ink-soft);
+    font-size: var(--text-md); line-height: 1.8; color: var(--ink-soft);
   }
   .addon b { color: var(--ink); }
   .extra {
@@ -414,7 +408,7 @@
     display: inline-block; margin-left: 8px; padding: 2px 8px;
     border: 1px solid var(--gold); border-radius: 0;
     /* 「印」の下限は12px(CLAUDE.md「活字の下限」)。11pxで組みかけて戻した。 */
-    font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+    font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.04em;
     color: var(--gold); background: var(--cream-soft); vertical-align: 1px;
   }
   .method-steps .row .extra { margin-left: 6px; }
@@ -426,10 +420,10 @@
   .chat-row { display: flex; flex-direction: column; gap: 6px; }
   .chat-row.you { align-items: flex-end; }
   .chat-row.staff { align-items: flex-start; }
-  .chat-label { font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
-  .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: 17px; line-height: 1.6; }
+  .chat-label { font-size: var(--text-xs); font-weight: 500; letter-spacing: 0.08em; color: var(--ink-soft); text-transform: uppercase; }
+  .chat-bubble { max-width: 84%; padding: 14px 20px; border-radius: 18px; font-size: var(--text-md); line-height: 1.6; }
   .chat-row.staff .chat-bubble { background: #FFFFFF; border: 1px solid var(--line); border-bottom-left-radius: 4px; box-shadow: var(--shadow-soft); }
-  .chat-row.you .chat-bubble { background: var(--espresso); color: var(--cream); border-bottom-right-radius: 4px; font-size: 24px; text-align: center; padding: 10px 24px; }
+  .chat-row.you .chat-bubble { background: var(--espresso); color: var(--cream); border-bottom-right-radius: 4px; font-size: var(--text-lg); text-align: center; padding: 10px 24px; }
   /* 2026-08-27: 読む文章の中央揃えをやめる。
      日本語の本文を中央に置くと、左右どちらの端もそろわず、のこぎり状に
      なる。折り返しは端末の幅で変わるので、「ん。」「れない。」のような
@@ -437,24 +431,24 @@
      だから上品に見えている（追補4 §170-B）。
      中央に置いてよいのは、**折り返さない短いもの**だけ。 */
   .confession { margin-top: 44px; }
-  .confession .highlight { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 2.6vw, 1.7rem); color: var(--ink); margin-top: 20px; line-height: 1.6; }
+  .confession .highlight { font-family: var(--font-display); font-weight: 500; font-size: var(--text-lg); color: var(--ink); margin-top: 20px; line-height: 1.6; }
 
   /* ---------------- Flow diagram ---------------- */
   .flow-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 8px; margin: 48px 0 0; }
-  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 500; font-size: 16px; color: var(--ink); box-shadow: var(--shadow-soft); white-space: nowrap; }
-  .flow-steps .arrow { color: var(--stone-deep); font-size: 16px; font-weight: 500; }
+  .flow-steps .step { background: #FFFFFF; border: 1px solid var(--line); border-radius: 12px; padding: 12px 18px; font-weight: 500; font-size: var(--text-sm); color: var(--ink); box-shadow: var(--shadow-soft); white-space: nowrap; }
+  .flow-steps .arrow { color: var(--stone-deep); font-size: var(--text-sm); font-weight: 500; }
 
   /* ---------------- Coverage chips (13場面) ---------------- */
   .coverage-chips { display: flex; flex-wrap: wrap; gap: 14px; margin: 44px 0 26px; }
-  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: 16px; font-weight: 500; color: var(--ink); box-shadow: var(--shadow-soft); }
-  .coverage-count { font-family: var(--font-display); font-weight: 500; font-size: 1.0625rem; color: var(--stone-deep); }
+  .coverage-chips .chip { display: inline-flex; align-items: center; gap: 8px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 999px; padding: 12px 22px; font-size: var(--text-sm); font-weight: 500; color: var(--ink); box-shadow: var(--shadow-soft); }
+  .coverage-count { font-family: var(--font-display); font-weight: 500; font-size: var(--text-md); color: var(--stone-deep); }
 
   /* ---------------- Big statement ---------------- */
-  .big-statement { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.375rem, 2.8vw, 1.9rem); color: var(--ink); margin: 44px 0 0; line-height: 1.6; max-width: 20em; }
+  .big-statement { font-family: var(--font-display); font-weight: 500; font-size: var(--text-xl); color: var(--ink); margin: 44px 0 0; line-height: 1.6; max-width: 20em; }
 
   /* ---------------- Trial widget ---------------- */
   .trial-card { max-width: 480px; margin: 36px 0 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px; padding: clamp(28px, 4vw, 40px); box-shadow: var(--shadow-card); }
-  .trial-tag { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone-deep); font-weight: 500; margin-bottom: 16px; }
+  .trial-tag { font-size: var(--text-xs); letter-spacing: 0.14em; text-transform: uppercase; color: var(--stone-deep); font-weight: 500; margin-bottom: 16px; }
   /* 読む文章は左揃えにしたが、丸い再生ボタンは「文章」ではなく部品。
      カードの中で左に寄ると、置き忘れたように見える。部品だけ中央に置く。 */
   /* ★2026-09-18 ここもコースの画面の写しなので、本体(app側
@@ -471,7 +465,7 @@
     width: 100%; min-height: 54px; margin-bottom: 8px;
     background: #F9F1E4; color: var(--ink);
     border: 1.5px solid rgba(34,29,24,0.14); border-radius: 0;
-    font-family: var(--font-body); font-size: 17px; font-weight: 700;
+    font-family: var(--font-body); font-size: var(--text-md); font-weight: 700;
     cursor: pointer; -webkit-tap-highlight-color: transparent;
   }
   .trial-speaker:active { transform: scale(0.98); }
@@ -481,7 +475,7 @@
   .trial-settings {
     display: inline-flex; align-items: center; gap: 8px; min-height: 44px;
     border: 1.5px solid var(--line); background: #FFFFFF; border-radius: 0;
-    padding: 8px 14px; font-family: var(--font-body); font-size: 16px;
+    padding: 8px 14px; font-family: var(--font-body); font-size: var(--text-sm);
     font-weight: 700; color: var(--ink-soft); cursor: pointer;
   }
   .trial-settings[aria-expanded="true"] { border-color: var(--gold); color: var(--gold); background: var(--cream-soft); }
@@ -496,19 +490,19 @@
   }
   .trial-toggle-btn {
     border: none; background: transparent; border-radius: 0; padding: 8px 4px;
-    min-height: 44px; font-family: var(--font-body); font-size: 16px;
+    min-height: 44px; font-family: var(--font-body); font-size: var(--text-sm);
     color: var(--ink-soft); cursor: pointer; display: flex; flex-direction: column;
     align-items: center; justify-content: center; line-height: 1.35; min-width: 0;
     -webkit-tap-highlight-color: transparent;
   }
   /* ラベルと数字は別の行。数字は小さく薄い(本体の .seg-sub と同じ)。 */
-  .trial-toggle-sub { font-size: 15px; letter-spacing: 0.08em; opacity: 0.75; }
+  .trial-toggle-sub { font-size: var(--text-xs); letter-spacing: 0.08em; opacity: 0.75; }
   .trial-toggle-btn.on { background: #F3E4C6; color: var(--ink); font-weight: 700; border-radius: 0; }
   .trial-q { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-q.show { display: block; }
-  .trial-q-title { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); margin-bottom: 16px; }
+  .trial-q-title { font-family: var(--font-display); font-weight: 500; font-size: var(--text-md); color: var(--ink); margin-bottom: 16px; }
   .trial-options { display: flex; flex-direction: column; gap: 2px; }
-  .trial-opt { display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left; background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 0; padding: 16px; min-height: 56px; font-size: 16px; line-height: 1.6; font-family: var(--font-body); color: var(--ink); cursor: pointer; transition: 0.2s ease; }
+  .trial-opt { display: flex; align-items: flex-start; gap: 12px; width: 100%; text-align: left; background: #FFFFFF; border: 1.5px solid var(--line); border-radius: 0; padding: 16px; min-height: 56px; font-size: var(--text-md); line-height: 1.6; font-family: var(--font-body); color: var(--ink); cursor: pointer; transition: 0.2s ease; }
   .trial-opt .box { flex: none; width: 22px; height: 22px; margin-top: 2px; border: 1.5px solid #A69C8C; border-radius: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 15px; }
   .trial-opt:hover:not(:disabled) { border-color: var(--gold); }
   /* 本体と同じ色(#EAF7EC / #1D8A3C、#FBEDEA / #C0392B)。 */
@@ -517,21 +511,21 @@
   .trial-opt.wrong { background: #FBEDEA; border-color: #C0392B; color: #7C2418; font-weight: 700; }
   .trial-opt.wrong .box { background: #C0392B; border-color: #C0392B; }
   .trial-opt:disabled { cursor: default; }
-  .trial-feedback { margin-top: 16px; font-weight: 500; color: var(--gold); font-size: 16px; display: none; }
+  .trial-feedback { margin-top: 16px; font-weight: 500; color: var(--gold); font-size: var(--text-md); display: none; }
   .trial-feedback.show { display: block; }
   .trial-step2 { display: none; margin-top: 28px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-step2.show { display: block; }
-  .trial-prompt-bubble { display: inline-block; background: var(--espresso); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: 17px; font-weight: 500; margin: 12px 0 6px; font-style: italic; }
-  .trial-prompt-jp { font-size: 16px; color: var(--ink-soft); margin-bottom: 20px; }
-  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--espresso); color: var(--cream); border: none; border-radius: 0; padding: 14px 26px; font-size: 16px; font-weight: 500; cursor: pointer; transition: transform 0.25s ease; }
+  .trial-prompt-bubble { display: inline-block; background: var(--espresso); color: var(--cream); border-radius: 16px; padding: 12px 22px; font-size: var(--text-md); font-weight: 500; margin: 12px 0 6px; font-style: italic; }
+  .trial-prompt-jp { font-size: var(--text-md); color: var(--ink-soft); margin-bottom: 20px; }
+  .trial-mic-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--espresso); color: var(--cream); border: none; border-radius: 0; padding: 14px 26px; font-size: var(--text-sm); font-weight: 700; cursor: pointer; transition: transform 0.25s ease; }
   .trial-mic-btn:hover:not(:disabled) { transform: translateY(-2px); }
   .trial-mic-btn:disabled { opacity: 0.7; cursor: default; }
-  .trial-mic-note { font-size: 16px; color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
-  .trial-heard { font-size: 16px; color: var(--ink); background: var(--cream-soft); border-radius: 10px; padding: 10px 16px; margin: 4px 0 14px; }
+  .trial-mic-note { font-size: var(--text-sm); color: var(--ink-soft); margin-top: 12px; min-height: 1.4em; }
+  .trial-heard { font-size: var(--text-md); color: var(--ink); background: var(--cream-soft); border-radius: 10px; padding: 10px 16px; margin: 4px 0 14px; }
   .trial-result { display: none; margin-top: 26px; padding-top: 26px; border-top: 1px solid var(--line); }
   .trial-result.show { display: block; }
-  .trial-result .nice { font-family: var(--font-display); font-weight: 700; font-size: 1.75rem; color: var(--gold); margin-bottom: 10px; }
-  .trial-cta-note { font-size: 16px; color: var(--ink-soft); margin-top: 10px; }
+  .trial-result .nice { font-family: var(--font-display); font-weight: 700; font-size: var(--text-2xl); color: var(--gold); margin-bottom: 10px; }
+  .trial-cta-note { font-size: var(--text-sm); color: var(--ink-soft); margin-top: 10px; }
 
   /* ---------------- Problem card list (legacy, still used sparingly) ---------------- */
   .card-list { display: flex; flex-direction: column; gap: 12px; margin: 28px 0; }
@@ -540,7 +534,7 @@
     padding: 18px 22px; box-shadow: 0 2px 12px -7px rgba(29,22,16,0.14);
   }
   .card-list .dot { flex: 0 0 auto; width: 6px; height: 6px; border-radius: 50%; background: var(--stone-deep); margin-top: 9px; }
-  .card-list p { margin: 0; font-size: 16px; line-height: 1.8; }
+  .card-list p { margin: 0; font-size: var(--text-md); line-height: 1.8; }
 
   /* ---------------- Method (steps) ---------------- */
   /* 2026-08-08 Harumi指摘: 暗い背景のセクションが多すぎた(hero/method/
@@ -551,9 +545,9 @@
     background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px;
     padding: 16px clamp(18px, 2.5vw, 24px); box-shadow: var(--shadow-soft);
   }
-  .method-steps .n { font-family: var(--font-display); font-weight: 500; font-size: 20px; color: var(--stone-deep); }
-  .method-steps .t { font-family: var(--font-display); font-weight: 500; font-size: 16px; min-width: 150px; color: var(--ink); }
-  .method-steps .d { flex: 1 1 220px; font-size: 17px; color: var(--ink-soft); }
+  .method-steps .n { font-family: var(--font-display); font-weight: 500; font-size: var(--text-md); color: var(--stone-deep); }
+  .method-steps .t { font-family: var(--font-display); font-weight: 500; font-size: var(--text-sm); min-width: 150px; color: var(--ink); }
+  .method-steps .d { flex: 1 1 220px; font-size: var(--text-md); color: var(--ink-soft); }
 
   /* ---------------- Feature trio ---------------- */
   .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 56px; }
@@ -569,41 +563,41 @@
     justify-content: center; margin-bottom: 20px; color: var(--cream);
   }
   .trio-icon svg { width: 20px; height: 20px; }
-  .trio-card h3 { font-size: 18px; margin-bottom: 8px; }
-  .trio-card p { font-size: 16px; color: var(--ink-soft); margin: 0; }
+  .trio-card h3 { font-size: var(--text-md); margin-bottom: 8px; }
+  .trio-card p { font-size: var(--text-md); color: var(--ink-soft); margin: 0; }
 
   /* ---------------- Who list ---------------- */
   .who-list { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 40px; margin-top: 44px; }
   @media (max-width: 700px) { .who-list { grid-template-columns: 1fr; } }
   .who-item { display: flex; gap: 14px; align-items: flex-start; border-top: 1px solid var(--line); padding-top: 16px; }
-  .who-item .mark { font-family: var(--font-display); font-weight: 500; color: var(--stone-deep); font-size: 1.125rem; min-width: 22px; }
-  .who-item p { margin: 0; font-size: 16px; }
+  .who-item .mark { font-family: var(--font-display); font-weight: 500; color: var(--stone-deep); font-size: var(--text-md); min-width: 22px; }
+  .who-item p { margin: 0; font-size: var(--text-sm); }
   /* 使った方の声(2026-10-06 HARU様「Eat Out に入れて」)。/speakup/ の .voice と同じ形
      (引用符・要の一文を太字・名前を下に)。値はこのページの .card-list に合わせた。 */
-  .voice-cap { margin: 48px 0 0; font-size: 18px; font-weight: 700; color: var(--ink); }
+  .voice-cap { margin: 48px 0 0; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
   .voice { margin: 16px 0 0; max-width: 680px; background: #FFFFFF; border: 1px solid var(--line); border-left: 4px solid var(--gold-bright);
     border-radius: 14px; padding: 22px 21px 20px; box-shadow: 0 1px 3px rgba(26,20,16,0.06), 0 6px 18px -6px rgba(26,20,16,0.16); }
   .voice-mark { display: block; font-size: 48px; line-height: 0.6; height: 22px; color: var(--gold-bright); font-weight: 700; }
-  .voice blockquote { margin: 0; font-size: 17px; line-height: 1.9; color: var(--ink); }
+  .voice blockquote { margin: 0; font-size: var(--text-md); line-height: 1.9; color: var(--ink); }
   .voice blockquote strong { font-weight: 700; background: linear-gradient(transparent 60%, #F3E4C6 60%); }
-  .voice figcaption { margin-top: 12px; font-size: 17px; font-weight: 700; color: var(--ink); }
-  .voice figcaption span { display: block; font-size: 13px; font-weight: 400; color: var(--stone-deep); }
+  .voice figcaption { margin-top: 12px; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
+  .voice figcaption span { display: block; font-size: var(--text-xs); font-weight: 400; color: var(--stone-deep); }
 
   /* ---------------- Price ---------------- */
   .price-card {
     max-width: 460px; margin: 40px auto 0; background: #FFFFFF; border: 1px solid var(--line); border-radius: 22px;
     padding: clamp(32px, 5vw, 44px); text-align: center; box-shadow: var(--shadow-card);
   }
-  .price-card .label { font-size: 14px; letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; margin-bottom: 6px; }
-  .price-card .product { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--ink); margin-bottom: 18px; }
-  .price-card .amount { font-family: var(--font-display); font-weight: 700; font-size: 2.75rem; color: var(--ink); line-height: 1; }
-  .price-card .note { font-size: 16px; color: var(--ink-soft); margin: 8px 0 26px; }
+  .price-card .label { font-size: var(--text-xs); letter-spacing: 0.14em; color: var(--stone-deep); font-weight: 500; margin-bottom: 6px; }
+  .price-card .product { font-family: var(--font-display); font-weight: 500; font-size: var(--text-sm); color: var(--ink); margin-bottom: 18px; }
+  .price-card .amount { font-family: var(--font-display); font-weight: 700; font-size: var(--text-3xl); color: var(--ink); line-height: 1; }
+  .price-card .note { font-size: var(--text-md); color: var(--ink-soft); margin: 8px 0 26px; }
   .price-card hr { border: none; height: 1px; background: var(--line); margin-bottom: 24px; }
   .price-card .includes { text-align: left; display: flex; flex-direction: column; gap: 11px; margin-bottom: 30px; }
   /* ★2026-09-18 15.5px は「読む文章」の下限16pxを割っていた
      (CLAUDE.md「活字の下限」)。このカードは**買う直前に読む所**なので、
      いちばん割ってはいけない場所だった。 */
-  .price-card .includes div { display: flex; gap: 10px; font-size: 16px; }
+  .price-card .includes div { display: flex; gap: 10px; font-size: var(--text-md); }
   .price-card .includes .ck { color: var(--stone-deep); font-weight: 500; }
 
   /* ---------------- FAQ ---------------- */
@@ -611,12 +605,12 @@
   .faq-item { background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
   .faq-item summary {
     list-style: none; cursor: pointer; padding: 18px 22px; display: flex; align-items: center; justify-content: space-between;
-    font-weight: 500; font-size: 16px; color: var(--ink);
+    font-weight: 500; font-size: var(--text-md); color: var(--ink);
   }
   .faq-item summary::-webkit-details-marker { display: none; }
-  .faq-item summary .sign { color: var(--stone-deep); font-size: 18px; font-weight: 400; transition: transform 0.25s ease; }
+  .faq-item summary .sign { color: var(--stone-deep); font-size: var(--text-sm); font-weight: 400; transition: transform 0.25s ease; }
   .faq-item[open] summary .sign { transform: rotate(45deg); }
-  .faq-item .a { padding: 0 22px 20px; font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
+  .faq-item .a { padding: 0 22px 20px; font-size: var(--text-md); color: var(--ink-soft); line-height: 1.85; }
 
   /* ---------------- CTA band ---------------- */
   .cta-band .lede { max-width: 32em; }
@@ -629,24 +623,24 @@
   }
   .cta-band.on-dark .eyebrow { color: var(--gold-bright); }
   .cta-band.on-dark .eyebrow::before { background: var(--gold-bright); }
-  .cta-lede-pre { font-size: 16px; color: rgba(251,249,246,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
-  .cta-price-note { font-size: 16px; color: rgba(251,249,246,0.65); margin-top: 14px; }
+  .cta-lede-pre { font-size: var(--text-md); color: rgba(251,249,246,0.7); max-width: 480px; margin: 0 auto 28px; line-height: 1.9; }
+  .cta-price-note { font-size: var(--text-sm); color: rgba(251,249,246,0.65); margin-top: 14px; }
 
   /* ---------------- Footer ---------------- */
   footer { padding: 40px 0 32px; text-align: center; border-top: 1px solid var(--line); }
   .on-dark footer { border-top-color: var(--line-light); }
   .foot-tag { font-family: "Lora", Georgia, serif; font-style: italic; font-weight: 400; font-size: 18px; color: #8F6524; margin-bottom: 8px; } /* 全ページ共通(fonts.css の Lora の所に理由)。変えない */
-  .foot-copy { font-size: 12.5px; color: var(--ink-soft); opacity: 0.85; }
+  .foot-copy { font-size: var(--text-xs); color: var(--ink-soft); opacity: 0.85; }
   /* ★2026-09-18 メールとサイトのリンクが13.5pxだった。CLAUDE.md
      「活字の下限」は**メールを名指しで**「押すもの」に入れていて、下限は
      16px。著作権表示そのもの(© 2026 Harmony Horizon)は「印」なので
      12.5pxのままでよいが、**押す所だけ**は16pxに上げる。
      「タップ領域44pxを確保しても、字が14pxでは押す前に読めない」。 */
-  .foot-copy a { font-weight: 500; color: var(--ink); font-size: 16px; }
+  .foot-copy a { font-weight: 500; color: var(--ink); font-size: var(--text-sm); }
   /* 販売しているページからは、特定商取引法の表記へ必ず辿れるようにする。
      法律上の要請であり、探させてはいけない（追補2 §126）。 */
   .foot-legal { display: flex; flex-wrap: wrap; justify-content: center;
-    gap: 10px 22px; margin-top: 18px; font-size: 16px; }
+    gap: 10px 22px; margin-top: 18px; font-size: var(--text-sm); }
   .foot-legal a { color: var(--ink-soft); text-decoration: none;
     border-bottom: 1px solid rgba(0,0,0,0.18);
     display: inline-flex; align-items: center; min-height: 44px; }
@@ -688,49 +682,16 @@
      大きさは1つに揃え、色だけで結びを立てる（2026-08-27）。 */
   .big-statement .q { display: block; margin-top: 14px; color: var(--gold); font-style: normal; }
 
-  /* ---------------- Mobile readability ---------------- */
-  /* 2026-08-09: 「携帯だと文字が小さく感じる」の指摘(Harumi)。
-     50代以上の読者を想定し、狭い画面では本文・ラベル類を一段階大きくする。
-     2026-08-09 追記: 白背景カード内の文字がまだ小さいとの指摘を受け、再度引き上げ。 */
-  @media (max-width: 640px) {
-    body { font-size: 17px; }
-    .lede { font-size: 1.0625rem; }
-    .eyebrow { font-size: 13.5px; }
-    .eyebrow-product { font-size: 14px; }
-    .hero-note { font-size: 16px; }
-    .btn { font-size: 17px; }
-    .btn-small { font-size: 16px; }
-    .trio-card p { font-size: 17px; }
-    .who-item p { font-size: 16px; }
-    .method-steps .d { font-size: 17px; }
-    .card-list p { font-size: 17px; }
-    .price-card .label { font-size: 14px; }
-    .price-card .product { font-size: 18px; }
-    .price-card .note { font-size: 17px; }
-    .price-card .includes div { font-size: 17px; }
-    .faq-item summary { font-size: 17px; }
-    .faq-item .a { font-size: 17px; }
-    .foot-copy { font-size: 13.5px; }
-    .chat-bubble { font-size: 17px; }
-    .chat-row.you .chat-bubble { font-size: 22px; }
-    .confession .highlight { font-size: 1.1875rem; }
-    .flow-steps .step { font-size: 16px; }
-    .coverage-chips .chip { font-size: 16px; }
-    .big-statement { font-size: 1.1875rem; }
-    .trial-q-title { font-size: 17px; }
-    .trial-opt { font-size: 16px; }
-    .trial-prompt-bubble { font-size: 18px; }
-    .trial-toggle-btn { font-size: 16px; }
-    .cta-lede-pre { font-size: 16px; }
-  }
-
   /* 320px の端末では、見出しをもう一段下げる。
      28px のままだと1行に 9.7 文字しか入らず、どこで切っても
      1〜2文字の行が出る（実測 tools/mobile-audit.js の孤立行検査）。 */
   @media (max-width: 380px) {
-    .hero h1 { font-size: 1.75rem; }
-    h2 { font-size: 1.375rem; }
-    .big-statement { font-size: 1.2rem; }
+    h2 { font-size: var(--text-lg); }
+    .big-statement { font-size: var(--text-lg); }
+  }
+  /* 携帯の見出しは /speakup/ と同じく1段下げる(40px だと「を」だけの行が出る) */
+  @media (max-width: 899px) {
+    .hero h1 { font-size: var(--text-2xl); }
   }
 </style>
 </head>
@@ -949,7 +910,7 @@
        体験の直後に1行だけ置く。最初の一画面には足さない（無料ボタンがさらに下がるため）。
        申込締切(10/14 24:00 JST = 10/14 15:00 UTC)を過ぎたら、下のスクリプトで自動で消える。 -->
   <div class="container lesson-invite" data-until="2026-10-14T15:00:00Z" style="max-width:640px;margin-top:32px;">
-    <p class="lede" style="margin-bottom:12px;"><span class="nowrap">10/15（木）21:30（日本時間）から、</span><span class="nowrap">Zoomで90分の</span><span class="nowrap">グループレッスンがあります。</span><span class="nowrap">なぜ聞き取れないのかを、</span><span class="nowrap">音のルール4つで練習します。</span></p>
+    <p class="lede" style="margin-bottom:12px;"><span class="nowrap">10/15（木）21:30</span><span class="nowrap">（日本時間）から、</span><span class="nowrap">Zoomで90分の</span><span class="nowrap">グループレッスンがあります。</span><span class="nowrap">なぜ聞き取れないのかを、</span><span class="nowrap">音のルール4つで練習します。</span></p>
     <a href="/eatout/lesson/" class="btn btn-outline">レッスンの詳細を見る →</a>
   </div>
   <script>
