@@ -15,7 +15,7 @@
 
    部品は eatout/quiz の完成品をそのまま写した(DESIGN-013):
      .speaker(金の丸い音ボタン・ring の動き) … eatout/quiz 114〜123行
-     .rv-slow(『ゆっくり』の札)             … eatout/quiz 211〜222行
+     .hint / .toggles / .toggle(声・速さ)  … eatout/quiz 132〜141行
      playClip(音の鳴らし方)                  … eatout/quiz 699〜735行
    iOSの受話口対策は ../audio-fix.js。
    書体は www の決まり(ヒラギノを含む端末標準、DESIGN-006)。
@@ -47,20 +47,9 @@ h1{font-size:24px;font-weight:700;line-height:1.5;margin:8px 0 24px}
 @keyframes ring{0%{box-shadow:0 16px 34px -12px rgba(29,22,16,.5),0 0 0 0 rgba(226,163,61,.5)}
   100%{box-shadow:0 16px 34px -12px rgba(29,22,16,.5),0 0 0 20px rgba(226,163,61,0)}}
 @media (prefers-reduced-motion:reduce){.speaker.playing{animation:none}}
-/* eatout/quiz .rv-slow(そのまま。.rv-play は使わない) */
-.slow-row{display:flex;justify-content:center;margin-top:16px}
-.rv-slow{display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-height:50px;padding:0 22px;border-radius:999px;cursor:pointer;white-space:nowrap;
-  font-family:var(--font);font-size:1.02rem;font-weight:700;
-  -webkit-tap-highlight-color:transparent;transition:transform .08s ease;
-  background:#FFFFFF;color:var(--ink);border:1.5px solid var(--line)}
-.rv-slow:active{transform:scale(.97)}
-.rv-slow.playing{animation:rvring 1.1s ease-out infinite}
-@keyframes rvring{0%{box-shadow:0 0 0 0 rgba(226,163,61,.55)}
-  100%{box-shadow:0 0 0 14px rgba(226,163,61,0)}}
-@media (prefers-reduced-motion:reduce){.rv-slow.playing{animation:none}}
-/* eatout/quiz の .toggle(声の切り替え)。押す物なので字は16px */
-.toggles{display:flex;flex-direction:column;gap:10px;margin:0 0 20px}
+/* eatout/quiz の .hint と .toggles/.toggle(声・速さ)。1文字も変えずに写した */
+.hint{margin-top:14px;font-size:1rem;font-weight:700;color:var(--ink-soft);text-align:center}
+.toggles{display:flex;flex-direction:column;gap:10px;margin:18px 0 0}
 .toggle{display:flex;border:1px solid var(--line);border-radius:999px;
   overflow:hidden;background:#FFFFFF}
 .toggle button{flex:1;border:none;background:transparent;padding:12px 8px;
@@ -83,47 +72,74 @@ body:has(.card:target) .solo-link{display:block}
 <main>
   <h1>音を聞いてみる</h1>
 
-  <div class="toggles" role="group" aria-label="声の設定">
-    <div class="toggle">
-      <button type="button" class="on" data-voice="f">女性の声</button>
-      <button type="button" data-voice="m">男性の声</button>
-    </div>
-  </div>
 
   <section class="card" id="1">
     <span class="num">1通目の音</span>
     <p class="scene">カフェで、飲み物を頼んだあと。</p>
-      <button class="speaker" type="button" data-src="audio/q_size_05_f.mp3" aria-label="音を聞く">
+      <button class="speaker" type="button" data-base="audio/q_size_05_" aria-label="音を聞く">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
           <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
         </svg>
       </button>
-      <div class="slow-row"><button class="rv-slow" type="button" data-src="audio/q_size_05_f_slow.mp3">ゆっくり</button></div>
+    <p class="hint">🎧 タップして音声を聞く</p>
+
+    <div class="toggles" role="group" aria-label="声と速度の設定">
+      <div class="toggle">
+        <button type="button" class="on" data-voice="f">女性の声</button>
+        <button type="button" data-voice="m">男性の声</button>
+      </div>
+      <div class="toggle">
+        <button type="button" class="on" data-rate="1">ふつう 1.0x</button>
+        <button type="button" data-rate="0.7">ゆっくり 0.7x</button>
+      </div>
+    </div>
   </section>
 
   <section class="card" id="2">
     <span class="num">2通目の音</span>
     <p class="scene">お会計のあと。</p>
-      <button class="speaker" type="button" data-src="audio/q_pay_06_f.mp3" aria-label="音を聞く">
+      <button class="speaker" type="button" data-base="audio/q_pay_06_" aria-label="音を聞く">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
           <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
         </svg>
       </button>
-      <div class="slow-row"><button class="rv-slow" type="button" data-src="audio/q_pay_06_f_slow.mp3">ゆっくり</button></div>
+    <p class="hint">🎧 タップして音声を聞く</p>
+
+    <div class="toggles" role="group" aria-label="声と速度の設定">
+      <div class="toggle">
+        <button type="button" class="on" data-voice="f">女性の声</button>
+        <button type="button" data-voice="m">男性の声</button>
+      </div>
+      <div class="toggle">
+        <button type="button" class="on" data-rate="1">ふつう 1.0x</button>
+        <button type="button" data-rate="0.7">ゆっくり 0.7x</button>
+      </div>
+    </div>
   </section>
 
   <section class="card" id="3">
     <span class="num">3通目の音</span>
     <p class="scene">カフェで、注文したあと。</p>
-      <button class="speaker" type="button" data-src="audio/q_size_02_f.mp3" aria-label="音を聞く">
+      <button class="speaker" type="button" data-base="audio/q_size_02_" aria-label="音を聞く">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--navy-deep)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="var(--navy-deep)" stroke="none"/>
           <path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
         </svg>
       </button>
-      <div class="slow-row"><button class="rv-slow" type="button" data-src="audio/q_size_02_f_slow.mp3">ゆっくり</button></div>
+    <p class="hint">🎧 タップして音声を聞く</p>
+
+    <div class="toggles" role="group" aria-label="声と速度の設定">
+      <div class="toggle">
+        <button type="button" class="on" data-voice="f">女性の声</button>
+        <button type="button" data-voice="m">男性の声</button>
+      </div>
+      <div class="toggle">
+        <button type="button" class="on" data-rate="1">ふつう 1.0x</button>
+        <button type="button" data-rate="0.7">ゆっくり 0.7x</button>
+      </div>
+    </div>
   </section>
 
   <p class="foot solo-link"><a href="./">ほかの音も聞く</a></p>
@@ -163,19 +179,32 @@ function playClip(src, btn) {
     p['catch'](function () { if (btn) btn.classList.remove('playing'); });
   }
 }
-var voice = 'f';
-function srcOf(b) { return b.getAttribute('data-src').replace(/_f(_slow)?\.mp3$/, '_' + voice + '$1.mp3'); }
-var btns = document.querySelectorAll('[data-src]');
-for (var i = 0; i < btns.length; i++) {
-  btns[i].addEventListener('click', function () { playClip(srcOf(this), this); });
+var voice = 'f', rate = 1;
+function srcFor(card) {
+  var sp = card.querySelector('.speaker');
+  return sp.getAttribute('data-base') + voice + (rate === 1 ? '' : '_slow') + '.mp3';
 }
-/* eatout/quiz の声の切り替え。ここでは切り替えるだけで、押すまで鳴らさない */
-var vb = document.querySelectorAll('[data-voice]');
-for (var j = 0; j < vb.length; j++) {
-  vb[j].addEventListener('click', function () {
-    voice = this.getAttribute('data-voice');
-    for (var k = 0; k < vb.length; k++) vb[k].classList.toggle('on', vb[k] === this);
-  });
+/* eatout/quiz と同じ動き: 押すと、その問の音を今の声・速さで鳴らす */
+var cards = document.querySelectorAll('.card');
+for (var i = 0; i < cards.length; i++) {
+  (function (card) {
+    var sp = card.querySelector('.speaker');
+    sp.addEventListener('click', function () { playClip(srcFor(card), sp); });
+    card.querySelectorAll('[data-voice]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        voice = b.getAttribute('data-voice');
+        document.querySelectorAll('[data-voice]').forEach(function (o) { o.classList.toggle('on', o.getAttribute('data-voice') === voice); });
+        playClip(srcFor(card), sp);
+      });
+    });
+    card.querySelectorAll('[data-rate]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        rate = parseFloat(b.getAttribute('data-rate'));
+        document.querySelectorAll('[data-rate]').forEach(function (o) { o.classList.toggle('on', parseFloat(o.getAttribute('data-rate')) === rate); });
+        playClip(srcFor(card), sp);
+      });
+    });
+  })(cards[i]);
 }
 </script>
 </body>
