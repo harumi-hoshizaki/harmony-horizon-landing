@@ -271,7 +271,11 @@
      大きくする ── 幅と同じ高さ(aspect 1:1相当)を確保すると、写真の
      横方向の見える範囲が約56%まで戻り、2人とも縦は全部・横もほぼ
      全体が入る(実測して選んだ値)。 */
-  .hero__media { position: absolute; top: 0; left: 0; right: 0; height: clamp(320px, 100vw, 460px); margin: 0; }
+  /* 2026-10-07 携帯の最初の画面にボタンを入れる(CLAUDE.md「最初の一画面」)。帯の高さを
+     「画面の幅」ではなく「残っている高さ」から決める。393×659 で 219px ＝ この写真の縦横比と
+     ほぼ同じなので、2人とも切れずに全部入る。 */
+  .hero { --hero-band: clamp(200px, calc(100svh - 440px), 460px); }
+  .hero__media { position: absolute; top: 0; left: 0; right: 0; height: var(--hero-band); margin: 0; }
   .hero__media picture { display: block; width: 100%; height: 100%; }
   .hero__media img {
     width: 100%; height: 100%; object-fit: cover; display: block;
@@ -290,13 +294,12 @@
   .hero__media::after {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(180deg,
-      rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 46%, rgba(31,27,23,.14) 58%,
-      rgba(31,27,23,.36) 68%, rgba(31,27,23,.64) 78%, rgba(31,27,23,.86) 88%,
-      rgba(31,27,23,.97) 96%, rgba(31,27,23,1) 100%);
+      rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 36%, rgba(31,27,23,.42) 48%,
+      rgba(31,27,23,.82) 56%, rgba(31,27,23,.96) 64%, rgba(31,27,23,1) 74%);  /* 2026-10-07 帯を低くした分、前書きが乗る所から暗くする(4.5:1) */
   }
   /* 文字の頭は帯の下端の70px手前(すでにグラデーションがかなり暗い所)から
      始め、帯の外(単色の--deep)へ自然に続くようにする。 */
-  .hero__in { position: relative; padding-block: calc(clamp(320px, 100vw, 460px) - 70px) clamp(28px, 6vw, 64px); }
+  .hero__in { position: relative; padding-block: calc(var(--hero-band) - 84px) clamp(28px, 6vw, 64px); }
   /* 前書きは小さい文字なので 4.5:1 が要る。濃い銅（--gold）だと写真の上で
      3:1 も出ない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero .eyebrow { color: var(--gold-pale); gap: 10px; justify-content: flex-start; }
@@ -317,6 +320,8 @@
   /* 2026-09-29 HARU様要望: 「駅のホーム〜しておきます」の上下に
      もっと余白を。携帯だけ(卓上は900px以上のルールで元に戻す)。 */
   .hero .lede { max-width: 30em; margin: 12px 0 28px; font-size: var(--text-md); line-height: 1.55; color: rgba(251,249,246,0.92); }
+  /* 2026-10-07 導入文の後半はボタンの下へ(ボタンを最初の画面に入れるため)。大きさ・色は導入文と同じ */
+  .hero-more { max-width: 30em; margin: 20px 0 0; word-break: keep-all; font-size: var(--text-md); line-height: 1.7; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-xs); color: rgba(251,249,246,0.74); margin-top: 10px; text-align: left; }
   /* 2026-10-02 HARU様: 見出しの上に悩みを2行。悩みは小さく薄く、約束(h1)を大きく。
      色は .hero-note と同じ値、大きさは .lede と同じ。新しい色は足さない。 */
@@ -715,7 +720,7 @@
   .haru-lead { margin: 4px 0 0; font-weight: 700; font-size: var(--text-md); line-height: 1.6; color: var(--ink); }
   /* おさらいの仕組みの小見出し(2026-10-06)。h2 より小さく、本文より大きく。既存の値だけ。 */
   /* 2026-10-07 h3 の上限 20px に下げ、本文の太字と同じ大きさになったので、大きさではなく区切り線と余白で節の変わり目を示す */
-  .review-head { margin: 40px 0 0; padding-top: 32px; border-top: 1px solid var(--line); font-size: var(--text-md); line-height: 1.5; color: var(--ink); word-break: keep-all; }
+  .review-head { margin: 40px 0 0; padding-top: 32px; border-top: 1px solid var(--line); font-size: var(--text-md); line-height: 1.5; color: var(--gold);  /* 2026-10-07 前後の太字と同じ黒だと見出しに見えない(審査の指摘)。この節の結論なので金で立てる */ word-break: keep-all; }
   /* 2026-10-06 HARU様「文字の大きさルール守ってる？」: 18px・灰で、下のカード(20px・--ink)より小さく薄く、
      カードの見出しなのに注記に見えていた。カードの太字と同じ 20px・--ink にそろえる。 */
   .haru-voices-cap { margin: 32px 0 0; font-size: var(--text-md); font-weight: 700; color: var(--ink); }
@@ -856,7 +861,8 @@
      見出し」という部品自体が無いので合わせる先が無く、このページ固有の
      問題としてここだけ縮める。値はアプリの段の1つ(--text-2xl)を使う —
      新しいサイズは作らない。 */
-  @media (max-width: 429px) {
+  /* 2026-10-07 携帯・タブレット(〜899px)はすべて28px。他の販売LPと同じ境目 */
+  @media (max-width: 899px) {
     .hero h1 { font-size: var(--text-2xl); }
   }
 </style>
@@ -898,8 +904,9 @@
       <span class="eyebrow eyebrow-product">Ear to Voice ｜外国人に話しかける実践英会話</span>
       <p class="hero-pain">読める。書ける。<br>でも、<wbr>聞き取れない。<wbr>話せない。</p>
       <h1>自分から、<br class="br-narrow"><em>声をかけられる</em>。</h1>
-      <p class="lede"><strong style="color:#FFFFFF;word-break:keep-all;">1日10分ぐらい。<br><span class="nw">できる日に、少しずつ。</span><br>忘れかけたころに、<wbr>もう一度。<br>だから、口に残る。</strong><br><br>駅で、道で、観光地で。外国人に自分から話しかけ、会話を広げられるように。よくある場面を<span class="nw">練習しておきます。</span></p>
+      <p class="lede"><strong style="color:#FFFFFF;word-break:keep-all;">1日10分ぐらい。<br><span class="nw">できる日に、少しずつ。</span><br>忘れかけたころに、<wbr>もう一度。<br>だから、口に残る。</strong></p>
       <a href="#try-it" class="btn btn-gold">まずは<wbr>無料で<wbr>体験する&nbsp;→</a><!-- 2026-10-06 HARU様: 最初は「買って」より「試して」。支払いは値段のカードと最後の帯から -->
+      <p class="hero-more">駅で、<wbr>道で、<wbr>観光地で。<wbr>外国人に<wbr>自分から<wbr>話しかけ、<wbr>会話を<wbr>広げられるように。<wbr>よくある場面を<wbr>練習しておきます。</p>
       <div class="hero-note">申込締切：10月24日（土）23:59<br>コース開始：10月26日（月）</div>
     </div>
   </div>
