@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>音を聞いてみる — コツのメール用</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════════════════════════
+   /eatout/tips-sound  2026-10-07
+   聞き取りクイズ登録後の「コツのメール」3通から来るページ。
+   各メールが「まず、音を聞いてみてください」と言うので、その音だけを
+   置く。英語の文字は出さない(耳から、声へ。音が先、文字は後)。
+   配色・書体は eatout/quiz と同じ。音の鳴らし方は eatout/quiz の
+   playClip をそのまま写した(iOSの受話口対策は ../audio-fix.js)。
+   音声は Eat Out コース本体と同じ ElevenLabs の女性の声。
+   ══════════════════════════════════════════════════════════════ */
+:root{
+  --navy-deep:#1D1610; --cream:#FAF3E6; --cream-soft:#F1E4CC;
+  --gold:#A3782D; --hold:#8C651F; --ink:#241F1A; --ink-soft:#6B5F4E;
+  --line:rgba(43,32,24,0.13); --shadow-card:0 30px 70px -24px rgba(29,22,16,0.22);
+  --font:'Zen Kaku Gothic New', sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--cream);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.9;-webkit-font-smoothing:antialiased;min-height:100vh}
+main{max-width:520px;margin:0 auto;padding:max(24px,env(safe-area-inset-top)) 22px calc(48px + env(safe-area-inset-bottom))}
+h1{font-size:24px;font-weight:700;line-height:1.5;margin:8px 0 12px}
+.lead{color:var(--ink-soft);margin-bottom:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:22px 20px;margin-bottom:20px;scroll-margin-top:16px}
+.card:target{border-color:var(--gold);box-shadow:0 0 0 3px rgba(163,120,45,0.25),var(--shadow-card)}
+.num{display:inline-block;font-size:16px;font-weight:700;color:var(--hold);margin-bottom:2px}
+.scene{margin-bottom:16px}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+button.play{flex:1 1 140px;min-height:56px;border:0;border-radius:12px;background:var(--navy-deep);color:var(--cream);font:inherit;font-size:18px;font-weight:700;cursor:pointer}
+button.play.slow{background:var(--cream-soft);color:var(--ink);border:1px solid var(--line)}
+button.play.playing{outline:3px solid var(--gold);outline-offset:2px}
+button.play:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.say{margin-top:14px;color:var(--ink-soft)}
+.foot{margin-top:32px;font-size:16px;color:var(--ink-soft)}
+.foot a{color:var(--hold);font-weight:700}
+.sig{margin-top:28px;font-style:italic;font-family:Georgia,serif;font-size:18px;color:var(--hold)}
+</style>
+</head>
+<body>
+<main>
+  <h1>音を聞いてみる</h1>
+  <p class="lead">コツのメールの、3つの音です。<br>ボタンを押すと、鳴ります。</p>
+
+  <section class="card" id="1">
+    <span class="num">1通目の音</span>
+    <p class="scene">カフェで、飲み物を頼んだあと。</p>
+    <div class="row">
+      <button class="play" type="button" data-src="audio/q_size_05_f.mp3">▶ 聞く</button>
+      <button class="play slow" type="button" data-src="audio/q_size_05_f_slow.mp3">ゆっくり</button>
+    </div>
+  </section>
+
+  <section class="card" id="2">
+    <span class="num">2通目の音</span>
+    <p class="scene">お会計のあと。</p>
+    <div class="row">
+      <button class="play" type="button" data-src="audio/q_pay_06_f.mp3">▶ 聞く</button>
+      <button class="play slow" type="button" data-src="audio/q_pay_06_f_slow.mp3">ゆっくり</button>
+    </div>
+  </section>
+
+  <section class="card" id="3">
+    <span class="num">3通目の音</span>
+    <p class="scene">カフェで、注文したあと。</p>
+    <div class="row">
+      <button class="play" type="button" data-src="audio/q_size_02_f.mp3">▶ 聞く</button>
+      <button class="play slow" type="button" data-src="audio/q_size_02_f_slow.mp3">ゆっくり</button>
+    </div>
+  </section>
+
+  <p class="foot">もっと聞いてみたい方は、<a href="../quiz/">無料の聞き取りクイズ</a>もどうぞ。</p>
+  <p class="sig">Train your ears. Find your voice.</p>
+</main>
+
+<!-- iPhoneで音が受話口から出るのを防ぐ。詳しくは ../audio-fix.js の先頭。 -->
+<script src="../audio-fix.js"></script>
+<script>
+'use strict';
+/* eatout/quiz の playClip を、そのまま写した。呼ばれるたびに新しい
+   HTMLAudioを作る。「ゆっくり」は playbackRate ではなく _slow.mp3。 */
+var cur = null;
+function playClip(src, btn) {
+  if (!src) return;
+  try { if (cur) { cur.pause(); cur.currentTime = 0; } } catch (e) {}
+  var a = new Audio(src);
+  cur = a;
+  var all = document.querySelectorAll('button.play.playing');
+  for (var i = 0; i < all.length; i++) all[i].classList.remove('playing');
+  if (btn) {
+    btn.classList.add('playing');
+    var off = function () { btn.classList.remove('playing'); };
+    a.addEventListener('ended', off);
+    a.addEventListener('error', off);
+  }
+  if (window.eatoutPlay) {
+    window.eatoutPlay(a, {
+      isCurrent: function () { return cur === a; },
+      onFail: function () { if (btn) btn.classList.remove('playing'); }
+    });
+    return;
+  }
+  var p = a.play();
+  if (p && typeof p['catch'] === 'function') {
+    p['catch'](function () { if (btn) btn.classList.remove('playing'); });
+  }
+}
+var btns = document.querySelectorAll('button.play');
+for (var i = 0; i < btns.length; i++) {
+  btns[i].addEventListener('click', function () { playClip(this.getAttribute('data-src'), this); });
+}
+</script>
+</body>
+</html>
