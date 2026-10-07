@@ -10,8 +10,9 @@
 .option.quiz-wrong .option-radio { border-color: var(--neutral); }
 .option.quiz-wrong .option-radio::after { content: "✗"; color: var(--muted); }
 
-/* 登録欄の注意書き(配信停止・同意)は補足なので、本体の最小の段(--text-xs)にする */
-.quiz-fine, .quiz-fine .btn-link { font-size: var(--text-xs); }
+/* 登録欄の注意書き(配信停止・同意)。2026-10-07 監査で 14px(--text-xs)→ 16px。
+   landing の CLAUDE.md「読む文章は16px以上」。本体に16pxの段が無いので直書き。 */
+.quiz-fine, .quiz-fine .btn-link { font-size: 16px; }
 
 /* 答えたあとの欄: まとまりのあいだは .screen-body と同じ32px。まとまりの中は .reveal-block の12px。 */
 .quiz-reveal { display: flex; flex-direction: column; gap: var(--space-6); }

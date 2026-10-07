@@ -266,12 +266,19 @@ function showResult() {
       });
     });
     body.appendChild(h('div', { class: 'answer-group' }, [
-      h('h3', { class: 'group-title', text: '苦手だった音は、\nどれですか？\n(いくつでも)' }),
+      h('h3', { class: 'group-title', text: '苦手だった音は、\nどれですか？\n（いくつでも）' }),
       ul,
     ]));
   }
 
   body.appendChild(newsletterBlock(score, qs));
+  // 次の一歩(2026-10-07 監査:結果の画面から、どこへも行けなかった)。
+  // 問題の音声は、このコースの中の物なので、そのコースへ。値段はコースのページで見せる。
+  body.appendChild(h('div', { class: 'answer-group' }, [
+    h('h3', { class: 'group-title', text: 'このクイズの音声について' }),
+    h('p', { class: 'body-text', text: '4問とも、コース\n「外国人に話しかける実践英会話」の\n中の音声です。' }),
+    h('a', { class: 'btn-link', href: '/speakup/', text: 'コースの内容を見る' }),
+  ]));
   body.appendChild(navRow({
     onBack: () => show(TOTAL - 1),
     onNext: () => { state.answers = []; show(0); },
@@ -314,7 +321,24 @@ function newsletterBlock(score, qs) {
       });
       fd.append('ml-submit', '1');
       fd.append('anticsrf', 'true');
-      await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd });
+      // 登録の結果を、正直に出す(2026-10-07 監査:前は mode:'no-cors' で返事を読めず、
+      // 失敗しても必ず「送りました」と出ていた)。MailerLite の返事 { success } を読む。
+      // 返事が読めない(ブラウザが中身を見せない)時だけ、もう一度 no-cors で送り、
+      // 「受け付けました」と言える範囲だけを言う。
+      let outcome;
+      try {
+        const res = await fetch(nl.endpoint, { method: 'POST', body: fd });
+        const json = await res.json().catch(() => ({}));
+        outcome = res.ok && json.success ? 'sent' : 'rejected';
+      } catch (_) {
+        await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd }); // 通信が切れていれば、ここで外の catch へ
+        outcome = 'unknown';
+      }
+      if (outcome === 'rejected') {
+        submit.disabled = false;
+        msg.hidden = false; msg.textContent = '登録できませんでした。メールアドレスを確かめて、もう一度お試しください。';
+        return;
+      }
       // 登録できたら、メール登録の欄(見出し・説明・入力・ボタン・注意書き)を丸ごと入れ替える。
       // 「登録した人の画面」と「まだの人の画面」を、はっきり別物にする(結果メールの箱と同じ淡い金の丸い箱)。
       const group = form.closest('.quiz-signup') || form;
@@ -322,7 +346,9 @@ function newsletterBlock(score, qs) {
       group.appendChild(h('div', { class: 'quiz-done' }, [
         h('span', { class: 'quiz-done-mark', 'aria-hidden': 'true', text: '✓' }),
         h('h3', { class: 'group-title', text: '登録ありがとうございます！' }),
-        markedLead('{{メール}}を送りました。\n届いたメールを、ご確認ください。', 'body-text'),
+        outcome === 'sent'
+          ? markedLead('{{メール}}を送りました。\n届いたメールを、ご確認ください。', 'body-text')
+          : markedLead('登録を受け付けました。\n{{メール}}が届かない時は、\n迷惑メールのフォルダも\nご確認ください。', 'body-text'),
       ]));
       playCelebrate({ text: null });
     } catch (e) {
@@ -332,7 +358,7 @@ function newsletterBlock(score, qs) {
   }
   return h('div', { class: 'answer-group quiz-signup' }, [
     h('h3', { class: 'group-title', text: '聞き取りのコツを、メールで' }),
-    h('p', { class: 'body-text', text: '音のパターンを1つずつ、\n聞き取りのコツといっしょに\n週1回ほどお届けします。' }),
+    h('p', { class: 'body-text', text: '苦手な音のふり返りと、\n聞き取りのコツを、\nメールでお届けします。' }),
     form,
     h('p', { class: 'muted-text quiz-fine' }, [
       'いつでも配信を止められます。送信すると、',
