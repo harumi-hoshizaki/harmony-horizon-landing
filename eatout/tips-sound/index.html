@@ -32,6 +32,12 @@ h1{font-size:24px;font-weight:700;line-height:1.5;margin:8px 0 12px}
 .lead{color:var(--ink-soft);margin-bottom:28px}
 .card{background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-card);padding:22px 20px;margin-bottom:20px;scroll-margin-top:16px}
 .card:target{border-color:var(--gold);box-shadow:0 0 0 3px rgba(163,120,45,0.25),var(--shadow-card)}
+.solo-link{display:none;margin-top:4px}
+/* メールの #1 #2 #3 から来た時は、その通の音だけを出す(押す回数を減らす) */
+body:has(.card:target) .card:not(:target){display:none}
+body:has(.card:target) .lead{display:none}
+body:has(.card:target) .solo-link{display:block}
+.card:target button.play{min-height:68px;font-size:20px}
 .num{display:inline-block;font-size:16px;font-weight:700;color:var(--hold);margin-bottom:2px}
 .scene{margin-bottom:16px}
 .row{display:flex;gap:12px;flex-wrap:wrap}
@@ -77,6 +83,7 @@ button.play:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
     </div>
   </section>
 
+  <p class="foot solo-link"><a href="./">ほかの音も聞く</a></p>
   <p class="foot">もっと聞いてみたい方は、<a href="../quiz/">無料の聞き取りクイズ</a>もどうぞ。</p>
   <p class="sig">Train your ears. Find your voice.</p>
 </main>
