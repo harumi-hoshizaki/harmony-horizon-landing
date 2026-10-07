@@ -60,7 +60,7 @@
   /* ---------------- Brand ---------------- */
   .brand { display: flex; align-items: center; gap: 14px; justify-content: center; }
   .brand-mark { width: 44px; height: 44px; flex-shrink: 0; }
-  .brand-word { font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2.4vw, 23px); color: var(--navy-deep); line-height: 1.15; letter-spacing: 0.01em; }
+  .brand-word { font-family: var(--font-display); font-weight: 600; font-size: clamp(19px, 2.4vw, 23px); color: #221D18; line-height: 1.15; letter-spacing: 0.01em; }
   .brand-tag { font-size: 12px; letter-spacing: 0.14em; color: var(--gold-text); font-weight: 700; margin-top: 3px; }
 
   header.topbar { position: relative; z-index: 2; padding: clamp(26px, 4.5vw, 40px) clamp(20px, 5vw, 48px) 0; }
@@ -138,14 +138,16 @@
 <header class="topbar">
   <div class="brand">
     <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Ear to Voice">
-      <circle cx="100" cy="100" r="96" fill="#16233A"/>
-      <circle cx="100" cy="100" r="69" fill="none" stroke="#6C5A3B" stroke-width="8"/>
-      <circle cx="100" cy="100" r="46" fill="none" stroke="#B4883C" stroke-width="12"/>
-      <circle cx="100" cy="100" r="16" fill="#B4883C"/>
+      <!-- ★2026-10-07 HARU様「古い紺色が残っている。統一して」。9/19 の「ロゴの金を #E2A33D に」の直し残し。
+           eatout/index.html と同じ値（地 #221D18・金 #E2A33D・中の輪は金の55%）。 -->
+      <circle cx="100" cy="100" r="96" fill="#221D18"/>
+      <circle cx="100" cy="100" r="69" fill="none" stroke="#E2A33D" stroke-width="8" opacity="0.55"/>
+      <circle cx="100" cy="100" r="46" fill="none" stroke="#E2A33D" stroke-width="12"/>
+      <circle cx="100" cy="100" r="16" fill="#E2A33D"/>
     </svg>
     <div style="text-align:left;">
-      <div class="brand-word">Ear to Voice</div>
-      <div class="brand-tag">耳から、声へ。</div>
+      <div class="brand-word">EAR TO VOICE</div>
+      <div class="brand-tag">耳から、声へ</div>
     </div>
   </div>
 </header>
@@ -207,5 +209,6 @@
 })();
 </script>
 
+<!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "cbce8f1a5efe454ca00b354ec0f02307"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

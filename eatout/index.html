@@ -945,6 +945,19 @@
     </div>
   </div>
 
+  <!-- ★2026-10-07 サイト監査（成長役）「10/15レッスンへのリンクが、サイトのどこにも無い」。
+       体験の直後に1行だけ置く。最初の一画面には足さない（無料ボタンがさらに下がるため）。
+       申込締切(10/14 24:00 JST = 10/14 15:00 UTC)を過ぎたら、下のスクリプトで自動で消える。 -->
+  <div class="container lesson-invite" data-until="2026-10-14T15:00:00Z" style="max-width:640px;margin-top:32px;">
+    <p class="lede" style="margin-bottom:12px;"><span class="nowrap">10/15（木）</span>21:30から、Zoomで90分の<span class="nowrap">グループレッスン</span>があります。なぜ聞き取れないのかを、音のルール4つで練習します。</p>
+    <a href="/eatout/lesson/" class="btn btn-outline">レッスンの詳細を見る →</a>
+  </div>
+  <script>
+    document.querySelectorAll('[data-until]').forEach(function (el) {
+      if (Date.now() > Date.parse(el.getAttribute('data-until'))) el.remove();
+    });
+  </script>
+
 
 </section>
 
