@@ -940,7 +940,11 @@ body.is-ai .aj-h3 { font-size: 22px; font-weight: 700; line-height: 1.45; letter
   padding: 10px 16px; border-radius: 999px; background: #fff;
   box-shadow: 0 6px 20px rgba(0,0,0,.10); font-size: 14px; font-weight: 600; color: var(--aj-ink);
 }
-@media (max-width: 899px) { .aj-hero__photo { max-width: 360px; } }
+/* 顔写真は控えめに（HARU様 2026-10-07：元の半分以下） */
+.aj-hero__photo { width: 100%; max-width: 200px; justify-self: center; }
+@media (max-width: 899px) { .aj-hero__photo { max-width: 170px; justify-self: start; } }
+.aj-hero__photo::before { display: none; }
+.aj-hero__photo .aj-badge { position: relative; left: auto; bottom: auto; display: inline-block; margin-top: 16px; white-space: nowrap; }
 @media (min-width: 900px) {
   .aj-hero { padding: var(--s8) 0 var(--s7); }
   .aj-hero__in { grid-template-columns: 1.2fr .8fr; gap: var(--s8); }
