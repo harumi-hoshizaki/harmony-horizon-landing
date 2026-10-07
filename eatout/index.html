@@ -250,7 +250,7 @@
        実機の Safari は下に操作バーが出るので、iPhone 14 で見えているのは
        852px ではなく 659px。文字塊の実測値を svh から引く。
        **活字の寸法を変えたら、必ずここを測り直す。** */
-    --hero-text: 468px;   /* 2026-10-07 文字を6段階に上げたので測り直した(404→468) */
+    --hero-text: 484px;   /* 2026-10-07 文字を6段階に上げたので測り直した(404→484)。393×659・430×690でボタンが最初の画面に入る */
     --hero-band: min(calc(100vw * 1.15), max(180px, calc(100svh - var(--hero-text))), 520px);
   }
   .hero__media {
@@ -267,11 +267,11 @@
   .hero__media::after {
     content: ''; position: absolute; inset: 0;
     background: linear-gradient(180deg,
-      rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 34%, rgba(31,27,23,.26) 48%,
-      rgba(31,27,23,.70) 60%, rgba(31,27,23,.93) 72%, rgba(31,27,23,1) 84%);
+      rgba(31,27,23,0) 0%, rgba(31,27,23,.04) 30%, rgba(31,27,23,.42) 44%,
+      rgba(31,27,23,.80) 56%, rgba(31,27,23,.95) 68%, rgba(31,27,23,1) 80%);  /* 2026-10-07 文字を上げた分、暗くし始める位置も上げた(前書きの対比 4.5:1 を保つ) */
   }
   /* 文字の頭は帯の下端から 88px 上。帯が短い端末で上げすぎると顔にかかる。 */
-  .hero__in { position: relative; padding-block: max(112px, calc(var(--hero-band) - 88px)) clamp(40px, 6vw, 64px); }
+  .hero__in { position: relative; padding-block: max(88px, calc(var(--hero-band) - 88px)) clamp(40px, 6vw, 64px); }
   /* 前書きは小さい文字なので 4.5:1 が要る。濃い銅（--gold）だと写真の上で
      3:1 も出ない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero .eyebrow { color: var(--gold-pale); gap: 10px; justify-content: flex-start; }
@@ -282,11 +282,11 @@
      実機の Safari は字送りの丸めが少し違うので、そこで折り返して
      「る。」だけの行が出ていた（HARU様の指摘 2026-08-27）。
      30px なら 330px で、23px の余裕ができる。 */
-  .hero h1 { font-size: var(--text-3xl); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 22px; }
+  .hero h1 { font-size: var(--text-3xl); line-height: 1.4; color: #FFFFFF; max-width: 15em; margin: 0 0 12px; }
   /* 見出しの中の強調。濃い銅（--gold）は写真の上で 1.4:1 しか出ず、
      大きな文字でも読めない。同じ色相の明るいほうへ振る（追補4 §169）。 */
   .hero h1 em { color: var(--gold-pale); }
-  .hero .lede { max-width: 30em; margin: 0 0 34px; font-size: var(--text-md); color: rgba(251,249,246,0.92); }
+  .hero .lede { max-width: 30em; margin: 0 0 24px; font-size: var(--text-md); line-height: 1.7; color: rgba(251,249,246,0.92); }
   .hero-note { font-size: var(--text-sm); color: rgba(251,249,246,0.74); margin-top: 16px; }
 
   @media (min-width: 900px) {
@@ -597,7 +597,7 @@
   /* ★2026-09-18 15.5px は「読む文章」の下限16pxを割っていた
      (CLAUDE.md「活字の下限」)。このカードは**買う直前に読む所**なので、
      いちばん割ってはいけない場所だった。 */
-  .price-card .includes div { display: flex; gap: 10px; font-size: var(--text-md); }
+  .price-card .includes div { display: flex; gap: 10px; font-size: var(--text-md); word-break: keep-all; }  /* 語の途中で割らない。折る所は <wbr> で決める */
   .price-card .includes .ck { color: var(--stone-deep); font-weight: 500; }
 
   /* ---------------- FAQ ---------------- */
@@ -745,7 +745,7 @@
            札にはもう出ているのに、ここだけ2つのままで食い違っていました。
            ★見出し(h1)の「海外のカフェで、」は**わざと触っていません**。
              見出しは短いほど効きます。3つ並べると弱まります。 -->
-      <p class="lede">英語を読む練習ではなく、<br>実際に聞いて、答える。<br>カフェ・<span class="nowrap">ファーストフード</span>・<span class="nowrap">レストラン</span>で<br>よく聞かれる英語を、<br>旅行前に何度でも。</p>
+      <p class="lede">英語を読む練習ではなく、<br>実際に聞いて、答える。<br>カフェ・<span class="nowrap">ファーストフード</span>・<span class="nowrap">レストラン</span>で<br>よく聞かれる英語を、<br>旅行前に何度でも練習できます。</p>
       <a href="#try" class="btn btn-gold">まず1問、無料で体験する →</a>
       <div class="hero-note">登録不要 ・ 30秒で終わります</div>
     </div>
@@ -785,11 +785,11 @@
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
           </span>
         </div>
-        <div class="ph-q">いま、何と言われましたか?</div>
+        <div class="ph-q">いま、何と言われましたか？</div>
         <div class="ph-options">
-          <div class="ph-opt"><span class="box"></span>ミルクは何にしますか?</div>
-          <div class="ph-opt correct"><span class="box">✓</span>こんにちは、元気ですか?</div>
-          <div class="ph-opt"><span class="box"></span>ご注文はお決まりですか?</div>
+          <div class="ph-opt"><span class="box"></span>ミルクは何にしますか？</div>
+          <div class="ph-opt correct"><span class="box">✓</span>こんにちは、元気ですか？</div>
+          <div class="ph-opt"><span class="box"></span>ご注文はお決まりですか？</div>
         </div>
       </div>
     </div>
@@ -800,7 +800,7 @@
 <section style="background:var(--cream-soft);">
   <div class="container" style="max-width:620px;">
     <span class="eyebrow">Sound Familiar?</span>
-    <h2>こんな経験、<br>ありませんか?</h2>
+    <h2>こんな経験、<br>ありませんか？</h2>
 
     <div class="chat-mock">
       <div class="chat-row staff">
@@ -842,7 +842,7 @@
 <section id="try" style="background:var(--cream-soft);">
   <div class="container" style="max-width:520px;">
     <span class="eyebrow">Free Trial</span>
-    <h2>あなたなら、<br>どう答える?</h2>
+    <h2>あなたなら、<br>どう答える？</h2>
     <p class="lede">実際にお店で聞かれるフレーズで、<br>少しだけ体験してみましょう。</p>
 
     <div class="trial-card">
@@ -875,11 +875,11 @@
       </div>
 
       <div class="trial-q" id="trialQ">
-        <div class="trial-q-title">今、何と言われましたか?</div>
+        <div class="trial-q-title">今、何と言われましたか？</div>
         <div class="trial-options">
-          <button type="button" class="trial-opt" data-correct="false"><span class="box"></span><span>何を注文しますか?</span></button>
-          <button type="button" class="trial-opt" data-correct="true"><span class="box"></span><span>店内ですか?お持ち帰りですか?</span></button>
-          <button type="button" class="trial-opt" data-correct="false"><span class="box"></span><span>お飲み物はいかがですか?</span></button>
+          <button type="button" class="trial-opt" data-correct="false"><span class="box"></span><span>何を注文しますか？</span></button>
+          <button type="button" class="trial-opt" data-correct="true"><span class="box"></span><span>店内ですか？お持ち帰りですか？</span></button>
+          <button type="button" class="trial-opt" data-correct="false"><span class="box"></span><span>お飲み物はいかがですか？</span></button>
         </div>
         <div class="trial-feedback" id="trialFeedback"></div>
       </div>
@@ -930,8 +930,8 @@
     <p class="lede">実際の会話の流れそのままに、<br>聞く → 考える → 話す → 確認。<br>この順で練習します。</p>
     <div class="method-steps">
       <div class="row"><span class="n">01</span><span class="t">聞く</span><span class="d">店員さんの英語を聞く。</span></div>
-      <div class="row"><span class="n">02</span><span class="t">考える</span><span class="d">「何を聞かれた?」— 意味を確認する。</span></div>
-      <div class="row"><span class="n">03</span><span class="t">答える</span><span class="d">自分なら、どう答える?</span></div>
+      <div class="row"><span class="n">02</span><span class="t">考える</span><span class="d">「何を聞かれた？」— 意味を確認する。</span></div>
+      <div class="row"><span class="n">03</span><span class="t">答える</span><span class="d">自分なら、どう答える？</span></div>
       <div class="row"><span class="n">04</span><span class="t">声をチェック</span><span class="d">実際に自分の声で言ってみる。お手本と見比べる。</span></div>
       <!-- ★2026-09-18 文言を直した。前は「AIを相手に自由に会話練習」。
            「自由に会話」は**無料のAIと同じこと**を言っていて、それが
@@ -1091,14 +1091,14 @@
       <div class="includes">
         <!-- 意味の切れ目で自分で改行を決める(CLAUDE.md「キャプション文言の改行」)。
              幅任せだと320pxで「ファーストフー／ド」「13／場面」と割れた。 -->
-        <div><span class="ck">✓</span><span><span class="nowrap">カフェ</span>・<span class="nowrap">ファーストフード</span>・<span class="nowrap">レストラン</span><br>入店から退店までの<span class="nowrap">13場面</span></span></div>
-        <div><span class="ck">✓</span>ネイティブ音声（男性・女性）</div>
-        <div><span class="ck">✓</span>速度調整(ふつう / ゆっくり)</div>
-        <div><span class="ck">✓</span>つながる音・リンキングのコツ</div>
+        <div><span class="ck">✓</span><span>カフェ・<wbr>ファーストフード・<wbr>レストラン<br>入店から<wbr>退店までの<wbr>13場面</span></div>
+        <div><span class="ck">✓</span><span>ネイティブ音声<wbr>（男性・女性）</span></div>
+        <div><span class="ck">✓</span><span>速度調整<wbr>（ふつう / ゆっくり）</span></div>
+        <div><span class="ck">✓</span><span>つながる音・<wbr>リンキングのコツ</span></div>
         <div><span class="ck">✓</span>基本文法の解説</div>
         <div><span class="ck">✓</span>意味確認クイズ</div>
-        <div><span class="ck">✓</span>マイクで発音を確かめる練習</div>
-        <div><span class="ck">✓</span>AI英会話チャレンジ 10シーン</div>
+        <div><span class="ck">✓</span><span>マイクで<wbr>発音を<wbr>確かめる練習</span></div>
+        <div><span class="ck">✓</span><span>AI英会話チャレンジ<wbr> 10シーン</span></div>
       </div>
 
       <!-- ★2026-09-20 HARU様ご指示でこの段落を削除。
@@ -1123,25 +1123,25 @@
     <h2>よくある質問</h2>
     <div class="faq-list">
       <details class="faq-item" open>
-        <summary>英語に自信がなくても大丈夫ですか?<span class="sign">+</span></summary>
+        <summary>英語に自信がなくても大丈夫ですか？<span class="sign">+</span></summary>
         <div class="a">はい。基本的な質問パターンを繰り返し練習できる設計なので、初心者の方でも少しずつ自信をつけられます。</div>
       </details>
       <details class="faq-item">
-        <summary>どのくらいの時間で終わりますか?<span class="sign">+</span></summary>
+        <summary>どのくらいの時間で終わりますか？<span class="sign">+</span></summary>
         <div class="a">スキマ時間で進められる設計です。移動時間や空き時間に、少しずつ練習を積み重ねられます。目安は30日間ですが、ペースは自由です。まとめて数日分を1日で進めても構いません。</div>
       </details>
       <details class="faq-item">
-        <summary>AI英会話チャレンジとは何ですか?<span class="sign">+</span></summary>
+        <summary>AI英会話チャレンジとは何ですか？<span class="sign">+</span></summary>
         <div class="a">フレーズの練習を終えたあと、AIを相手に話す仕上げのパートです。台本はありません。「注文したものと違う料理が来た」のように、実際のお店で起きる困りごとが出されるので、それを自分の英語で解決します。<br><br>話し終わると、AIが会話をふり返ります。よかった所、もっと良くなる所、そして<b>ご自分では聞き取れていなかった所</b>まで伝えてくれます。会話の全文と和訳も残るので、あとから読み返せます。<br><br><b>コースには10シーン分が含まれています。</b>もっと練習したい場合は、コースの中から ¥980 で10シーンずつ追加できます。<br><br>なお、聞き取り・意味の確認・自分の声で返す練習・マイクでの発音チェックは、AIの回数とは関係なく、すべて何度でもお使いいただけます。</div>
       </details>
       <!-- ★2026-09-19 「アプリストアで探したが無い」で止まる人が出ます。
            コースはブラウザで開く形なので、先に言っておきます。 -->
       <details class="faq-item">
-        <summary>スマホのアプリですか?<span class="sign">+</span></summary>
+        <summary>スマホのアプリですか？<span class="sign">+</span></summary>
         <div class="a">アプリストアからの入手は要りません。ブラウザで開いてお使いいただけます。「ホーム画面に追加」をしておくと、次からはアプリと同じように1タップで開けます。追加のしかたは、はじめの画面で写真つきでご案内します。</div>
       </details>
       <details class="faq-item">
-        <summary>実際のお店と同じ質問が出ますか?<span class="sign">+</span></summary>
+        <summary>実際のお店と同じ質問が出ますか？<span class="sign">+</span></summary>
         <div class="a">よく聞かれる質問パターンをもとに構成していますが、実際のお店やスタッフによって質問内容は異なります。あくまで「聞き取り」と「答え方」に慣れるための練習教材としてご利用ください。<br><br>なお、発音の解説は<b>北米英語を基準に</b>しています。</div>
       </details>
     </div>
