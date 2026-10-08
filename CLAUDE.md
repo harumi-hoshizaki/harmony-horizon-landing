@@ -136,7 +136,13 @@ HARU様の指摘:「確認メール（領収書）の（）が半角になって
 
 HARU様の指示:「私のいつものこれがない。MailerLite のシグナチャーもしくはルールブックに入れて」。
 どのメール（自動メール・配信メール）も、本文のあとを次の順で終える。**1行も省かない・順番を変えない。**
+**2026-10-08 HARU様決定：SNS・署名・配信停止・住所は、いつも1つのまとまりとして一緒に書く**
+（「SNS情報と、Train your earsからの、Unsubscribeからの私の住所は署名として常に一緒に書くというルール」）。
 
+0. **SNSの3つ**（署名の前）— Instagram `https://www.instagram.com/harmony_horizon_by_hh/`・
+   YouTube `https://www.youtube.com/@HaruHoshizaki`・Threads `https://www.threads.com/@harmony_horizon_by_hh`。
+   ロゴ（`assets/email/instagram.png` `youtube.png` `threads.png`、24px）＋名前のリンク（17px・#694D11）を縦に並べる。
+   部品は app の `api/_lib/course-mail-templates.js` の `quiz-result` の物をそのまま写す
 1. `Train your ears. Find your voice.` — **Lora の斜体 400・18px・#8F6524**（上の「キャッチコピー」と同じ。
    メールでは `font-family: Lora, Georgia, 'Times New Roman', serif; font-style: italic`。
    `<head>` に Google Fonts の Lora 斜体の `<link>` を入れる。入らない端末は Georgia の斜体で代わる）
@@ -145,7 +151,9 @@ HARU様の指示:「私のいつものこれがない。MailerLite のシグナ�
 4. `With LOVE 💖 from Montreal` — 絵文字はここだけの署名の一部（アプリの画面の「絵文字禁止」とは別）
 5. `HARU` — 太字
 
-そのあとに、**配信停止のリンク**（`{$unsubscribe}`）を14pxの灰色で必ず入れる。
+そのあとに、**配信停止のリンク**（`{$unsubscribe}`）を14pxの灰色で必ず入れ、最後に**住所**を7pxで入れる
+（`Harumi Hoshizaki` / `Harmony Horizon` / `150 avenue Viking, Pointe-Claire QC H9R 1K7`）。
+審査（english-teaching-studio）の DESIGN-017 と機械チェックが、SNS3つ・署名・配信停止・住所と順番を見る。
 **API で本文を作ると MailerLite は配信停止のリンクを自動では足さない**（2026-10-06 に1通目から
 抜けていた）。新しいメールを作る時は、本文の最後に必ず書く。
 
