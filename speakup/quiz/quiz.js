@@ -319,19 +319,20 @@ function newsletterBlock(score, qs) {
         const ex = state.weak.length ? exampleOf(w) : '';
         if (ex) fd.append('fields[quiz_e' + (i + 1) + ']', ex);
       });
-      fd.append('ml-submit', '1');
-      fd.append('anticsrf', 'true');
+      // 2026-10-08 MailerLite のアカウント終了のため、登録先をサイト(app の /api/quiz-signup/)に替えた。
+      // サイトの受け口はフォーム形式(urlencoded)を読むので、FormData をその形に直して送る。
+      const payload = new URLSearchParams(fd);
       // 登録の結果を、正直に出す(2026-10-07 監査:前は mode:'no-cors' で返事を読めず、
-      // 失敗しても必ず「送りました」と出ていた)。MailerLite の返事 { success } を読む。
+      // 失敗しても必ず「送りました」と出ていた)。受け口の返事 { success } を読む。
       // 返事が読めない(ブラウザが中身を見せない)時だけ、もう一度 no-cors で送り、
       // 「受け付けました」と言える範囲だけを言う。
       let outcome;
       try {
-        const res = await fetch(nl.endpoint, { method: 'POST', body: fd });
+        const res = await fetch(nl.endpoint, { method: 'POST', body: payload });
         const json = await res.json().catch(() => ({}));
         outcome = res.ok && json.success ? 'sent' : 'rejected';
       } catch (_) {
-        await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: fd }); // 通信が切れていれば、ここで外の catch へ
+        await fetch(nl.endpoint, { method: 'POST', mode: 'no-cors', body: payload }); // 通信が切れていれば、ここで外の catch へ
         outcome = 'unknown';
       }
       if (outcome === 'rejected') {
@@ -346,9 +347,9 @@ function newsletterBlock(score, qs) {
       group.appendChild(h('div', { class: 'quiz-done' }, [
         h('span', { class: 'quiz-done-mark', 'aria-hidden': 'true', text: '✓' }),
         h('h3', { class: 'group-title', text: '登録ありがとうございます！' }),
-        outcome === 'sent'
-          ? markedLead('{{メール}}を送りました。\n届いたメールを、ご確認ください。', 'body-text')
-          : markedLead('登録を受け付けました。\n{{メール}}が届かない時は、\n迷惑メールのフォルダも\nご確認ください。', 'body-text'),
+        // 2026-10-08 今はサイトに登録を残すだけで、メールはまだ送らない(MailerLite の時もコツのメールは止めてあった)。
+        // 「送りました」と言わない。メールを送るようにしたら、ここを元の文に戻す。
+        markedLead('登録を受け付けました。\n{{メール}}は、準備ができしだい\nお送りします。', 'body-text'),
       ]));
       playCelebrate({ text: null });
     } catch (e) {

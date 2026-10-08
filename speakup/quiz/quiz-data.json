@@ -89,7 +89,6 @@
  },
  "source": "f3d19239",
  "newsletter": {
-  "endpoint": "https://assets.mailerlite.com/jsonp/2663761/forms/200523361275610234/subscribe",
-  "group": "200523358012441643"
+  "endpoint": "https://app.harmonyhorizon.space/api/quiz-signup/"
  }
 }
