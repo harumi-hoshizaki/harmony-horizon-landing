@@ -199,7 +199,9 @@
      帯を 13svh → 26svh に。文字を写真に重ねない組み方のままなので、
      帯を広げたぶんがそのまま**写真の見える量**になる。
      ★申し込みボタンは最初の画面に残すこと(393×659・430×690 で実測)。 */
-  :root { --hero-band: clamp(150px, 24svh, 320px); }
+  /* ★4つの札をヒーローに入れたぶん、帯を一段細くして申し込みボタンを
+     最初の画面に残している(393×659・430×690 で実測)。 */
+  :root { --hero-band: clamp(118px, 19svh, 280px); }
   .hero__media { position: absolute; inset: 0 0 auto; height: var(--hero-band); overflow: hidden; }
   /* ★2026-10-02 HARU様「後ろの背景がAIっぽい」。おっしゃる通り、
      右側の棚まわりと奥がいちばん作り物に見えます。**寄せて枠の外に出す**。
@@ -236,6 +238,13 @@
   .h1-d { display: none; }
   @media (min-width: 700px) { .h1-m { display: none; } .h1-d { display: inline; } }
   .hero .lede { color: var(--ink-soft); margin-bottom: 14px; font-size: var(--text-sm); line-height: 1.75; }
+  /* 4つのルールの札。Tipsの中の札(.chip)と同じ地・同じ字の色で、
+     ページの中で「ルールの名前」は**いつも同じ見た目**にする。 */
+  .rule-chips { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; padding: 0; }
+  .rule-chips li {
+    background: #EFEDE9; color: #694D11; font-size: var(--text-xs); font-weight: 700;
+    border-radius: 999px; padding: 3px 12px; white-space: nowrap;
+  }
   /* 日時と値段の札。HARU様「値段とか、時間とかわかりやすく書いて」。
      ★この札から「いつ・いくら・どこで・どれくらい」の4つを外さないこと。 */
   .date-card {
@@ -257,6 +266,22 @@
   .hero .under { font-size: var(--text-sm); color: var(--stone-deep); margin: 10px 0 0; }
 
   .bg-soft { background: var(--cream-soft); }
+
+  /* 4つの音のルール */
+  .rules { list-style: none; margin: 24px 0 0; padding: 0; }
+  .rules li { padding: 16px 0; border-top: 1px solid var(--line); }
+  .rules li:last-of-type { border-bottom: 1px solid var(--line); }
+  .rules .r-name { margin: 0 0 6px; }
+  .rules .chip {
+    display: inline-block; background: #EFEDE9; color: #694D11;
+    font-size: var(--text-sm); font-weight: 700; border-radius: 999px;
+    padding: 3px 14px; white-space: nowrap;
+  }
+  .rules .r-what { margin: 0; font-size: var(--text-sm); line-height: 1.85; color: var(--ink-soft); }
+  .rules .r-what b { color: var(--ink); font-weight: 700; }
+  .rules .r-ex { margin: 4px 0 0; font-size: var(--text-sm); color: var(--gold); font-weight: 700; }
+  .rules-note { margin: 20px 0 0; font-size: var(--text-sm); color: var(--ink-soft); }
+  .rules-note b { color: var(--ink); font-weight: 700; }
 
   /* 聞いてみる */
   .clip {
@@ -476,6 +501,8 @@
     .hero h1 { color: #FFFFFF; }
     .hero h1 em { color: var(--gold-pale); }
     .hero .lede { color: rgba(251,249,246,0.92); }
+    /* 暗い面なので、札は金の輪郭＋明るい字に反転する。 */
+    .rule-chips li { background: rgba(251,249,246,0.10); color: var(--gold-pale); border: 1px solid rgba(233,185,140,0.45); }
     .hero .under { color: rgba(251,249,246,0.74); }
     .date-card {
       background: rgba(251,249,246,0.07); border-color: rgba(251,249,246,0.22); box-shadow: none;
@@ -553,7 +580,16 @@
     <div class="container">
       <span class="eyebrow">90分のオンラインレッスン</span>
       <h1><span class="h1-m">単語知ってるのに。<br><em>聞き取れない。</em><br><em>話せない。</em></span><span class="h1-d">単語は知ってるはずなのに、<br><em>聞き取れない。出てこない。</em></span></h1>
-      <p class="lede">速いから聞き取れない？それとも本当の音を知らないから？音の変わり方を、90分で練習します。</p>
+      <!-- ★2026-10-09 HARU様「これを出すことのPowerをあなたは知らないようです。
+           これは多くの人が興味があることです。前に出した方がいい」。
+           4つのルールの名前こそが一番の引きなのに、90分の流れの中に埋めていました。
+           ★最初の画面に申し込みボタンを残す決まり(393×659)があるので、
+             文章を足すのではなく、**導入文を札に置き換えて**います。
+             文字の量は増えていません。ここに文章を足し戻さないこと。 -->
+      <ul class="rule-chips">
+        <li>Flap T</li><li>消えるT</li><li>母音ドッキング</li><li>機能語の弱形</li>
+      </ul>
+      <p class="lede">みんなが苦手な、この4つを90分で。</p>
       <div class="date-card">
         <div class="row">
           <span class="d">10月15日（木）</span>
@@ -563,6 +599,43 @@
       </div>
       <a href="https://buy.stripe.com/14A7sL12ubrGevu9kCeEo0g?client_reference_id=lesson1015" target="_blank" rel="noopener" class="btn btn-gold"><span>申し込む</span></a>
     </div>
+  </div>
+</section>
+
+<!-- RULES ★2026-10-09 HARU様「みんなが苦手な音のルールを4つ重点的に練習する。
+     …これを出すことのPowerをあなたは知らないようです。前に出した方がいい」。
+     **ヒーローの次**に置きます。ここを下げないこと —— 4つの名前こそが、
+     このレッスンで人がいちばん知りたいものです。
+     4つの例は、すべてこのページの3問の中に実際に出てくる音です
+     (作り話の例を置かない)。 -->
+<section id="rules">
+  <div class="container">
+    <span class="eyebrow">音のルール</span>
+    <h2>みんなが苦手な音のルール、<br>この4つ。</h2>
+    <p class="lede">どれも飲食店でよく聞こえる音です。実際の音声で、1つずつ聞き取れるか確認しながら、スラスラ言えるようにしていきます。</p>
+    <ol class="rules">
+      <li>
+        <p class="r-name"><span class="chip">Flap T</span></p>
+        <p class="r-what">母音に挟まれた t が、<b>「ら行」の音に変わります</b>。</p>
+        <p class="r-ex">"be about a" → 「びぁばぅら」</p>
+      </li>
+      <li>
+        <p class="r-name"><span class="chip">消えるT</span></p>
+        <p class="r-what">語末の t は破裂させず、<b>舌を止めるだけ</b>で終わります。</p>
+        <p class="r-ex">"wait" → 「うぇい」で止まる</p>
+      </li>
+      <li>
+        <p class="r-name"><span class="chip">母音ドッキング</span></p>
+        <p class="r-what">母音で始まる単語が、<b>前の単語とくっつきます</b>。</p>
+        <p class="r-ex">"Can I" → 「けなぃ」</p>
+      </li>
+      <li>
+        <p class="r-name"><span class="chip">機能語の弱形</span></p>
+        <p class="r-what">can・to・It’ll などが、<b>弱く短くつぶれます</b>。</p>
+        <p class="r-ex">"can" → 「けん」「くん」</p>
+      </li>
+    </ol>
+    <p class="rules-note">この4つは、<b>次の3つの音声にすべて入っています。</b></p>
   </div>
 </section>
 
