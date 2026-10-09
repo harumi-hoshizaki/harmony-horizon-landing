@@ -22,12 +22,9 @@ const SPEC_LEGAL = { h1: [20, 34], h2: [15, 22], h3: [14, 18], body: [14, 18], m
    「body 20px は範囲外」と出続ける —— 正しいものを不合格にしていた
    (実際 /speakup/ は 2026-09-28 からずっとこの3件を出していた)。
    ★アプリの段を変える時は、ここも一緒に変えること。 */
-const SPEC_APP = { h1: [28, 40], h2: [23, 28], h3: [16, 20], body: [18, 20] };
-/* ★2026-10-09 360px以下は見出しを1段(28→26px)下げてよい。CLAUDE.md「320px で
-   見出しが収まらない時は @media (max-width: 380px) で見出しだけ一段下げる」。
-   /eatout/lesson/ の「聞き取れない。話せない。」を1行にするために使っている。
-   本文の下限は下げない。 */
-const SPEC_APP_NARROW = { h1: [26, 40], h2: [23, 28], h3: [16, 20], body: [18, 20] };
+/* h1 の下限は 23px。2026-10-09 HARU様のご指示で、/eatout/lesson/ の携帯の見出しを
+   アプリの段で1つ下(28→23px)にした。節の見出し(h2 23〜28px)より小さくなりうる。 */
+const SPEC_APP = { h1: [23, 40], h2: [23, 28], h3: [16, 20], body: [18, 20] };
 /* 2026-10-04: build-site.py の全ページも Speak Up の段に（HARU様）。 */
 const APP_SCALE = ['/speakup/', '/eatout/', '/immigration/', '/eatout/lesson/', '/', '/programs.html', '/student-voices.html', '/contact.html', '/ai-journey/contact/', '/ai-journey/en/contact/', '/ai-journey/fr/contact/'];
 /* 2026-10-04 HARU様「AI Journey は一流の文字の大きさ・余白に」。見出しを大きく取る
@@ -70,7 +67,7 @@ const PENDING = [];   // ヒーロー写真は入った（2026-08-26）
       await pg.waitForTimeout(300);
       const spec = LEGAL.includes(p) ? SPEC_LEGAL
                  : AI_SCALE.includes(p) ? SPEC_AI
-                 : APP_SCALE.includes(p) ? (w <= 360 ? SPEC_APP_NARROW : SPEC_APP)
+                 : APP_SCALE.includes(p) ? SPEC_APP
                  : (w <= 360 ? SPEC_NARROW : SPEC);
       const r = await pg.evaluate((SPEC) => {
         const de = document.documentElement, vw = de.clientWidth;

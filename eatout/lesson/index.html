@@ -201,7 +201,7 @@
      ★申し込みボタンは最初の画面に残すこと(393×659・430×690 で実測)。 */
   /* ★4つの札をヒーローに入れたぶん、帯を一段細くして申し込みボタンを
      最初の画面に残している(393×659・430×690 で実測)。 */
-  :root { --hero-band: clamp(150px, 24svh, 320px); }
+  :root { --hero-band: clamp(150px, 25svh, 320px); }
   .hero__media { position: absolute; inset: 0 0 auto; height: var(--hero-band); overflow: hidden; }
   /* ★2026-10-02 HARU様「後ろの背景がAIっぽい」。おっしゃる通り、
      右側の棚まわりと奥がいちばん作り物に見えます。**寄せて枠の外に出す**。
@@ -236,12 +236,12 @@
      卓上は幅があるので2行のまま(3行にすると間延びする)。
      ★どちらか片方だけ直さないこと。言い回しを変える時は両方。 */
   .h1-d { display: none; }
-  /* ★2026-10-09 HARU様「聞き取れない。話せない。を1行にできないですか？」。
-     12字×28px=336px で、393px の画面(使える幅353px)には入る。
-     360px の画面(使える幅320px)では入らないので、そこだけ段を1つ下げる
-     (CLAUDE.md「320px で見出しが収まらない時は @media (max-width:380px) で
-     見出しだけ一段下げる」)。それでも収まらない幅では。で自然に折れる。 */
-  @media (max-width: 380px) { .hero h1 { font-size: var(--text-xl); } }
+  /* ★2026-10-09 HARU様「単語知ってるのに、聞き取れない、話せない。小さくできない？」。
+     1つの文にして、携帯の見出しを 28px → 23px(アプリの段で1つ下)に。
+     「、」で文節ごとに折れて2行(「単語知ってるのに、」/「聞き取れない、話せない。」)。
+     ★注意: 節の見出し(h2)は 26px なので、携帯ではヒーローの見出しの方が
+       小さくなる。HARU様のご指示で承知の上。卓上は 40px のまま。 */
+  .hero h1 { font-size: var(--text-lg); }
   @media (min-width: 700px) { .h1-m { display: none; } .h1-d { display: inline; } }
   .hero .lede { color: var(--ink-soft); margin-bottom: 14px; font-size: var(--text-sm); line-height: 1.75; }
   /* 日時と値段の札。HARU様「値段とか、時間とかわかりやすく書いて」。
@@ -267,6 +267,21 @@
   .bg-soft { background: var(--cream-soft); }
 
   /* 4つの音のルール */
+  /* たとえば(Can I get a latte?) */
+  .rules-example { margin: 24px 0 0; padding: 20px; background: #FFFFFF; border: 1px solid var(--line); border-radius: 14px; }
+  .rules-example .ex-label { margin: 0 0 6px; font-size: var(--text-xs); letter-spacing: 0.12em; color: var(--gold); font-weight: 700; }
+  .rules-example .ex-en { margin: 0; font-size: var(--text-lg); font-weight: 700; color: var(--ink); line-height: 1.4; }
+  .rules-example .ex-ja { margin: 6px 0 0; font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; }
+  .rules-example .ex-sound { margin: 12px 0 0; font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; }
+  .rules-example .ex-sound b { color: var(--ink); font-weight: 700; font-size: var(--text-md); }
+  .rules-example .ex-list { list-style: none; margin: 12px 0 0; padding: 0; }
+  .rules-example .ex-list li { margin-top: 10px; font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.85; }
+  .rules-example .ex-list b { color: var(--ink); font-weight: 700; }
+  .rules-example .chip {
+    display: inline-block; background: #EFEDE9; color: #694D11; font-size: var(--text-xs); font-weight: 700;
+    border-radius: 999px; padding: 2px 12px; margin-right: 8px; white-space: nowrap;
+  }
+  .rules-example .ex-end { margin: 14px 0 0; font-size: var(--text-sm); color: var(--ink); font-weight: 700; }
   .rules { list-style: none; margin: 24px 0 0; padding: 0; }
   .rules li { padding: 16px 0; border-top: 1px solid var(--line); }
   .rules li:last-of-type { border-bottom: 1px solid var(--line); }
@@ -576,7 +591,7 @@
   <div class="hero__in">
     <div class="container">
       <span class="eyebrow">90分のオンラインレッスン</span>
-      <h1><span class="h1-m">単語知ってるのに。<br><em>聞き取れない。話せない。</em></span><span class="h1-d">単語は知ってるはずなのに、<br><em>聞き取れない。出てこない。</em></span></h1>
+      <h1><span class="h1-m">単語知ってるのに、<em>聞き取れない、話せない。</em></span><span class="h1-d">単語は知ってるはずなのに、<br><em>聞き取れない。出てこない。</em></span></h1>
       <!-- ★2026-10-09 HARU様「札だと、わかりにくいです」。生徒役・コピーライター役の
            2人に見せて確認した結果、**どちらも「札は伝わらない」**でした:
              ・生徒役「Flap T も 母音ドッキング も何のことか全く不明。気持ちは下がる。
@@ -611,6 +626,25 @@
     <span class="eyebrow">音のルール</span>
     <h2>みんなが苦手な音のルール、<br>この4つ。</h2>
     <p class="lede">どれも飲食店でよく聞こえる音です。実際の音声で、1つずつ聞き取れるか確認しながら、スラスラ言えるようにしていきます。</p>
+    <!-- ★2026-10-09 HARU様「例が欲しいです。Can I get a latte? の。生徒はそれが
+         ないと、なんの話をしているか分かりません」。生徒役エージェントも同じ指摘
+         (「Can I get a latte? が『ケナイゲラ』にしか聞こえない、あの音」)。
+         文・意味・カナ・3つのルールはすべて**コース本体(eatout/listening の
+         canget)の文言そのまま**。こちらで音やカナを作っていない。
+         この1文には4つのうち3つが入っている(消えるT は入っていない)。
+         ★例を下げないこと。4つの名前の前に、実際の音を見せる。 -->
+    <div class="rules-example">
+      <p class="ex-label">たとえば、カフェの注文</p>
+      <p class="ex-en">Can I get a latte?</p>
+      <p class="ex-ja">「ラテをください。」と言っています。いちばん普通の注文です。</p>
+      <p class="ex-sound">でも、耳に届くのは<b>「けなぃげら」</b>という、1つの音のかたまりです。</p>
+      <ul class="ex-list">
+        <li><span class="chip">母音ドッキング</span><b>Can I get a</b> が一息でつながって「けなぃげら」</li>
+        <li><span class="chip">Flap T</span><b>get a</b> の t が、「ら行」の音に変身して「げら」</li>
+        <li><span class="chip">機能語の弱形</span><b>can</b> は弱く短く、「けん」のように</li>
+      </ul>
+      <p class="ex-end">この1文に、4つのうちの3つが入っています。</p>
+    </div>
     <ol class="rules">
       <li>
         <p class="r-name"><span class="chip">Flap T</span></p>
