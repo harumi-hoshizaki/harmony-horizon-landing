@@ -106,6 +106,32 @@
       <div class="aj-logbox">
       <ol class="aj-log">
         <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-14">2026.10.14</time>
+          <div>
+            <h3 class="aj-h3"><span class="aj-nowrap">動画の予約を整えて、</span><span class="aj-nowrap">鍵（APIトークン）の</span><span class="aj-nowrap">しくみを学びました</span></h3>
+            <ul class="aj-list">
+              <li>Bufferで予約していた動画7本（YouTubeのShorts 5本と、Instagramのリール2本）を、新しい版に差し替えました。動画は先にCloudflare R2に保存しました。文面と日時は変えて<span class="aj-nowrap">いません</span></li>
+              <li>Instagramのカルーセル3つと、Threadsの投稿8つを、新しく予約<span class="aj-nowrap">しました</span></li>
+              <li>YouTubeのタイトルを直しました</li>
+              <li>気づいたこと：タイトルの最初に「」があると、伸びにくいようです。#Shorts を入れたほうが、伸びやすいようです（私の実<span class="aj-nowrap">感です）</span></li>
+              <li>レッスンで使う、音を聞くページを1つ作って、公開<span class="aj-nowrap">しました</span></li>
+              <li>Cloudflareの鍵で、R2への保存とメールの送信ができるかを確かめました。確かめるために置いたファイルは、<span class="aj-nowrap">あとで消しました</span></li>
+              <li>失敗したこと：鍵は、入れる場所1つにつき1本しか入りません。R2用の鍵を入れたら、メール用の鍵が外れて、R2とメールが一時的に使えなくな<span class="aj-nowrap">りました</span></li>
+              <li>そこで、メール送信と動画保存の両方ができる鍵を1本作り、<span class="aj-nowrap">1つにまとめました</span></li>
+            </ul>
+            <div class="aj-terms">
+              <p class="aj-terms__h">用語</p>
+              <ul class="aj-list">
+                <li><b>Cloudflare R2</b>：Cloudflareの保存場所です。動画ファイルを置いておく倉庫のようなものです。Bufferはファイルを直接受け取れず、インターネット上のリンクから動画を読みます。そのため、先にR2へ置い<span class="aj-nowrap">ています</span></li>
+                <li><b>APIトークン</b>：Cloudflareの鍵です。パスワードと同じで、人には見せないものです。この鍵を使うと、R2への保存とメール送信が<span class="aj-nowrap">できます</span></li>
+                <li><b>Buffer</b>：YouTube・Instagram・Threadsに、予定の時刻に投稿する<span class="aj-nowrap">道具です</span></li>
+                <li><b>カルーセル</b>：Instagramで、何枚かの画像を横にめくって見る<span class="aj-nowrap">投稿です</span></li>
+                <li><b>Shorts</b>：YouTubeで見られる、縦向きの短い動画です</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="aj-entry" data-reveal>
           <time class="aj-entry__date" datetime="2026-10-13">2026.10.13</time>
           <div>
             <h3 class="aj-h3">動画の予約投稿で、<span class="aj-nowrap">小さいけれど</span><span class="aj-nowrap">大事なことを</span><span class="aj-nowrap">2つ学びました</span></h3>
@@ -131,25 +157,25 @@
             </ul>
           </div>
         </li>
-        <li class="aj-entry" data-reveal>
-          <time class="aj-entry__date" datetime="2026-10-09">2026.10.09</time>
-          <div>
-            <h3 class="aj-h3">今日は、Claudeのスレッド担当15人と仕事をしました</h3>
-            <ul class="aj-list">
-              <li>SNSの伸びを調べ直して、よく届いているのは「文字のクイズ」の投稿だと分かりました</li>
-              <li>メールの配信を、自分のサイトから送る形に切り替えました</li>
-              <li>10/15のレッスンに申し込むと、お礼のメールがすぐ自動で届きます</li>
-              <li>発音チェックのやり方を、公式の情報から調べ直しました</li>
-              <li>購入の受け付けが、仲介のサービスを使わずに、実際の販売でも動きました。買われると自動で名簿に入り、案内メールが届きます</li>
-              <li>AIが作って、別のAIが英語とデザインを審査して、私が最後に見ます。この流れが少しずつ形になってきました</li>
-              <li>YouTube Studioは、Claudeが直接さわれませんでした。Bufferか手作業で予約します</li>
-            </ul>
-          </div>
-        </li>
       </ol>
       <details class="aj-more">
-        <summary class="aj-more__btn"><span class="aj-more__open">これまでの記録を見る（4件）</span><span class="aj-more__close">記録を閉じる</span></summary>
+        <summary class="aj-more__btn"><span class="aj-more__open">これまでの記録を見る（5件）</span><span class="aj-more__close">記録を閉じる</span></summary>
         <ol class="aj-log aj-log--older">
+          <li class="aj-entry" data-reveal>
+            <time class="aj-entry__date" datetime="2026-10-09">2026.10.09</time>
+            <div>
+              <h3 class="aj-h3">今日は、Claudeのスレッド担当15人と仕事をしました</h3>
+              <ul class="aj-list">
+                <li>SNSの伸びを調べ直して、よく届いているのは「文字のクイズ」の投稿だと分かりました</li>
+                <li>メールの配信を、自分のサイトから送る形に切り替えました</li>
+                <li>10/15のレッスンに申し込むと、お礼のメールがすぐ自動で届きます</li>
+                <li>発音チェックのやり方を、公式の情報から調べ直しました</li>
+                <li>購入の受け付けが、仲介のサービスを使わずに、実際の販売でも動きました。買われると自動で名簿に入り、案内メールが届きます</li>
+                <li>AIが作って、別のAIが英語とデザインを審査して、私が最後に見ます。この流れが少しずつ形になってきました</li>
+                <li>YouTube Studioは、Claudeが直接さわれませんでした。Bufferか手作業で予約します</li>
+              </ul>
+            </div>
+          </li>
           <li class="aj-entry" data-reveal>
             <time class="aj-entry__date" datetime="2026-10-08">2026.10.08</time>
             <div>

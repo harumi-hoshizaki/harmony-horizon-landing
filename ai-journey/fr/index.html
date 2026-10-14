@@ -106,6 +106,32 @@
       <div class="aj-logbox">
       <ol class="aj-log">
         <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-14">2026.10.14</time>
+          <div>
+            <h3 class="aj-h3">J’ai remis de l’ordre dans mes vidéos planifiées et compris comment fonctionnent les clés d’API</h3>
+            <ul class="aj-list">
+              <li>Dans Buffer, j’ai remplacé 7 vidéos planifiées par de nouvelles versions (5 Shorts YouTube et 2 Reels Instagram). Les vidéos ont d’abord été enregistrées dans Cloudflare R2. Les descriptions et les heures n’ont pas changé</li>
+              <li>J’ai planifié 3 nouveaux carrousels Instagram et 8 nouvelles publications Threads</li>
+              <li>J’ai corrigé les titres YouTube</li>
+              <li>Ce que j’ai remarqué : un titre qui commence par des guillemets japonais (「」) semble moins bien marcher. Ajouter #Shorts semble aider (c’est mon impression)</li>
+              <li>J’ai créé une page pour écouter un son pendant une leçon, et je l’ai mise en ligne</li>
+              <li>J’ai vérifié que la clé Cloudflare permet d’enregistrer dans R2 et d’envoyer des courriels. J’ai supprimé le fichier de test ensuite</li>
+              <li>Une erreur : chaque emplacement ne peut contenir qu’une seule clé. Quand j’ai ajouté la clé pour R2, elle a remplacé celle des courriels, et R2 et les courriels ont cessé de fonctionner un moment</li>
+              <li>J’ai donc créé une seule clé qui fait les deux : envoyer des courriels et enregistrer des vidéos</li>
+            </ul>
+            <div class="aj-terms">
+              <p class="aj-terms__h">Les mots utilisés</p>
+              <ul class="aj-list">
+                <li><b>Cloudflare R2</b> : l’espace de stockage de Cloudflare. C’est comme un entrepôt pour les fichiers vidéo. Buffer ne peut pas recevoir un fichier directement : il lit la vidéo à partir d’un lien sur Internet. C’est pourquoi les vidéos vont d’abord dans R2</li>
+                <li><b>Jeton d’API</b> : une clé pour Cloudflare. Comme un mot de passe, on ne la montre à personne. Avec cette clé, je peux enregistrer dans R2 et envoyer des courriels</li>
+                <li><b>Buffer</b> : un outil qui publie sur YouTube, Instagram et Threads à l’heure prévue</li>
+                <li><b>Carrousel</b> : une publication Instagram avec plusieurs images qu’on fait défiler</li>
+                <li><b>Shorts</b> : les courtes vidéos verticales de YouTube</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="aj-entry" data-reveal>
           <time class="aj-entry__date" datetime="2026-10-13">2026.10.13</time>
           <div>
             <h3 class="aj-h3">Planifier des vidéos m’a appris deux petites leçons importantes</h3>
@@ -131,25 +157,25 @@
             </ul>
           </div>
         </li>
-        <li class="aj-entry" data-reveal>
-          <time class="aj-entry__date" datetime="2026-10-09">2026.10.09</time>
-          <div>
-            <h3 class="aj-h3">Aujourd’hui, j’ai travaillé avec 15 assistants Claude, un par fil de discussion</h3>
-            <ul class="aj-list">
-              <li>J’ai refait le point sur mes publications : celles qui touchent le mieux les gens sont les quiz en texte</li>
-              <li>J’ai changé l’envoi de mes courriels : ils partent maintenant de mon propre site</li>
-              <li>Juste après l’inscription au cours du 15 octobre, un courriel de remerciement part automatiquement</li>
-              <li>J’ai repris mes recherches sur la façon de vérifier la prononciation, cette fois à partir de sources officielles</li>
-              <li>L’achat fonctionne maintenant pour de vrai, sans passer par un autre service. Quand quelqu’un achète, il est ajouté automatiquement à ma liste et reçoit un courriel de bienvenue et d’information</li>
-              <li>L’IA crée, une autre IA vérifie l’anglais et le design, et je regarde en dernier. Cette façon de faire prend peu à peu forme</li>
-              <li>Claude n’a pas pu accéder directement à YouTube Studio : je planifierai avec Buffer ou à la main</li>
-            </ul>
-          </div>
-        </li>
       </ol>
       <details class="aj-more">
-        <summary class="aj-more__btn"><span class="aj-more__open">Voir les entrées précédentes (4)</span><span class="aj-more__close">Afficher moins</span></summary>
+        <summary class="aj-more__btn"><span class="aj-more__open">Voir les entrées précédentes (5)</span><span class="aj-more__close">Afficher moins</span></summary>
         <ol class="aj-log aj-log--older">
+          <li class="aj-entry" data-reveal>
+            <time class="aj-entry__date" datetime="2026-10-09">2026.10.09</time>
+            <div>
+              <h3 class="aj-h3">Aujourd’hui, j’ai travaillé avec 15 assistants Claude, un par fil de discussion</h3>
+              <ul class="aj-list">
+                <li>J’ai refait le point sur mes publications : celles qui touchent le mieux les gens sont les quiz en texte</li>
+                <li>J’ai changé l’envoi de mes courriels : ils partent maintenant de mon propre site</li>
+                <li>Juste après l’inscription au cours du 15 octobre, un courriel de remerciement part automatiquement</li>
+                <li>J’ai repris mes recherches sur la façon de vérifier la prononciation, cette fois à partir de sources officielles</li>
+                <li>L’achat fonctionne maintenant pour de vrai, sans passer par un autre service. Quand quelqu’un achète, il est ajouté automatiquement à ma liste et reçoit un courriel de bienvenue et d’information</li>
+                <li>L’IA crée, une autre IA vérifie l’anglais et le design, et je regarde en dernier. Cette façon de faire prend peu à peu forme</li>
+                <li>Claude n’a pas pu accéder directement à YouTube Studio : je planifierai avec Buffer ou à la main</li>
+              </ul>
+            </div>
+          </li>
           <li class="aj-entry" data-reveal>
             <time class="aj-entry__date" datetime="2026-10-08">2026.10.08</time>
             <div>

@@ -979,6 +979,13 @@ body.is-ai .aj-h3 { font-size: 22px; font-weight: 700; line-height: 1.45; letter
   background: var(--aj-ink); box-shadow: inset 0 0 0 4px #fff;
 }
 
+/* 記録の中の「用語」：淡い青灰の箱（2026-10-14） */
+.aj-terms { margin-top: var(--s3); padding: 16px; border-radius: 16px; background: var(--aj-tint); }
+@media (min-width: 620px) { .aj-terms { padding: var(--s3); } }
+.aj-terms__h { font-size: 16px; font-weight: 700; color: var(--aj-tint-ink); margin: 0 0 var(--s2); }
+.aj-terms .aj-list li { font-size: 16px; }
+.aj-terms .aj-list li::before { box-shadow: inset 0 0 0 4px var(--aj-tint); }
+
 /* 作ったもの：大小の箱を組む（bento） */
 .aj-bento { display: grid; gap: var(--s3); }
 @media (min-width: 900px) { .aj-bento { grid-template-columns: repeat(2, 1fr); gap: var(--s4); } .aj-work--wide { grid-column: 1 / -1; } }

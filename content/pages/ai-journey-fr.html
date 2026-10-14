@@ -46,6 +46,44 @@
       </div>
       <ol class="aj-log">
         <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-14">2026.10.14</time>
+          <div>
+            <h3 class="aj-h3">J’ai remis de l’ordre dans mes vidéos planifiées et compris comment fonctionnent les clés d’API</h3>
+            <ul class="aj-list">
+              <li>Dans Buffer, j’ai remplacé 7 vidéos planifiées par de nouvelles versions (5 Shorts YouTube et 2 Reels Instagram). Les vidéos ont d’abord été enregistrées dans Cloudflare R2. Les descriptions et les heures n’ont pas changé</li>
+              <li>J’ai planifié 3 nouveaux carrousels Instagram et 8 nouvelles publications Threads</li>
+              <li>J’ai corrigé les titres YouTube</li>
+              <li>Ce que j’ai remarqué : un titre qui commence par des guillemets japonais (「」) semble moins bien marcher. Ajouter #Shorts semble aider (c’est mon impression)</li>
+              <li>J’ai créé une page pour écouter un son pendant une leçon, et je l’ai mise en ligne</li>
+              <li>J’ai vérifié que la clé Cloudflare permet d’enregistrer dans R2 et d’envoyer des courriels. J’ai supprimé le fichier de test ensuite</li>
+              <li>Une erreur : chaque emplacement ne peut contenir qu’une seule clé. Quand j’ai ajouté la clé pour R2, elle a remplacé celle des courriels, et R2 et les courriels ont cessé de fonctionner un moment</li>
+              <li>J’ai donc créé une seule clé qui fait les deux : envoyer des courriels et enregistrer des vidéos</li>
+            </ul>
+            <div class="aj-terms">
+              <p class="aj-terms__h">Les mots utilisés</p>
+              <ul class="aj-list">
+                <li><b>Cloudflare R2</b> : l’espace de stockage de Cloudflare. C’est comme un entrepôt pour les fichiers vidéo. Buffer ne peut pas recevoir un fichier directement : il lit la vidéo à partir d’un lien sur Internet. C’est pourquoi les vidéos vont d’abord dans R2</li>
+                <li><b>Jeton d’API</b> : une clé pour Cloudflare. Comme un mot de passe, on ne la montre à personne. Avec cette clé, je peux enregistrer dans R2 et envoyer des courriels</li>
+                <li><b>Buffer</b> : un outil qui publie sur YouTube, Instagram et Threads à l’heure prévue</li>
+                <li><b>Carrousel</b> : une publication Instagram avec plusieurs images qu’on fait défiler</li>
+                <li><b>Shorts</b> : les courtes vidéos verticales de YouTube</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-13">2026.10.13</time>
+          <div>
+            <h3 class="aj-h3">Planifier des vidéos m’a appris deux petites leçons importantes</h3>
+            <ul class="aj-list">
+              <li>J’ai fait fonctionner le processus : les vidéos sont enregistrées dans Cloudflare R2, puis planifiées dans Buffer</li>
+              <li>Pour enregistrer dans R2, il fallait un nouveau jeton (une sorte de clé numérique)</li>
+              <li>Après que j’ai ajouté le nouveau jeton dans Claude Code, il n’a fonctionné qu’une fois un nouveau fil de discussion ouvert</li>
+              <li>J’ai appris que « Bearer » doit être suivi d’une espace. Une seule espace manquante suffit pour tout bloquer</li>
+            </ul>
+          </div>
+        </li>
+        <li class="aj-entry" data-reveal>
           <time class="aj-entry__date" datetime="2026-10-12">2026.10.12</time>
           <div>
             <h3 class="aj-h3">Aujourd’hui, j’ai terminé le côté courriels</h3>
