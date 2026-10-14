@@ -46,6 +46,44 @@
       </div>
       <ol class="aj-log">
         <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-14">2026.10.14</time>
+          <div>
+            <h3 class="aj-h3">I tidied up my scheduled videos and learned how API tokens (keys) work</h3>
+            <ul class="aj-list">
+              <li>I swapped in new versions of 7 scheduled videos in Buffer (5 YouTube Shorts and 2 Instagram Reels). The videos were saved to Cloudflare R2 first. The captions and times stayed the same</li>
+              <li>I scheduled 3 new Instagram carousels and 8 new Threads posts</li>
+              <li>I fixed the YouTube titles</li>
+              <li>What I noticed: titles that start with Japanese quotation marks (「」) don’t seem to get many views. Adding #Shorts seems to help (this is from my own experience)</li>
+              <li>I made a page where you can listen to a sound for a lesson, and published it</li>
+              <li>I checked that the Cloudflare key could save to R2 and send email. I deleted the test file afterwards</li>
+              <li>A mistake: each slot can hold only one key. When I put in the key for R2, it replaced the email key, so R2 and email stopped working for a while</li>
+              <li>So I made one key that does both: sending email and saving videos</li>
+            </ul>
+            <div class="aj-terms">
+              <p class="aj-terms__h">Words used here</p>
+              <ul class="aj-list">
+                <li><b>Cloudflare R2</b>: Cloudflare’s storage. Think of it as a warehouse for video files. Buffer can’t take files directly; it reads videos from a link on the internet. That’s why the videos go to R2 first</li>
+                <li><b>API token</b>: a key for Cloudflare. Like a password, you never show it to anyone. With this key, I can save to R2 and send email</li>
+                <li><b>Buffer</b>: a tool that posts to YouTube, Instagram and Threads at a set time</li>
+                <li><b>Carousel</b>: an Instagram post with several images you swipe through</li>
+                <li><b>Shorts</b>: YouTube’s short vertical videos</li>
+              </ul>
+            </div>
+          </div>
+        </li>
+        <li class="aj-entry" data-reveal>
+          <time class="aj-entry__date" datetime="2026-10-13">2026.10.13</time>
+          <div>
+            <h3 class="aj-h3">Scheduling videos taught me two small but important lessons</h3>
+            <ul class="aj-list">
+              <li>I got videos saving to Cloudflare R2 and then scheduled through Buffer</li>
+              <li>Saving to R2 needed a new token (a kind of digital key)</li>
+              <li>After I added the new token to Claude Code, it only started working once I opened a new thread</li>
+              <li>I learned that “Bearer” must be followed by one space. A single missing space is enough to stop everything</li>
+            </ul>
+          </div>
+        </li>
+        <li class="aj-entry" data-reveal>
           <time class="aj-entry__date" datetime="2026-10-12">2026.10.12</time>
           <div>
             <h3 class="aj-h3">Today I finished off the email side</h3>
