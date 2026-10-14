@@ -7,6 +7,7 @@
     python3 tools/build-site.py
 """
 import pathlib
+import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / 'content/pages'
@@ -176,6 +177,39 @@ SHELL = '''<!DOCTYPE html>
 </html>
 '''
 
+# 「今日できたこと」は毎日増える。全部並べるとページが長くなりすぎるので、
+# 最新 LOG_SHOWN 件だけを見せ、それより古い記録は「これまでの記録」の中に
+# たたむ（2026-10-14 HARU様）。本文は今までどおり新しい順に <li> を足すだけでよく、
+# たたむ位置はここで自動で決まる。<details> なので JS が無くても開閉できる。
+LOG_SHOWN = 3
+LOG_MORE = {
+    'ja': ('これまでの記録を見る（{n}件）', '記録を閉じる'),
+    'en': ('See earlier entries ({n})', 'Show fewer'),
+    'fr': ('Voir les entrées précédentes ({n})', 'Afficher moins'),
+}
+
+def fold_log(body, lang):
+    m = re.search(r'(\n([ \t]*)<ol class="aj-log">)(.*?)(\n[ \t]*</ol>)', body, re.S)
+    if not m:
+        return body
+    ind = m.group(2)
+    items = re.split(r'(?=\n[ \t]*<li\b[^>]*\baj-entry\b)', m.group(3))
+    head, entries = items[0], items[1:]
+    if len(entries) <= LOG_SHOWN:
+        return body
+    older = entries[LOG_SHOWN:]
+    more, less = LOG_MORE[lang]
+    i2 = ind + '  '
+    # 右の列に1つの塊として入るよう、記録とボタンを1つの箱に包む
+    folded = (f'\n{ind}<div class="aj-logbox">' + m.group(1) + head + ''.join(entries[:LOG_SHOWN]) + m.group(4) +
+              f'\n{ind}<details class="aj-more">'
+              f'\n{i2}<summary class="aj-more__btn"><span class="aj-more__open">{more.format(n=len(older))}</span>'
+              f'<span class="aj-more__close">{less}</span></summary>'
+              f'\n{i2}<ol class="aj-log aj-log--older">' +
+              ''.join(e.replace('\n', '\n  ') for e in older) +
+              f'\n{i2}</ol>\n{ind}</details>\n{ind}</div>')
+    return body[:m.start()] + folded + body[m.end():]
+
 def render(src_dir, slug, out, title, desc, body_class='', page_class=''):
     lang = AI_LANG.get(slug, 'ja')
     nav = NAV_AI[lang] if slug in AI_SLUGS else NAV
@@ -196,6 +230,8 @@ def render(src_dir, slug, out, title, desc, body_class='', page_class=''):
             rows.append(f'{indent}<a href="{target}"{cur}>{label}</a>')
         return '\n'.join(rows)
     body = (src_dir / f'{slug}.html').read_text(encoding='utf-8').rstrip()
+    if slug in AI_SLUGS:
+        body = fold_log(body, lang)
     if body_class:
         # 法務の本文は素の HTML なので、ここで節と余白のコンテナに包む。
         # 4ページの本文は自前で <section><div class="wrap"> を持っている。
