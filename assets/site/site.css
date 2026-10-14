@@ -1094,3 +1094,27 @@ body.is-ai .aj-hero__text { max-width: 760px; }
 @media (max-width: 380px) { .aj-me__from { white-space: normal; } }
 /* 携帯では名札の文字を出さず、丸い写真と言語だけにする（横幅が足りず、文字と「日本語」が折れるため） */
 @media (max-width: 599px) { .aj-me__id { display: none; } }
+
+/* 今日できたこと：最新3件だけを見せ、古い記録はたたむ（2026-10-14 HARU様）。
+   たたむ位置は build-site.py の fold_log() が自動で決める。
+   ボタンは金ではなく静かな線の形にする（金は「問い合わせる」だけ）。 */
+.aj-logbox { display: grid; gap: var(--s3); min-width: 0; }
+.aj-more { display: block; }
+.aj-log--older { margin-top: var(--s3); }
+.aj-more__btn {
+  list-style: none; cursor: pointer;
+  display: inline-flex; align-items: center; gap: 10px; min-height: 48px;
+  padding: 12px 22px; border-radius: 999px; border: 1px solid var(--aj-line);
+  background: #fff; font-size: 16px; font-weight: 600; color: var(--aj-ink);
+}
+.aj-more__btn::-webkit-details-marker { display: none; }
+.aj-more__btn::after {
+  content: ""; width: 8px; height: 8px; margin-top: -4px;
+  border-right: 2px solid currentColor; border-bottom: 2px solid currentColor;
+  transform: rotate(45deg); transition: transform .2s var(--ease);
+}
+.aj-more[open] > .aj-more__btn::after { transform: rotate(-135deg); margin-top: 4px; }
+.aj-more__close, .aj-more[open] .aj-more__open { display: none; }
+.aj-more[open] .aj-more__close { display: inline; }
+.aj-more__btn:focus-visible { outline: 2px solid var(--aj-tint-ink); outline-offset: 3px; }
+@media (hover: hover) { .aj-more__btn:hover { background: var(--aj-tint); } }
