@@ -193,7 +193,7 @@ def fold_log(body, lang):
     if not m:
         return body
     ind = m.group(2)
-    items = re.split(r'(?=\n[ \t]*<li class="aj-entry")', m.group(3))
+    items = re.split(r'(?=\n[ \t]*<li\b[^>]*\baj-entry\b)', m.group(3))
     head, entries = items[0], items[1:]
     if len(entries) <= LOG_SHOWN:
         return body
