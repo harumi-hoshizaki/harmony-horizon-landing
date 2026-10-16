@@ -457,6 +457,13 @@
 
   :focus-visible { outline: 2px solid var(--gold-bright); outline-offset: 3px; }
 
+  /* 携帯幅だけで追加する改行。PC幅では非表示にし、見出しの改行位置は変えない。
+     (eatoutと同じ考え方。追補5 §174-B) */
+  .br-mobile-only { display: none; }
+  @media (max-width: 640px) {
+    .br-mobile-only { display: inline; }
+  }
+
   /* 320px の端末では、見出しをもう一段下げる。
      28px のままだと1行に 9.7 文字しか入らず、どこで切っても
      1〜2文字の行が出る（実測 tools/mobile-audit.js の孤立行検査）。 */
@@ -563,14 +570,14 @@
 <section style="background:var(--cream-soft);">
   <div class="container" style="max-width:740px;">
     <span class="eyebrow">Problem</span>
-    <h2>入国審査、<br>緊張しませんか？</h2>
+    <h2>入国審査で、<br>言葉に詰まる瞬間。</h2>
     <p class="lede">英語の勉強はしてきた。でも、</p>
     <div class="card-list">
       <div class="item"><span class="dot"></span><p>審査官の質問が早口で、<br>何を聞かれているか分からない</p></div>
       <div class="item"><span class="dot"></span><p>単語は知っているのに、<br>いざとなると声が出ない</p></div>
       <div class="item"><span class="dot"></span><p>練習する機会がないまま、<br>本番を迎えてしまう</p></div>
     </div>
-    <p class="lede">そんな不安を抱えたまま、旅立ちたくないですよね。<br><br>入国審査で聞かれる質問は、実はある程度決まっています。<br><strong style="color:var(--ink);">「聞き取る力」と「答える練習」</strong>があれば、落ち着いて対応できます。</p>
+    <p class="lede">入国審査で聞かれる質問は、実は<br class="br-mobile-only">ある程度決まっています。<br><strong style="color:var(--ink);">「聞き取る力」と「答える練習」</strong>があれば、落ち着いて対応できます。</p>
   </div>
 </section>
 
@@ -581,51 +588,22 @@
     <h2>聞く。話す。<br>本番同様に、確かめる。</h2>
     <p class="lede">1つの質問パターンを、<br>4つのステップで練習します。<br>北米英語の音のつながりや発音のクセを、<br>耳と声で身につけます。</p>
     <div class="method-steps">
-      <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、審査官の質問を聞く。声・速度も選べます。</span></div>
+      <div class="row"><span class="n">01</span><span class="t">LISTEN ・ 聞く</span><span class="d">ネイティブ音声で、審査官の質問を聞く。<br class="br-mobile-only">声・速度も選べます。</span></div>
       <div class="row"><span class="n">02</span><span class="t">SPEAK ・ 声に出す</span><span class="d">聞き取った質問に、自分の声で英語で答えてみる。</span></div>
       <div class="row"><span class="n">03</span><span class="t">READ ・ 文字を見る</span><span class="d">意味を確認しながら、発音Tipsと基本文法をチェック。</span></div>
-      <div class="row"><span class="n">04</span><span class="t">ANSWER ・ 質問に答える</span><span class="d">本番同様のシミュレーションで、最初から最後まで通して確認。</span></div>
+      <div class="row"><span class="n">04</span><span class="t">ANSWER ・ 質問に答える</span><span class="d">本番同様のシミュレーションで、<br class="br-mobile-only">最初から最後まで通して確認。</span></div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES trio -->
-<section>
-  <div class="container">
-    <span class="eyebrow">What You Get</span>
-    <h2>声も速さも、選べる。</h2>
-    <p class="lede">3つの練習モードで、聞き取りと受け答えを繰り返し鍛えます。</p>
-    <div class="trio">
-      <div class="trio-card">
-        <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="#FAF6EC" stroke="none"/></svg>
-        </div>
-        <h3>声も速さも、選べる</h3>
-        <p>男性・女性の声、ふつう/ゆっくりの速度を切り替えて、自分の耳のペースで聞き取り練習ができます。</p>
-      </div>
-      <div class="trio-card">
-        <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        </div>
-        <h3>意味を確認しながら学ぶ</h3>
-        <p>質問の意味を選択式で確認しながら、聞き取った内容が合っているかその場でチェックできます。</p>
-      </div>
-      <div class="trio-card">
-        <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#FAF6EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        <h3>本番同様の<br>シミュレーション</h3>
-        <p>審査官の質問を聞き取り、声に出して回答。すべての質問を通過すればゴールという、模擬体験形式です。</p>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- 2026-10-16 HARU様指示でFeatures節を削除。声と速さ/意味確認/本番シミュレーションの
+     3枚は、上のMethod節(01 LISTEN/03 READ/04 ANSWER)で既に同じ内容を説明しており、
+     新情報が1つもなかった(eatoutと同じ重複パターン)。 -->
 <!-- WHO -->
 <section style="background:var(--cream-soft);">
   <div class="container">
     <span class="eyebrow">Who Is This For</span>
-    <h2>こんな方に<br>おすすめです。</h2>
+    <h2>向いているのは、<br>こんな人です。</h2>
     <div class="who-list">
       <div class="who-item"><span class="mark">01</span><p>海外旅行を控えていて、<br>入国審査が不安な方</p></div>
       <div class="who-item"><span class="mark">02</span><p>英語での会話にまだ自信がない方</p></div>
@@ -708,9 +686,10 @@
 <section class="cta-band on-dark">
   <div class="container">
     <span class="eyebrow">Before You Fly</span>
-    <h2>海外旅行を、<br>安心して迎えるために。</h2>
-    <p class="lede">入国審査での「聞こえない」「言えない」を、<br>今日から少しずつ減らしていきましょう。</p>
-    <a href="https://buy.stripe.com/14A00j9z02Vaafe9kCeEo0a?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold">¥1,980で体験する →</a>
+    <h2>入国審査で、<br>固まらないために。</h2>
+    <p class="lede">入国審査での「聞こえない」<br class="br-mobile-only">「言えない」を、<br>今日から少しずつ<br class="br-mobile-only">減らしていきましょう。</p>
+    <a href="https://buy.stripe.com/14A00j9z02Vaafe9kCeEo0a?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
+    <div style="font-size:14px;color:rgba(253,252,250,0.65);margin-top:14px;">¥1,980 ・ サブスクではありません</div>
   </div>
 </section>
 
