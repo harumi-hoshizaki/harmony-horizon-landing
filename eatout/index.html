@@ -742,7 +742,7 @@
   <div class="hero__in">
     <div class="container reveal rd1">
       <span class="eyebrow eyebrow-product">飲食店の英会話</span>
-      <h1>海外のカフェで、<br><em>「え？今なんて？」</em><br class="br-desktop-only">を<br class="br-mobile-only">減らす。</h1>
+      <h1>海外のカフェで、<br><em>「え？今なんて？」</em><br class="br-desktop-only"><br class="br-mobile-only">を減らす。</h1>
       <!-- ★2026-09-19 「カフェ・レストラン」に**ファーストフード**を足しました。
            札にはもう出ているのに、ここだけ2つのままで食い違っていました。
            ★見出し(h1)の「海外のカフェで、」は**わざと触っていません**。
@@ -817,12 +817,13 @@
 
     <div class="confession">
       <p class="lede">知っている単語なのに、<br>会話になると聞き取れない。<br>そして「Sorry?」<br>「Could you say that again?」と聞き返す。</p>
-      <p class="big-statement" style="margin-top:20px;">単語は知っている。文法も知っている。<br>足りないのは、<br><em class="q">「次に何を聞かれるか」が<br>分かっている安心感です。</em></p>
+      <p class="big-statement" style="margin-top:20px;">でも、<br><em class="q">練習すれば変わります。</em></p>
     </div>
   </div>
 </section>
 
-<!-- THE TRUTH (解決策+flow) -->
+<!-- THE TRUTH (解決策+flow+13場面。2026-10-16 HARU様指示でCoverage節を統合。
+     「質問は決まっている」と「13場面を網羅している」は同じ話を2節に分けていた。 -->
 <section>
   <div class="container" style="max-width:740px;">
     <span class="eyebrow">The Truth</span>
@@ -837,6 +838,29 @@
       <span class="step">お会計</span><span class="arrow">→</span>
       <span class="step">退店</span>
     </div>
+    <div class="coverage-chips" style="margin-top:36px;">
+      <!-- ★2026-09-19 HARU様「ファーストフードのシーンも加えて」。
+           本体(app側)のお店の区分は VENUE_TAG_JA の実測どおり
+           { cafe: 'カフェ', ff: 'ファーストフード', restaurant: 'レストラン' }。
+           「ファストフード」ではなく**ファーストフード**(本体と同じ表記)。
+           並びは、お店の種類3つ → 場面3つ の順にそろえてある。 -->
+      <span class="chip">カフェ</span>
+      <span class="chip">ファーストフード</span>
+      <span class="chip">レストラン</span>
+      <span class="chip">ドリンク</span>
+      <span class="chip">お会計</span>
+      <span class="chip">退店</span>
+    </div>
+    <!-- ★2026-08-20 Harumi「13場面に変えましょう」。
+     それまでは「167フレーズ」。アプリを機械で数えると161で、167は
+     根拠のない数字だった(node scripts/dump-phrases.js で確認できる)。
+     数だけを出すと、同じ値段の「1000フレーズ」本と数で比べられる。
+     Eat Outの強みは範囲の狭さ —— 入店のあいさつから退店まで、
+     カフェ・レストランの13場面だけを、音声2種×2速度＋つながる音＋
+     発音＋マイク判定まで付けて持っていること。場面の数で言えば
+     「少ない」ではなく「その場面を丸ごと」と読める。
+     フレーズの数はもう出さない(増減のたびに嘘になるため)。 -->
+    <div class="coverage-count">入店から退店まで、<br>13場面のリアルな質問・返答</div>
   </div>
 </section>
 
@@ -953,74 +977,12 @@
          このコースの半分しか言っていない(聞き取った次に、答える所まである)。
          幅任せに折らせず、3行の位置を決め打ちする。 -->
     <p class="big-statement">読んで分かるのと、<br><em>聞いて答えられるのは、<br>別の力です。</em></p>
-  </div>
-</section>
 
-<!-- COVERAGE (13場面) -->
-<section style="background:var(--cream-soft);">
-  <div class="container">
-    <span class="eyebrow">What's Inside</span>
-    <h2>これだけ練習しておけば、<br>安心。</h2>
-    <div class="coverage-chips">
-      <!-- ★2026-09-19 HARU様「ファーストフードのシーンも加えて」。
-           本体(app側)のお店の区分は VENUE_TAG_JA の実測どおり
-           { cafe: 'カフェ', ff: 'ファーストフード', restaurant: 'レストラン' }。
-           「ファストフード」ではなく**ファーストフード**(本体と同じ表記)。
-           並びは、お店の種類3つ → 場面3つ の順にそろえてある。 -->
-      <span class="chip">カフェ</span>
-      <span class="chip">ファーストフード</span>
-      <span class="chip">レストラン</span>
-      <span class="chip">ドリンク</span>
-      <span class="chip">お会計</span>
-      <span class="chip">退店</span>
-    </div>
-    <!-- ★2026-08-20 Harumi「13場面に変えましょう」。
-     それまでは「167フレーズ」。アプリを機械で数えると161で、167は
-     根拠のない数字だった(node scripts/dump-phrases.js で確認できる)。
-     数だけを出すと、同じ値段の「1000フレーズ」本と数で比べられる。
-     Eat Outの強みは範囲の狭さ —— 入店のあいさつから退店まで、
-     カフェ・レストランの13場面だけを、音声2種×2速度＋つながる音＋
-     発音＋マイク判定まで付けて持っていること。場面の数で言えば
-     「少ない」ではなく「その場面を丸ごと」と読める。
-     フレーズの数はもう出さない(増減のたびに嘘になるため)。 -->
-    <div class="coverage-count">入店から退店まで、<br>13場面のリアルな質問・返答</div>
-  </div>
-</section>
-
-<!-- FEATURES trio -->
-<section>
-  <div class="container">
-    <span class="eyebrow">What You Get</span>
-    <h2>声も速さも、選べる。</h2>
-    <p class="lede">同じ意味でも、聞かれ方は何通りもあります。<br>「聞き取るべきフレーズ」と「言えるべきフレーズ」に分けて、効率よく練習できます。</p>
+    <!-- 2026-10-16 HARU様指示でFeatures節を統合。声・速さ/発音Tips/マイクチェックの
+         3枚は、上のmethod-steps(01/02/04)とTrialで既に伝えている内容と重複していたため削除し、
+         残り3枚(コース内で説明していなかった機能)だけをここに残す。 -->
+    <p class="lede" style="margin-top:56px;">ほかにも、こんな工夫があります。</p>
     <div class="trio">
-      <div class="trio-card">
-        <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a5 5 0 0 1 0 8"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/><polygon points="4 8 8 8 12 4 12 20 8 16 4 16" fill="currentColor" stroke="none"/></svg>
-        </div>
-        <h3>好みの声と速さで</h3>
-        <p>男性・女性の声、ふつう/ゆっくりの速度を切り替えて、自分の耳のペースで聞き取り練習ができます。</p>
-      </div>
-      <div class="trio-card">
-        <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-        </div>
-        <h3>発音Tips・基本文法</h3>
-        <p>つながる音・リンキングのコツと基本文法をあわせて解説。意味確認クイズで、その場で理解度をチェックできます。</p>
-      </div>
-      <div class="trio-card">
-        <div class="trio-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
-        </div>
-        <h3>マイクで発音チェック</h3>
-        <p>お手本を聞いたあと、マイクに向かって言ってみます。聞こえたとおりの英語が文字で出るので、どこが違うかが目で分かります。</p>
-      </div>
-
-      <!-- ★2026-09-19 3つ→6つ。すでにコースに在るのに、このページに
-           一言も書いていなかった3つを足します（新機能としてではなく、
-           最初からそういうコースとして書く）。
-           ★.trio は3列なので、6つでちょうど2段に収まります。
-             4つや5つにすると、desktop で最後の段が欠けます。 -->
       <div class="trio-card">
         <div class="trio-icon">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="13" width="4.5" height="7" rx="2.2"/><rect x="16.5" y="13" width="4.5" height="7" rx="2.2"/></svg>
@@ -1061,10 +1023,18 @@
       <div class="who-item"><span class="mark">✓</span><p>旅行前に、<br>最低限の英語だけ準備したい</p></div>
       <div class="who-item"><span class="mark">✓</span><p>カフェやレストランくらいは、<br>自信を持って利用したい</p></div>
     </div>
+  </div>
+</section>
+
+<!-- VOICE (使った方の声。2026-10-16 HARU様指示でWHO節から独立させ、
+     価格の直前=購入直前の不安解消に一番効く位置へ移動) -->
+<section>
+  <div class="container" style="max-width:620px;">
+    <span class="eyebrow">Voice</span>
     <!-- 「AI英会話アップデート フィードバックフォーム」(Google ドライブ、2026-09-21)の回答。掲載許可あり・
          表記は本人の希望「junjun」。最後の一文「とても楽しく勉強ができるアプリだと思います。」は、
          お客さん向けの文に「アプリ」と書かない決まりのため省いた(言い換えはしない)。 -->
-    <p class="voice-cap">使った方の声</p>
+    <p class="voice-cap" style="margin-top:0;">使った方の声</p>
     <figure class="voice"><span class="voice-mark" aria-hidden="true">“</span><blockquote>AI会話を1回やってみました。すごく楽しかったです。私の言い間違いや、会話が重なった時のやり取りも含めて、<strong style="word-break:keep-all;">本当に<wbr>海外で<wbr>注文している<wbr>リアル感が<wbr>ありました。</strong>また、フィードバックが詳しくてびっくりです。</blockquote><figcaption>junjunさん<span>AI英会話チャレンジを体験</span></figcaption></figure>
   </div>
 </section>
@@ -1154,7 +1124,7 @@
 <section class="cta-band on-dark">
   <div class="container">
     <span class="eyebrow">Before You Order</span>
-    <p class="cta-lede-pre">練習できるのは、<br>旅行の前の、今のうちだけです。<br>まずは1問、聞いて、答えてみてください。</p>
+    <p class="cta-lede-pre">練習できるのは、<br>旅行の前の、今のうちだけです。<br>まずは1問、聞いて、<br class="br-mobile-only">答えてみてください。</p>
     <h2>海外の注文で、<br>固まらないために。</h2>
     <a href="https://buy.stripe.com/dRmbJ19z07bqbjiaoGeEo09?client_reference_id=eatout" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
     <div class="cta-price-note">¥1,980 ・ サブスクではありません</div>
