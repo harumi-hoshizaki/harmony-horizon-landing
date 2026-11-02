@@ -138,6 +138,8 @@
   @media (hover: hover) {
     .btn-gold:hover { box-shadow: 0 6px 14px rgba(34,29,24,0.34), inset 0 1px 0 rgba(255,255,255,0.14); }
   }
+  /* 2026-11-02 申し込み停止中：押せない「Coming soon」表示(HARU様依頼)。 */
+  .btn-soon { background: #D9D4CB; color: #6B645A; box-shadow: none; cursor: default; pointer-events: none; user-select: none; }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   @media (hover: hover) { .btn-outline:hover { background: var(--navy-deep); color: var(--cream); } }
@@ -495,7 +497,7 @@
       </div>
     </a>
     <!-- 2026-10-07 監査：右上から支払い画面へ直接飛ばさない。/speakup/ と同じく値段のカードへ（HARU様 10/6・10/7）。 -->
-    <a href="#price" class="btn btn-gold btn-small">申し込む</a>
+    <span class="btn btn-soon btn-small" aria-disabled="true">Coming soon</span>
   </div>
 </header>
 
@@ -635,7 +637,7 @@
         <div><span class="ck">✓</span>意味確認クイズ</div>
         <div><span class="ck">✓</span><span>本番同様の<wbr>シミュレーション練習</span></div>
       </div>
-      <a href="https://buy.stripe.com/14A00j9z02Vaafe9kCeEo0a?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold" style="width:100%;justify-content:center;">Ear to Voiceを始める</a>
+      <span class="btn btn-soon" aria-disabled="true" style="width:100%;justify-content:center;">Coming soon</span>
     </div>
   </div>
 </section>
@@ -688,7 +690,7 @@
     <span class="eyebrow">Before You Fly</span>
     <h2>入国審査で、<br>固まらないために。</h2>
     <p class="lede">入国審査での「聞こえない」<br class="br-mobile-only">「言えない」を、<br>今日から少しずつ<br class="br-mobile-only">減らしていきましょう。</p>
-    <a href="https://buy.stripe.com/14A00j9z02Vaafe9kCeEo0a?client_reference_id=immigration" target="_blank" rel="noopener" class="btn btn-gold">今すぐ練習を始める →</a>
+    <span class="btn btn-soon" aria-disabled="true">Coming soon</span>
     <div style="font-size:14px;color:rgba(253,252,250,0.65);margin-top:14px;">¥1,980 ・ サブスクではありません</div>
   </div>
 </section>
