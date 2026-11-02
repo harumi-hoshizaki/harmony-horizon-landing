@@ -178,6 +178,9 @@
   }
   /* 2026-11-02 申し込み停止中：押せない「Coming soon」表示(HARU様依頼)。 */
   .btn-soon { background: #D9D4CB; color: #6B645A; box-shadow: none; cursor: default; pointer-events: none; user-select: none; }
+  /* ヘッダーの「Coming back soon」が狭い画面でロゴを押しつぶさないよう、余白を詰め、ロゴの下の小さい一行を隠す */
+  @media (max-width: 420px) { .site-header .btn-soon { padding: 12px 10px; } .site-header .brand-word { white-space: nowrap; } .site-header .brand-tag { display: none; } }
+  @media (max-width: 360px) { .site-header .brand-word { display: none; } }
   .btn-outline { background: transparent; border: 1px solid var(--line); color: var(--ink); }
   .btn-outline.on-dark { border-color: var(--line-light); color: var(--cream); }
   @media (hover: hover) { .btn-outline:hover { background: var(--espresso); color: var(--cream); } }
@@ -728,7 +731,7 @@
     </a>
     <!-- 2026-10-07 監査：右上は値段・支払いではなく、無料の体験へ（HARU様「興味がない人に値段を見せるのは間違い」）。
          支払いは、体験の直後と値段のカードから。 -->
-    <span class="btn btn-soon btn-small" aria-disabled="true">Coming back soon</span><!-- 2026-11-02 HARU様: 右上を「Coming back soon」に(押せない表示) -->
+    <span class="btn btn-soon btn-small" aria-disabled="true" style="white-space:nowrap;">Coming back soon</span><!-- 2026-11-02 HARU様: 右上を「Coming back soon」に(押せない表示) -->
   </div>
 </header>
 
