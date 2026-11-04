@@ -568,6 +568,10 @@
   .chat-ja { font-family: var(--font-gothic); font-size: var(--text-md); line-height: var(--lh-read); font-weight: 400; color: var(--ink); margin: 0; }
   .chat-en { font-family: var(--font-latin); font-size: var(--text-lg); line-height: var(--lh-base); color: var(--ink); margin: 6px 0 0; }
   .chat-bubble.is-you .chat-en { font-size: var(--font-phrase); line-height: 1.3; letter-spacing: -0.005em; font-weight: 800; border-left: 4px solid var(--accent-fill); padding-left: var(--space-3); text-wrap: balance; margin: var(--space-3) 0 0; }
+  /* 2026-11-04 HARU様「自分が言うべきフレーズは、文章（答え）が見えているので意味がない。文字をぼやかして」:
+     体験の中の「あなた」の英文は、文字に頼らず音で真似するため、ぼかす。相手の英文（「意味と英文を見る」）はそのまま。 */
+  .try-card .chat-bubble.is-you .chat-en:not(.is-shown) { filter: blur(8px); -webkit-user-select: none; user-select: none; cursor: pointer; }
+  /* 見たい人は「タップで見る」(または英文)を押すと、ぼかしが外れる。 */
   .chat-ja-meaning { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); margin: 6px 0 0; }
   .chat-voice { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .chat-voice:first-child { margin-top: 0; }
@@ -927,20 +931,13 @@
     <span class="eyebrow">My Approach</span>
     <h2>答えを読みながら<wbr>練習しなくていい。</h2>
     <div class="prose">
-    <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">まず、自分でとりあえず英語で言ってみる。<br>それから、ネイティブの音を聞いてみる。<br>「自分ではこう言ったけど、こんな言い方もできるんだ！」<br>そんな発見を重ねながら、耳と口を鍛えていく。</p>
     <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">私が大切にしているのは、英語を文字で理解するだけで終わらせないこと。</p>
-    <div class="who-list">
+    <div class="who-list" style="margin-bottom:0;">
       <div class="who-item"><span class="mark">01</span><p style="word-break:auto-phrase;text-wrap:pretty;">自分で考えて声に出す。</p></div>
       <div class="who-item"><span class="mark">02</span><p style="word-break:auto-phrase;text-wrap:pretty;">聞こえた音を真似する。</p></div>
       <div class="who-item"><span class="mark">03</span><p style="word-break:auto-phrase;text-wrap:pretty;">音のつながりや発音の秘密を知る。</p></div>
       <div class="who-item"><span class="mark">04</span><p style="word-break:auto-phrase;text-wrap:pretty;">そして、もう一度、自分の口で言ってみる。</p></div>
     </div>
-    <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">フランス語、スペイン語、英語を学び、フランスやカナダで暮らしてきたHARUが考えた、<strong style="color:var(--ink);">「耳から、声へ」</strong>の英会話練習です。</p>
-    <h3 class="review-head">「自分で言えるようになると、<wbr>聞き取れるようになる！」</h3>
-    <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">20日間、今すぐ使える表現を使って、耳と口を動かしてみませんか？<br>1日10分ほど。自分のペースで取り組めるオンラインコースです。</p>
-    <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">この20日間コースでは、駅や観光地、お店など、<br>実際にありそうな場面を使って会話を練習します。</p>
-    <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">最初から上手に話せなくても大丈夫。<br>まずは自分で考えてみる。聞いてみる。<br>そして、声に出してみる。</p>
-    <p class="lede" style="word-break:auto-phrase;text-wrap:pretty;">1日10分ほど。できる日に少しずつ。</p>
     </div>
     </div>
   </div>
@@ -1678,6 +1675,13 @@
   function partnerSrc(ex) { return AUDIO_BASE + (state.voice === 'm' ? ex.pAudio.replace('partner-', 'partner-f-') : ex.pAudio); }
   function modelSrc(id) { return AUDIO_BASE + 'model-' + state.voice + '-' + id + '.mp3'; }
 
+  /* 「あなた」の英文はぼかし、見たい人だけ「タップで見る」で外す(HARU様 2026-11-04)。 */
+  function blurHint(enHost) {
+    var btn = h('button', { class: 'btn-link chat-link', type: 'button', text: 'タップで見る', hidden: true, onClick: function () { enHost.classList.add('is-shown'); btn.hidden = true; } });
+    enHost.addEventListener('click', function () { btn.click(); });
+    return btn;
+  }
+
   function youOpening() {
     var ph = chosenOption;
     var src = function () { return modelSrc(ph.id); };
@@ -1685,9 +1689,10 @@
     var playBtn = voiceRow(ph.id, src);
     playBtn.hidden = true;
     var note = ph.note_ja ? wordNote(ph, true) : null;
-    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: INTENTION_JA }), enHost, note, playBtn]);
+    var hint = blurHint(enHost);
+    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: INTENTION_JA }), enHost, hint, note, playBtn]);
     thread.appendChild(built.row);
-    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: note ? [note] : [], prompt: COPY.askEnOpening });
+    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: (note ? [note] : []).concat([hint]), prompt: COPY.askEnOpening });
   }
 
   function partnerTurn(ex) {
@@ -1739,9 +1744,10 @@
     var playBtn = voiceRow(ex.sId, src);
     playBtn.hidden = true;
     var note = ex.note_ja ? wordNote(ex, true) : null;
-    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: ex.sJa }), enHost, note, playBtn]);
+    var hint = blurHint(enHost);
+    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: ex.sJa }), enHost, hint, note, playBtn]);
     thread.appendChild(built.row);
-    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: note ? [note] : [] });
+    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: (note ? [note] : []).concat([hint]) });
   }
 
   function finishBranch() {
