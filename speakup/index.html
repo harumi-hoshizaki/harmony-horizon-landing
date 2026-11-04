@@ -568,6 +568,9 @@
   .chat-ja { font-family: var(--font-gothic); font-size: var(--text-md); line-height: var(--lh-read); font-weight: 400; color: var(--ink); margin: 0; }
   .chat-en { font-family: var(--font-latin); font-size: var(--text-lg); line-height: var(--lh-base); color: var(--ink); margin: 6px 0 0; }
   .chat-bubble.is-you .chat-en { font-size: var(--font-phrase); line-height: 1.3; letter-spacing: -0.005em; font-weight: 800; border-left: 4px solid var(--accent-fill); padding-left: var(--space-3); text-wrap: balance; margin: var(--space-3) 0 0; }
+  /* 2026-11-04 HARU様「自分が言うべきフレーズは、文章（答え）が見えているので意味がない。文字をぼやかして」:
+     体験の中の「あなた」の英文は、文字に頼らず音で真似するため、ぼかす。相手の英文（「意味と英文を見る」）はそのまま。 */
+  .try-card .chat-bubble.is-you .chat-en { filter: blur(8px); -webkit-user-select: none; user-select: none; }
   .chat-ja-meaning { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); margin: 6px 0 0; }
   .chat-voice { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .chat-voice:first-child { margin-top: 0; }
