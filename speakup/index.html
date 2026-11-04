@@ -570,7 +570,8 @@
   .chat-bubble.is-you .chat-en { font-size: var(--font-phrase); line-height: 1.3; letter-spacing: -0.005em; font-weight: 800; border-left: 4px solid var(--accent-fill); padding-left: var(--space-3); text-wrap: balance; margin: var(--space-3) 0 0; }
   /* 2026-11-04 HARU様「自分が言うべきフレーズは、文章（答え）が見えているので意味がない。文字をぼやかして」:
      体験の中の「あなた」の英文は、文字に頼らず音で真似するため、ぼかす。相手の英文（「意味と英文を見る」）はそのまま。 */
-  .try-card .chat-bubble.is-you .chat-en { filter: blur(8px); -webkit-user-select: none; user-select: none; }
+  .try-card .chat-bubble.is-you .chat-en:not(.is-shown) { filter: blur(8px); -webkit-user-select: none; user-select: none; cursor: pointer; }
+  /* 見たい人は「タップで見る」(または英文)を押すと、ぼかしが外れる。 */
   .chat-ja-meaning { font-size: var(--text-md); line-height: var(--lh-read); color: var(--ink); margin: 6px 0 0; }
   .chat-voice { width: 100%; display: flex; align-items: center; gap: 12px; margin-top: 10px; padding: 0; border: 0; background: none; text-align: left; cursor: pointer; -webkit-tap-highlight-color: transparent; }
   .chat-voice:first-child { margin-top: 0; }
@@ -1674,6 +1675,13 @@
   function partnerSrc(ex) { return AUDIO_BASE + (state.voice === 'm' ? ex.pAudio.replace('partner-', 'partner-f-') : ex.pAudio); }
   function modelSrc(id) { return AUDIO_BASE + 'model-' + state.voice + '-' + id + '.mp3'; }
 
+  /* 「あなた」の英文はぼかし、見たい人だけ「タップで見る」で外す(HARU様 2026-11-04)。 */
+  function blurHint(enHost) {
+    var btn = h('button', { class: 'btn-link chat-link', type: 'button', text: 'タップで見る', hidden: true, onClick: function () { enHost.classList.add('is-shown'); btn.hidden = true; } });
+    enHost.addEventListener('click', function () { btn.click(); });
+    return btn;
+  }
+
   function youOpening() {
     var ph = chosenOption;
     var src = function () { return modelSrc(ph.id); };
@@ -1681,9 +1689,10 @@
     var playBtn = voiceRow(ph.id, src);
     playBtn.hidden = true;
     var note = ph.note_ja ? wordNote(ph, true) : null;
-    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: INTENTION_JA }), enHost, note, playBtn]);
+    var hint = blurHint(enHost);
+    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: INTENTION_JA }), enHost, hint, note, playBtn]);
     thread.appendChild(built.row);
-    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: note ? [note] : [], prompt: COPY.askEnOpening });
+    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: (note ? [note] : []).concat([hint]), prompt: COPY.askEnOpening });
   }
 
   function partnerTurn(ex) {
@@ -1735,9 +1744,10 @@
     var playBtn = voiceRow(ex.sId, src);
     playBtn.hidden = true;
     var note = ex.note_ja ? wordNote(ex, true) : null;
-    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: ex.sJa }), enHost, note, playBtn]);
+    var hint = blurHint(enHost);
+    var built = bubbleRow('you', COPY.chatYou, [h('p', { class: 'chat-ja', text: ex.sJa }), enHost, hint, note, playBtn]);
     thread.appendChild(built.row);
-    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: note ? [note] : [] });
+    return sayThenReveal({ row: built.row, bubble: built.bubble, enHost: enHost, playBtn: playBtn, src: src, extra: (note ? [note] : []).concat([hint]) });
   }
 
   function finishBranch() {
