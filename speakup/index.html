@@ -980,63 +980,6 @@
         </div>
       </div>
 
-      <!-- 画面2/3: 言い方を選ぶ(js/earToVoice.js stepChoosePhrase。レッスン
-           本編では nextLead:null なので予告の箱は無く、.next-block の中は
-           「これにする ＞」だけ) -->
-      <div id="tryOpener" hidden>
-        <div class="ph-head">
-          <div class="ph-cat">
-            <span class="ph-cat-top-row">
-              <span class="ph-cat-mark" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 32 32"><circle cx="16" cy="16" r="16" fill="var(--ink)"/><circle cx="16" cy="16" r="2.7" fill="var(--gold-bright)"/><circle cx="16" cy="16" r="7.2" fill="none" stroke="var(--gold-bright)" stroke-width="2"/><circle cx="16" cy="16" r="11.8" fill="none" stroke="var(--gold-bright)" stroke-width="1.6" opacity="0.55"/></svg></span>
-              <span class="ph-cat-eyebrow">言い方を選ぶ</span>
-            </span>
-          </div>
-          <div class="ph-topbar-right"><p class="ph-progress">1 / 2</p></div>
-        </div>
-        <div class="screen-body">
-          <div class="ph-journey-mode"><span class="ph-mode-name" role="status">リスニング＆スピーキング</span></div>
-          <h2 class="ph-screen-title">言えなくてもOK！<br>どれで練習してみる？</h2>
-          <div class="note"><p>3つを聞き比べて、<br>言いやすいものを選んで。<br>「›」で次の言い方をチェック。</p></div>
-          <div class="ph-settings-collapsible">
-            <div class="audio-tools-row">
-              <button type="button" class="settings-toggle" id="phSettingsToggle" aria-expanded="false">
-                <span class="settings-toggle-icon">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="4" y1="7" x2="20" y2="7"/><circle cx="9" cy="7" r="2.2" fill="currentColor" stroke="none"/><line x1="4" y1="16" x2="20" y2="16"/><circle cx="16" cy="16" r="2.2" fill="currentColor" stroke="none"/></svg>
-                </span>
-                <span class="settings-toggle-label">声・速さ</span>
-                <span class="settings-toggle-chevron">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
-                </span>
-              </button>
-            </div>
-            <div class="settings-panel" id="phSettingsPanel" hidden>
-              <div class="controls-row" id="phControlsRow"></div>
-            </div>
-          </div>
-          <div class="ph-say-carousel">
-            <div class="ph-carousel-card">
-              <div class="ph-carousel-head">
-                <div class="ph-choice-pos-row">
-                  <p class="ph-choice-pos"><span class="ph-choice-pos-n" id="phPosN">1</span><span class="ph-choice-pos-of"> / 3</span><span class="ph-remain" id="phRemain" hidden></span></p>
-                  <span class="ph-badge-row" id="phBadgeRow"></span>
-                </div>
-                <div class="ph-carousel-stack">
-                  <p class="ph-carousel-gloss">大丈夫ですか？</p>
-                </div>
-              </div>
-              <div class="ph-carousel-nav">
-                <button type="button" class="ph-carousel-arrow" id="phPrev" aria-label="前の言い方">‹</button>
-                <button type="button" class="ph-audio-btn" id="phPlay" aria-label="聞く">
-                  <span class="ph-audio-btn-circle"><svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg></span>
-                </button>
-                <button type="button" class="ph-carousel-arrow" id="phNext" aria-label="次の言い方">›</button>
-              </div>
-            </div>
-          </div>
-          <div class="next-block"><div class="nav-row"><button type="button" class="btn-primary" id="tryConfirm">これにする ＞</button></div></div>
-        </div>
-      </div>
-
       <!-- 画面3/3: 会話の練習(js/branches.js stepChatBranch)。1つの画面の中で
            場面(1文目だけ)→声・速さ→「会話を始める」。押すと「会話を始める」
            だけが消え、場面はそのまま上に残って、下に会話が流れる。 -->
@@ -1328,12 +1271,11 @@
   ];
   /* 同 intention.phrases。バッジは js/earToVoice.js renderCard の規則(recommended→定番、
      tone→口調、同じ口調で一番短い→短め)をこのデータに当てた結果。 */
+  /* 2026-11-12 HARU様: 無料体験は「Do you need any help?」1本だけ(3つから選ぶ形はやめた)。 */
   var OPTIONS = [
-    {"id": "op1", "en": "Are you okay?", "note_word": "", "note_mean": "", "note_ja": "", "badges": [{"text": "定番"}, {"text": "短め", "outline": true}]},
-    {"id": "op2", "en": "Do you need any help?", "note_word": "", "note_mean": "", "note_ja": "", "badges": []},
-    {"id": "op3", "en": "Want me to show you?", "note_word": "want me to 〜?", "note_mean": "〜しましょうか？", "note_ja": "直訳は「私に\n〜してほしい？」。\n頭の Do you を\n省いています。", "badges": [{"text": "カジュアル", "outline": true}]}
+    {"id": "op2", "en": "Do you need any help?", "note_word": "", "note_mean": "", "note_ja": "", "badges": []}
   ];
-  var INTENTION_JA = "大丈夫ですか？";
+  var INTENTION_JA = "何かお手伝いしましょうか？";
 
   /* js/copy.js copy.branches(と copy.reveal)の文言そのまま。 */
   var COPY = {
@@ -1357,7 +1299,7 @@
      男女どちらの英語も聞き取れるように、トグルで2人が入れ替わる)。
      ※コース本体は2人とも同じ声で切り替わる。ここはLPだけの決め方。速さは既定ふつう。 */
   var state = { voice: 'f', rate: 1 };
-  var chosenOption = null;
+  var chosenOption = OPTIONS[0]; /* 1本だけ */
   var currentAudio = null;
   /* ページを開いた直後に scrollIntoView すると、ヒーローを見る前に
      Try It まで連れて行かれる。本人が触ってから初めてスクロールする。 */
@@ -1789,7 +1731,7 @@
   function initScene() {
     var scene = document.getElementById('tryScene');
     var sayBtn = document.getElementById('trySceneSaid');
-    if (!scene || !sayBtn) { showOpener(); return; }
+    if (!scene || !sayBtn) { showConvo(); return; }
     /* 1画面目はページの下の方にあるので、開いた時ではなく、見える所まで来た時に動かす。 */
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
@@ -1802,74 +1744,8 @@
     sayBtn.addEventListener('click', function () {
       userInteracted = true;
       scene.hidden = true;
-      showOpener();
+      showConvo();
       scrollCardTop();
-    }, { once: true });
-  }
-
-  /* ---- 画面2/3: 言い方を選ぶ(js/earToVoice.js stepChoosePhrase) ---- */
-  function showOpener() {
-    var opener = document.getElementById('tryOpener');
-    var confirmBtn = document.getElementById('tryConfirm');
-    var posN = document.getElementById('phPosN');
-    var badgeRow = document.getElementById('phBadgeRow');
-    var prevArrow = document.getElementById('phPrev');
-    var nextArrow = document.getElementById('phNext');
-    var playBtn = document.getElementById('phPlay');
-    if (!opener || !confirmBtn || !posN || !badgeRow || !prevArrow || !nextArrow || !playBtn) {
-      chosenOption = OPTIONS[0];
-      showConvo();
-      return;
-    }
-    opener.hidden = false;
-    enterMode(opener);
-    setupToggle('phSettingsToggle', 'phSettingsPanel', 'phControlsRow');
-    var idx = 0;
-    chosenOption = OPTIONS[0];
-    var remainEl = document.getElementById('phRemain');
-    var heard = {};
-    var hintArmed = true; /* 矢印を一度でも押したら false(合図はもう要らない) */
-    function stopHint() {
-      hintArmed = false;
-      nextArrow.classList.remove('is-hint');
-    }
-    function updateRemain() {
-      if (!remainEl) return;
-      var n = Object.keys(heard).length;
-      var left = OPTIONS.length - n;
-      remainEl.hidden = !(n > 0 && left > 0);
-      remainEl.textContent = 'あと' + left + 'つ';
-    }
-
-    function renderCard(doPlay) {
-      posN.textContent = String(idx + 1);
-      clear(badgeRow);
-      OPTIONS[idx].badges.forEach(function (b) {
-        badgeRow.appendChild(h('span', { class: 'ph-chip' + (b.outline ? ' ph-chip-outline' : ''), text: b.text }));
-      });
-      chosenOption = OPTIONS[idx];
-      if (doPlay) playCard();
-    }
-    function playCard() {
-      var at = idx;
-      playBtn.classList.add('playing');
-      playCue(modelSrc(OPTIONS[at].id)).then(function () {
-        playBtn.classList.remove('playing');
-        heard[at] = true;
-        updateRemain();
-        if (hintArmed && at === 0 && idx === 0) nextArrow.classList.add('is-hint');
-      });
-    }
-    playBtn.addEventListener('click', playCard);
-    prevArrow.addEventListener('click', function () { stopHint(); idx = (idx - 1 + OPTIONS.length) % OPTIONS.length; renderCard(true); });
-    nextArrow.addEventListener('click', function () { stopHint(); idx = (idx + 1) % OPTIONS.length; renderCard(true); });
-    renderCard(false);
-
-    confirmBtn.addEventListener('click', function () {
-      userInteracted = true;
-      if (currentAudio) { try { currentAudio.pause(); } catch (e) {} }
-      opener.hidden = true;
-      showConvo();
     }, { once: true });
   }
 
