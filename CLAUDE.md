@@ -96,6 +96,7 @@ HARU様の指摘:「確認メール（領収書）の（）が半角になって
 **有料の中身なので、表のサイトから絶対にリンクしない**（HARU様の指示）。
 
 - www のどのページからも `app.harmonyhorizon.space` へリンクしない
+  - **例外（HARU様 2026-11-16）: 無料の1日体験 `https://app.harmonyhorizon.space/speakup/day9/` だけ。** /speakup/ の「無料体験はこちら」ボタンから開く。有料の中身（コース本体）へは今も禁止
 - 販売の導線は www 側の `/eatout/` `/immigration/` の販売LPだけ
 - アプリ側の各ページには `<meta name="robots" content="noindex, nofollow">`
   を入れてある。**robots.txt では止めない。** 巡回を止めると
